@@ -33,6 +33,8 @@
 #include "../include/ROSUnit_UpdateReferenceY.hpp"
 #include "../include/ROSUnit_UpdateReferenceZ.hpp"
 #include "../include/ROSUnit_UpdateReferenceYaw.hpp"
+#include "../include/ROSUnit_Xsens.hpp"
+#include "../include/XSens_IMU.hpp"
 
 void performCalibration(NAVIOMPU9250_sensor*);
 void setInitialPose(PositioningProvider*, HeadingProvider*);
@@ -57,6 +59,7 @@ int main(int argc, char** argv) {
     ROSUnit* myROSResetController = new ROSUnit_ResetController(nh);
     ROSUnit* myROSBroadcastData = new ROSUnit_BroadcastData(nh);
     ROSUnit* myROSSwitchBlock = new ROSUnit_SwitchBlock(nh);
+    ROSUnit* myROSXSens = new ROSUnit_Xsens(nh);
 
     //*****************************LOGGER**********************************
     Logger::assignLogger(new StdLogger());
@@ -72,8 +75,8 @@ int main(int argc, char** argv) {
     X_PVProvider* myXPV = (X_PVProvider*)myOptitrackSystem;
     Y_PVProvider* myYPV = (Y_PVProvider*)myOptitrackSystem;
     Z_PVProvider* myZPV = (Z_PVProvider*)myOptitrackSystem;
-    Roll_PVProvider* myRollPV = (Roll_PVProvider*)myOptitrackSystem;
-    Pitch_PVProvider* myPitchPV = (Pitch_PVProvider*)myOptitrackSystem;
+    //Roll_PVProvider* myRollPV = (Roll_PVProvider*)myOptitrackSystem;
+    //Pitch_PVProvider* myPitchPV = (Pitch_PVProvider*)myOptitrackSystem;
     Yaw_PVProvider* myYawPV = (Yaw_PVProvider*)myOptitrackSystem;
     
     // AccGyroAttitudeObserver myAttObserver((BodyAccProvider*) myIMU->getAcc(), 
@@ -92,8 +95,12 @@ int main(int argc, char** argv) {
     //  Roll_PVProvider* myRollPV = (Roll_PVProvider*) &myAttObserver;
     //  Pitch_PVProvider* myPitchPV = (Pitch_PVProvider*) &myAttObserver;
 
+    XSens_IMU* myXSensIMU = new XSens_IMU();
+    Roll_PVProvider* myRollPV = (Roll_PVProvider*)myXSensIMU;
+    Pitch_PVProvider* myPitchPV = (Pitch_PVProvider*)myXSensIMU;
+
     myROSOptitrack->add_callback_msg_receiver((msg_receiver*)myOptitrackSystem);
-    
+    myROSXSens->add_callback_msg_receiver((msg_receiver*)myXSensIMU);
 
     //**************************SETTING BLOCKS**********************************
 

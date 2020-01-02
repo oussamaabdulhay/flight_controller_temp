@@ -4,7 +4,7 @@
 #include "Timer.hpp"
 #include <unistd.h>
 const int hardwareLoop1KHz_dt = 5000; //in us
-const int Loop1KHz_dt = 5000; //in us
+const int Loop1KHz_dt = 2500; //in us
 const int Loop100Hz_dt = 10000; //in us
 #include "logger.hpp"
 #include "TimedBlock.hpp"

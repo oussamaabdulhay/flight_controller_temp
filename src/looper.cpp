@@ -24,7 +24,7 @@ void* Looper::Loop1KHz(void *vargp)
         for (TimedBlock* const& i : _instance_ptr->_timed_blocks){
             if(i->getLoopTime() == block_frequency::hz200){
                 i->loopInternal();
-                j++;
+                //j++;
             }
         }
         pthread_mutex_unlock(&lock); 

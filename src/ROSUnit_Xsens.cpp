@@ -5,11 +5,13 @@ AttitudeMsg ROSUnit_Xsens::attitude_msg;
 VelocityMsg ROSUnit_Xsens::velocity_msg;
 HeadingMsg ROSUnit_Xsens::heading_msg;
 PositionMsg ROSUnit_Xsens::position_msg;
+BodyRateMsg ROSUnit_Xsens::bodyrate_msg;
 
 AccelerationMsg ROSUnit_Xsens::acceleration_msg;
 
 ROSUnit_Xsens::ROSUnit_Xsens(ros::NodeHandle& t_main_handler) : ROSUnit(t_main_handler){
-    _sub_attitude = t_main_handler.subscribe("filter/quaternion", 10, callbackXsensAttitude);
+    _sub_attitude = t_main_handler.subscribe("imu/data", 10, callbackXsensAttitude);
+    _sub_body_rate = t_main_handler.subscribe("/velocity", 10, callbackXsensBodyRate);
     _sub_position = t_main_handler.subscribe("filter/positionlla", 10, callbackXsensPosition);
     _sub_velocity = t_main_handler.subscribe("filter/velocity", 10, callbackXsensVelocity);
     _instance_ptr = this;
@@ -18,6 +20,21 @@ ROSUnit_Xsens::ROSUnit_Xsens(ros::NodeHandle& t_main_handler) : ROSUnit(t_main_h
 ROSUnit_Xsens::~ROSUnit_Xsens() {
 
 }
+
+void ROSUnit_Xsens::callbackXsensBodyRate(const geometry_msgs::TwistStamped& msg_bodyrate){
+    
+    Vector3D<float> bodyrate_data;
+    bodyrate_data.x = msg_bodyrate.twist.angular.x;
+    bodyrate_data.y = msg_bodyrate.twist.angular.y;
+    bodyrate_data.z = msg_bodyrate.twist.angular.z;
+
+    bodyrate_msg.x = bodyrate_data.x;
+    bodyrate_msg.y = bodyrate_data.y;
+    bodyrate_msg.z = bodyrate_data.z;
+
+    _instance_ptr->emit_message((DataMessage*) &bodyrate_msg);
+}
+
 
 void ROSUnit_Xsens::callbackXsensPosition(const geometry_msgs::Vector3Stamped& msg_position){
     
@@ -32,12 +49,13 @@ void ROSUnit_Xsens::callbackXsensPosition(const geometry_msgs::Vector3Stamped& m
     _instance_ptr->emit_message((DataMessage*) &position_msg);
 }
 
-void ROSUnit_Xsens::callbackXsensAttitude( const geometry_msgs::QuaternionStamped& msg_attitude){
+void ROSUnit_Xsens::callbackXsensAttitude( const sensor_msgs::Imu& msg_attitude){
+
     Quaternion att_data;
-    att_data.x = msg_attitude.quaternion.x;
-    att_data.y = msg_attitude.quaternion.y;
-    att_data.z = msg_attitude.quaternion.z;
-    att_data.w = msg_attitude.quaternion.w;
+    att_data.x = msg_attitude.orientation.x;
+    att_data.y = msg_attitude.orientation.y;
+    att_data.z = msg_attitude.orientation.z;
+    att_data.w = msg_attitude.orientation.w;
 
 //Convert Quaternion to euler
     Vector3D<float> _euler;
@@ -63,6 +81,7 @@ void ROSUnit_Xsens::callbackXsensAttitude( const geometry_msgs::QuaternionStampe
     attitude_msg.pitch=_euler.x;
     attitude_msg.roll=_euler.y;
     heading_msg.yaw=_euler.z;
+    
     _instance_ptr->emit_message((DataMessage*) &attitude_msg);    
     _instance_ptr->emit_message((DataMessage*) &heading_msg); 
 }

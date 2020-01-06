@@ -3,8 +3,9 @@
 #include <sched.h>
 #include "Timer.hpp"
 #include <unistd.h>
-const int hardwareLoop1KHz_dt = 5000; //in us
-const int Loop1KHz_dt = 5000; //in us
+const int hardwareLoop1KHz_dt = 1000; //in us
+const int Loop1KHz_dt = 1000; //in us //COMMIT 400hz from 200hz
+const int Loop200Hz_dt = 5000; //in us //COMMIT 400hz from 200hz
 const int Loop100Hz_dt = 10000; //in us
 #include "logger.hpp"
 #include "TimedBlock.hpp"
@@ -24,6 +25,7 @@ class Looper {
     public:
         static void* Loop1KHz(void *vargp);
         static void* Loop100Hz(void *vargp);
+        static void* Loop200Hz(void *vargp);
         static void* hardwareLoop1KHz(void *vargp);
         void addTimedBlock(TimedBlock*);
 

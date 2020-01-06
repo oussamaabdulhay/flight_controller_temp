@@ -23,12 +23,9 @@ void XSens_IMU::receive_msg_data(DataMessage* t_msg){
 
 AttitudeMsg XSens_IMU::getAttitude(){
     AttitudeMsg _transform;
-    if(-_attitude.pitch > 0){
-         _transform.roll = -_attitude.pitch - M_PI;
-    }else{
-        _transform.roll = -_attitude.pitch + M_PI;
-    }
-    _transform.pitch = -_attitude.roll;
+
+    _transform.roll = _attitude.pitch;
+    _transform.pitch = _attitude.roll;
 
     // std::cout << "getAttitude"<< std::endl;
     // std::cout << "roll: " << _transform.roll << std::endl;
@@ -40,7 +37,7 @@ Vector3D<float> XSens_IMU::getBodyRate(){
     BodyRateMsg _transform;
     Vector3D<float> v3d_bodyrate;
 
-    v3d_bodyrate.y = -_bodyrate.x;
+    v3d_bodyrate.y = _bodyrate.x;
     v3d_bodyrate.x = _bodyrate.y;
 
     // std::cout << "getBodyRate"<< std::endl;

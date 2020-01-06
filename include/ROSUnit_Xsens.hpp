@@ -29,9 +29,9 @@ class ROSUnit_Xsens : public ROSUnit{
         static BodyRateMsg bodyrate_msg;
         static AccelerationMsg acceleration_msg;  
         static void callbackXsensPosition(const geometry_msgs::Vector3Stamped& msg_position);
-        static void callbackXsensAttitude(const sensor_msgs::Imu& msg_attitude);
+        static void callbackXsensAttitude(const geometry_msgs::QuaternionStamped& msg_attitude);
         static void callbackXsensVelocity(const geometry_msgs::Vector3Stamped& msg_velocity);
-        static void callbackXsensBodyRate(const geometry_msgs::TwistStamped& msg_bodyrate);
+        static void callbackXsensBodyRate(const geometry_msgs::Vector3Stamped& msg_bodyrate);
         void receive_msg_data(DataMessage* t_msg);  
         
     public:

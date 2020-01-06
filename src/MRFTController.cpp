@@ -13,8 +13,9 @@ void MRFTController::switchIn(DataMessage* t_msg){
     //this->emit_message(data);
     if(t_msg->getType() == msg_type::SWITCHOUT){
 		SwitchOutMsg* switch_out_msg = (SwitchOutMsg*)t_msg;
-		parameters.bias = -switch_out_msg->getSwitchOutMsg();
+		parameters.bias = switch_out_msg->getSwitchOutMsg();
 	}
+	//COMMIT Change MRFT bias to positive
 	std::cout << "SWITCH IN MRFT CONTROLLER - Bias: " << parameters.bias << std::endl;
 }
 

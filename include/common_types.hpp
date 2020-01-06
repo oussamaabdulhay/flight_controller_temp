@@ -28,6 +28,6 @@ enum class controller_msg_type {data, change_settings, command};
 enum class control_system_msg_type {switch_in_out, add_block, change_PID_settings, to_system, PROVIDER, SETREFERENCE, UPDATECONTROLLER};
 enum class ack_msg_type { raw_packet, payload, nozzle, obstacle, mission,ack,internal_msg_start,internal_ros };
 enum class ros_msg_type {POSITION, ORIENTATION, X_PV, Y_PV, Z_PV, ROLL_PV, PITCH_PV, YAW_PV, CONTROLSYSTEM, ACTUATION};
-enum class block_frequency {hz100 = 100, hz200 = 200, hhz200 = 201};
+enum class block_frequency {hz100 = 100, hz200 = 200, hhz200 = 201, hz1000 = 1000}; //COMMIT from 200 to 400
 enum class msg_type_reference {X, Y, Z, YAW, NULL_TYPE};
 const float coeff_200Hz_2nd_butter[5] = { -1.97779f, 0.97803f, 6.1006e-05f, 1.2201e-04f, 6.1006e-05f };

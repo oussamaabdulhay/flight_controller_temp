@@ -337,7 +337,7 @@ int main(int argc, char** argv) {
     
     //******************************LOOP***********************************
     //TODO  move to looper constructor
-    pthread_t loop1khz_func_id, loop100hz_func_id, hwloop1khz_func_id;
+    pthread_t loop200hz_func_id, loop100hz_func_id, hwloop1khz_func_id;
     struct sched_param params;
 
     Looper* myLoop = new Looper();
@@ -350,13 +350,13 @@ int main(int argc, char** argv) {
     //  myLoop->addTimedBlock((TimedBlock*) &myAttObserver);
 
     // Creating a new thread 
-    pthread_create(&loop1khz_func_id, NULL, &Looper::Loop1KHz, NULL);
+    pthread_create(&loop200hz_func_id, NULL, &Looper::Loop200Hz, NULL);
     //  pthread_create(&hwloop1khz_func_id, NULL, &Looper::hardwareLoop1KHz, NULL);
     pthread_create(&loop100hz_func_id, NULL, &Looper::Loop100Hz, NULL); 
 
     //Setting priority
     params.sched_priority = sched_get_priority_max(SCHED_FIFO);
-    int ret = pthread_setschedparam(loop1khz_func_id, SCHED_FIFO, &params);
+    int ret = pthread_setschedparam(loop200hz_func_id, SCHED_FIFO, &params);
     //  ret += pthread_setschedparam(hwloop1khz_func_id, SCHED_FIFO, &params);
 
     params.sched_priority = sched_get_priority_max(SCHED_FIFO) - 1;

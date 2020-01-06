@@ -127,6 +127,29 @@ void* Looper::Loop100Hz(void *vargp)
     }
 } 
 
+void* Looper::Loop120Hz(void *vargp) 
+{ 
+    Timer* _loop_timer = new Timer();
+    while(1){
+        _loop_timer->tick();
+        pthread_mutex_lock(&lock); 
+        for (TimedBlock* const& j : _instance_ptr->_timed_blocks){
+            if(j->getLoopTime() == block_frequency::hz120){
+                j->loopInternal();
+            }
+        }
+        pthread_mutex_unlock(&lock); 
+        int consumed_time =_loop_timer->tockMicroSeconds();
+        //std::cout << "Consumed Time 120Hz: " << consumed_time << std::endl;
+        if (consumed_time>Loop120Hz_dt){
+            //Logger::getAssignedLogger()->log("exceeded loop time 120hz",LoggerLevel::Warning);
+        }
+        else{
+            usleep(Loop120Hz_dt-consumed_time);
+        }
+    }
+} 
+
 void Looper::addTimedBlock(TimedBlock* t_cs){
     _timed_blocks.push_back(t_cs);
 }

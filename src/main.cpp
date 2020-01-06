@@ -127,7 +127,7 @@ int main(int argc, char** argv) {
     //***********************SETTING CONTROL SYSTEMS***************************
 
     //TODO Expose switcher to the main, add blocks to the switcher, then make connections between switcher, then add them to the Control System
-    ControlSystem* X_ControlSystem = new ControlSystem(control_system::x, myXPV, block_frequency::hz100);
+    ControlSystem* X_ControlSystem = new ControlSystem(control_system::x, myXPV, block_frequency::hz120);
     X_ControlSystem->addBlock(PID_x);
     X_ControlSystem->addBlock(MRFT_x);
     X_ControlSystem->addBlock(PV_Ref_x);
@@ -137,7 +137,7 @@ int main(int argc, char** argv) {
     Pitch_ControlSystem->addBlock(MRFT_pitch);
     Pitch_ControlSystem->addBlock(PV_Ref_pitch);
 
-    ControlSystem* Y_ControlSystem = new ControlSystem(control_system::y, myYPV, block_frequency::hz100);
+    ControlSystem* Y_ControlSystem = new ControlSystem(control_system::y, myYPV, block_frequency::hz120);
     Y_ControlSystem->addBlock(PID_y);
     Y_ControlSystem->addBlock(MRFT_y);
     Y_ControlSystem->addBlock(PV_Ref_y);
@@ -147,13 +147,13 @@ int main(int argc, char** argv) {
     Roll_ControlSystem->addBlock(MRFT_roll);
     Roll_ControlSystem->addBlock(PV_Ref_roll);
 
-    ControlSystem* Z_ControlSystem = new ControlSystem(control_system::z, myZPV, block_frequency::hz100);
+    ControlSystem* Z_ControlSystem = new ControlSystem(control_system::z, myZPV, block_frequency::hz120);
     Z_ControlSystem->addBlock(PID_z);
     Z_ControlSystem->addBlock(MRFT_z);
     Z_ControlSystem->addBlock(PV_Ref_z);
 
     //Yaw on Optitrack 100Hz
-    ControlSystem* Yaw_ControlSystem = new ControlSystem(control_system::yaw, myYawPV, block_frequency::hz100);
+    ControlSystem* Yaw_ControlSystem = new ControlSystem(control_system::yaw, myYawPV, block_frequency::hz120);
     Yaw_ControlSystem->addBlock(PID_yaw);
     Yaw_ControlSystem->addBlock(MRFT_yaw);
     Yaw_ControlSystem->addBlock(PV_Ref_yaw);
@@ -337,7 +337,7 @@ int main(int argc, char** argv) {
     
     //******************************LOOP***********************************
     //TODO  move to looper constructor
-    pthread_t loop200hz_func_id, loop100hz_func_id, hwloop1khz_func_id;
+    pthread_t loop200hz_func_id, loop120hz_func_id, hwloop1khz_func_id;
     struct sched_param params;
 
     Looper* myLoop = new Looper();
@@ -352,7 +352,7 @@ int main(int argc, char** argv) {
     // Creating a new thread 
     pthread_create(&loop200hz_func_id, NULL, &Looper::Loop200Hz, NULL);
     //  pthread_create(&hwloop1khz_func_id, NULL, &Looper::hardwareLoop1KHz, NULL);
-    pthread_create(&loop100hz_func_id, NULL, &Looper::Loop100Hz, NULL); 
+    pthread_create(&loop120hz_func_id, NULL, &Looper::Loop100Hz, NULL); 
 
     //Setting priority
     params.sched_priority = sched_get_priority_max(SCHED_FIFO);
@@ -360,7 +360,7 @@ int main(int argc, char** argv) {
     //  ret += pthread_setschedparam(hwloop1khz_func_id, SCHED_FIFO, &params);
 
     params.sched_priority = sched_get_priority_max(SCHED_FIFO) - 1;
-    ret += pthread_setschedparam(loop100hz_func_id, SCHED_FIFO, &params);
+    ret += pthread_setschedparam(loop120hz_func_id, SCHED_FIFO, &params);
 
     if (ret != 0) {
          // Print the error

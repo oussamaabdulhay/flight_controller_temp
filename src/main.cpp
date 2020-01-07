@@ -222,8 +222,8 @@ int main(int argc, char** argv) {
     myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)X_ControlSystem);
     myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem);
     myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem);
-    //myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
-    //myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
+    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
+    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
     myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem);
 
     myROSArm->add_callback_msg_receiver((msg_receiver*) myActuationSystem);

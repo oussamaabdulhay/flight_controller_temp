@@ -45,11 +45,11 @@ void Transform_InertialToBody::transform(){
 
     if(_source == control_system::x){
         m_output_msg.setControlSystemMessage(_source, control_system_msg_type::to_system, _body_command.x);
-        std::cout << "COMMAND X BODY: " << _body_command.x << std::endl;
+        //std::cout << "COMMAND X BODY: " << _body_command.x << std::endl;
         this->emit_message((DataMessage*) &m_output_msg);
     } else if(_source == control_system::y){
         m_output_msg.setControlSystemMessage(_source, control_system_msg_type::to_system, _body_command.y);
-        std::cout << "COMMAND Y BODY: " << _body_command.y << std::endl;
+        //std::cout << "COMMAND Y BODY: " << _body_command.y << std::endl;
         this->emit_message((DataMessage*) &m_output_msg);
     }
     

@@ -126,7 +126,8 @@ int main(int argc, char** argv) {
     Block* MRFT_yaw = new MRFTController(block_id::MRFT_YAW);
 
 
-    Transform_InertialToBody* transform_XY_InertialToBody = new Transform_InertialToBody();
+    Transform_InertialToBody* transform_X_InertialToBody = new Transform_InertialToBody(control_system::x);
+    Transform_InertialToBody* transform_Y_InertialToBody = new Transform_InertialToBody(control_system::y);
 
     //***********************SETTING CONTROL SYSTEMS***************************
 
@@ -242,7 +243,8 @@ int main(int argc, char** argv) {
     myRollPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myPitchPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)transform_XY_InertialToBody);
+    myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody);
+    myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody);
 
     myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
 
@@ -323,8 +325,8 @@ int main(int argc, char** argv) {
 
     //****************************SETTING CONNECTIONS********************************
     //========                                                      =============
-    //|      |----->X_Control_System-->RM--->Roll_Control_System--->|           |
-    //| USER |----->Y_Control_System-->RM--->Pitch_Control_System-->| Actuation |      
+    //|      |----->X_Control_System-->RM_X->Roll_Control_System--->|           |
+    //| USER |----->Y_Control_System-->RM_Y->Pitch_Control_System-->| Actuation |      
     //|      |----->Z_Control_System------------------------------->|  System   |
     //|      |----->Yaw_Control_System----------------------------->|           |
     //========                                                      =============
@@ -333,11 +335,11 @@ int main(int argc, char** argv) {
     myY_UserRef->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem);
     myZ_UserRef->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem);
     myYaw_UserRef->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem);
-    X_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_XY_InertialToBody);
-    transform_XY_InertialToBody->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
+    X_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody);
+    transform_X_InertialToBody->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
     Roll_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
-    Y_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_XY_InertialToBody);
-    transform_XY_InertialToBody->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
+    Y_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody);
+    transform_Y_InertialToBody->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
     Pitch_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     Z_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);

@@ -1,22 +1,25 @@
 #include "Transform_InertialToBody.hpp"
 
-Transform_InertialToBody::Transform_InertialToBody() {
-
+Transform_InertialToBody::Transform_InertialToBody(control_system t_control_system) {
+    _source = t_control_system;
 }
 
 Transform_InertialToBody::~Transform_InertialToBody() {
 
 }
-
+//TODO refactor to remove ifs
 void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg){
 
-    if(t_msg->getType() == msg_type::USERREFERENCE){   
-        UpdatePoseMessage* user_msg = (UpdatePoseMessage*)t_msg;
-        
-        if(user_msg->getRefType() == msg_type_reference::X){
-            _inertial_command.x = user_msg->getX();
-        } else if (user_msg->getRefType() == msg_type_reference::Y){
-            _inertial_command.y = user_msg->getY();
+    if(t_msg->getType() == msg_type::control_system){
+
+        ControlSystemMessage* ctrl_sys_msg = (ControlSystemMessage*)t_msg;
+
+        if(_source == control_system::x && ctrl_sys_msg->getControlSystemMsgType() == control_system_msg_type::to_system){
+            _inertial_command.x = ctrl_sys_msg->getData();
+            std::cout << "COMMAND X INERTIAL: " << _inertial_command.x << std::endl;
+        } else if (_source == control_system::y && ctrl_sys_msg->getControlSystemMsgType() == control_system_msg_type::to_system){
+            _inertial_command.y = ctrl_sys_msg->getData();
+            std::cout << "COMMAND Y INERTIAL: " << _inertial_command.y << std::endl;
         }
 
     } else if (t_msg->getType() == msg_type::ROS){
@@ -40,8 +43,15 @@ void Transform_InertialToBody::transform(){
 
     _body_command = _rotation_matrix.TransformVector(_inertial_command);
 
-    _body_xy.setPoseX(_body_command.x);
-    this->emit_message((DataMessage*) &_body_xy);
-    _body_xy.setPoseY(_body_command.y);
-    this->emit_message((DataMessage*) &_body_xy);
+    if(_source == control_system::x){
+        m_output_msg.setControlSystemMessage(_source, control_system_msg_type::to_system, _body_command.x);
+        std::cout << "COMMAND X BODY: " << _body_command.x << std::endl;
+        this->emit_message((DataMessage*) &m_output_msg);
+    } else if(_source == control_system::y){
+        m_output_msg.setControlSystemMessage(_source, control_system_msg_type::to_system, _body_command.y);
+        std::cout << "COMMAND Y BODY: " << _body_command.y << std::endl;
+        this->emit_message((DataMessage*) &m_output_msg);
+    }
+    
+    
 }

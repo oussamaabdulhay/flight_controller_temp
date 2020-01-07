@@ -6,6 +6,7 @@
 #include "ROSMsg.hpp"
 #include "cmath"
 #include "RotationMatrix3by3.hpp"
+#include "ControlSystemMessage.hpp"
 
 class Transform_InertialToBody : public msg_emitter, public msg_receiver {
 
@@ -14,11 +15,13 @@ private:
     bool _opti_x_received = false, _opti_y_received = false, _current_yaw_received = false;
     UpdatePoseMessage _body_xy;
     RotationMatrix3by3 _rotation_matrix;
-    
+    ControlSystemMessage m_output_msg;
+    control_system _source;
+
 public:
 
     void receive_msg_data(DataMessage*);
     void transform();
-    Transform_InertialToBody();
+    Transform_InertialToBody(control_system);
     ~Transform_InertialToBody();
 };

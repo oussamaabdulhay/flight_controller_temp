@@ -35,6 +35,7 @@
 #include "../include/ROSUnit_UpdateReferenceYaw.hpp"
 #include "../include/ROSUnit_Xsens.hpp"
 #include "../include/XSens_IMU.hpp"
+#include "../include/Transform_InertialToBody.hpp"
 
 void performCalibration(NAVIOMPU9250_sensor*);
 void setInitialPose(PositioningProvider*, HeadingProvider*);
@@ -123,6 +124,9 @@ int main(int argc, char** argv) {
     Block* MRFT_roll = new MRFTController(block_id::MRFT_ROLL);
     Block* MRFT_pitch = new MRFTController(block_id::MRFT_PITCH);
     Block* MRFT_yaw = new MRFTController(block_id::MRFT_YAW);
+
+
+    Transform_InertialToBody* transform_XY_InertialToBody = new Transform_InertialToBody();
 
     //***********************SETTING CONTROL SYSTEMS***************************
 
@@ -238,6 +242,7 @@ int main(int argc, char** argv) {
     myRollPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myPitchPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)transform_XY_InertialToBody);
 
     myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
 
@@ -318,8 +323,8 @@ int main(int argc, char** argv) {
 
     //****************************SETTING CONNECTIONS********************************
     //========                                                      =============
-    //|      |----->X_Control_System----->Roll_Control_System------>|           |
-    //| USER |----->Y_Control_System----->Pitch_Control_System----->| Actuation |      
+    //|      |----->X_Control_System-->RM--->Roll_Control_System--->|           |
+    //| USER |----->Y_Control_System-->RM--->Pitch_Control_System-->| Actuation |      
     //|      |----->Z_Control_System------------------------------->|  System   |
     //|      |----->Yaw_Control_System----------------------------->|           |
     //========                                                      =============
@@ -328,9 +333,11 @@ int main(int argc, char** argv) {
     myY_UserRef->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem);
     myZ_UserRef->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem);
     myYaw_UserRef->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem);
-    X_ControlSystem->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
+    X_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_XY_InertialToBody);
+    transform_XY_InertialToBody->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
     Roll_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
-    Y_ControlSystem->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
+    Y_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_XY_InertialToBody);
+    transform_XY_InertialToBody->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
     Pitch_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     Z_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
@@ -352,7 +359,7 @@ int main(int argc, char** argv) {
     // Creating a new thread 
     pthread_create(&loop200hz_func_id, NULL, &Looper::Loop200Hz, NULL);
     //  pthread_create(&hwloop1khz_func_id, NULL, &Looper::hardwareLoop1KHz, NULL);
-    pthread_create(&loop120hz_func_id, NULL, &Looper::Loop100Hz, NULL); 
+    pthread_create(&loop120hz_func_id, NULL, &Looper::Loop120Hz, NULL); 
 
     //Setting priority
     params.sched_priority = sched_get_priority_max(SCHED_FIFO);

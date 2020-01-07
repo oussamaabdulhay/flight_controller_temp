@@ -4,8 +4,8 @@
 #include "Timer.hpp"
 #include <unistd.h>
 const int hardwareLoop1KHz_dt = 1000; //in us
-const int Loop1KHz_dt = 1000; //in us //COMMIT 400hz from 200hz
-const int Loop200Hz_dt = 5000; //in us //COMMIT 400hz from 200hz
+const int Loop1KHz_dt = 1000; //in us 
+const int Loop200Hz_dt = 5000; //in us 
 const int Loop100Hz_dt = 10000; //in us
 const int Loop120Hz_dt = 8333; //in us
 #include "logger.hpp"

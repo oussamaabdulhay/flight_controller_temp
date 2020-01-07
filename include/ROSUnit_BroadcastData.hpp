@@ -19,6 +19,7 @@ private:
     ros::Publisher _yawpv_prov_pub;
     ros::Publisher _cs_prov_pub;
     ros::Publisher _act_prov_pub;
+    bool roll_received = false, pitch_received = false, yaw_received = false;
     static ROSUnit_BroadcastData* _instance_ptr;
     void receive_msg_data(DataMessage* t_msg); 
     int _seq_pos = 0, _seq_ori = 0, _seq_xpv = 0, _seq_ypv = 0, _seq_zpv = 0;

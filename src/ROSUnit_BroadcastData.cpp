@@ -26,7 +26,7 @@ ROSUnit_BroadcastData::~ROSUnit_BroadcastData() {
 
 
 void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
-
+    //TODO refactor to remove ROS message, because these messages can go to more places
     if(t_msg->getType() == msg_type::ROS){
         ROSMsg* ros_msg = (ROSMsg*)t_msg;
 
@@ -41,14 +41,7 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
             msg.point.z = pos.z;
             _pos_prov_pub.publish(msg);
 
-        }else if(ros_msg->getROSMsgType() == ros_msg_type::ORIENTATION){
-            if(ros_msg->getAttitude().roll != 0){
-                _att = ros_msg->getAttitude();
-            }
-            //TODO refactor this. only for test.
-            if(abs(ros_msg->getHeading().yaw) > 0.00001){
-                _head = ros_msg->getHeading();
-            }
+        }else if(roll_received && pitch_received && yaw_received){
             geometry_msgs::PointStamped msg;
             msg.header.seq = ++_seq_ori;
             msg.header.stamp = ros::Time::now();
@@ -57,6 +50,9 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
             msg.point.y = _att.pitch;
             msg.point.z = _head.yaw;
             _ori_prov_pub.publish(msg);
+            roll_received = false;
+            pitch_received = false;
+            yaw_received = false;
 
         }else if(ros_msg->getROSMsgType() == ros_msg_type::X_PV){
             Vector3D<float> xpv = ros_msg->getX_PV();
@@ -93,6 +89,8 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
 
         }else if(ros_msg->getROSMsgType() == ros_msg_type::ROLL_PV){
             Vector3D<float> rollpv = ros_msg->getRoll_PV();
+            _att.roll = rollpv.x;
+            roll_received = true;
             geometry_msgs::PointStamped msg;
             msg.header.seq = ++_seq_rollpv;
             msg.header.stamp = ros::Time::now();
@@ -104,6 +102,8 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
 
         }else if(ros_msg->getROSMsgType() == ros_msg_type::PITCH_PV){
             Vector3D<float> pitchpv = ros_msg->getPitch_PV();
+            _att.pitch = pitchpv.x;
+            pitch_received = true;
             geometry_msgs::PointStamped msg;
             msg.header.seq = ++_seq_pitchpv;
             msg.header.stamp = ros::Time::now();
@@ -115,6 +115,8 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
 
         }else if(ros_msg->getROSMsgType() == ros_msg_type::YAW_PV){
             Vector3D<float> yawpv = ros_msg->getYaw_PV();
+            _head.yaw = yawpv.x;
+            yaw_received = true;
             geometry_msgs::PointStamped msg;
             msg.header.seq = ++_seq_yawpv;
             msg.header.stamp = ros::Time::now();

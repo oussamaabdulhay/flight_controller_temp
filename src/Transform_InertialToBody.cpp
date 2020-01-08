@@ -1,7 +1,8 @@
 #include "Transform_InertialToBody.hpp"
 
-Transform_InertialToBody::Transform_InertialToBody(control_system t_control_system) {
+Transform_InertialToBody::Transform_InertialToBody(control_system t_control_system, Vector3D<float>* t_inertial_command) {
     _source = t_control_system;
+    _inertial_command = t_inertial_command;
 }
 
 Transform_InertialToBody::~Transform_InertialToBody() {
@@ -15,11 +16,11 @@ void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg){
         ControlSystemMessage* ctrl_sys_msg = (ControlSystemMessage*)t_msg;
 
         if(_source == control_system::x && ctrl_sys_msg->getControlSystemMsgType() == control_system_msg_type::to_system){
-            _inertial_command.x = ctrl_sys_msg->getData();
-            std::cout << "COMMAND X INERTIAL: " << _inertial_command.x << std::endl;
+            _inertial_command->x = ctrl_sys_msg->getData();
+            //std::cout << "COMMAND X INERTIAL: " << _inertial_command->x << std::endl;
         } else if (_source == control_system::y && ctrl_sys_msg->getControlSystemMsgType() == control_system_msg_type::to_system){
-            _inertial_command.y = ctrl_sys_msg->getData();
-            std::cout << "COMMAND Y INERTIAL: " << _inertial_command.y << std::endl;
+            _inertial_command->y = ctrl_sys_msg->getData(); 
+            //std::cout << "COMMAND Y INERTIAL: " << _inertial_command->y << std::endl;
         }
 
     } else if (t_msg->getType() == msg_type::ROS){
@@ -31,7 +32,7 @@ void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg){
             Vector3D<float> yaw_rotation;
             yaw_rotation.x = 0.0;
             yaw_rotation.y = 0.0;
-            yaw_rotation.z = yawpv.x;
+            yaw_rotation.z = -yawpv.x;
 
             _rotation_matrix.Update(yaw_rotation);
             this->transform();
@@ -41,15 +42,21 @@ void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg){
 
 void Transform_InertialToBody::transform(){
 
-    _body_command = _rotation_matrix.TransformVector(_inertial_command);
+    _body_command = _rotation_matrix.TransformVector(*_inertial_command);
+
+    
+    
+    // std::cout << "COMMAND Z INERTIAL: " << _inertial_command->z << std::endl;
+
+    // std::cout << "COMMAND X BODY: " << _body_command.x << std::endl;
+    // std::cout << "COMMAND Y BODY: " << _body_command.y << std::endl;
+    // std::cout << "COMMAND Z BODY: " << _body_command.z << std::endl;
 
     if(_source == control_system::x){
         m_output_msg.setControlSystemMessage(_source, control_system_msg_type::to_system, _body_command.x);
-        //std::cout << "COMMAND X BODY: " << _body_command.x << std::endl;
         this->emit_message((DataMessage*) &m_output_msg);
     } else if(_source == control_system::y){
         m_output_msg.setControlSystemMessage(_source, control_system_msg_type::to_system, _body_command.y);
-        //std::cout << "COMMAND Y BODY: " << _body_command.y << std::endl;
         this->emit_message((DataMessage*) &m_output_msg);
     }
     

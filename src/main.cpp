@@ -125,9 +125,9 @@ int main(int argc, char** argv) {
     Block* MRFT_pitch = new MRFTController(block_id::MRFT_PITCH);
     Block* MRFT_yaw = new MRFTController(block_id::MRFT_YAW);
 
-
-    Transform_InertialToBody* transform_X_InertialToBody = new Transform_InertialToBody(control_system::x);
-    Transform_InertialToBody* transform_Y_InertialToBody = new Transform_InertialToBody(control_system::y);
+    Vector3D<float>* inertial_command = new Vector3D<float>();
+    Transform_InertialToBody* transform_X_InertialToBody = new Transform_InertialToBody(control_system::x, inertial_command);
+    Transform_InertialToBody* transform_Y_InertialToBody = new Transform_InertialToBody(control_system::y, inertial_command);
 
     //***********************SETTING CONTROL SYSTEMS***************************
 

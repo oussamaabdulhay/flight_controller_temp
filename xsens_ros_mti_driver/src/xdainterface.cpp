@@ -64,7 +64,7 @@ void XdaInterface::spinFor(std::chrono::milliseconds timeout)
 				m_output_msg.setAngularVelocity(ang_vel);
 			}else if(msg->getType() == msg_type::QUATERNION){
 				Quaternion ori = ((QuaternionMessage*)msg)->getData();
-				write_data1 << ori.x << ", " << timer.tockMilliSeconds() << "\n";
+				write_data1 << ori.x << ", " << timer.tockMicroSeconds() << "\n";
 				timer.tick();
 				m_output_msg.setOrientation(ori);
 			}

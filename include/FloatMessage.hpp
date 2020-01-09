@@ -13,6 +13,7 @@ public:
     const int getSize();
     float getData();
     void setFloatMessage(float);
+    DataMessage* Clone(){ return new FloatMessage(*this); }
 
     FloatMessage();
     ~FloatMessage();

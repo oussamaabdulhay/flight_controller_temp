@@ -13,7 +13,7 @@ public:
     const int getSize();
     bool getData();
     void setBoolMessage(bool);
-
+    DataMessage* Clone(){ return new BoolMessage(*this); }
     BoolMessage();
     ~BoolMessage();
 };

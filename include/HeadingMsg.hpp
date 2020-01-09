@@ -9,6 +9,7 @@ public:
 
 	msg_type getType();
 	const int getSize();
+	DataMessage* Clone(){ return new HeadingMsg(*this); }
 
 	float yaw=0;	 
 };

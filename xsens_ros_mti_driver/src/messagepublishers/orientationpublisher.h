@@ -39,10 +39,9 @@ struct OrientationPublisher : public PacketCallback
 
     DataMessage* operator()(const XsDataPacket &packet)
     {
-        //std::cout << "INSIDE 4.1" << std::endl;
+        //TODO investigate this
         //if (packet.containsOrientation())
         //{
-            //std::cout << "INSIDE 4.2" << std::endl;
             Quaternion data;
             XsQuaternion q = packet.orientationQuaternion();
 

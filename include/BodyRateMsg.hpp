@@ -9,6 +9,6 @@ public:
 
 	msg_type getType();
 	const int getSize();
-
+	DataMessage* Clone(){ return new BodyRateMsg(*this); }
 	float x, y, z;	
 };

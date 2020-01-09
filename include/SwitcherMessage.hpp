@@ -14,6 +14,7 @@ public:
 
     msg_type getType();
     const int getSize();
+    DataMessage* Clone(){ return new SwitcherMessage(*this); }
     Vector3D<float> getVector3DData();
     float getFloatData();
     void setSwitcherMessage(Vector3D<float>);

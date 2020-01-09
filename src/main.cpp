@@ -36,12 +36,21 @@
 #include "../include/ROSUnit_Xsens.hpp"
 #include "../include/XSens_IMU.hpp"
 #include "../include/Transform_InertialToBody.hpp"
-
 #include "../xsens_ros_mti_driver/src/xdainterface.h"
-
+#include "thread_terminal_unit.hpp"
+#include "thread_initial_unit.hpp"
+#include "TimedBlock.hpp"
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <thread>
+
+#define XSens_IMU_en
+#undef Navio_IMU_en
+
+
+using std::thread;
+using std::mutex;
 
 using std::chrono::milliseconds;
 Journaller *gJournal = 0;
@@ -49,6 +58,17 @@ Journaller *gJournal = 0;
 
 void performCalibration(NAVIOMPU9250_sensor*);
 void setInitialPose(PositioningProvider*, HeadingProvider*);
+
+void worker(TimedBlock* timed_block) {
+    timed_block->tickTimer();
+    usleep(timed_block->getLoopRemainingMicroSec());
+    while(true){
+        while(!timed_block->hasLoopTimeElapsed()){
+        }
+        timed_block->tickTimer();
+        usleep(timed_block->getLoopRemainingMicroSec());
+    }
+}
 
 int main(int argc, char** argv) {
     std::cout << "Hello Easy C++ project!" << std::endl;
@@ -76,23 +96,32 @@ int main(int argc, char** argv) {
     Logger::assignLogger(new StdLogger());
 
     //***********************ADDING SENSORS********************************
-    //  NAVIOMPU9250_sensor* myIMU = new NAVIOMPU9250_sensor();
-    //  myIMU->setSettings(ACCELEROMETER, FSR, 16);
-    //  myIMU->setSettings(GYROSCOPE, FSR, 2000);
-    //  myIMU->setSettings(MAGNETOMETER, FSR, 16);
-
+    #ifdef Navio_IMU_en
+    NAVIOMPU9250_sensor* myIMU = new NAVIOMPU9250_sensor();
+    myIMU->setSettings(ACCELEROMETER, FSR, 16);
+    myIMU->setSettings(GYROSCOPE, FSR, 2000);
+    myIMU->setSettings(MAGNETOMETER, FSR, 16);
+    #endif
+    
+    #ifdef XSens_IMU_en
     XdaInterface *xdaInterface = new XdaInterface("/dev/ttyUSB0", 460800);
     
     xdaInterface->registerPublishers();
 
-	if (!xdaInterface->connectDevice())
-		return -1;
-
-	if (!xdaInterface->prepare())
-		return -1;
-
+	if (!xdaInterface->connectDevice()){
+        return -1;
+    }
+	if (!xdaInterface->prepare()){
+        return -1;
+    }
+		
+    thread_terminal_unit xsens_thread_terminal_unit;
+    xdaInterface->add_callback_msg_receiver((msg_receiver*) &xsens_thread_terminal_unit); //Please change to have on DataMessage for att and att_rate
+    thread_initial_unit* roll_pitch_thread = new thread_initial_unit(&xsens_thread_terminal_unit); //Change Looper.cpp funtion for roll and pitch to this one.
     XSens_IMU* myXSensIMU = new XSens_IMU();
-    xdaInterface->add_callback_msg_receiver((msg_receiver*) myXSensIMU);
+    roll_pitch_thread->add_callback_msg_receiver(myXSensIMU);//emit PV message to roll_control_system and pitch_control_system
+    thread* roll_pitch_control_thread = new thread(worker, (TimedBlock*)roll_pitch_thread);
+    #endif
 
     //***********************SETTING PROVIDERS**********************************
     MotionCapture* myOptitrackSystem = new OptiTrack();

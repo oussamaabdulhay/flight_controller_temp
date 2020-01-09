@@ -26,6 +26,7 @@ public:
     control_system getDestination();
     float getData();
     Vector3D<float> getV3DData();
+    DataMessage* Clone(){ return new ControlSystemMessage(*this); }
 
     ControlSystemMessage();
 

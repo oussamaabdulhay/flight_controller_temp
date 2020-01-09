@@ -1,11 +1,12 @@
-// Version: 1.0
-// Author: Pedro Henrique R. P. B. Silva
-// Date: 19 November 2019
+
+// Version: 2.0
+// Author: M. Chehadeh
+// Date: 29 Dec 2019
+// Release note: added virtual clone constructor
 
 #pragma once
 #include <list>
 #include "common_types.hpp"
-#include <iostream>
 
 class DataMessage {
 
@@ -13,7 +14,7 @@ public:
     
     virtual msg_type getType() = 0;
     virtual const int getSize() = 0;
-
-    DataMessage();
-    ~DataMessage();
+    virtual DataMessage* Clone () = 0;
+    DataMessage(){}
+    ~DataMessage(){}
 };

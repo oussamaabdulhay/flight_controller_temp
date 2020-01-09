@@ -27,6 +27,7 @@ public:
     msg_type getType();
     ros_msg_type getROSMsgType();
     const int getSize();
+    DataMessage* Clone(){ return new ROSMsg(*this); }
     void setPosition(PositionMsg);
     void setAttitude(AttitudeMsg);
     void setHeading(HeadingMsg);

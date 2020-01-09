@@ -38,6 +38,7 @@ struct AngularVelocityPublisher : public PacketCallback
 
     DataMessage* operator()(const XsDataPacket &packet)
     {
+        //TODO investigate this
         //if (packet.containsCalibratedGyroscopeData())
         //{
             Vector3D<float> data;

@@ -80,3 +80,7 @@ void ControlSystem::addBlock(Block* t_block){
 
     this->emit_message((DataMessage*) &m_add_block_msg);
 }
+
+void ControlSystem::runTasks(){
+    //TODO implement
+}

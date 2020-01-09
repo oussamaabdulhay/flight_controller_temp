@@ -10,6 +10,6 @@ public:
 
 	msg_type getType();
 	const int getSize();
-
+	DataMessage* Clone(){ return new ThreeAxisSensorMsg(*this); }
 	Vector3D<float> data; 
 };

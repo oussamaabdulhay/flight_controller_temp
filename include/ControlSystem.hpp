@@ -38,6 +38,7 @@ class ControlSystem : public TimedBlock, public msg_emitter, public msg_receiver
         control_system getControlSystemType();
         void loopInternal();
         float get_dt() {return _dt;}
+        void runTasks();
 
         ControlSystem(control_system, PVProvider*, block_frequency);
         ~ControlSystem(); //TODO prevent automatic storage

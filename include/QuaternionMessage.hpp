@@ -12,6 +12,7 @@ public:
 
     msg_type getType();
     const int getSize();
+    DataMessage* Clone(){ return new QuaternionMessage(*this); }
     Quaternion getData();
 
     QuaternionMessage();

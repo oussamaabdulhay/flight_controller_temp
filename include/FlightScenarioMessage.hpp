@@ -18,6 +18,7 @@ public:
     msg_type_flight_scenario getFlightScenarioMsgType();
     void setFSUserMessage(float, float, float, float);
     const int getSize();
+    DataMessage* Clone(){ return new FlightScenarioMessage(*this); }
 
     FlightScenarioMessage(float, float, float, float);
     FlightScenarioMessage();

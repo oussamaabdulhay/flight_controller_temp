@@ -15,6 +15,7 @@ public:
 
     msg_type getType();
     const int getSize();
+    DataMessage* Clone(){ return new OptitrackMessage(*this); }
     double getTime();
     Vector3D<float> getPosition();
     Quaternion getAttitudeHeading();

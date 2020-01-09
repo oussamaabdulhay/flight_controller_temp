@@ -11,6 +11,7 @@ public:
 
     msg_type getType();
 	const int getSize();
+    DataMessage* Clone(){ return new SwitchOutMsg(*this); }
     void setSwitchOutMsg(float);
     float getSwitchOutMsg();
     

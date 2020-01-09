@@ -22,7 +22,7 @@ void* Looper::Loop1KHz(void *vargp)
         _loop_timer->tick();
         pthread_mutex_lock(&lock); 
         for (TimedBlock* const& i : _instance_ptr->_timed_blocks){
-            if(i->getLoopTime() == block_frequency::hz1000){
+            if(i->getLoopFrequency() == block_frequency::hz1000){
                 i->loopInternal();
                 j++;
             }
@@ -53,7 +53,7 @@ void* Looper::Loop200Hz(void *vargp)
         _loop_timer->tick();
         pthread_mutex_lock(&lock); 
         for (TimedBlock* const& i : _instance_ptr->_timed_blocks){
-            if(i->getLoopTime() == block_frequency::hz200){
+            if(i->getLoopFrequency() == block_frequency::hz200){
                 i->loopInternal();
                 j++;
             }
@@ -84,7 +84,7 @@ void* Looper::Loop400Hz(void *vargp)
         _loop_timer->tick();
         pthread_mutex_lock(&lock); 
         for (TimedBlock* const& i : _instance_ptr->_timed_blocks){
-            if(i->getLoopTime() == block_frequency::hz400){
+            if(i->getLoopFrequency() == block_frequency::hz400){
                 i->loopInternal();
                 j++;
             }
@@ -115,7 +115,7 @@ void* Looper::hardwareLoop1KHz(void *vargp)
         _loop_timer->tick();
         pthread_mutex_lock(&lock); 
         for (TimedBlock* const& i : _instance_ptr->_timed_blocks){
-            if(i->getLoopTime() == block_frequency::hhz200){
+            if(i->getLoopFrequency() == block_frequency::hhz200){
                 i->loopInternal();
                 j++;
             }
@@ -142,7 +142,7 @@ void* Looper::Loop100Hz(void *vargp)
         _loop_timer->tick();
         pthread_mutex_lock(&lock); 
         for (TimedBlock* const& j : _instance_ptr->_timed_blocks){
-            if(j->getLoopTime() == block_frequency::hz100){
+            if(j->getLoopFrequency() == block_frequency::hz100){
                 j->loopInternal();
             }
         }
@@ -165,7 +165,7 @@ void* Looper::Loop120Hz(void *vargp)
         _loop_timer->tick();
         pthread_mutex_lock(&lock); 
         for (TimedBlock* const& j : _instance_ptr->_timed_blocks){
-            if(j->getLoopTime() == block_frequency::hz120){
+            if(j->getLoopFrequency() == block_frequency::hz120){
                 j->loopInternal();
             }
         }

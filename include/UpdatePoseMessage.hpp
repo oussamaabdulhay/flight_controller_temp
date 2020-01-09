@@ -16,6 +16,7 @@ public:
     float getYaw();
     msg_type getType();
     const int getSize();
+    DataMessage* Clone(){ return new UpdatePoseMessage(*this); }
     void setPoseMessage(float, float, float, float);
     void setPoseX(float);
     void setPoseY(float);

@@ -49,17 +49,16 @@ XdaInterface::~XdaInterface()
 
 void XdaInterface::spinFor(std::chrono::milliseconds timeout)
 {
-	//std::cout << "INSIDE 1 " << std::endl;
 	XsDataPacket Packet = m_xdaCallback.next(timeout);
-	//std::cout << "INSIDE 2" << std::endl;
+
 	if (!Packet.empty())
 	{
-		//std::cout << "INSIDE 3" << std::endl;
+
 		for (auto &cb : m_callbacks)
 		{
-			//std::cout << "INSIDE 4" << std::endl;
+
 			emit_message(cb->operator()(Packet));
-			//std::cout << "INSIDE 5" << std::endl;
+
 		}
 	}
 }

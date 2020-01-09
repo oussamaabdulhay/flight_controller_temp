@@ -10,6 +10,6 @@ public:
 
 	msg_type getType();
 	const int getSize();
-
+	DataMessage* Clone(){ return new AttitudeMsg(*this); }
 	float pitch=0, roll=0;
 };

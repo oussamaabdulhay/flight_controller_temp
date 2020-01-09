@@ -73,6 +73,37 @@ void* Looper::Loop200Hz(void *vargp)
     }
 } 
 
+void* Looper::Loop400Hz(void *vargp) 
+{ 
+    Timer* _loop_timer = new Timer();
+    
+    int j = 0;
+    int p = 0;
+
+    while(1){
+        _loop_timer->tick();
+        pthread_mutex_lock(&lock); 
+        for (TimedBlock* const& i : _instance_ptr->_timed_blocks){
+            if(i->getLoopTime() == block_frequency::hz400){
+                i->loopInternal();
+                j++;
+            }
+        }
+        pthread_mutex_unlock(&lock); 
+        int consumed_time =_loop_timer->tockMicroSeconds();
+        //std::cout << "Consumed Time 1kHz: " << consumed_time << std::endl;
+        if (consumed_time>Loop400Hz_dt){
+            //Logger::getAssignedLogger()->log("exceeded loop time 1khz ",LoggerLevel::Warning);
+            //std::cout << "Consumed Time 1kHz" << consumed_time << std::endl;
+            std::cout << "Exceeded 400Hz. Consumed Time:  " << consumed_time << " on the " << j++ << " loop." << std::endl;
+        }
+        else{
+            //std::cout << "Sleep Time" << Loop200Hz_dt-consumed_time << std::endl;
+            usleep(Loop400Hz_dt-consumed_time);
+        }
+    }
+} 
+
 void* Looper::hardwareLoop1KHz(void *vargp) 
 { 
     Timer* _loop_timer = new Timer();

@@ -42,14 +42,25 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/include
   ${CMAKE_CURRENT_SOURCE_DIR}/include/Navio2
   ${CMAKE_CURRENT_SOURCE_DIR}/include/Navio2/Common
+  ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/src
+  ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/src/messagepublishers
+  ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/lib/xspublic
+  ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/lib/xspublic/xscontroller
+  ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/lib/xspublic/xscommon
+  ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/lib/xspublic/xstypes
   ${catkin_INCLUDE_DIRS}
 )
 
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/lib/xspublic/xscontroller ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/lib/xspublic/xscommon ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/lib/xspublic/xstypes)
 
-FILE(GLOB SOURCE_FILES *.hpp *.cpp
+FILE(GLOB SOURCE_FILES *.hpp *.cpp *.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Navio2_cpp/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/src/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/lib/xspublic/xscontroller/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/lib/xspublic/xscommon/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/lib/xspublic/xstypes/*.cpp
         )
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} xscontroller xscommon xstypes pthread dl ${catkin_LIBRARIES})

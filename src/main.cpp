@@ -37,11 +37,21 @@
 #include "../include/XSens_IMU.hpp"
 #include "../include/Transform_InertialToBody.hpp"
 
+#include "../xsens_ros_mti_driver/src/xdainterface.h"
+
+#include <iostream>
+#include <stdexcept>
+#include <string>
+
+using std::chrono::milliseconds;
+Journaller *gJournal = 0;
+
+
 void performCalibration(NAVIOMPU9250_sensor*);
 void setInitialPose(PositioningProvider*, HeadingProvider*);
 
 int main(int argc, char** argv) {
-    // std::cout << "Hello Easy C++ project!" << std::endl;
+    std::cout << "Hello Easy C++ project!" << std::endl;
     //TODO separate files on specific folders
     //TODO ROSUnit to switch blocks
 
@@ -71,6 +81,19 @@ int main(int argc, char** argv) {
     //  myIMU->setSettings(GYROSCOPE, FSR, 2000);
     //  myIMU->setSettings(MAGNETOMETER, FSR, 16);
 
+    XdaInterface *xdaInterface = new XdaInterface("/dev/ttyUSB0", 460800);
+    
+    xdaInterface->registerPublishers();
+
+	if (!xdaInterface->connectDevice())
+		return -1;
+
+	if (!xdaInterface->prepare())
+		return -1;
+
+    XSens_IMU* myXSensIMU = new XSens_IMU();
+    xdaInterface->add_callback_msg_receiver((msg_receiver*) myXSensIMU);
+
     //***********************SETTING PROVIDERS**********************************
     MotionCapture* myOptitrackSystem = new OptiTrack();
     X_PVProvider* myXPV = (X_PVProvider*)myOptitrackSystem;
@@ -96,7 +119,7 @@ int main(int argc, char** argv) {
     //  Roll_PVProvider* myRollPV = (Roll_PVProvider*) &myAttObserver;
     //  Pitch_PVProvider* myPitchPV = (Pitch_PVProvider*) &myAttObserver;
 
-    XSens_IMU* myXSensIMU = new XSens_IMU();
+   
     Roll_PVProvider* myRollPV = (Roll_PVProvider*)myXSensIMU;
     Pitch_PVProvider* myPitchPV = (Pitch_PVProvider*)myXSensIMU;
 
@@ -383,9 +406,12 @@ int main(int argc, char** argv) {
     
     while(ros::ok()){
 
+        xdaInterface->spinFor(milliseconds(100));
         ros::spinOnce();
         rate.sleep();
     }
+
+    xdaInterface->close();
     
     return 0;
 

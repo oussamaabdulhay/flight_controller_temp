@@ -6,6 +6,7 @@
 const int hardwareLoop1KHz_dt = 1000; //in us
 const int Loop1KHz_dt = 1000; //in us 
 const int Loop200Hz_dt = 5000; //in us 
+const int Loop400Hz_dt = 2500; //in us 
 const int Loop100Hz_dt = 10000; //in us
 const int Loop120Hz_dt = 8333; //in us
 #include "logger.hpp"
@@ -28,6 +29,7 @@ class Looper {
         static void* Loop120Hz(void *vargp);
         static void* Loop100Hz(void *vargp);
         static void* Loop200Hz(void *vargp);
+        static void* Loop400Hz(void *vargp);
         static void* hardwareLoop1KHz(void *vargp);
         void addTimedBlock(TimedBlock*);
 

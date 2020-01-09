@@ -1,4 +1,5 @@
 #include "Timer.hpp"
+#include <iostream>
 
 void Timer::tick(){
     start=std::chrono::system_clock::now();

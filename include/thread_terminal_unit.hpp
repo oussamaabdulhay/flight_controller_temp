@@ -2,7 +2,7 @@
 
 #include "MsgReceiver.hpp"
 #include <boost/thread.hpp>
-#include "ReferenceMessage.hpp"
+#include "XSensMessage.hpp"
 
 const int max_num_of_thread_terminals=100;
 static boost::mutex sync_lock[max_num_of_thread_terminals];

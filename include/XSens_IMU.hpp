@@ -7,11 +7,17 @@
 #include "Vector3DMessage.hpp"
 #include "thread_terminal_unit.hpp"
 #include "MsgEmitter.hpp"
-class XSens_IMU : public Roll_PVProvider, public Pitch_PVProvider, public msg_receiver{
+#include "XSensMessage.hpp"
+#include "RollProviderMessage.hpp"
+#include "PitchProviderMessage.hpp"
+
+class XSens_IMU : public msg_receiver, public msg_emitter{
 
 private:
     Vector3D<float> _bodyrate;
     Vector3D<float> last_euler_angles;
+    RollProviderMessage _roll_pv_msg;
+    PitchProviderMessage _pitch_pv_msg;
 
 public:
 

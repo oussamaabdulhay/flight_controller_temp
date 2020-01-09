@@ -15,45 +15,53 @@ XSens_IMU::~XSens_IMU() {
 }
 
 void XSens_IMU::receive_msg_data(DataMessage* t_msg){
-    if(t_msg->getType() == msg_type::QUATERNION){
+    
+    if(t_msg->getType() == msg_type::XSENS){
+        XSensMessage* xsens_msg = (XSensMessage*)t_msg;
 
-        QuaternionMessage* att_msg = (QuaternionMessage*)t_msg;
+        Quaternion quaternion = xsens_msg->getOrientation();
+        last_euler_angles = getEulerfromQuaternion(quaternion);
+        Vector3D<float> body_rate = xsens_msg->getAngularVelocity(); 
 
-        Quaternion _quaternion = att_msg->getData();
-        last_euler_angles=getEulerfromQuaternion(_quaternion);
-        Roll_PVProvider::getProcessVariable();
+        Vector3D<float> roll_pv;
+        roll_pv.x = last_euler_angles.x;
+        roll_pv.y = body_rate.y;
+        roll_pv.z = 0.0;
+        _roll_pv_msg.setRollProviderMessage(roll_pv);
+        this->emit_message((DataMessage*) &_roll_pv_msg);
 
-    }else if(t_msg->getType() == msg_type::VECTOR3D){
-        Vector3DMessage* br_msg = (Vector3DMessage*)t_msg;
 
-        _bodyrate = br_msg->getData();
+        Vector3D<float> pitch_pv;
+        pitch_pv.x = last_euler_angles.y;
+        pitch_pv.y = body_rate.x;
+        pitch_pv.z = 0.0;
+        _pitch_pv_msg.setPitchProviderMessage(pitch_pv);
+        this->emit_message((DataMessage*) &_pitch_pv_msg);
+
     }
+
 }
 
 AttitudeMsg XSens_IMU::getAttitude(){
-    AttitudeMsg t_att_msg;
+    // AttitudeMsg t_att_msg;
     
-    t_att_msg.roll = last_euler_angles.x;
-    t_att_msg.pitch = last_euler_angles.y;
+    // t_att_msg.roll = last_euler_angles.x;
+    // t_att_msg.pitch = last_euler_angles.y;
 
-    return t_att_msg;
+    // return t_att_msg;
 }
 
 Vector3D<float> XSens_IMU::getBodyRate(){
-    BodyRateMsg _transform;
-    Vector3D<float> v3d_bodyrate;
+    // BodyRateMsg _transform;
+    // Vector3D<float> v3d_bodyrate;
 
-    v3d_bodyrate.y = _bodyrate.x;
-    v3d_bodyrate.x = _bodyrate.y;
+    // v3d_bodyrate.y = _bodyrate.x;
+    // v3d_bodyrate.x = _bodyrate.y;
 
-    return v3d_bodyrate;
+    // return v3d_bodyrate;
 }
 
 Vector3D<float> XSens_IMU::getEulerfromQuaternion(Quaternion q){
-    // write_data <<q.x << ", ";
-    // write_data << q.y << ", ";
-    // write_data <<q.z << ", ";
-    // write_data << q.w << ", ";
     
     Vector3D<float> _euler;
     // roll (x-axis rotation)
@@ -72,10 +80,6 @@ Vector3D<float> XSens_IMU::getEulerfromQuaternion(Quaternion q){
     double siny_cosp = +2.0 * (q.w * q.z + q.x * q.y);
     double cosy_cosp = +1.0 - 2.0 * (q.y * q.y + q.z * q.z);  
     _euler.z = atan2(siny_cosp, cosy_cosp);
-
-    // write_data <<_euler.x << ", ";
-    // write_data <<_euler.y << ", ";
-    // write_data <<_euler.z << ", \n";
 
     return _euler;
 }

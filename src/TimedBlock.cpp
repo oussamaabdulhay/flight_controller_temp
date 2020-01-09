@@ -1,5 +1,5 @@
 #include "TimedBlock.hpp"
-
+#include <iostream>
 TimedBlock::TimedBlock(block_frequency t_bf) {
     _frequency = t_bf;
 }

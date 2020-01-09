@@ -11,7 +11,7 @@ void thread_initial_unit::runTasks(){
         thread_terminal->lock_mutex();
         DataMessage* current_msg=thread_terminal->clone_last_message();
         thread_terminal->unlock_mutex();
-        this->emit_message( current_msg);        
+        this->emit_message(current_msg);  
         delete current_msg;
     }
 }

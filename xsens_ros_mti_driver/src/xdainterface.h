@@ -30,6 +30,8 @@
 #include <xstypes/xsportinfo.h>
 #include "MsgEmitter.hpp"
 #include "chrono"
+#include "XSensMessage.hpp"
+#include "Timer.hpp"
 
 struct XsControl;
 struct XsDevice;
@@ -43,7 +45,7 @@ public:
 	XdaInterface(std::string t_port_name, int t_baudrate);
 	XdaInterface(){ m_port_name = nullptr; }
 	~XdaInterface();
-
+	Timer timer;
 	void spinFor(std::chrono::milliseconds timeout);
 	void registerPublishers();
 
@@ -52,6 +54,7 @@ public:
 	void close();
 
 private:
+	XSensMessage m_output_msg;
 	void registerCallback(PacketCallback *cb);
 	bool handleError(std::string error);
 	std::string* m_port_name;

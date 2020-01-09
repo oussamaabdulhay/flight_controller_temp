@@ -11,10 +11,14 @@
 #include "TimedBlock.hpp"
 #include "ROSMsg.hpp"
 #include "SwitchBlockMsg.hpp"
+#include "RollProviderMessage.hpp"
+#include "PitchProviderMessage.hpp"
+#include "Timer.hpp"
 
 class ControlSystem : public TimedBlock, public msg_emitter, public msg_receiver{
 
     private:
+        Timer timer;
         control_system _control_system;
         Switcher* controllerSwitcher;
         Switcher* referenceSwitcher;

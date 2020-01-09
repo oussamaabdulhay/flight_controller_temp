@@ -104,7 +104,8 @@ int main(int argc, char** argv) {
     #endif
     
     #ifdef XSens_IMU_en
-    XdaInterface *xdaInterface = new XdaInterface("/dev/ttyUSB0", 460800);
+    
+    XdaInterface *xdaInterface = new XdaInterface("/dev/ttyUSB7", 460800);
     
     xdaInterface->registerPublishers();
 
@@ -114,15 +115,24 @@ int main(int argc, char** argv) {
 	if (!xdaInterface->prepare()){
         return -1;
     }
-		
-    thread_terminal_unit xsens_thread_terminal_unit;
-    xdaInterface->add_callback_msg_receiver((msg_receiver*) &xsens_thread_terminal_unit); //Please change to have on DataMessage for att and att_rate
-    thread_initial_unit* roll_pitch_thread = new thread_initial_unit(&xsens_thread_terminal_unit); //Change Looper.cpp funtion for roll and pitch to this one.
-    XSens_IMU* myXSensIMU = new XSens_IMU();
-    roll_pitch_thread->add_callback_msg_receiver(myXSensIMU);//emit PV message to roll_control_system and pitch_control_system
-    thread* roll_pitch_control_thread = new thread(worker, (TimedBlock*)roll_pitch_thread);
-    #endif
 
+    
+    thread_terminal_unit xsens_thread_terminal_unit;
+   
+    xdaInterface->add_callback_msg_receiver((msg_receiver*) &xsens_thread_terminal_unit); //Please change to have on DataMessage for att and att_rate
+    
+    thread_initial_unit* roll_pitch_thread = new thread_initial_unit(&xsens_thread_terminal_unit); //Change Looper.cpp funtion for roll and pitch to this one.
+ 
+    //----
+    XSens_IMU* myXSensIMU = new XSens_IMU();
+    
+    roll_pitch_thread->add_callback_msg_receiver(myXSensIMU);//emit PV message to roll_control_system and pitch_control_system
+    roll_pitch_thread->setLoopFrequency(block_frequency::hz200);
+    thread* roll_pitch_control_thread = new thread(worker, (TimedBlock*)roll_pitch_thread);
+
+    //-----
+    #endif
+    
     //***********************SETTING PROVIDERS**********************************
     MotionCapture* myOptitrackSystem = new OptiTrack();
     X_PVProvider* myXPV = (X_PVProvider*)myOptitrackSystem;
@@ -182,7 +192,6 @@ int main(int argc, char** argv) {
     Transform_InertialToBody* transform_Y_InertialToBody = new Transform_InertialToBody(control_system::y, inertial_command);
 
     //***********************SETTING CONTROL SYSTEMS***************************
-
     //TODO Expose switcher to the main, add blocks to the switcher, then make connections between switcher, then add them to the Control System
     ControlSystem* X_ControlSystem = new ControlSystem(control_system::x, myXPV, block_frequency::hz120);
     X_ControlSystem->addBlock(PID_x);
@@ -193,7 +202,8 @@ int main(int argc, char** argv) {
     Pitch_ControlSystem->addBlock(PID_pitch);
     Pitch_ControlSystem->addBlock(MRFT_pitch);
     Pitch_ControlSystem->addBlock(PV_Ref_pitch);
-
+    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
+    
     ControlSystem* Y_ControlSystem = new ControlSystem(control_system::y, myYPV, block_frequency::hz120);
     Y_ControlSystem->addBlock(PID_y);
     Y_ControlSystem->addBlock(MRFT_y);
@@ -203,7 +213,8 @@ int main(int argc, char** argv) {
     Roll_ControlSystem->addBlock(PID_roll);
     Roll_ControlSystem->addBlock(MRFT_roll);
     Roll_ControlSystem->addBlock(PV_Ref_roll);
-
+    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
+    
     ControlSystem* Z_ControlSystem = new ControlSystem(control_system::z, myZPV, block_frequency::hz120);
     Z_ControlSystem->addBlock(PID_z);
     Z_ControlSystem->addBlock(MRFT_z);
@@ -214,9 +225,8 @@ int main(int argc, char** argv) {
     Yaw_ControlSystem->addBlock(PID_yaw);
     Yaw_ControlSystem->addBlock(MRFT_yaw);
     Yaw_ControlSystem->addBlock(PV_Ref_yaw);
-
     //*********************SETTING ACTUATION SYSTEMS************************
-
+    
     int freq = 50;
     Actuator* M1 = new ESCMotor(0, freq);
     Actuator* M2 = new ESCMotor(1, freq);
@@ -279,7 +289,6 @@ int main(int argc, char** argv) {
     myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem);
 
     myROSArm->add_callback_msg_receiver((msg_receiver*) myActuationSystem);
-
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************
 
     X_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
@@ -288,22 +297,19 @@ int main(int argc, char** argv) {
     Roll_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     Pitch_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-
     myXPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myYPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myZPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    myRollPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    myPitchPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    //myRollPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    //myPitchPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody);
     myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody);
-
     myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
 
     myXPV->PositioningProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    myRollPV->AttitudeProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    //myRollPV->AttitudeProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myYawPV->HeadingProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-
     //***********************SETTING PID INITIAL VALUES*****************************
 
     //TODO remove this after adding to FlightScenario
@@ -396,6 +402,7 @@ int main(int argc, char** argv) {
     Z_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     
+    
     //******************************LOOP***********************************
     //TODO  move to looper constructor
     pthread_t loop200hz_func_id, loop120hz_func_id, hwloop1khz_func_id;
@@ -411,28 +418,27 @@ int main(int argc, char** argv) {
     //  myLoop->addTimedBlock((TimedBlock*) &myAttObserver);
 
     // Creating a new thread 
-    pthread_create(&loop200hz_func_id, NULL, &Looper::Loop200Hz, NULL);
+    //pthread_create(&loop200hz_func_id, NULL, &Looper::Loop200Hz, NULL);
     //  pthread_create(&hwloop1khz_func_id, NULL, &Looper::hardwareLoop1KHz, NULL);
-    pthread_create(&loop120hz_func_id, NULL, &Looper::Loop120Hz, NULL); 
+    //pthread_create(&loop120hz_func_id, NULL, &Looper::Loop120Hz, NULL); 
 
     //Setting priority
-    params.sched_priority = sched_get_priority_max(SCHED_FIFO);
-    int ret = pthread_setschedparam(loop200hz_func_id, SCHED_FIFO, &params);
-    //  ret += pthread_setschedparam(hwloop1khz_func_id, SCHED_FIFO, &params);
+    // params.sched_priority = sched_get_priority_max(SCHED_FIFO);
+    // int ret = pthread_setschedparam(loop200hz_func_id, SCHED_FIFO, &params);
+    // //  ret += pthread_setschedparam(hwloop1khz_func_id, SCHED_FIFO, &params);
 
-    params.sched_priority = sched_get_priority_max(SCHED_FIFO) - 1;
-    ret += pthread_setschedparam(loop120hz_func_id, SCHED_FIFO, &params);
+    // params.sched_priority = sched_get_priority_max(SCHED_FIFO) - 1;
+    // ret += pthread_setschedparam(loop120hz_func_id, SCHED_FIFO, &params);
 
-    if (ret != 0) {
-         // Print the error
-         // change
-         std::cout << "Unsuccessful in setting thread realtime prior " << ret << std::endl;
-     }
+    // if (ret != 0) {
+    //      // Print the error
+    //      // change
+    //      std::cout << "Unsuccessful in setting thread realtime prior " << ret << std::endl;
+    //  }
 
     //******************************PERFORM CALIBRATION********************************
      //performCalibration(myIMU);
 
-    
     while(ros::ok()){
 
         xdaInterface->spinFor(milliseconds(100));

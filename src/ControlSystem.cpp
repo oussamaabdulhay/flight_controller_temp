@@ -1,6 +1,9 @@
 #include "ControlSystem.hpp"
+#include <fstream>
+std::ofstream write_data("/home/pedrohrpbs/catkin_ws_NAVIO//orientation_control_data_control.txt"); 
 
 ControlSystem::ControlSystem(control_system t_control_system, PVProvider* t_pvprovider, block_frequency t_bf) : TimedBlock(t_bf) {
+    timer.tick();
     _control_system = t_control_system;
     
     controllerSwitcher = new Switcher(switcher_type::controller);
@@ -48,6 +51,24 @@ void ControlSystem::receive_msg_data(DataMessage* t_msg){
 
         SwitchBlockMsg* switch_msg = (SwitchBlockMsg*)t_msg;
         this->emit_message((DataMessage*) switch_msg);
+    
+    }else if(t_msg->getType() == msg_type::ROLL_PROVIDER){
+        if(_control_system == control_system::roll){
+            RollProviderMessage* roll_provider = (RollProviderMessage*)t_msg;
+
+            write_data << roll_provider->getData().x << ", " << timer.tockMilliSeconds() <<"\n";
+            timer.tick();
+
+            m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, roll_provider->getData());
+            this->emit_message((DataMessage*) &m_provider_data_msg);
+        }
+    }else if(t_msg->getType() == msg_type::PITCH_PROVIDER){
+        if(_control_system == control_system::pitch){
+            PitchProviderMessage* pitch_provider = (PitchProviderMessage*)t_msg;
+
+            m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, pitch_provider->getData());
+            this->emit_message((DataMessage*) &m_provider_data_msg);
+        }
     }
 
 }

@@ -26,14 +26,16 @@
 #include <xscontroller/xsscanner.h>
 #include <xscontroller/xscontrol_def.h>
 #include <xscontroller/xsdevice_def.h>
-
+#include <fstream>
 #include "messagepublishers/angularvelocitypublisher.h"
 #include "messagepublishers/orientationpublisher.h"
 
+std::ofstream write_data1("/home/pedrohrpbs/catkin_ws_NAVIO//orientation_control_data_pure.txt"); 
 
 XdaInterface::XdaInterface(std::string t_port_name, int t_baudrate)
 	: m_device(nullptr)
 {
+	timer.tick();
 	m_port_name = &t_port_name;
 	m_baudrate = t_baudrate;
 	std::cout << "Creating XsControl object..." << std::endl;
@@ -53,13 +55,22 @@ void XdaInterface::spinFor(std::chrono::milliseconds timeout)
 
 	if (!Packet.empty())
 	{
-
 		for (auto &cb : m_callbacks)
 		{
+			DataMessage* msg = cb->operator()(Packet);
 
-			emit_message(cb->operator()(Packet));
-
+			if(msg->getType() == msg_type::VECTOR3D){
+				Vector3D<float> ang_vel = ((Vector3DMessage*)msg)->getData();
+				m_output_msg.setAngularVelocity(ang_vel);
+			}else if(msg->getType() == msg_type::QUATERNION){
+				Quaternion ori = ((QuaternionMessage*)msg)->getData();
+				write_data1 << ori.x << ", " << timer.tockMilliSeconds() << "\n";
+				timer.tick();
+				m_output_msg.setOrientation(ori);
+			}
 		}
+
+		emit_message((DataMessage*)&m_output_msg);
 	}
 }
 

@@ -33,7 +33,7 @@ void XSens_IMU::receive_msg_data(DataMessage* t_msg){
         pitch_pv.z = 0.0;
         _pitch_pv_msg.setPitchProviderMessage(pitch_pv);
         this->emit_message((DataMessage*) &_pitch_pv_msg);
-        delete xsens_msg;
+        //delete xsens_msg;
     }
 
 }

@@ -450,7 +450,7 @@ int main(int argc, char** argv) {
     // Creating a new thread 
     //pthread_create(&loop200hz_func_id, NULL, &Looper::Loop200Hz, NULL);
     //  pthread_create(&hwloop1khz_func_id, NULL, &Looper::hardwareLoop1KHz, NULL);
-    //pthread_create(&loop120hz_func_id, NULL, &Looper::Loop120Hz, NULL); 
+    pthread_create(&loop120hz_func_id, NULL, &Looper::Loop120Hz, NULL); 
 
     //Setting priority
     // params.sched_priority = sched_get_priority_max(SCHED_FIFO);

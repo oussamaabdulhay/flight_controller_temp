@@ -59,7 +59,11 @@ void worker(TimedBlock* timed_block) {
         while(!timed_block->hasLoopTimeElapsed()){
         }
         timed_block->tickTimer();
-        usleep(timed_block->getLoopRemainingMicroSec());
+        if(timed_block->getLoopRemainingMicroSec() < 0){
+            Logger::getAssignedLogger()->log("exceeded loop time 400hz ",LoggerLevel::Warning);
+        } else {
+            usleep(timed_block->getLoopRemainingMicroSec());
+        }
     }
 }
 
@@ -159,7 +163,7 @@ int main(int argc, char** argv) {
     XSens_IMU* myXSensIMU = new XSens_IMU();
     
     roll_pitch_thread->add_callback_msg_receiver(myXSensIMU);//emit PV message to roll_control_system and pitch_control_system
-    roll_pitch_thread->setLoopFrequency(block_frequency::hz400);
+    roll_pitch_thread->setLoopFrequency(block_frequency::hz400); //TODO should be one place change
     thread* roll_pitch_control_thread = new thread(worker, (TimedBlock*)roll_pitch_thread);
 
     #endif
@@ -228,7 +232,7 @@ int main(int argc, char** argv) {
     X_ControlSystem->addBlock(MRFT_x);
     X_ControlSystem->addBlock(PV_Ref_x);
 
-    ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, myPitchPV, block_frequency::hz200);
+    ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, myPitchPV, block_frequency::hz400);
     Pitch_ControlSystem->addBlock(PID_pitch);
     Pitch_ControlSystem->addBlock(MRFT_pitch);
     Pitch_ControlSystem->addBlock(PV_Ref_pitch);
@@ -239,7 +243,7 @@ int main(int argc, char** argv) {
     Y_ControlSystem->addBlock(MRFT_y);
     Y_ControlSystem->addBlock(PV_Ref_y);
 
-    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, myRollPV, block_frequency::hz200);
+    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, myRollPV, block_frequency::hz400);
     Roll_ControlSystem->addBlock(PID_roll);
     Roll_ControlSystem->addBlock(MRFT_roll);
     Roll_ControlSystem->addBlock(PV_Ref_roll);

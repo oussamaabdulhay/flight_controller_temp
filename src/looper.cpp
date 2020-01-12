@@ -173,7 +173,7 @@ void* Looper::Loop120Hz(void *vargp)
         int consumed_time =_loop_timer->tockMicroSeconds();
         //std::cout << "Consumed Time 120Hz: " << consumed_time << std::endl;
         if (consumed_time>Loop120Hz_dt){
-            //Logger::getAssignedLogger()->log("exceeded loop time 120hz",LoggerLevel::Warning);
+            Logger::getAssignedLogger()->log("exceeded loop time 120hz",LoggerLevel::Warning);
         }
         else{
             usleep(Loop120Hz_dt-consumed_time);

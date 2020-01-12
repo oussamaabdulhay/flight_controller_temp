@@ -57,6 +57,7 @@ public:
 protected:
 	void onLiveDataAvailable(XsDevice*, const XsDataPacket* t_packet) override
 	{
+		XSensMessage m_output_msg;
 		xsens::Lock locky(&m_mutex);
 		assert(t_packet != 0);
 		while (m_numberOfPacketsInBuffer >= m_maxNumberOfPacketsInBuffer)
@@ -99,7 +100,6 @@ protected:
 	}
 private:
 	mutable xsens::Mutex m_mutex;
-    XSensMessage m_output_msg;
 	size_t m_maxNumberOfPacketsInBuffer;
 	size_t m_numberOfPacketsInBuffer;
 	list<XsDataPacket> m_packetBuffer;

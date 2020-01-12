@@ -3,7 +3,7 @@ using namespace std;
 
 void thread_terminal_unit::receive_msg_data(DataMessage* t_msg){
     this->lock_mutex();
-    synced_message[id].push(t_msg);
+    synced_message[id].push(t_msg->Clone());
     this->unlock_mutex();
 }
 

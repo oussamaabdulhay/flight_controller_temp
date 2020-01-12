@@ -55,19 +55,24 @@ void ControlSystem::receive_msg_data(DataMessage* t_msg){
     }else if(t_msg->getType() == msg_type::ROLL_PROVIDER){
         if(_control_system == control_system::roll){
             RollProviderMessage* roll_provider = (RollProviderMessage*)t_msg;
-
-            write_data << roll_provider->getData().x << ", " << timer.tockMilliSeconds() <<"\n";
-            timer.tick();
-
-            m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, roll_provider->getData());
+            Vector3D<float> roll_pv_data = roll_provider->getData();
+            
+            m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, roll_pv_data);
             this->emit_message((DataMessage*) &m_provider_data_msg);
+
+            m_ros_msg.setRoll_PV(roll_pv_data);
+            this->emit_message((DataMessage*) &m_ros_msg);
         }
     }else if(t_msg->getType() == msg_type::PITCH_PROVIDER){
         if(_control_system == control_system::pitch){
             PitchProviderMessage* pitch_provider = (PitchProviderMessage*)t_msg;
-
-            m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, pitch_provider->getData());
+            Vector3D<float> pitch_pv_data = pitch_provider->getData();
+            
+            m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, pitch_pv_data);
             this->emit_message((DataMessage*) &m_provider_data_msg);
+            
+            m_ros_msg.setPitch_PV(pitch_pv_data);
+            this->emit_message((DataMessage*) &m_ros_msg);
         }
     }
 
@@ -105,3 +110,6 @@ void ControlSystem::addBlock(Block* t_block){
 void ControlSystem::runTasks(){
     //TODO implement
 }
+
+// write_data << roll_provider->getData().y << ", " << timer.tockMilliSeconds() <<"\n";
+// timer.tick();

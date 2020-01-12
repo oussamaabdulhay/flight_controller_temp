@@ -9,6 +9,10 @@ void thread_terminal_unit::receive_msg_data(DataMessage* t_msg){
 
 DataMessage* thread_terminal_unit::clone_last_message(){
     synced_message[id].pop();
+    if(synced_message[id].size() < 1){ //This is to handle the beggining of the code. It doesn't happen later.
+        synced_message[id].push(new XSensMessage);
+        std::cout << "WARNING" << std::endl;
+    }
     return synced_message[id].front();
 }
 

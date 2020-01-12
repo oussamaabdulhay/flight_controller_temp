@@ -25,12 +25,20 @@ Quaternion XSensMessage::getOrientation(){
     return _orientation;
 }
 
+Vector3D<float> XSensMessage::getOrientationEuler(){
+    return _orientation_euler;
+}
+
 void XSensMessage::setAngularVelocity(Vector3D<float> t_angular_velocity) {
     _angular_velocity = t_angular_velocity;
 }
 
 void XSensMessage::setOrientation(Quaternion t_orientation) {
     _orientation = t_orientation;
+}
+
+void XSensMessage::setOrientationEuler(Vector3D<float>  t_orientation_euler) {
+    _orientation_euler = t_orientation_euler;
 }
 
 void XSensMessage::setXSensMessage(Vector3D<float> t_angular_velocity, Quaternion t_orientation) {

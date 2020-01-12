@@ -21,7 +21,7 @@ public:
 
 const int max_num_of_thread_terminals=100;
 static boost::mutex sync_lock[max_num_of_thread_terminals];
-static FixedQueue<DataMessage*,10> synced_message[max_num_of_thread_terminals];
+static FixedQueue<DataMessage*, 10> synced_message[max_num_of_thread_terminals];
 static int thread_terminal_counter=0;
 class thread_terminal_unit : public msg_receiver {
 private:

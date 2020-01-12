@@ -8,7 +8,7 @@ thread_initial_unit::thread_initial_unit(thread_terminal_unit* t_terminal){
 
 void thread_initial_unit::runTasks(){
     if (thread_terminal!=NULL){
-        thread_terminal->lock_mutex();
+        thread_terminal->lock_mutex(); //TODO check if this can be moved to thread_terminal_unit
         DataMessage* current_msg=thread_terminal->clone_last_message();
         thread_terminal->unlock_mutex();
         this->emit_message(current_msg);  

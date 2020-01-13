@@ -52,6 +52,8 @@
 #define f_200HZ
 #undef f_400HZ
 
+const int PWM_FREQUENCY = 50;
+
 Journaller *gJournal = 0;
 
 void performCalibration(NAVIOMPU9250_sensor*);
@@ -76,6 +78,8 @@ int main(int argc, char** argv) {
     
     std::cout << "Hello Easy C++ project!" << std::endl;
     //TODO separate files on specific folders
+
+     //*****************************ROS UNITS*******************************
 
     ros::init(argc, argv, "testing_node");
 
@@ -107,6 +111,11 @@ int main(int argc, char** argv) {
     
     #ifdef XSens_IMU_en
     
+    //For the XSens to wokr over USB/FTDI connection, it's necessary to install a program called "setserial" on Linux
+    //Once installed, run the command "setserial /name/of/the/dev/port low_latency". Doing so, will reduce the buffering
+    //from the the FTDI driver, and the data will arrive at almost constant rates.
+    //https://base.xsens.com/hc/en-us/community/posts/360029341694-How-do-I-get-IMU-data-via-USB-in-real-time-
+
     cout << "Creating XsControl object..." << endl;
 	XsControl* control = XsControl::construct();
 	assert(control != 0);
@@ -181,34 +190,36 @@ int main(int argc, char** argv) {
     #endif
     
     //***********************SETTING PROVIDERS**********************************
+    
     MotionCapture* myOptitrackSystem = new OptiTrack();
     X_PVProvider* myXPV = (X_PVProvider*)myOptitrackSystem;
     Y_PVProvider* myYPV = (Y_PVProvider*)myOptitrackSystem;
     Z_PVProvider* myZPV = (Z_PVProvider*)myOptitrackSystem;
-    //Roll_PVProvider* myRollPV = (Roll_PVProvider*)myOptitrackSystem;
-    //Pitch_PVProvider* myPitchPV = (Pitch_PVProvider*)myOptitrackSystem;
     Yaw_PVProvider* myYawPV = (Yaw_PVProvider*)myOptitrackSystem;
     
-    // AccGyroAttitudeObserver myAttObserver((BodyAccProvider*) myIMU->getAcc(), 
-    //                                       (BodyRateProvider*) myIMU->getGyro(),
-    //                                       block_frequency::hhz200);
+    #ifdef Navio_IMU_en
+    AccGyroAttitudeObserver myAttObserver((BodyAccProvider*) myIMU->getAcc(), 
+                                          (BodyRateProvider*) myIMU->getGyro(),
+                                          block_frequency::hhz200);
 
     
     
-    //  ComplementaryFilter filter1, filter2, filter3;
-    // //TODO second argument should be dt of IMU sampling rate
-    //  ComplementaryFilterSettings settings(false, 0.005, 0.995);
+     ComplementaryFilter filter1, filter2, filter3;
+    //TODO second argument should be dt of IMU sampling rate
+     ComplementaryFilterSettings settings(false, 0.005, 0.995);
 
-    //  myAttObserver.setFilterType(&filter1, &filter2);
-    //  myAttObserver.updateSettings(&settings, 0.1);
+     myAttObserver.setFilterType(&filter1, &filter2);
+     myAttObserver.updateSettings(&settings, 0.1);
 
-    //  Roll_PVProvider* myRollPV = (Roll_PVProvider*) &myAttObserver;
-    //  Pitch_PVProvider* myPitchPV = (Pitch_PVProvider*) &myAttObserver;
+     Roll_PVProvider* myRollPV = (Roll_PVProvider*) &myAttObserver;
+     Pitch_PVProvider* myPitchPV = (Pitch_PVProvider*) &myAttObserver;
+    #endif    
 
-   
+    #ifdef XSens_IMU_en
     Roll_PVProvider* myRollPV = (Roll_PVProvider*)myXSensIMU;
     Pitch_PVProvider* myPitchPV = (Pitch_PVProvider*)myXSensIMU;
-
+    #endif
+    
     myROSOptitrack->add_callback_msg_receiver((msg_receiver*)myOptitrackSystem);
 
     //**************************SETTING BLOCKS**********************************
@@ -225,7 +236,6 @@ int main(int argc, char** argv) {
     Block* PID_yaw = new PIDController(block_id::PID_YAW);
     Block* PV_Ref_z = new ProcessVariableReference(block_id::REF_Z);
     Block* PV_Ref_yaw = new ProcessVariableReference(block_id::REF_YAW);
-
     Block* MRFT_x = new MRFTController(block_id::MRFT_X);
     Block* MRFT_y = new MRFTController(block_id::MRFT_Y);
     Block* MRFT_z = new MRFTController(block_id::MRFT_Z);
@@ -276,20 +286,18 @@ int main(int argc, char** argv) {
     Z_ControlSystem->addBlock(MRFT_z);
     Z_ControlSystem->addBlock(PV_Ref_z);
 
-    //Yaw on Optitrack 100Hz
     ControlSystem* Yaw_ControlSystem = new ControlSystem(control_system::yaw, myYawPV, block_frequency::hz120);
     Yaw_ControlSystem->addBlock(PID_yaw);
     Yaw_ControlSystem->addBlock(MRFT_yaw);
     Yaw_ControlSystem->addBlock(PV_Ref_yaw);
     //*********************SETTING ACTUATION SYSTEMS************************
     
-    int freq = 50;
-    Actuator* M1 = new ESCMotor(0, freq);
-    Actuator* M2 = new ESCMotor(1, freq);
-    Actuator* M3 = new ESCMotor(2, freq);
-    Actuator* M4 = new ESCMotor(3, freq);
-    Actuator* M5 = new ESCMotor(4, freq);
-    Actuator* M6 = new ESCMotor(5, freq);
+    Actuator* M1 = new ESCMotor(0, PWM_FREQUENCY);
+    Actuator* M2 = new ESCMotor(1, PWM_FREQUENCY);
+    Actuator* M3 = new ESCMotor(2, PWM_FREQUENCY);
+    Actuator* M4 = new ESCMotor(3, PWM_FREQUENCY);
+    Actuator* M5 = new ESCMotor(4, PWM_FREQUENCY);
+    Actuator* M6 = new ESCMotor(5, PWM_FREQUENCY);
 
     std::vector<Actuator*> actuators{M1, M2, M3, M4, M5, M6};
 
@@ -300,8 +308,6 @@ int main(int argc, char** argv) {
     Y_UserReference* myY_UserRef = new Y_UserReference();
     Z_UserReference* myZ_UserRef = new Z_UserReference();
     Yaw_UserReference* myYaw_UserRef = new Yaw_UserReference();
-
-    //Forward is negative pitch, Right is positive roll, CCW is positive yaw, Upwards is positive Z
 
     myROSUpdateReferenceX->add_callback_msg_receiver((msg_receiver*)myX_UserRef);
     myROSUpdateReferenceY->add_callback_msg_receiver((msg_receiver*)myY_UserRef);
@@ -366,6 +372,7 @@ int main(int argc, char** argv) {
     myXPV->PositioningProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     //myRollPV->AttitudeProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myYawPV->HeadingProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    
     //***********************SETTING PID INITIAL VALUES*****************************
 
     //TODO remove this after adding to FlightScenario
@@ -492,9 +499,6 @@ int main(int argc, char** argv) {
     //      std::cout << "Unsuccessful in setting thread realtime prior " << ret << std::endl;
     //  }
 
-    //******************************PERFORM CALIBRATION********************************
-     //performCalibration(myIMU);
-
     while(ros::ok()){
 
         ros::spinOnce();
@@ -510,51 +514,5 @@ int main(int argc, char** argv) {
 	cout << "Successful exit." << endl;
     
     return 0;
-
-}
-
-void performCalibration(NAVIOMPU9250_sensor* t_imu){
-    Timer* _calib_timer = new Timer();
-    int consumed_time = 0;
-    //1 second of garbage
-    _calib_timer->tick();
-    while(consumed_time < 1000){
-        consumed_time = _calib_timer->tockMilliSeconds();
-        t_imu->getAcc()->getCalibratedData();
-        t_imu->getGyro()->getCalibratedData();
-    }
-
-    std::cout << "1 Second passed" << std::endl;
-    
-    //t_imu->getAcc()->startCalibration();
-    t_imu->getGyro()->startCalibration(); 
-    std::cout << "CALIBRATION STARTED..." << std::endl;
-
-    _calib_timer->tick();
-    consumed_time = 0;
-    std::cout << "CALIBRATION RUNNING....................................................................." << std::endl;
-    while(consumed_time < 5000){
-        consumed_time = _calib_timer->tockMilliSeconds();     
-        //t_imu->getAcc()->getCalibratedData();
-        t_imu->getGyro()->getCalibratedData(); 
-    }
-
-
-    std::cout << "5 Second passed" << std::endl;
-    //t_imu->getAcc()->stopCalibration();
-    t_imu->getGyro()->stopCalibration();
-    std::cout << "CALIBRATION ENDED" << std::endl;
-
-    _calib_timer->tick();
-    consumed_time = 0;
-    while(consumed_time < 5000){
-        consumed_time = _calib_timer->tockMilliSeconds();    
-    }
-
-}
-
-void setInitialPose(PositioningProvider* t_pos_prov, HeadingProvider* t_head_prov){
-
-    
 
 }

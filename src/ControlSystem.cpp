@@ -1,6 +1,6 @@
 #include "ControlSystem.hpp"
 #include <fstream>
-std::ofstream write_data("/home/pedrohrpbs/catkin_ws_NAVIO//orientation_control_data_control.txt"); 
+//std::ofstream write_data("/home/pedrohrpbs/catkin_ws_NAVIO//orientation_control_data_control.txt"); 
 
 ControlSystem::ControlSystem(control_system t_control_system, PVProvider* t_pvprovider, block_frequency t_bf) : TimedBlock(t_bf) {
     // timer.tick();

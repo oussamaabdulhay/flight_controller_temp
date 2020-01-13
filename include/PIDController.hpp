@@ -10,6 +10,7 @@
 #include "ResetControllerMsg.hpp"
 #include "ButterFilter_2nd_200Hz.hpp"
 #include "SwitchOutMsg.hpp"
+#include "logger.hpp"
 
 class PIDController : public Controller{
 

@@ -10,17 +10,15 @@ MRFTController::~MRFTController() {
 }
 
 void MRFTController::switchIn(DataMessage* t_msg){
-    //this->emit_message(data);
     if(t_msg->getType() == msg_type::SWITCHOUT){
 		SwitchOutMsg* switch_out_msg = (SwitchOutMsg*)t_msg;
 		parameters.bias = switch_out_msg->getSwitchOutMsg();
 	}
-	std::cout << "SWITCH IN MRFT CONTROLLER - Bias: " << parameters.bias << std::endl;
+	Logger::getAssignedLogger()->log("SWITCH IN MRFT CONTROLLER - Bias: %f", parameters.bias, LoggerLevel::Warning);
 }
 
 DataMessage* MRFTController::switchOut(){
-    //TODO implement
-	std::cout << "SWITCH OUT MRFT CONTROLLER" << std::endl;
+	Logger::getAssignedLogger()->log("SWITCH OUT MRFT CONTROLLER",LoggerLevel::Warning);
     DataMessage* msg;
     return msg;
 } 
@@ -39,7 +37,7 @@ void MRFTController::receive_msg_data(DataMessage* t_msg){
 		ResetControllerMsg* reset_msg = (ResetControllerMsg*)t_msg;
 
 		if(static_cast<block_id>(reset_msg->getData()) == this->_id){
-			std::cout << "RESET CONTROLLER: " << (int)this->_id << std::endl;
+			Logger::getAssignedLogger()->log("RESET CONTROLLER: %.0f", (int)this->_id, LoggerLevel::Warning);
 			this->reset();
 		}
 	}
@@ -181,13 +179,12 @@ void MRFTController::initialize(MRFT_parameters* para){
 	if(para->dt > 0){
 		_dt = para->dt;
 	}
-	//TODO use logger
-	std::cout << "MRFT SETTINGS: " << std::endl;
-	std::cout << "Beta: " << parameters.beta << std::endl;
-	std::cout << "Relay_amp: " << parameters.relay_amp << std::endl;
-	std::cout << "Bias: " << parameters.bias << std::endl;
-	std::cout << "ID Term: " << static_cast<int>(parameters.id) << std::endl;
-	std::cout << "dt: " << _dt << std::endl;
+
+	Logger::getAssignedLogger()->log("MRFT SETTINGS: ID_%.0f", static_cast<int>(parameters.id), LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Beta: %.2f", parameters.beta, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Relay_amp: %.2f", parameters.relay_amp, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Bias: %.6f", parameters.bias, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("dt: %.6f", _dt, LoggerLevel::Info);
 
 }
 

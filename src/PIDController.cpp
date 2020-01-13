@@ -10,15 +10,13 @@ PIDController::~PIDController() {
 }
 
 void PIDController::switchIn(DataMessage* data){
-    //this->emit_message(data);
-    //TODO implement
-	std::cout << "SWITCH IN PID CONTROLLER" << std::endl;
+	Logger::getAssignedLogger()->log("SWITCH IN PID CONTROLLER",LoggerLevel::Warning);
 }
 
 DataMessage* PIDController::switchOut(){
 
     m_switchout_msg.setSwitchOutMsg(_filter_y);
-	std::cout << "SWITCH OUT PID CONTROLLER" << std::endl;
+	Logger::getAssignedLogger()->log("SWITCH OUT PID CONTROLLER",LoggerLevel::Warning);
 
     return (DataMessage*)&m_switchout_msg;
 } 
@@ -37,8 +35,7 @@ void PIDController::receive_msg_data(DataMessage* t_msg){
 		ResetControllerMsg* reset_msg = (ResetControllerMsg*)t_msg;
 
 		if(static_cast<block_id>(reset_msg->getData()) == this->_id){
-			//TODO make a Logger
-			std::cout << "RESET CONTROLLER: " << (int)this->_id << std::endl;
+			Logger::getAssignedLogger()->log("RESET CONTROLLER: %.0f", (int)this->_id, LoggerLevel::Warning);
 			this->reset();
 		}
 	}
@@ -49,15 +46,9 @@ DataMessage* PIDController::receive_msg_internal(DataMessage* t_msg){
 	SwitcherMessage* controller_msg = (SwitcherMessage*)t_msg;
 
     Vector3D<float> data = controller_msg->getVector3DData();
-	// std::cout << "error: " << data.x << std::endl;
-	// std::cout << "pv_first: " << data.y << std::endl;
-	// std::cout << "pv_second: " << data.z << std::endl;
-
 	_command = pid_direct(data.x, data.y, data.z);
 	_filter_y = _filter.perform(_command);
 
-	// std::cout << "pid_output: " << _command << std::endl;
-	// std::cout << "filter_output: " << _filter_y << std::endl;
     m_output_msg.setFloatMessage(_command);
 
 	return (DataMessage*) &m_output_msg;
@@ -89,16 +80,15 @@ void PIDController::initialize(void* para){ //Refer to example 1 on how to initi
 	prev_err = 0;
 	prev2_err = 0;
 	prev_pv_rate = 0;
-
-	std::cout << "PID SETTINGS: " << std::endl;
-	std::cout << "Kp Term: " << parameters.kp << std::endl;
-	std::cout << "Ki Term: " << parameters.ki << std::endl;
-	std::cout << "Kd Term: " << parameters.kd << std::endl;
-	std::cout << "Kdd Term: " << parameters.kdd << std::endl;
-	std::cout << "Anti Windup Term: " << parameters.anti_windup << std::endl;
-	std::cout << "en_pv_derivation Term: " << static_cast<int>(parameters.en_pv_derivation) << std::endl;
-	std::cout << "ID Term: " << static_cast<int>(parameters.id) << std::endl;
-	std::cout << "dt: " << _dt << std::endl;
+	
+	Logger::getAssignedLogger()->log("PID SETTINGS: ID_%.0f", static_cast<int>(parameters.id), LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Kp Term: %.3f", parameters.kp, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Ki Term: %.3f", parameters.ki, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Kd Term: %.3f", parameters.kd, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Kdd Term: %.3f", parameters.kdd, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Anti Windup Term: %.3f", parameters.anti_windup, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("en_pv_derivation Term: %.0f", static_cast<int>(parameters.en_pv_derivation), LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("dt: %.6f", _dt, LoggerLevel::Info);
 
 }
 

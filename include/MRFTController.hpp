@@ -8,6 +8,7 @@
 #include "Timer.hpp"
 #include "SwitcherMessage.hpp"
 #include "SwitchOutMsg.hpp"
+#include "logger.hpp"
 
 class MRFTController : public Controller{
 

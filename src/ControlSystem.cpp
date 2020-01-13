@@ -3,7 +3,7 @@
 std::ofstream write_data("/home/pedrohrpbs/catkin_ws_NAVIO//orientation_control_data_control.txt"); 
 
 ControlSystem::ControlSystem(control_system t_control_system, PVProvider* t_pvprovider, block_frequency t_bf) : TimedBlock(t_bf) {
-    timer.tick();
+    // timer.tick();
     _control_system = t_control_system;
     
     controllerSwitcher = new Switcher(switcher_type::controller);
@@ -57,6 +57,9 @@ void ControlSystem::receive_msg_data(DataMessage* t_msg){
             RollProviderMessage* roll_provider = (RollProviderMessage*)t_msg;
             Vector3D<float> roll_pv_data = roll_provider->getData();
             
+            // write_data << roll_provider->getData().x << ", " << timer.tockMilliSeconds() <<"\n";
+            // timer.tick();
+
             m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, roll_pv_data);
             this->emit_message((DataMessage*) &m_provider_data_msg);
 

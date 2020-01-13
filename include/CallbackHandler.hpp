@@ -89,7 +89,7 @@ protected:
 
         }
 		#ifdef DEBUG_XSENS
-		std::cout << "TIME: " << t.tockMilliSeconds() << "\n";
+		std::cout << "TIME: " << t.tockMicroSeconds() << "\n";
 		t.tick();
 		#endif
         

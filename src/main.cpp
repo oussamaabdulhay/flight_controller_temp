@@ -47,6 +47,10 @@
 
 #define XSens_IMU_en
 #undef Navio_IMU_en
+#undef XSens_Thread
+#define XSens_Direct
+#define f_200HZ
+#undef f_400HZ
 
 Journaller *gJournal = 0;
 
@@ -154,17 +158,25 @@ int main(int argc, char** argv) {
 	if (!device->gotoMeasurement())
 		return handleError("Could not put device into measurement mode. Aborting.");
 
-    thread_terminal_unit xsens_thread_terminal_unit;
-   
-    callback.add_callback_msg_receiver((msg_receiver*) &xsens_thread_terminal_unit); 
-    
-    thread_initial_unit* roll_pitch_thread = new thread_initial_unit(&xsens_thread_terminal_unit);
- 
     XSens_IMU* myXSensIMU = new XSens_IMU();
-    
+
+    #ifdef XSens_Direct
+    callback.add_callback_msg_receiver((msg_receiver*)myXSensIMU);
+    #endif
+
+    #ifdef XSens_Thread
+    thread_terminal_unit xsens_thread_terminal_unit;
+    callback.add_callback_msg_receiver((msg_receiver*) &xsens_thread_terminal_unit); 
+    thread_initial_unit* roll_pitch_thread = new thread_initial_unit(&xsens_thread_terminal_unit);
     roll_pitch_thread->add_callback_msg_receiver(myXSensIMU);//emit PV message to roll_control_system and pitch_control_system
+    #ifdef f_200HZ
+    roll_pitch_thread->setLoopFrequency(block_frequency::hz200); //TODO should be one place change
+    #endif
+    #ifdef f_400HZ
     roll_pitch_thread->setLoopFrequency(block_frequency::hz400); //TODO should be one place change
+    #endif
     thread* roll_pitch_control_thread = new thread(worker, (TimedBlock*)roll_pitch_thread);
+    #endif
 
     #endif
     
@@ -232,7 +244,12 @@ int main(int argc, char** argv) {
     X_ControlSystem->addBlock(MRFT_x);
     X_ControlSystem->addBlock(PV_Ref_x);
 
+    #ifdef f_400Hz
     ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, myPitchPV, block_frequency::hz400);
+    #endif
+    #ifdef f_200HZ
+    ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, myPitchPV, block_frequency::hz200);
+    #endif
     Pitch_ControlSystem->addBlock(PID_pitch);
     Pitch_ControlSystem->addBlock(MRFT_pitch);
     Pitch_ControlSystem->addBlock(PV_Ref_pitch);
@@ -243,7 +260,12 @@ int main(int argc, char** argv) {
     Y_ControlSystem->addBlock(MRFT_y);
     Y_ControlSystem->addBlock(PV_Ref_y);
 
+    #ifdef f_400Hz
     ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, myRollPV, block_frequency::hz400);
+    #endif
+    #ifdef f_200HZ
+    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, myRollPV, block_frequency::hz200);
+    #endif
     Roll_ControlSystem->addBlock(PID_roll);
     Roll_ControlSystem->addBlock(MRFT_roll);
     Roll_ControlSystem->addBlock(PV_Ref_roll);

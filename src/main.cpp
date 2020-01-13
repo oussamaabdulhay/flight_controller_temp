@@ -96,7 +96,6 @@ int main(int argc, char** argv) {
     ROSUnit* myROSResetController = new ROSUnit_ResetController(nh);
     ROSUnit* myROSBroadcastData = new ROSUnit_BroadcastData(nh);
     ROSUnit* myROSSwitchBlock = new ROSUnit_SwitchBlock(nh);
-    ROSUnit* myROSXSens = new ROSUnit_Xsens(nh);
 
     //*****************************LOGGER**********************************
     Logger::assignLogger(new StdLogger());

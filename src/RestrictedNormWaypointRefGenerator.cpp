@@ -1,6 +1,6 @@
 #include "RestrictedNormWaypointRefGenerator.hpp"
 void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
-    if (t_msg->getType()==msg_type::WAYPOINT)// TODO: add to msg_type
+    if (t_msg->getType()==msg_type::WAYPOINT)
     {
         WaypointMsg* t_pos_msg=(WaypointMsg*) t_msg;
         Waypoint t_waypoint;
@@ -11,7 +11,7 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
         Waypoints.push_back(t_waypoint);
         delete t_pos_msg;
     }
-    else if(t_msg->getType()==msg_type::RESTNORMREF_SETTINGS)// TODO: add to msg_type
+    else if(t_msg->getType()==msg_type::RESTNORMREF_SETTINGS)
     {
         RestrictedNormRefSettingsMsg* t_settings_msg=(RestrictedNormRefSettingsMsg*) t_msg;
         max_norm=t_settings_msg->getMaxNorm();
@@ -53,18 +53,26 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
     
 }
 
-void RestrictedNormWaypointRefGenerator::updateControlSystemsReferences(Vector3D<double> t_pos_ref,double yaw){
-    ReferenceMessage x_cont_ref;
-    x_cont_ref.setReferenceMessage(t_pos_ref.x);
+void RestrictedNormWaypointRefGenerator::updateControlSystemsReferences(Vector3D<double> t_pos_ref, double t_yaw){
+    
+    ControlSystemMessage x_cont_ref;
+    x_cont_ref.setControlSystemMessage(control_system::null_type, control_system_msg_type::to_system, t_pos_ref.x);
+    std::cout << "Setting X Reference: " << t_pos_ref.x << std::endl;
     ((msg_receiver*)x_control_system)->receive_msg_data(&x_cont_ref);
-    ReferenceMessage y_cont_ref;
-    y_cont_ref.setReferenceMessage(t_pos_ref.y);
+
+    ControlSystemMessage y_cont_ref;
+    y_cont_ref.setControlSystemMessage(control_system::null_type, control_system_msg_type::to_system, t_pos_ref.y);
+    std::cout << "Setting Y Reference: " << t_pos_ref.y << std::endl;
     ((msg_receiver*)y_control_system)->receive_msg_data(&y_cont_ref);
-    ReferenceMessage z_cont_ref;
-    z_cont_ref.setReferenceMessage(t_pos_ref.z);
+
+    ControlSystemMessage z_cont_ref;
+    z_cont_ref.setControlSystemMessage(control_system::null_type, control_system_msg_type::to_system, t_pos_ref.z);
+    std::cout << "Setting Z Reference: " << t_pos_ref.z << std::endl;
     ((msg_receiver*)z_control_system)->receive_msg_data(&z_cont_ref);
-    ReferenceMessage yaw_cont_ref;
-    yaw_cont_ref.setReferenceMessage(yaw);
+
+    ControlSystemMessage yaw_cont_ref;
+    yaw_cont_ref.setControlSystemMessage(control_system::null_type, control_system_msg_type::to_system, t_yaw);
+    std::cout << "Setting Yaw Reference: " << t_yaw << std::endl;
     ((msg_receiver*)yaw_control_system)->receive_msg_data(&yaw_cont_ref);
 }
 

@@ -21,7 +21,7 @@
 #include "../include/Z_UserReference.hpp"
 #include "../include/Yaw_UserReference.hpp"
 #include "../include/ROSUnit_Arm.hpp"
-#include "../include/ROSUnit_UpdateReference.hpp"
+#include "../include/ROSUnit_Waypoint.hpp"
 #include "../include/ROSUnit_UpdateController.hpp"
 #include "../include/ROSUnit_ResetController.hpp"
 #include "../include/ROSUnit_BroadcastData.hpp"

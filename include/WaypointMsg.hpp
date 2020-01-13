@@ -9,6 +9,6 @@ public:
 
 	msg_type getType();
 	const int getSize();
-
+	DataMessage* Clone(){ return new WaypointMsg(*this); }
 	Waypoint waypoint;	//TODO: This should use Vector3D
 };

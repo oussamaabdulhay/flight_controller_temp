@@ -45,6 +45,7 @@
 #include <thread>
 #include "CallbackHandler.hpp"
 #include "RestrictedNormWaypointRefGenerator.hpp"
+#include "ROSUnit_RestNormSettings.hpp"
 
 #define XSens_IMU_en
 #undef Navio_IMU_en
@@ -98,7 +99,7 @@ int main(int argc, char** argv) {
     ROSUnit* myROSBroadcastData = new ROSUnit_BroadcastData(nh);
     ROSUnit* myROSSwitchBlock = new ROSUnit_SwitchBlock(nh);
     ROSUnit* myROSWaypoint = new ROSUnit_Waypoint(nh);
-    
+    ROSUnit* myROSRestNormSettings = new ROSUnit_RestNormSettings(nh);
 
     //*****************************LOGGER**********************************
     Logger::assignLogger(new StdLogger());
@@ -366,7 +367,8 @@ int main(int argc, char** argv) {
 
     myROSBroadcastData->add_callback_msg_receiver((msg_receiver*) myWaypoint);
     myROSWaypoint->add_callback_msg_receiver((msg_receiver*) myWaypoint);
-    //TODO one more connection
+    myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*) myWaypoint);
+    
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************
 
     X_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);

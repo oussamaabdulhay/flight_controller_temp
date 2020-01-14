@@ -3,7 +3,7 @@
 class RestrictedNormRefSettingsMsg : public DataMessage {
 
 private:
-    float max_norm;
+    float max_norm = 1.0;
     
 public:
     bool enabled=true;//Disabling stops updating reference value

@@ -19,6 +19,9 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
         RestrictedNormRefSettingsMsg* t_settings_msg=(RestrictedNormRefSettingsMsg*) t_msg;
         max_norm=t_settings_msg->getMaxNorm();
         enabled=t_settings_msg->enabled;
+        std::cout << "ENABLED: " << enabled << std::endl;
+        std::cout << "DELETE : " << t_settings_msg->delete_existing_waypoints << std::endl;
+        std::cout << "MAX NORM : " << max_norm << std::endl;
         if (t_settings_msg->delete_existing_waypoints){
             Waypoints.clear();
         }

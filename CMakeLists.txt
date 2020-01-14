@@ -26,6 +26,7 @@ add_service_files(
   Update_Z_Reference.srv
   Update_Yaw_Reference.srv
   SwitchBlock.srv
+  Restricted_Norm_Settings.srv
 )
 
 generate_messages(

@@ -8,8 +8,11 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
         t_waypoint.position.y=t_pos_msg->waypoint.position.y;
         t_waypoint.position.z=t_pos_msg->waypoint.position.z;
         t_waypoint.yaw=t_pos_msg->waypoint.yaw;
+        std::cout << "waypoint X : " << t_waypoint.position.x << std::endl;
+        std::cout << "waypoint Y : " << t_waypoint.position.y << std::endl;
+        std::cout << "waypoint Z : " << t_waypoint.position.z << std::endl;
+        std::cout << "waypoint Yaw : " << t_waypoint.yaw << std::endl;
         Waypoints.push_back(t_waypoint);
-        delete t_pos_msg;
     }
     else if(t_msg->getType()==msg_type::RESTNORMREF_SETTINGS)
     {
@@ -19,7 +22,6 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
         if (t_settings_msg->delete_existing_waypoints){
             Waypoints.clear();
         }
-        delete t_settings_msg;
     }
     else if(t_msg->getType()==msg_type::POSITION){
         PositionMsg* t_current_pos=(PositionMsg*) t_msg;
@@ -27,7 +29,7 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
         t_current_pos_vec.x=t_current_pos->x;
         t_current_pos_vec.y=t_current_pos->y;
         t_current_pos_vec.z=t_current_pos->z;
-        delete t_current_pos;
+        
         while (Waypoints.size()>0){
             Vector3D<double> diff_pos_waypoint=Waypoints[0].position-t_current_pos_vec;
             double t_dist= Vector3D<double>::getL2Norm(diff_pos_waypoint);

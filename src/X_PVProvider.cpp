@@ -20,9 +20,6 @@ Vector3D<float> X_PVProvider::getProcessVariable(){
     ros_msg.setX_PV(t_process_variable);
     this->PVProvider::emit_message((DataMessage*) &ros_msg);
 
-    ros_msg.setPosition(position);
-    this->PositioningProvider::emit_message((DataMessage*) &ros_msg);
-
     return t_process_variable;
     
 }

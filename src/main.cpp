@@ -44,6 +44,7 @@
 #include <string>
 #include <thread>
 #include "CallbackHandler.hpp"
+#include "RestrictedNormWaypointRefGenerator.hpp"
 
 #define XSens_IMU_en
 #undef Navio_IMU_en
@@ -96,6 +97,8 @@ int main(int argc, char** argv) {
     ROSUnit* myROSResetController = new ROSUnit_ResetController(nh);
     ROSUnit* myROSBroadcastData = new ROSUnit_BroadcastData(nh);
     ROSUnit* myROSSwitchBlock = new ROSUnit_SwitchBlock(nh);
+    ROSUnit* myROSWaypoint = new ROSUnit_Waypoint(nh);
+    
 
     //*****************************LOGGER**********************************
     Logger::assignLogger(new StdLogger());
@@ -246,6 +249,8 @@ int main(int argc, char** argv) {
     Transform_InertialToBody* transform_X_InertialToBody = new Transform_InertialToBody(control_system::x, inertial_command);
     Transform_InertialToBody* transform_Y_InertialToBody = new Transform_InertialToBody(control_system::y, inertial_command);
 
+    RestrictedNormWaypointRefGenerator* myWaypoint = new RestrictedNormWaypointRefGenerator();
+
     //***********************SETTING CONTROL SYSTEMS***************************
     //TODO Expose switcher to the main, add blocks to the switcher, then make connections between switcher, then add them to the Control System
     ControlSystem* X_ControlSystem = new ControlSystem(control_system::x, myXPV, block_frequency::hz120);
@@ -289,6 +294,14 @@ int main(int argc, char** argv) {
     Yaw_ControlSystem->addBlock(PID_yaw);
     Yaw_ControlSystem->addBlock(MRFT_yaw);
     Yaw_ControlSystem->addBlock(PV_Ref_yaw);
+
+    //******************SETTING TRAJECTORY GENERATION TOOL******************
+
+    myWaypoint->add_x_control_system(X_ControlSystem);
+    myWaypoint->add_y_control_system(Y_ControlSystem);
+    myWaypoint->add_z_control_system(Z_ControlSystem);
+    myWaypoint->add_yaw_control_system(Yaw_ControlSystem);
+
     //*********************SETTING ACTUATION SYSTEMS************************
     
     Actuator* M1 = new ESCMotor(0, PWM_FREQUENCY);
@@ -350,6 +363,10 @@ int main(int argc, char** argv) {
     myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem);
 
     myROSArm->add_callback_msg_receiver((msg_receiver*) myActuationSystem);
+
+    myROSBroadcastData->add_callback_msg_receiver((msg_receiver*) myWaypoint);
+    myROSWaypoint->add_callback_msg_receiver((msg_receiver*) myWaypoint);
+    //TODO one more connection
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************
 
     X_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);

@@ -30,16 +30,19 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
     if(t_msg->getType() == msg_type::ROS){
         ROSMsg* ros_msg = (ROSMsg*)t_msg;
 
-        if(ros_msg->getROSMsgType() == ros_msg_type::POSITION){
-            PositionMsg pos = ros_msg->getPosition();
+        if(x_received && y_received && z_received){
             geometry_msgs::PointStamped msg;
             msg.header.seq = ++_seq_pos;
             msg.header.stamp = ros::Time::now();
             msg.header.frame_id = "body x y z";
-            msg.point.x = pos.x;
-            msg.point.y = pos.y;
-            msg.point.z = pos.z;
+            msg.point.x = _position.x;
+            msg.point.y = _position.y;
+            msg.point.z = _position.z;
             _pos_prov_pub.publish(msg);
+            this->emit_message((DataMessage*) &_position);
+            x_received = false;
+            y_received = false;
+            z_received = false;
 
         }else if(roll_received && pitch_received && yaw_received){
             geometry_msgs::PointStamped msg;
@@ -56,6 +59,8 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
 
         }else if(ros_msg->getROSMsgType() == ros_msg_type::X_PV){
             Vector3D<float> xpv = ros_msg->getX_PV();
+            _position.x = xpv.x;
+            x_received = true;
             geometry_msgs::PointStamped msg;
             msg.header.seq = ++_seq_xpv;
             msg.header.stamp = ros::Time::now();
@@ -67,6 +72,8 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
 
         }else if(ros_msg->getROSMsgType() == ros_msg_type::Y_PV){
             Vector3D<float> ypv = ros_msg->getY_PV();
+            _position.y = ypv.x;
+            y_received = true;
             geometry_msgs::PointStamped msg;
             msg.header.seq = ++_seq_ypv;
             msg.header.stamp = ros::Time::now();
@@ -78,6 +85,8 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
 
         }else if(ros_msg->getROSMsgType() == ros_msg_type::Z_PV){
             Vector3D<float> zpv = ros_msg->getZ_PV();
+            _position.z = zpv.x;
+            z_received = true;
             geometry_msgs::PointStamped msg;
             msg.header.seq = ++_seq_zpv;
             msg.header.stamp = ros::Time::now();

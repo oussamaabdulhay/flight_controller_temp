@@ -14,8 +14,8 @@ class RestrictedNormWaypointRefGenerator : public msg_emitter, public msg_receiv
 
     private:
     vector<Waypoint> Waypoints;
-    double max_norm;
-    bool enabled=true;
+    double max_norm = 0.2;
+    bool enabled=false;
     ControlSystem* x_control_system;
     ControlSystem* y_control_system;
     ControlSystem* z_control_system;

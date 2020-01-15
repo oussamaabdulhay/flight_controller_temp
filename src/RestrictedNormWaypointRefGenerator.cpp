@@ -34,23 +34,19 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
         t_current_pos_vec.z=t_current_pos->z;
         
         if (Waypoints.size()>0 && enabled){
-            std::cout << "HERE 0: Wp size: " << Waypoints.size() << std::endl;
             Vector3D<double> diff_pos_waypoint=Waypoints[0].position-t_current_pos_vec;
             double t_dist= Vector3D<double>::getL2Norm(diff_pos_waypoint);
             if (t_dist>=max_norm){
                 Vector3D<double> restricted_ref;
                 restricted_ref=t_current_pos_vec+(diff_pos_waypoint/t_dist)*max_norm;
                 updateControlSystemsReferences(restricted_ref,Waypoints[0].yaw);
-                std::cout << "HERE 1" << std::endl;
             }
             else
             {
                 if (Waypoints.size()==1){
                     updateControlSystemsReferences(Waypoints[0].position,Waypoints[0].yaw);
                     Waypoints.clear();
-                    std::cout << "HERE 2" << std::endl;
                 }else{
-                    std::cout << "HERE 3" << std::endl;
                     auto firstWaypoint=Waypoints.begin();
                     Waypoints.erase(firstWaypoint);
                 }

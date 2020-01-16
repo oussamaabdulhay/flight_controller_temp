@@ -1,5 +1,5 @@
 #include "HexaActuationSystem.hpp"
-
+pthread_mutex_t HexaActuationSystem::lock;
 
 HexaActuationSystem::HexaActuationSystem(std::vector<Actuator*> t_actuators) : ActuationSystem(t_actuators){
     _actuators = t_actuators;
@@ -92,9 +92,9 @@ void HexaActuationSystem::receive_msg_data(DataMessage* t_msg){
                 _movements[2] = 0.0;
                 _movements[3] = 0.0;
             }
-            
+            pthread_mutex_lock(&lock); 
             this->command();
-            
+            pthread_mutex_unlock(&lock); 
         }
           
     }else if(t_msg->getType() == msg_type::BOOLEAN){

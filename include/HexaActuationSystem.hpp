@@ -3,6 +3,7 @@
 #include "ControlSystemMessage.hpp"
 #include "BoolMessage.hpp"
 #include "ROSMsg.hpp"
+#include <pthread.h>
 
 // GEOMETRY
 //      CW(3) (5)CCW                y
@@ -33,7 +34,7 @@ private:
                              { 0.5 * -1, -0.866025 * -1, -1, 1},
                              { 0.5 * -1,  0.866025 * -1, -1, 1},
                              {-0.5 * -1, -0.866025 * -1,  1, 1}};
-
+    static pthread_mutex_t lock;
 public:
 
     void receive_msg_data(DataMessage* t_msg);

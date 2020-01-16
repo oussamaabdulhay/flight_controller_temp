@@ -10,6 +10,7 @@
 #include "Roll_PVProvider.hpp"
 #include "Pitch_PVProvider.hpp"
 #include "Yaw_PVProvider.hpp"
+#include "YawRate_PVProvider.hpp"
 
 class MotionCapture :   public msg_receiver, 
                         public X_PVProvider,
@@ -17,7 +18,8 @@ class MotionCapture :   public msg_receiver,
                         public Z_PVProvider,
                         public Roll_PVProvider,
                         public Pitch_PVProvider,
-                        public Yaw_PVProvider{
+                        public Yaw_PVProvider,
+                        public YawRate_PVProvider{
 
     public:
         virtual PositionMsg getPosition() = 0;

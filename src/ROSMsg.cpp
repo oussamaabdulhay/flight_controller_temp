@@ -53,6 +53,10 @@ void ROSMsg::setYaw_PV(Vector3D<float> tmp){
     _ros_type = ros_msg_type::YAW_PV;
     _yaw_pv = tmp;
 }
+void ROSMsg::setYawRate_PV(Vector3D<float> tmp){
+    _ros_type = ros_msg_type::YAW_RATE_PV;
+    _yaw_rate_pv = tmp;
+}
 void ROSMsg::setControlSystem(float tmp, control_system t_source){
     _ros_type = ros_msg_type::CONTROLSYSTEM;
     _control_system = tmp;

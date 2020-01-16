@@ -46,6 +46,7 @@
 #include "CallbackHandler.hpp"
 #include "RestrictedNormWaypointRefGenerator.hpp"
 #include "ROSUnit_RestNormSettings.hpp"
+#include "YawRate_PVProvider.hpp"
 
 #define XSens_IMU_en
 #undef Navio_IMU_en
@@ -80,6 +81,7 @@ int main(int argc, char** argv) {
     
     std::cout << "Hello Easy C++ project!" << std::endl;
     //TODO separate files on specific folders
+    //TODO make a single pattern to follow for providers
 
      //*****************************ROS UNITS*******************************
 
@@ -199,7 +201,13 @@ int main(int argc, char** argv) {
     Y_PVProvider* myYPV = (Y_PVProvider*)myOptitrackSystem;
     Z_PVProvider* myZPV = (Z_PVProvider*)myOptitrackSystem;
     Yaw_PVProvider* myYawPV = (Yaw_PVProvider*)myOptitrackSystem;
-    
+    YawRate_PVProvider* myYawRatePV = (YawRate_PVProvider*)myOptitrackSystem;
+    #ifdef XSens_IMU_en
+    Roll_PVProvider* myRollPV = (Roll_PVProvider*)myXSensIMU;
+    Pitch_PVProvider* myPitchPV = (Pitch_PVProvider*)myXSensIMU;
+    #endif
+    myROSOptitrack->add_callback_msg_receiver((msg_receiver*)myOptitrackSystem);
+
     #ifdef Navio_IMU_en
     AccGyroAttitudeObserver myAttObserver((BodyAccProvider*) myIMU->getAcc(), 
                                           (BodyRateProvider*) myIMU->getGyro(),
@@ -218,12 +226,7 @@ int main(int argc, char** argv) {
      Pitch_PVProvider* myPitchPV = (Pitch_PVProvider*) &myAttObserver;
     #endif    
 
-    #ifdef XSens_IMU_en
-    Roll_PVProvider* myRollPV = (Roll_PVProvider*)myXSensIMU;
-    Pitch_PVProvider* myPitchPV = (Pitch_PVProvider*)myXSensIMU;
-    #endif
     
-    myROSOptitrack->add_callback_msg_receiver((msg_receiver*)myOptitrackSystem);
 
     //**************************SETTING BLOCKS**********************************
 
@@ -237,14 +240,18 @@ int main(int argc, char** argv) {
     Block* PV_Ref_roll = new ProcessVariableReference(block_id::REF_ROLL);
     Block* PID_z = new PIDController(block_id::PID_Z);
     Block* PID_yaw = new PIDController(block_id::PID_YAW);
+    Block* PID_yaw_rate = new PIDController(block_id::PID_YAW_RATE);
     Block* PV_Ref_z = new ProcessVariableReference(block_id::REF_Z);
     Block* PV_Ref_yaw = new ProcessVariableReference(block_id::REF_YAW);
+    Block* PV_Ref_yaw_rate = new ProcessVariableReference(block_id::REF_YAW_RATE);
+
     Block* MRFT_x = new MRFTController(block_id::MRFT_X);
     Block* MRFT_y = new MRFTController(block_id::MRFT_Y);
     Block* MRFT_z = new MRFTController(block_id::MRFT_Z);
     Block* MRFT_roll = new MRFTController(block_id::MRFT_ROLL);
     Block* MRFT_pitch = new MRFTController(block_id::MRFT_PITCH);
     Block* MRFT_yaw = new MRFTController(block_id::MRFT_YAW);
+    Block* MRFT_yaw_rate = new MRFTController(block_id::MRFT_YAW_RATE);
 
     Vector3D<float>* inertial_command = new Vector3D<float>();
     Transform_InertialToBody* transform_X_InertialToBody = new Transform_InertialToBody(control_system::x, inertial_command);
@@ -268,7 +275,6 @@ int main(int argc, char** argv) {
     Pitch_ControlSystem->addBlock(PID_pitch);
     Pitch_ControlSystem->addBlock(MRFT_pitch);
     Pitch_ControlSystem->addBlock(PV_Ref_pitch);
-    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
     
     ControlSystem* Y_ControlSystem = new ControlSystem(control_system::y, myYPV, block_frequency::hz120);
     Y_ControlSystem->addBlock(PID_y);
@@ -284,7 +290,6 @@ int main(int argc, char** argv) {
     Roll_ControlSystem->addBlock(PID_roll);
     Roll_ControlSystem->addBlock(MRFT_roll);
     Roll_ControlSystem->addBlock(PV_Ref_roll);
-    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
     
     ControlSystem* Z_ControlSystem = new ControlSystem(control_system::z, myZPV, block_frequency::hz120);
     Z_ControlSystem->addBlock(PID_z);
@@ -295,6 +300,16 @@ int main(int argc, char** argv) {
     Yaw_ControlSystem->addBlock(PID_yaw);
     Yaw_ControlSystem->addBlock(MRFT_yaw);
     Yaw_ControlSystem->addBlock(PV_Ref_yaw);
+
+    ControlSystem* YawRate_ControlSystem = new ControlSystem(control_system::yaw_rate, myYawRatePV, block_frequency::hz120);
+    YawRate_ControlSystem->addBlock(PID_yaw_rate);
+    YawRate_ControlSystem->addBlock(MRFT_yaw_rate);
+    YawRate_ControlSystem->addBlock(PV_Ref_yaw_rate);
+
+    //******************ANTI PATTERN PROVIDERS******************************
+
+    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
+    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
 
     //******************SETTING TRAJECTORY GENERATION TOOL******************
 
@@ -333,6 +348,7 @@ int main(int argc, char** argv) {
     myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_roll);
     myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_pitch);
     myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_yaw);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_yaw_rate);
 
     myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_x);
     myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_y);
@@ -340,6 +356,7 @@ int main(int argc, char** argv) {
     myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_roll);
     myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_pitch);
     myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw_rate);
 
     myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_x);
     myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_y);
@@ -347,6 +364,7 @@ int main(int argc, char** argv) {
     myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_roll);
     myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_pitch);
     myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_yaw);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_yaw_rate);
 
     myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_x);
     myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_y);
@@ -354,6 +372,7 @@ int main(int argc, char** argv) {
     myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_roll);
     myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_pitch);
     myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw_rate);
 
     //TODO after Switchers are exposed, connect ROSUnit_SwitchBlocks with them
     myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)X_ControlSystem);
@@ -362,35 +381,37 @@ int main(int argc, char** argv) {
     myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
     myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
     myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem);
+    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem);
 
     myROSArm->add_callback_msg_receiver((msg_receiver*) myActuationSystem);
 
-    myROSBroadcastData->add_callback_msg_receiver((msg_receiver*) myWaypoint);
-    myROSWaypoint->add_callback_msg_receiver((msg_receiver*) myWaypoint);
-    myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*) myWaypoint);
+    myROSBroadcastData->add_callback_msg_receiver((msg_receiver*)myWaypoint);
+    myROSWaypoint->add_callback_msg_receiver((msg_receiver*)myWaypoint);
+    myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint);
     
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************
-
     X_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     Y_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     Z_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     Roll_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     Pitch_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myXPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myYPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myZPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    //Commented out because of the anti-pattern roll and pitch provider
     //myRollPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     //myPitchPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody);
-    myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody);
+    myYawRatePV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
 
-    myXPV->PositioningProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    //myRollPV->AttitudeProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    myYawPV->HeadingProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    
+    //***********************INERTIAL TO BODY PROVIDER*****************************
+ 
+    myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody);
+    myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody);
+
     //***********************SETTING PID INITIAL VALUES*****************************
 
     //TODO remove this after adding to FlightScenario
@@ -428,6 +449,11 @@ int main(int argc, char** argv) {
     ctrl_msg.set_dt(Yaw_ControlSystem->get_dt());
     myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
 
+    pid_para_init.id = block_id::PID_YAW_RATE;
+    ctrl_msg.setPIDParam(pid_para_init);
+    ctrl_msg.set_dt(YawRate_ControlSystem->get_dt());
+    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+
     //***********************SETTING MRFT INITIAL VALUES*****************************
 
     MRFT_parameters mrft_para_init;
@@ -462,12 +488,17 @@ int main(int argc, char** argv) {
     ctrl_msg.set_dt(Yaw_ControlSystem->get_dt());
     myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
 
+    mrft_para_init.id = block_id::MRFT_YAW_RATE;
+    ctrl_msg.setMRFTParam(mrft_para_init);
+    ctrl_msg.set_dt(YawRate_ControlSystem->get_dt());
+    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+
     //****************************SETTING CONNECTIONS********************************
     //========                                                      =============
     //|      |----->X_Control_System-->RM_X->Roll_Control_System--->|           |
     //| USER |----->Y_Control_System-->RM_Y->Pitch_Control_System-->| Actuation |      
     //|      |----->Z_Control_System------------------------------->|  System   |
-    //|      |----->Yaw_Control_System----------------------------->|           |
+    //|      |----->Yaw_Control_System---YawRate_Control_System---->|           |
     //========                                                      =============
     
     myX_UserRef->add_callback_msg_receiver((msg_receiver*)X_ControlSystem);
@@ -481,8 +512,8 @@ int main(int argc, char** argv) {
     transform_Y_InertialToBody->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
     Pitch_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     Z_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
-    Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
-    
+    Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem);
+    YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     
     //******************************LOOP***********************************
     //TODO  move to looper constructor
@@ -496,26 +527,10 @@ int main(int argc, char** argv) {
     myLoop->addTimedBlock((TimedBlock*)Roll_ControlSystem);
     myLoop->addTimedBlock((TimedBlock*)Pitch_ControlSystem);
     myLoop->addTimedBlock((TimedBlock*)Yaw_ControlSystem);
-    //  myLoop->addTimedBlock((TimedBlock*) &myAttObserver);
+    myLoop->addTimedBlock((TimedBlock*)YawRate_ControlSystem);
 
     // Creating a new thread 
-    //pthread_create(&loop200hz_func_id, NULL, &Looper::Loop200Hz, NULL);
-    //  pthread_create(&hwloop1khz_func_id, NULL, &Looper::hardwareLoop1KHz, NULL);
     pthread_create(&loop120hz_func_id, NULL, &Looper::Loop120Hz, NULL); 
-
-    //Setting priority
-    // params.sched_priority = sched_get_priority_max(SCHED_FIFO);
-    // int ret = pthread_setschedparam(loop200hz_func_id, SCHED_FIFO, &params);
-    // //  ret += pthread_setschedparam(hwloop1khz_func_id, SCHED_FIFO, &params);
-
-    // params.sched_priority = sched_get_priority_max(SCHED_FIFO) - 1;
-    // ret += pthread_setschedparam(loop120hz_func_id, SCHED_FIFO, &params);
-
-    // if (ret != 0) {
-    //      // Print the error
-    //      // change
-    //      std::cout << "Unsuccessful in setting thread realtime prior " << ret << std::endl;
-    //  }
 
     while(ros::ok()){
 

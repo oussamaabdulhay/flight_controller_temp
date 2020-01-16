@@ -19,6 +19,7 @@ private:
     Vector3D<float> _roll_pv;
     Vector3D<float> _pitch_pv;
     Vector3D<float> _yaw_pv;
+    Vector3D<float> _yaw_rate_pv;
     float _control_system;
     control_system _source;
     float* _actuation;
@@ -37,6 +38,7 @@ public:
     void setRoll_PV(Vector3D<float>);
     void setPitch_PV(Vector3D<float>);
     void setYaw_PV(Vector3D<float>);
+    void setYawRate_PV(Vector3D<float>);
     void setControlSystem(float, control_system);
     void setActuation(float*);
     void setSource(control_system);
@@ -49,6 +51,7 @@ public:
     Vector3D<float> getRoll_PV() { return _roll_pv; }
     Vector3D<float> getPitch_PV() { return _pitch_pv; }
     Vector3D<float> getYaw_PV() { return _yaw_pv; }
+    Vector3D<float> getYawRate_PV() { return _yaw_rate_pv; }
     float getControlSystem() { return _control_system; }
     float* getActuation() { return _actuation; }
     control_system getSource() { return _source; }

@@ -11,6 +11,7 @@ ROSUnit_BroadcastData::ROSUnit_BroadcastData(ros::NodeHandle& t_main_handler) : 
     _rollpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("roll_provider", 10);
     _pitchpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("pitch_provider", 10);
     _yawpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("yaw_provider", 10);
+    _yawratepv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("yaw_rate_provider", 10);
     _cs_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("control_systems_output", 10);
     _act_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("actuation_output", 10);
 
@@ -153,8 +154,19 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
             std_msgs::Float64MultiArray msg;
             msg.data = _act_outputs;
             _act_prov_pub.publish(msg);
+            
+        }else if(ros_msg->getROSMsgType() == ros_msg_type::YAW_RATE_PV){
+            Vector3D<float> yawratepv = ros_msg->getYawRate_PV();
+            _head.yaw = yawratepv.x;
+            geometry_msgs::PointStamped msg;
+            msg.header.seq = ++_seq_yawratepv;
+            msg.header.stamp = ros::Time::now();
+            msg.header.frame_id = "";
+            msg.point.x = yawratepv.x;
+            msg.point.y = yawratepv.y;
+            msg.point.z = yawratepv.z;
+            _yawratepv_prov_pub.publish(msg);
         }
-
     }
 
 }

@@ -157,7 +157,6 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
             
         }else if(ros_msg->getROSMsgType() == ros_msg_type::YAW_RATE_PV){
             Vector3D<float> yawratepv = ros_msg->getYawRate_PV();
-            _head.yaw = yawratepv.x;
             geometry_msgs::PointStamped msg;
             msg.header.seq = ++_seq_yawratepv;
             msg.header.stamp = ros::Time::now();

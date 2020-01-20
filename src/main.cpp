@@ -498,7 +498,7 @@ int main(int argc, char** argv) {
     //|      |----->X_Control_System-->RM_X->Roll_Control_System--->|           |
     //| USER |----->Y_Control_System-->RM_Y->Pitch_Control_System-->| Actuation |      
     //|      |----->Z_Control_System------------------------------->|  System   |
-    //|      |----->Yaw_Control_System---YawRate_Control_System---->|           |
+    //|      |----->Yaw_Control_System-->YawRate_Control_System---->|           |
     //========                                                      =============
     
     myX_UserRef->add_callback_msg_receiver((msg_receiver*)X_ControlSystem);

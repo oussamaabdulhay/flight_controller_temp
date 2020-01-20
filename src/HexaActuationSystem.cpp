@@ -73,7 +73,7 @@ void HexaActuationSystem::receive_msg_data(DataMessage* t_msg){
                     _movements[1] = control_system_msg->getData();
                     break;
                 }
-                case control_system::yaw:
+                case control_system::yaw_rate:
                 {
                     _movements[2] = control_system_msg->getData();
                     break;

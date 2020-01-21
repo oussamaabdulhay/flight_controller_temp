@@ -408,7 +408,8 @@ int main(int argc, char** argv) {
     myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myYawRatePV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-
+    myWaypoint->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    
     //***********************INERTIAL TO BODY PROVIDER*****************************
  
     myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody);

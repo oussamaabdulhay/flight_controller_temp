@@ -41,6 +41,9 @@ void HexaActuationSystem::command(){
 
     ros_msg.setActuation(&_commands[0]);
     this->emit_message((DataMessage*) &ros_msg);
+
+    ros_msg.setArmed(_armed);
+    this->emit_message((DataMessage*) &ros_msg);
 }
 
 int HexaActuationSystem::constrain(float value, int min_value, int max_value) {
@@ -101,5 +104,6 @@ void HexaActuationSystem::receive_msg_data(DataMessage* t_msg){
 
         BoolMessage* bool_msg = (BoolMessage*)t_msg;
         _armed = bool_msg->getData();
+
     }
 }

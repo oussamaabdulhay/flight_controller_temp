@@ -23,7 +23,8 @@ private:
     float _control_system;
     control_system _source;
     float* _actuation;
-
+    bool _armed;
+    int _number_of_waypoints;
 public:
     msg_type getType();
     ros_msg_type getROSMsgType();
@@ -42,6 +43,8 @@ public:
     void setControlSystem(float, control_system);
     void setActuation(float*);
     void setSource(control_system);
+    void setArmed(bool);
+    void setNumberOfWaypoints(int);
     PositionMsg getPosition() { return _position; }
     AttitudeMsg getAttitude() { return _attitude; }
     HeadingMsg getHeading() { return _heading; }
@@ -55,7 +58,8 @@ public:
     float getControlSystem() { return _control_system; }
     float* getActuation() { return _actuation; }
     control_system getSource() { return _source; }
-    
+    bool getArmed() { return _armed; }
+    int getNumberOfWaypoints() { return _number_of_waypoints; }
 
     ROSMsg();
     ~ROSMsg();

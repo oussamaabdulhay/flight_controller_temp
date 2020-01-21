@@ -1,4 +1,6 @@
 #include "RestrictedNormWaypointRefGenerator.hpp"
+
+
 void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
     if (t_msg->getType()==msg_type::WAYPOINT)
     {
@@ -50,11 +52,15 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
                     auto firstWaypoint=Waypoints.begin();
                     Waypoints.erase(firstWaypoint);
                 }
-                
             }
         }
     }
-    
+
+    if(old_size != Waypoints.size()){
+        ros_msg.setNumberOfWaypoints(Waypoints.size());
+        this->emit_message((DataMessage*) &ros_msg);
+        old_size = Waypoints.size();
+    }
 }
 
 void RestrictedNormWaypointRefGenerator::updateControlSystemsReferences(Vector3D<double> t_pos_ref, double t_yaw){

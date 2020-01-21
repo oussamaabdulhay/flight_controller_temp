@@ -14,6 +14,7 @@ ROSUnit_BroadcastData::ROSUnit_BroadcastData(ros::NodeHandle& t_main_handler) : 
     _yawratepv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("yaw_rate_provider", 10);
     _cs_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("control_systems_output", 10);
     _act_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("actuation_output", 10);
+    _info_prov_pub = t_main_handler.advertise<positioning_system::Info>("info", 10);
 
     _att.roll = 0;
     _head.yaw = 0;
@@ -40,7 +41,7 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
             msg.point.y = _position.y;
             msg.point.z = _position.z;
             _pos_prov_pub.publish(msg);
-            this->emit_message((DataMessage*) &_position);
+            this->emit_message((DataMessage*) &_position); //TODO remove this from here and make it better
             x_received = false;
             y_received = false;
             z_received = false;
@@ -165,6 +166,19 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
             msg.point.y = yawratepv.y;
             msg.point.z = yawratepv.z;
             _yawratepv_prov_pub.publish(msg);
+
+        }else if(ros_msg->getROSMsgType() == ros_msg_type::ARMED){
+            _armed = ros_msg->getArmed();
+            positioning_system::Info msg;
+            msg.header.seq = ++_seq_info;
+            msg.header.stamp = ros::Time::now();
+            msg.header.frame_id = "";
+            msg.number_of_waypoints = _number_of_waypoints;
+            msg.armed = _armed;
+            _info_prov_pub.publish(msg);
+
+        }else if(ros_msg->getROSMsgType() == ros_msg_type::NUMBER_OF_WAYPOINTS){
+            _number_of_waypoints = ros_msg->getNumberOfWaypoints();  
         }
     }
 

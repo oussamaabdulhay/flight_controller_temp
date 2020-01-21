@@ -66,3 +66,11 @@ void ROSMsg::setActuation(float* tmp){
     _ros_type = ros_msg_type::ACTUATION;
     _actuation = tmp;
 }
+void ROSMsg::setArmed(bool tmp){
+    _ros_type = ros_msg_type::ARMED;
+    _armed = tmp;
+}
+void ROSMsg::setNumberOfWaypoints(int tmp){
+    _ros_type = ros_msg_type::NUMBER_OF_WAYPOINTS;
+    _number_of_waypoints = tmp;
+}

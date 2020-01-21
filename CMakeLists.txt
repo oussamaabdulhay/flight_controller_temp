@@ -13,6 +13,7 @@ add_message_files(
   FILES
   Controller_param.msg
   Waypoint.msg
+  Info.msg
 )
 
 add_service_files(

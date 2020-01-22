@@ -41,7 +41,6 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
             msg.point.y = _position.y;
             msg.point.z = _position.z;
             _pos_prov_pub.publish(msg);
-            this->emit_message((DataMessage*) &_position); //TODO remove this from here and make it better
             x_received = false;
             y_received = false;
             z_received = false;

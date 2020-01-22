@@ -387,7 +387,7 @@ int main(int argc, char** argv) {
 
     myROSArm->add_callback_msg_receiver((msg_receiver*) myActuationSystem);
 
-    myROSBroadcastData->add_callback_msg_receiver((msg_receiver*)myWaypoint);
+    myXPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myWaypoint);
     myROSWaypoint->add_callback_msg_receiver((msg_receiver*)myWaypoint);
     myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint);
     

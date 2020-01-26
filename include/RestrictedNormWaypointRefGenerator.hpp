@@ -13,7 +13,7 @@
 class RestrictedNormWaypointRefGenerator : public msg_emitter, public msg_receiver{
 
     private:
-    vector<Waypoint> Waypoints;
+    std::vector<Waypoint> Waypoints;
     double max_norm = 0.2;
     bool enabled=false;
     ControlSystem* x_control_system;

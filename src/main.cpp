@@ -86,7 +86,6 @@ int main(int argc, char** argv) {
     //TODO separate files on specific folders
     //TODO make a single pattern to follow for providers
     //TODO makedirect connection between Xsens and Raspberry
-    //TODO Yaw parameterized Reference Generator
 
      //*****************************ROS UNITS*******************************
 

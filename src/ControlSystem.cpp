@@ -42,6 +42,7 @@ void ControlSystem::receive_msg_data(DataMessage* t_msg){
 
         ControlSystemMessage* control_system_msg = (ControlSystemMessage*)t_msg;
         //TODO make the naming more clear
+        //std::cout << "MESSAGE RECEIVED: " << control_system_msg->getData() <<std::endl;
         if(control_system_msg->getControlSystemMsgType() == control_system_msg_type::to_system){
             m_output_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::SETREFERENCE, control_system_msg->getData());
             this->emit_message((DataMessage*) &m_output_msg);
@@ -56,9 +57,6 @@ void ControlSystem::receive_msg_data(DataMessage* t_msg){
         if(_control_system == control_system::roll){
             RollProviderMessage* roll_provider = (RollProviderMessage*)t_msg;
             Vector3D<float> roll_pv_data = roll_provider->getData();
-            
-            // write_data << roll_provider->getData().x << ", " << timer.tockMilliSeconds() <<"\n";
-            // timer.tick();
 
             m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, roll_pv_data);
             this->emit_message((DataMessage*) &m_provider_data_msg);

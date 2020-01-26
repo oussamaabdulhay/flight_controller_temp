@@ -47,6 +47,7 @@
 #include "RestrictedNormWaypointRefGenerator.hpp"
 #include "ROSUnit_RestNormSettings.hpp"
 #include "YawRate_PVProvider.hpp"
+#include "Saturation.hpp"
 
 #define XSens_IMU_en
 #undef Navio_IMU_en
@@ -56,6 +57,7 @@
 #undef f_400HZ
 
 const int PWM_FREQUENCY = 50;
+const float SATURATION_VALUE = 0.2;
 
 Journaller *gJournal = 0;
 
@@ -260,6 +262,9 @@ int main(int argc, char** argv) {
     Transform_InertialToBody* transform_Y_InertialToBody = new Transform_InertialToBody(control_system::y, inertial_command);
 
     RestrictedNormWaypointRefGenerator* myWaypoint = new RestrictedNormWaypointRefGenerator();
+
+    Saturation* X_Saturation = new Saturation(SATURATION_VALUE);
+    Saturation* Y_Saturation = new Saturation(SATURATION_VALUE);
 
     //***********************SETTING CONTROL SYSTEMS***************************
     //TODO Expose switcher to the main, add blocks to the switcher, then make connections between switcher, then add them to the Control System
@@ -496,22 +501,24 @@ int main(int argc, char** argv) {
     myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
 
     //****************************SETTING CONNECTIONS********************************
-    //========                                                      =============
-    //|      |----->X_Control_System-->RM_X->Roll_Control_System--->|           |
-    //| USER |----->Y_Control_System-->RM_Y->Pitch_Control_System-->| Actuation |      
-    //|      |----->Z_Control_System------------------------------->|  System   |
-    //|      |----->Yaw_Control_System-->YawRate_Control_System---->|           |
-    //========                                                      =============
+    //========                                                                    =============
+    //|      |----->X_Control_System-->RM_X-->Saturation-->Roll_Control_System--->|           |
+    //| USER |----->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System-->| Actuation |      
+    //|      |----->Z_Control_System--------------------------------------------->|  System   |
+    //|      |----->Yaw_Control_System---------------->YawRate_Control_System---->|           |
+    //========                                                                    =============
     
     myX_UserRef->add_callback_msg_receiver((msg_receiver*)X_ControlSystem);
     myY_UserRef->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem);
     myZ_UserRef->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem);
     myYaw_UserRef->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem);
     X_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody);
-    transform_X_InertialToBody->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
+    transform_X_InertialToBody->add_callback_msg_receiver((msg_receiver*)X_Saturation);
+    X_Saturation->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
     Roll_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     Y_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody);
-    transform_Y_InertialToBody->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
+    transform_Y_InertialToBody->add_callback_msg_receiver((msg_receiver*)Y_Saturation);
+    Y_Saturation->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
     Pitch_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     Z_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem);

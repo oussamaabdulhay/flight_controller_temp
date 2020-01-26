@@ -19,8 +19,8 @@
 
 {
   "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/OptiTrack.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/OptiTrack.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/OptiTrack.cpp"
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/ProcessVariableDifferentiator.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/ProcessVariableDifferentiator.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/ProcessVariableDifferentiator.cpp"
 },
 
 {

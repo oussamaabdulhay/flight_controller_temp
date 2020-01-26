@@ -22,7 +22,7 @@ void BaseSerialParser::receive_msg_data(DataMessage* t_msg)
 	if(t_msg->getType() == msg_type::SERIALDATA)
 	{
 		SerialDataMsg new_msg = *((SerialDataMsg*) t_msg);
-		list<uint8_t>::iterator it;
+		std::list<uint8_t>::iterator it;
 		for (int i = 0; i = new_msg.len; i++)
 		{
 			if (this->state_machine(new_msg.data[i]))

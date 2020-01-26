@@ -1,6 +1,7 @@
-// Version: 1.0
-// Author: Pedro Henrique R. P. B. Silva
-// Date: 19 November 2019
+// Version: 2.0
+// Author: M. CHehadeh
+// Date: 22 Jan 2020
+// Release note: Added channels for emitter and receiver
 
 #include "MsgReceiver.hpp"
 
@@ -16,4 +17,11 @@ msg_type msg_receiver::get_message_type_ID(){
 }
 msg_receiver::msg_receiver(){
     // std::cout<<"msg_receiver"<<std::endl;
+}
+
+void msg_receiver::receive_msg_data(DataMessage* t_msg){
+    this->receive_msg_data(t_msg,msg_broadcast_channel);
+}
+void msg_receiver::receive_msg_data(DataMessage* t_msg,int channel_id){
+
 }

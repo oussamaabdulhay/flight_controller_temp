@@ -4,7 +4,7 @@
 #include "Vector3D.hpp"
 #include "Vector3DMessage.hpp"
 
-class ProcessVariableReference : public Reference{
+class CircularProcessVariableReference : public Reference{
 
 private:
     reference_type _reference_type;
@@ -18,6 +18,6 @@ public:
     void setReferenceValue(float);
     DataMessage* receive_msg_internal(DataMessage*);
     block_id getID(){ return _id; }
-    ProcessVariableReference(block_id t_id);
-    ~ProcessVariableReference();
+    CircularProcessVariableReference(block_id t_id);
+    ~CircularProcessVariableReference();
 };

@@ -10,7 +10,7 @@ const struct tPacketProp{
 	uint8_t pad_EOP = 0xFF;
 }PacketProp;
 
-enum class msg_type {RESTNORMREF_SETTINGS, WAYPOINT, ROLL_PROVIDER, PITCH_PROVIDER, XSENS, QUATERNION, BODYRATE, SWITCHBLOCK, SWITCHOUT, TESTMSG, SERIALDATA, THREEAXISSENSORMSG, VELOCITY, ACCELERATION, THERMALIMAGE, optitrack, FLIGHTSCENARIO, POSITION, ATTITUDE, HEADING, NOZZLEMSG, UPDATECONTROLLER, RESETCONTROLLER, control_system, USERREFERENCE, controller, float_msg, BOOLEAN, INTEGER, switcher, VECTOR3D, external_reference, ack,internal_msg_start, ROS};
+enum class msg_type {DOUBLE, rtkposition, POSE, RESTNORMREF_SETTINGS, WAYPOINT, ROLL_PROVIDER, PITCH_PROVIDER, XSENS, QUATERNION, BODYRATE, SWITCHBLOCK, SWITCHOUT, TESTMSG, SERIALDATA, THREEAXISSENSORMSG, VELOCITY, ACCELERATION, THERMALIMAGE, optitrack, FLIGHTSCENARIO, POSITION, ATTITUDE, HEADING, NOZZLEMSG, UPDATECONTROLLER, RESETCONTROLLER, control_system, USERREFERENCE, controller, FLOAT, BOOLEAN, INTEGER, switcher, VECTOR3D, external_reference, ack,internal_msg_start, ROS};
 enum class msg_type_optitrack {position, attitude};
 enum class msg_type_flight_scenario {USER, SET_PID};
 enum class control_system {roll=3, pitch=4, yaw=5, x=0, y=1, z=2, pitch_rate = 7, yaw_rate = 6, null_type};
@@ -30,4 +30,5 @@ enum class ack_msg_type { raw_packet, payload, nozzle, obstacle, mission,ack,int
 enum class ros_msg_type {NUMBER_OF_WAYPOINTS, ARMED, POSITION, ORIENTATION, X_PV, Y_PV, Z_PV, ROLL_PV, PITCH_PV, YAW_PV, CONTROLSYSTEM, ACTUATION, YAW_RATE_PV};
 enum class block_frequency {hz100 = 100, hz200 = 200, hhz200 = 201, hz1000 = 1000, hz120 = 120, hz400 = 400};
 enum class msg_type_reference {X, Y, Z, YAW, NULL_TYPE};
+enum class ros_broadcast_channels {X=0, Y=1, Z=2, ROLL=3, PITCH=4, YAW=5, YAW_RATE=6, CONTROLS=7, ACTUATORS=8};
 const float coeff_200Hz_2nd_butter[5] = { -1.97779f, 0.97803f, 6.1006e-05f, 1.2201e-04f, 6.1006e-05f };

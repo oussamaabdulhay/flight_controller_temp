@@ -37,6 +37,7 @@ class ControlSystem : public TimedBlock, public msg_emitter, public msg_receiver
 
     public:
         void receive_msg_data(DataMessage* t_msg);
+        void receive_msg_data(DataMessage* t_msg, int t_channel);
         void getStatus();
         void addBlock(Block* t_block);
         control_system getControlSystemType();
@@ -44,7 +45,7 @@ class ControlSystem : public TimedBlock, public msg_emitter, public msg_receiver
         float get_dt() {return _dt;}
         void runTasks();
 
-        ControlSystem(control_system, PVProvider*, block_frequency);
+        ControlSystem(control_system, block_frequency);
         ~ControlSystem(); //TODO prevent automatic storage
 
     

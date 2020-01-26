@@ -1,7 +1,7 @@
 #pragma once
 #include <math.h>
 #include "ControllerMessage.hpp"
-#include "FloatMessage.hpp"
+#include "FloatMsg.hpp"
 #include "MRFT_values.hpp"
 #include "Controller.hpp"
 #include "ResetControllerMsg.hpp"
@@ -16,7 +16,7 @@ private:
 	Timer _timer;
 	block_id _id;
     controller_type _controller_type;
-	FloatMessage m_output_msg;
+	FloatMsg m_output_msg;
 	float _dt;
     //Chehadeh's code
 	//TODO add to MRFT parameters

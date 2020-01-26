@@ -49,6 +49,7 @@
 #include "YawRate_PVProvider.hpp"
 #include "Saturation.hpp"
 #include "CircularProcessVariableReference.hpp"
+#include "Global2Inertial.hpp"
 
 #define XSens_IMU_en
 #undef Navio_IMU_en
@@ -499,7 +500,7 @@ int main(int argc, char** argv) {
     ctrl_msg.set_dt(YawRate_ControlSystem->get_dt());
     myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
 
-    //****************************SETTING CONNECTIONS********************************
+    //***********************************SETTING CONNECTIONS***********************************
     //========                                                                    =============
     //|      |----->X_Control_System-->RM_X-->Saturation-->Roll_Control_System--->|           |
     //| USER |----->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System-->| Actuation |      

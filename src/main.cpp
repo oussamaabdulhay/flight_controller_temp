@@ -200,16 +200,8 @@ int main(int argc, char** argv) {
     
     //***********************SETTING PROVIDERS**********************************
     
-    MotionCapture* myOptitrackSystem = new OptiTrack();
-    X_PVProvider* myXPV = (X_PVProvider*)myOptitrackSystem;
-    Y_PVProvider* myYPV = (Y_PVProvider*)myOptitrackSystem;
-    Z_PVProvider* myZPV = (Z_PVProvider*)myOptitrackSystem;
-    Yaw_PVProvider* myYawPV = (Yaw_PVProvider*)myOptitrackSystem;
-    YawRate_PVProvider* myYawRatePV = (YawRate_PVProvider*)myOptitrackSystem;
-    #ifdef XSens_IMU_en
-    Roll_PVProvider* myRollPV = (Roll_PVProvider*)myXSensIMU;
-    Pitch_PVProvider* myPitchPV = (Pitch_PVProvider*)myXSensIMU;
-    #endif
+    OptiTrack* myOptitrackSystem = new OptiTrack();
+
     myROSOptitrack->add_callback_msg_receiver((msg_receiver*)myOptitrackSystem);
 
     #ifdef Navio_IMU_en
@@ -268,7 +260,7 @@ int main(int argc, char** argv) {
 
     //***********************SETTING CONTROL SYSTEMS***************************
     //TODO Expose switcher to the main, add blocks to the switcher, then make connections between switcher, then add them to the Control System
-    ControlSystem* X_ControlSystem = new ControlSystem(control_system::x, myXPV, block_frequency::hz120);
+    ControlSystem* X_ControlSystem = new ControlSystem(control_system::x, block_frequency::hz120);
     X_ControlSystem->addBlock(PID_x);
     X_ControlSystem->addBlock(MRFT_x);
     X_ControlSystem->addBlock(PV_Ref_x);
@@ -277,46 +269,52 @@ int main(int argc, char** argv) {
     ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, myPitchPV, block_frequency::hz400);
     #endif
     #ifdef f_200HZ
-    ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, myPitchPV, block_frequency::hz200);
+    ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, block_frequency::hz200);
     #endif
     Pitch_ControlSystem->addBlock(PID_pitch);
     Pitch_ControlSystem->addBlock(MRFT_pitch);
     Pitch_ControlSystem->addBlock(PV_Ref_pitch);
     
-    ControlSystem* Y_ControlSystem = new ControlSystem(control_system::y, myYPV, block_frequency::hz120);
+    ControlSystem* Y_ControlSystem = new ControlSystem(control_system::y, block_frequency::hz120);
     Y_ControlSystem->addBlock(PID_y);
     Y_ControlSystem->addBlock(MRFT_y);
     Y_ControlSystem->addBlock(PV_Ref_y);
 
     #ifdef f_400Hz
-    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, myRollPV, block_frequency::hz400);
+    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, block_frequency::hz400);
     #endif
     #ifdef f_200HZ
-    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, myRollPV, block_frequency::hz200);
+    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, block_frequency::hz200);
     #endif
     Roll_ControlSystem->addBlock(PID_roll);
     Roll_ControlSystem->addBlock(MRFT_roll);
     Roll_ControlSystem->addBlock(PV_Ref_roll);
     
-    ControlSystem* Z_ControlSystem = new ControlSystem(control_system::z, myZPV, block_frequency::hz120);
+    ControlSystem* Z_ControlSystem = new ControlSystem(control_system::z, block_frequency::hz120);
     Z_ControlSystem->addBlock(PID_z);
     Z_ControlSystem->addBlock(MRFT_z);
     Z_ControlSystem->addBlock(PV_Ref_z);
 
-    ControlSystem* Yaw_ControlSystem = new ControlSystem(control_system::yaw, myYawPV, block_frequency::hz120);
+    ControlSystem* Yaw_ControlSystem = new ControlSystem(control_system::yaw, block_frequency::hz120);
     Yaw_ControlSystem->addBlock(PID_yaw);
     Yaw_ControlSystem->addBlock(MRFT_yaw);
     Yaw_ControlSystem->addBlock(PV_Ref_yaw);
 
-    ControlSystem* YawRate_ControlSystem = new ControlSystem(control_system::yaw_rate, myYawRatePV, block_frequency::hz120);
+    ControlSystem* YawRate_ControlSystem = new ControlSystem(control_system::yaw_rate, block_frequency::hz120);
     YawRate_ControlSystem->addBlock(PID_yaw_rate);
     YawRate_ControlSystem->addBlock(MRFT_yaw_rate);
     YawRate_ControlSystem->addBlock(PV_Ref_yaw_rate);
 
     //******************ANTI PATTERN PROVIDERS******************************
 
-    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
-    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
+    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem, (int)control_system::roll);
+    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem, (int)control_system::pitch);
+
+    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)X_ControlSystem, (int)control_system::x);
+    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem, (int)control_system::y);
+    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem, (int)control_system::z);
+    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem, (int)control_system::yaw);
+    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem, (int)control_system::yaw_rate);
 
     //******************SETTING TRAJECTORY GENERATION TOOL******************
 
@@ -397,27 +395,20 @@ int main(int argc, char** argv) {
     myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint);
     
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************
-    X_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    Y_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    Z_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    Roll_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    Pitch_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    myXPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    myYPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    myZPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    //Commented out because of the anti-pattern roll and pitch provider
-    //myRollPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    //myPitchPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    myYawRatePV->PVProvider::add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::x);
+    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::y);
+    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::z);
+    myXSensIMU->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::roll);
+    myXSensIMU->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::pitch);
+    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::yaw);
+    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::yaw_rate);
+
+    //myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
 
     //***********************INERTIAL TO BODY PROVIDER*****************************
  
-    myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody);
-    myYawPV->PVProvider::add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody);
+    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody, (int)control_system::yaw_rate);
+    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody, (int)control_system::yaw_rate);
 
     //***********************SETTING PID INITIAL VALUES*****************************
 
@@ -525,21 +516,21 @@ int main(int argc, char** argv) {
     YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     
     //******************************LOOP***********************************
-    //TODO  move to looper constructor
-    pthread_t loop200hz_func_id, loop120hz_func_id, hwloop1khz_func_id;
-    struct sched_param params;
+    // //TODO  move to looper constructor
+    // pthread_t loop200hz_func_id, loop120hz_func_id, hwloop1khz_func_id;
+    // struct sched_param params;
 
-    Looper* myLoop = new Looper();
-    myLoop->addTimedBlock((TimedBlock*)X_ControlSystem);
-    myLoop->addTimedBlock((TimedBlock*)Y_ControlSystem);
-    myLoop->addTimedBlock((TimedBlock*)Z_ControlSystem);
-    myLoop->addTimedBlock((TimedBlock*)Roll_ControlSystem);
-    myLoop->addTimedBlock((TimedBlock*)Pitch_ControlSystem);
-    myLoop->addTimedBlock((TimedBlock*)Yaw_ControlSystem);
-    myLoop->addTimedBlock((TimedBlock*)YawRate_ControlSystem);
+    // Looper* myLoop = new Looper();
+    // myLoop->addTimedBlock((TimedBlock*)X_ControlSystem);
+    // myLoop->addTimedBlock((TimedBlock*)Y_ControlSystem);
+    // myLoop->addTimedBlock((TimedBlock*)Z_ControlSystem);
+    // myLoop->addTimedBlock((TimedBlock*)Roll_ControlSystem);
+    // myLoop->addTimedBlock((TimedBlock*)Pitch_ControlSystem);
+    // myLoop->addTimedBlock((TimedBlock*)Yaw_ControlSystem);
+    // myLoop->addTimedBlock((TimedBlock*)YawRate_ControlSystem);
 
-    // Creating a new thread 
-    pthread_create(&loop120hz_func_id, NULL, &Looper::Loop120Hz, NULL); 
+    // // Creating a new thread 
+    // pthread_create(&loop120hz_func_id, NULL, &Looper::Loop120Hz, NULL); 
 
     while(ros::ok()){
 

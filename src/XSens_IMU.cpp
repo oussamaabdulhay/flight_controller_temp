@@ -24,15 +24,15 @@ void XSens_IMU::receive_msg_data(DataMessage* t_msg){
         roll_pv.x = orientation_euler.x;
         roll_pv.y = body_rate.x;
         roll_pv.z = 0.0;
-        _roll_pv_msg.setRollProviderMessage(roll_pv);
-        this->emit_message((DataMessage*) &_roll_pv_msg);
+        _roll_pv_msg.setVector3DMessage(roll_pv);
+        this->emit_message_unicast((DataMessage*) &_roll_pv_msg, (int)control_system::roll, (int)control_system::roll);
 
         Vector3D<float> pitch_pv;
         pitch_pv.x = orientation_euler.y;
         pitch_pv.y = body_rate.y;
         pitch_pv.z = 0.0;
-        _pitch_pv_msg.setPitchProviderMessage(pitch_pv);
-        this->emit_message((DataMessage*) &_pitch_pv_msg);
+        _pitch_pv_msg.setVector3DMessage(pitch_pv);
+        this->emit_message_unicast((DataMessage*) &_pitch_pv_msg, (int)control_system::pitch, (int)control_system::pitch);
     }
 
 }

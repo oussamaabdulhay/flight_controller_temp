@@ -138,7 +138,51 @@ void OptiTrack::receive_msg_data(DataMessage* t_msg){
         _bodyAtt = opti_msg->getAttitudeHeading();
         _bodyHeading = this->getHeading().yaw;
         _time = opti_msg->getTime();
+
+        double t_dt = (_time - _prev_time);
+
+        this->updateVelocity(t_dt);
+        this->updateAcceleration(t_dt);
+        this->updateYawRate(t_dt);
+        _prev_pos = _bodyPos;
+        _prev_vel = _bodyVel;
+        _prev_heading = _bodyHeading;
+        _prev_time = _time;
         
+        Vector3D<float> x_pv;
+        x_pv.x = _bodyPos.x;
+        x_pv.y = _bodyVel.x;
+        x_pv.z = _bodyAcc.x;
+        _x_pv_msg.setVector3DMessage(x_pv);
+        this->emit_message_unicast((DataMessage*) &_x_pv_msg, (int)control_system::x, (int)control_system::x);
+
+        Vector3D<float> y_pv;
+        y_pv.x = _bodyPos.y;
+        y_pv.y = _bodyVel.y;
+        y_pv.z = _bodyAcc.y;
+        _y_pv_msg.setVector3DMessage(y_pv);
+        this->emit_message_unicast((DataMessage*) &_y_pv_msg, (int)control_system::y, (int)control_system::y);
+
+        Vector3D<float> z_pv;
+        z_pv.x = _bodyPos.z;
+        z_pv.y = _bodyVel.z;
+        z_pv.z = _bodyAcc.z;
+        _z_pv_msg.setVector3DMessage(z_pv);
+        this->emit_message_unicast((DataMessage*) &_z_pv_msg, (int)control_system::z, (int)control_system::z);
+
+        Vector3D<float> yaw_pv;
+        yaw_pv.x = _bodyHeading;
+        yaw_pv.y = 0.0;
+        yaw_pv.z = 0.0;
+        _yaw_pv_msg.setVector3DMessage(yaw_pv);
+        this->emit_message_unicast((DataMessage*) &_yaw_pv_msg, (int)control_system::yaw, (int)control_system::yaw);
+
+        Vector3D<float> yaw_rate_pv;
+        yaw_rate_pv.x = _bodyYawRate;
+        yaw_rate_pv.y = 0.0;
+        yaw_rate_pv.z = 0.0;
+        _yaw_rate_pv_msg.setVector3DMessage(yaw_rate_pv);
+        this->emit_message_unicast((DataMessage*) &_yaw_rate_pv_msg, (int)control_system::yaw_rate, (int)control_system::yaw_rate);
 
     }
 }

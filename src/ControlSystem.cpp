@@ -2,13 +2,12 @@
 #include <fstream>
 //std::ofstream write_data("/home/pedrohrpbs/catkin_ws_NAVIO//orientation_control_data_control.txt"); 
 
-ControlSystem::ControlSystem(control_system t_control_system, PVProvider* t_pvprovider, block_frequency t_bf) : TimedBlock(t_bf) {
+ControlSystem::ControlSystem(control_system t_control_system, block_frequency t_bf) : TimedBlock(t_bf) {
     // timer.tick();
     _control_system = t_control_system;
     
     controllerSwitcher = new Switcher(switcher_type::controller);
     referenceSwitcher = new Switcher(switcher_type::reference);
-    _providerProcessVariable = t_pvprovider;
     _switchers = {controllerSwitcher, referenceSwitcher};
     _frequency = t_bf;
     _dt = 1.0f / (int)_frequency;
@@ -53,30 +52,17 @@ void ControlSystem::receive_msg_data(DataMessage* t_msg){
         SwitchBlockMsg* switch_msg = (SwitchBlockMsg*)t_msg;
         this->emit_message((DataMessage*) switch_msg);
     
-    }else if(t_msg->getType() == msg_type::ROLL_PROVIDER){
-        if(_control_system == control_system::roll){
-            RollProviderMessage* roll_provider = (RollProviderMessage*)t_msg;
-            Vector3D<float> roll_pv_data = roll_provider->getData();
-
-            m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, roll_pv_data);
-            this->emit_message((DataMessage*) &m_provider_data_msg);
-
-            m_ros_msg.setRoll_PV(roll_pv_data);
-            this->emit_message((DataMessage*) &m_ros_msg);
-        }
-    }else if(t_msg->getType() == msg_type::PITCH_PROVIDER){
-        if(_control_system == control_system::pitch){
-            PitchProviderMessage* pitch_provider = (PitchProviderMessage*)t_msg;
-            Vector3D<float> pitch_pv_data = pitch_provider->getData();
-            
-            m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, pitch_pv_data);
-            this->emit_message((DataMessage*) &m_provider_data_msg);
-            
-            m_ros_msg.setPitch_PV(pitch_pv_data);
-            this->emit_message((DataMessage*) &m_ros_msg);
-        }
     }
+}
 
+void ControlSystem::receive_msg_data(DataMessage* t_msg, int t_channel){
+    if(t_msg->getType() == msg_type::VECTOR3D){
+        Vector3DMessage* provider = (Vector3DMessage*)t_msg;
+        Vector3D<float> pv_data = provider->getData();
+
+        m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, pv_data);
+        this->emit_message((DataMessage*) &m_provider_data_msg);
+    }
 }
 
 control_system ControlSystem::getControlSystemType(){
@@ -96,10 +82,10 @@ void ControlSystem::getStatus(){
 //TODO Provider msg_emitter, remove loopInternal
 //(10)
 void ControlSystem::loopInternal(){
-    Vector3D<float> data = _providerProcessVariable->getProcessVariable();
-    m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, data);
+    // Vector3D<float> data = _providerProcessVariable->getProcessVariable();
+    // m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, data);
 
-    this->emit_message((DataMessage*) &m_provider_data_msg);
+    // this->emit_message((DataMessage*) &m_provider_data_msg);
 }
 
 void ControlSystem::addBlock(Block* t_block){

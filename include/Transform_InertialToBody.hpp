@@ -22,6 +22,7 @@ private:
 public:
 
     void receive_msg_data(DataMessage*);
+    void receive_msg_data(DataMessage*, int);
     void transform();
     Transform_InertialToBody(control_system,  Vector3D<float>* );
     ~Transform_InertialToBody();

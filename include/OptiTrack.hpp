@@ -1,11 +1,15 @@
 #pragma once
-#include "MotionCapture.hpp"
 #include "Quaternion.hpp"
 #include "OptitrackMessage.hpp"
 #include <math.h>
 #include "ROSMsg.hpp"
+#include "VelocityMsg.hpp"
+#include "AccelerationMsg.hpp"
+#include "MsgEmitter.hpp"
+#include "MsgReceiver.hpp"
+#include "Vector3DMessage.hpp"
 
-class OptiTrack : public MotionCapture {
+class OptiTrack : public msg_emitter, msg_receiver {
 
     private:
         Quaternion _bodyAtt;
@@ -16,7 +20,8 @@ class OptiTrack : public MotionCapture {
         Quaternion _quat;
         int j = 0;
         double _time, _prev_time;
-        ROSMsg ros_msg;
+        ROSMsg m_ros_msg;
+        Vector3DMessage _x_pv_msg, _y_pv_msg, _z_pv_msg, _yaw_pv_msg, _yaw_rate_pv_msg;
     public:
         PositionMsg getPosition();
         AttitudeMsg getAttitude(); 

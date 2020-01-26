@@ -5,6 +5,7 @@
 #include <std_msgs/Float64MultiArray.h>
 #include <vector>
 #include "PositionMsg.hpp"
+#include "Vector3DMessage.hpp"
 
 class ROSUnit_BroadcastData : public ROSUnit{
 
@@ -24,6 +25,7 @@ private:
     bool x_received = false, y_received = false, z_received = false;
     static ROSUnit_BroadcastData* _instance_ptr;
     void receive_msg_data(DataMessage* t_msg); 
+    void receive_msg_data(DataMessage* t_msg, int);
     int _seq_pos = 0, _seq_ori = 0, _seq_xpv = 0, _seq_ypv = 0, _seq_zpv = 0;
     int _seq_rollpv = 0, _seq_pitchpv = 0, _seq_yawpv = 0, _seq_cs = 0, _seq_act = 0;
     int _seq_yawratepv = 0;

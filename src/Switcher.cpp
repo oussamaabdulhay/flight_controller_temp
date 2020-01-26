@@ -44,7 +44,7 @@ void Switcher::receive_msg_data(DataMessage* t_msg){
             if(_active_block->getType() == block_type::reference){
                 
                 Reference* reference_block = (Reference*)_active_block;
-
+                // std::cout << (int)reference_block->getID() <<" PROVIDER RECEIVED: " << data_provided.x << std::endl;
                 m_process_variable.setVector3DMessage(data_provided);
                 DataMessage* ref_output_msg = reference_block->receive_msg_internal((DataMessage*) &m_process_variable);
                 Vector3DMessage* v3d_ref_output_msg = (Vector3DMessage*)ref_output_msg;

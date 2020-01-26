@@ -21,22 +21,28 @@ void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg){
             _inertial_command->y = ctrl_sys_msg->getData(); 
         }
 
-    } else if (t_msg->getType() == msg_type::ROS){
-        ROSMsg* ros_msg = (ROSMsg*)t_msg;
+    }else if(t_msg->getType() == msg_type::VECTOR3D){
+        Vector3DMessage* ros_msg = (Vector3DMessage*)t_msg;
         
-        if(ros_msg->getROSMsgType() == ros_msg_type::YAW_PV){
-            Vector3D<float> yawpv = ros_msg->getYaw_PV();
+        Vector3D<float> yawpv = ros_msg->getData();
 
-            Vector3D<float> yaw_rotation;
-            yaw_rotation.x = 0.0;
-            yaw_rotation.y = 0.0;
-            yaw_rotation.z = -yawpv.x;
+        Vector3D<float> yaw_rotation;
+        yaw_rotation.x = 0.0;
+        yaw_rotation.y = 0.0;
+        yaw_rotation.z = -yawpv.x;
 
-            _rotation_matrix.Update(yaw_rotation);
-            this->transform();
-        }
+        _rotation_matrix.Update(yaw_rotation);
+        this->transform();
     }
 }
+
+void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg, int t_channel){
+
+    if(t_channel == (int)control_system::yaw_rate){
+        
+    } 
+}
+
 
 void Transform_InertialToBody::transform(){
 

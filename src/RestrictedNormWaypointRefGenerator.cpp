@@ -27,13 +27,10 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
         if (t_settings_msg->delete_existing_waypoints){
             Waypoints.clear();
         }
-    }
-    else if(t_msg->getType()==msg_type::POSITION){
-        PositionMsg* t_current_pos=(PositionMsg*) t_msg;
+    }else if(t_msg->getType()==msg_type::VECTOR3D){
+        Vector3DMessage* t_current_pos=(Vector3DMessage*) t_msg;
         Vector3D<double> t_current_pos_vec;
-        t_current_pos_vec.x=t_current_pos->x;
-        t_current_pos_vec.y=t_current_pos->y;
-        t_current_pos_vec.z=t_current_pos->z;
+        t_current_pos_vec = t_current_pos->getData();
         
         if (Waypoints.size()>0 && enabled){
             Vector3D<double> diff_pos_waypoint=Waypoints[0].position-t_current_pos_vec;

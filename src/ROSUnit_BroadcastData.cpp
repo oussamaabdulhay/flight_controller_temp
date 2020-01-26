@@ -176,18 +176,17 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
     }
 
     if(roll_received && pitch_received && yaw_received){
-            geometry_msgs::PointStamped msg;
-            msg.header.seq = ++_seq_ori;
-            msg.header.stamp = ros::Time::now();
-            msg.header.frame_id = "body roll pitch yaw";
-            msg.point.x = _att.roll;
-            msg.point.y = _att.pitch;
-            msg.point.z = _head.yaw;
-            _ori_prov_pub.publish(msg);
-            roll_received = false;
-            pitch_received = false;
-            yaw_received = false;
-
-        }
+        geometry_msgs::PointStamped msg;
+        msg.header.seq = ++_seq_ori;
+        msg.header.stamp = ros::Time::now();
+        msg.header.frame_id = "body roll pitch yaw";
+        msg.point.x = _att.roll;
+        msg.point.y = _att.pitch;
+        msg.point.z = _head.yaw;
+        _ori_prov_pub.publish(msg);
+        roll_received = false;
+        pitch_received = false;
+        yaw_received = false;
+    }
 
 }

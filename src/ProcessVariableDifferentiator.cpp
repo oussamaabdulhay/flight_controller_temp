@@ -85,6 +85,9 @@ void ProcessVariableDifferentiator::receive_msg_data(DataMessage* t_msg){
         _yaw_rate_pv_msg.setVector3DMessage(yaw_rate_pv);
         this->emit_message_unicast((DataMessage*) &_yaw_rate_pv_msg, (int)control_system::yaw_rate, (int)control_system::yaw_rate);
 
+        _pos_pv_msg.setVector3DMessage(_bodyPos);
+        this->emit_message_unicast((DataMessage*) &_pos_pv_msg, 111); //111 position channel
+
         _prev_time = _time;
     }
 }

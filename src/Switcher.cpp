@@ -70,8 +70,8 @@ void Switcher::receive_msg_data(DataMessage* t_msg){
                       
         DataMessage* output = _active_block->receive_msg_internal((DataMessage*)switcher_msg);
 
-        FloatMessage* data = (FloatMessage*)output;
-        m_out_switcher_msg.setSwitcherMessage(data->getData());
+        FloatMsg* float_msg = (FloatMsg*)output;
+        m_out_switcher_msg.setSwitcherMessage(float_msg->data);
         
         this->emit_message((DataMessage*) &m_out_switcher_msg);
 

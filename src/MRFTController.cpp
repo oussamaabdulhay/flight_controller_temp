@@ -73,7 +73,7 @@ DataMessage* MRFTController::receive_msg_internal(DataMessage* t_msg){
 		//TODO add a Warning
 	}
 
-    m_output_msg.setFloatMessage(command);
+    m_output_msg.data = command;
 	return (DataMessage*) &m_output_msg;
 }
 

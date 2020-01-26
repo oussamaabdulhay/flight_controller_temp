@@ -8,8 +8,10 @@
 #include "MsgEmitter.hpp"
 #include "MsgReceiver.hpp"
 #include "Vector3DMessage.hpp"
+#include "PoseStampedMsg.hpp"
+#include "FloatMsg.hpp"
 
-class OptiTrack : public msg_emitter, msg_receiver {
+class ProcessVariableDifferentiator : public msg_emitter, msg_receiver {
 
     private:
         Quaternion _bodyAtt;
@@ -19,26 +21,18 @@ class OptiTrack : public msg_emitter, msg_receiver {
         float _bodyYawRate, _prev_heading, _bodyHeading;
         Quaternion _quat;
         int j = 0;
-        double _time, _prev_time;
+        double _time, _prev_time, _dt;
         ROSMsg m_ros_msg;
         Vector3DMessage _x_pv_msg, _y_pv_msg, _z_pv_msg, _yaw_pv_msg, _yaw_rate_pv_msg;
     public:
-        PositionMsg getPosition();
-        AttitudeMsg getAttitude(); 
-        HeadingMsg getHeading(); 
-        VelocityMsg getVelocity();
-        AccelerationMsg getAcceleration();
-        Vector3D<float> getBodyRate();
 
         void updateVelocity(double);
         void updateAcceleration(double);
         void updateYawRate(double);
         
         void receive_msg_data(DataMessage* t_msg);
-        Vector3D<float> getEulerfromQuaternion(Quaternion);
-        Quaternion getQuaternionfromEuler(Vector3D<float>);
         Quaternion getAttitudeHeading(); 
 
-        OptiTrack();
-        ~OptiTrack();
+        ProcessVariableDifferentiator();
+        ~ProcessVariableDifferentiator();
 };

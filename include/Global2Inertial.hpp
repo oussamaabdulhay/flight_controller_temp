@@ -13,9 +13,9 @@
 #include "RotationMatrix3by3.hpp"
 #include "RTKMessagePosition.hpp"
 #include "RTKMessageVelocity.hpp"
-#include "PoseMsg.hpp"
+#include "PoseStampedMsg.hpp"
 #include <math.h>
-
+#include "FloatMsg.hpp"
 
 
 class Global2Inertial : public msg_emitter, public msg_receiver

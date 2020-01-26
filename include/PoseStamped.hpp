@@ -1,9 +1,10 @@
 #pragma once
 
-class Pose
+class PoseStamped
 {
 
 public:
 
     float x, y, z, yaw;
+    double time;
 };

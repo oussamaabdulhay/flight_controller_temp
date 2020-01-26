@@ -39,15 +39,22 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
         Vector3D<float> results = transformPoint(pos_point);
         Vector3D<float> att_vec = getEulerfromQuaternion(_bodyAtt);
         AttitudeMsg _eulerAtt;
+
         HeadingMsg _bodyHeading;
         _eulerAtt.pitch = att_vec.y;
         _eulerAtt.roll = att_vec.x;
         _bodyHeading.yaw = att_vec.z;
-        PoseMsg results_msg;
+
+        PoseStampedMsg results_msg;
         results_msg.pose.x = results.x;
         results_msg.pose.y = results.y;
         results_msg.pose.z = results.z;
-        
+        results_msg.pose.yaw = att_vec.z;
+        results_msg.pose.time = opti_msg->getTime();
+        // FloatMsg time_msg;
+        // time_msg.data = opti_msg->getTime();
+
+        // this->emit_message((DataMessage*)&time_msg);
         this->emit_message((DataMessage*)&results_msg);
         //this->emit_message((DataMessage*)&_eulerAtt);
         //this->emit_message((DataMessage*)&_bodyHeading);
@@ -66,7 +73,7 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
             Vector3D<double> t_global_antenna_position=rtk_msg->position;
             Vector3D<double> t_global_drone_position=t_global_antenna_position-rotated_antenna_position;
             Vector3D<float> t_inertial_drone_position = transformPoint(t_global_drone_position);
-            PoseMsg results_msg;
+            PoseStampedMsg results_msg;
             results_msg.pose.x = t_inertial_drone_position.x;
             results_msg.pose.y = t_inertial_drone_position.y;
             results_msg.pose.z = t_inertial_drone_position.z;

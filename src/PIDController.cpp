@@ -49,7 +49,7 @@ DataMessage* PIDController::receive_msg_internal(DataMessage* t_msg){
 	_command = pid_direct(data.x, data.y, data.z);
 	_filter_y = _filter.perform(_command);
 
-    m_output_msg.setFloatMessage(_command);
+    m_output_msg.data = _command;
 
 	return (DataMessage*) &m_output_msg;
 }

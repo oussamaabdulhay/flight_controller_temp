@@ -10,7 +10,7 @@ const struct tPacketProp{
 	uint8_t pad_EOP = 0xFF;
 }PacketProp;
 
-enum class msg_type {RESTNORMREF_SETTINGS, WAYPOINT, ROLL_PROVIDER, PITCH_PROVIDER, XSENS, QUATERNION, BODYRATE, SWITCHBLOCK, SWITCHOUT, TESTMSG, SERIALDATA, THREEAXISSENSORMSG, VELOCITY, ACCELERATION, THERMALIMAGE, optitrack, FLIGHTSCENARIO, POSITION, ATTITUDE, HEADING, NOZZLEMSG, UPDATECONTROLLER, RESETCONTROLLER, control_system, USERREFERENCE, controller, float_msg, BOOLEAN, INTEGER, switcher, VECTOR3D, external_reference, ack,internal_msg_start, ROS};
+enum class msg_type {DOUBLE, rtkposition, POSE, RESTNORMREF_SETTINGS, WAYPOINT, ROLL_PROVIDER, PITCH_PROVIDER, XSENS, QUATERNION, BODYRATE, SWITCHBLOCK, SWITCHOUT, TESTMSG, SERIALDATA, THREEAXISSENSORMSG, VELOCITY, ACCELERATION, THERMALIMAGE, optitrack, FLIGHTSCENARIO, POSITION, ATTITUDE, HEADING, NOZZLEMSG, UPDATECONTROLLER, RESETCONTROLLER, control_system, USERREFERENCE, controller, FLOAT, BOOLEAN, INTEGER, switcher, VECTOR3D, external_reference, ack,internal_msg_start, ROS};
 enum class msg_type_optitrack {position, attitude};
 enum class msg_type_flight_scenario {USER, SET_PID};
 enum class control_system {roll=3, pitch=4, yaw=5, x=0, y=1, z=2, pitch_rate = 7, yaw_rate = 6, null_type};

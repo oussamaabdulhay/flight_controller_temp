@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include "../include/UM8E.hpp"
-#include "../include/OptiTrack.hpp"
 #include "../include/ROSUnit_Optitrack.hpp"
 #include "../include/PIDController.hpp"
 #include "../include/ControlSystem.hpp"
@@ -50,6 +49,7 @@
 #include "Saturation.hpp"
 #include "CircularProcessVariableReference.hpp"
 #include "Global2Inertial.hpp"
+#include "ProcessVariableDifferentiator.hpp"
 
 #define XSens_IMU_en
 #undef Navio_IMU_en
@@ -201,9 +201,12 @@ int main(int argc, char** argv) {
     
     //***********************SETTING PROVIDERS**********************************
     
-    OptiTrack* myOptitrackSystem = new OptiTrack();
+    Global2Inertial* myGlobal2Inertial = new Global2Inertial();
+    ProcessVariableDifferentiator* myPVDifferentiator = new ProcessVariableDifferentiator();
 
-    myROSOptitrack->add_callback_msg_receiver((msg_receiver*)myOptitrackSystem);
+    myROSOptitrack->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
+
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)myPVDifferentiator);
 
     #ifdef Navio_IMU_en
     AccGyroAttitudeObserver myAttObserver((BodyAccProvider*) myIMU->getAcc(), 
@@ -221,9 +224,7 @@ int main(int argc, char** argv) {
 
      Roll_PVProvider* myRollPV = (Roll_PVProvider*) &myAttObserver;
      Pitch_PVProvider* myPitchPV = (Pitch_PVProvider*) &myAttObserver;
-    #endif    
-
-    
+    #endif        
 
     //**************************SETTING BLOCKS**********************************
 
@@ -258,6 +259,8 @@ int main(int argc, char** argv) {
 
     Saturation* X_Saturation = new Saturation(SATURATION_VALUE);
     Saturation* Y_Saturation = new Saturation(SATURATION_VALUE);
+
+
 
     //***********************SETTING CONTROL SYSTEMS***************************
     //TODO Expose switcher to the main, add blocks to the switcher, then make connections between switcher, then add them to the Control System
@@ -311,11 +314,11 @@ int main(int argc, char** argv) {
     myXSensIMU->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem, (int)control_system::roll);
     myXSensIMU->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem, (int)control_system::pitch);
 
-    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)X_ControlSystem, (int)control_system::x);
-    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem, (int)control_system::y);
-    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem, (int)control_system::z);
-    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem, (int)control_system::yaw);
-    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem, (int)control_system::yaw_rate);
+    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)X_ControlSystem, (int)control_system::x);
+    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem, (int)control_system::y);
+    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem, (int)control_system::z);
+    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem, (int)control_system::yaw);
+    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem, (int)control_system::yaw_rate);
 
     //******************SETTING TRAJECTORY GENERATION TOOL******************
 
@@ -396,13 +399,13 @@ int main(int argc, char** argv) {
     myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint);
     
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************
-    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::x);
-    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::y);
-    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::z);
+    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::x);
+    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::y);
+    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::z);
     myXSensIMU->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::roll);
     myXSensIMU->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::pitch);
-    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::yaw);
-    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::yaw_rate);
+    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::yaw);
+    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::yaw_rate);
 
     myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
 
@@ -416,8 +419,8 @@ int main(int argc, char** argv) {
 
     //***********************INERTIAL TO BODY PROVIDER*****************************
  
-    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody, (int)control_system::yaw_rate);
-    myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody, (int)control_system::yaw_rate);
+    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody, (int)control_system::yaw_rate);
+    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody, (int)control_system::yaw_rate);
 
     //***********************SETTING PID INITIAL VALUES*****************************
 

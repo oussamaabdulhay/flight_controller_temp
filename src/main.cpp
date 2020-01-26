@@ -403,7 +403,15 @@ int main(int argc, char** argv) {
     myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::yaw);
     myOptitrackSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::yaw_rate);
 
-    //myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+
+    X_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    Y_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    Z_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    Roll_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    Pitch_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
 
     //***********************INERTIAL TO BODY PROVIDER*****************************
  

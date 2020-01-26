@@ -59,7 +59,7 @@
 #undef f_400HZ
 
 const int PWM_FREQUENCY = 50;
-const float SATURATION_VALUE = 0.2;
+const float SATURATION_VALUE = 0.4;
 
 Journaller *gJournal = 0;
 

@@ -14,13 +14,13 @@
 // }
 Global2Inertial::Global2Inertial(){
     //TODO: Ensure altitude is calibrated
-    calib_point1.x=0;
-    calib_point1.y=0;
-    calib_point1.z=0;
-    calib_point2.x=0;
-    calib_point2.y=0;
-    calib_point2.z=0;
-    calibrated_reference_inertial_heading=45.*(M_1_PI/180.);
+    calib_point1.x=-0.04;
+    calib_point1.y=0.70;
+    calib_point1.z=0.155;
+    calib_point2.x=0.90;
+    calib_point2.y=0.70;
+    calib_point2.z=0.155;
+    calibrated_reference_inertial_heading=0.*(M_1_PI/180.);
     Vector3D<double> calib_points_diff = calib_point2 - calib_point1;
     calibrated_global_to_inertial_angle = atan2(calib_points_diff.y, calib_points_diff.x);
     antenna_pose.x=0.;
@@ -112,7 +112,7 @@ Vector3D<double> Global2Inertial::transformPoint(Vector3D<double> t_input_point)
 
     G_I_rot_matrix.Update(euler_calib);
 
-    calibrated_input_point = G_I_rot_matrix.TransformVector(calibrated_input_point);
+    //calibrated_input_point = G_I_rot_matrix.TransformVector(calibrated_input_point);
  
     G_I_rot_matrix.Transpose();
     calibrated_input_point = G_I_rot_matrix.TransformVector(calibrated_input_point);

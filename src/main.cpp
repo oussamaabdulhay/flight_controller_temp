@@ -311,8 +311,8 @@ int main(int argc, char** argv) {
 
     //******************ANTI PATTERN PROVIDERS******************************
 
-    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem, (int)control_system::roll);
-    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem, (int)control_system::pitch);
+    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem, (int)control_system::pitch);
+    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem, (int)control_system::roll);
 
     myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)X_ControlSystem, (int)control_system::x);
     myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem, (int)control_system::y);

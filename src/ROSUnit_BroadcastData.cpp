@@ -3,8 +3,8 @@ ROSUnit_BroadcastData* ROSUnit_BroadcastData::_instance_ptr = NULL;
 
 ROSUnit_BroadcastData::ROSUnit_BroadcastData(ros::NodeHandle& t_main_handler) : ROSUnit(t_main_handler){
 
-    _pos_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("body_position", 1);
-    _ori_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("body_orientation", 1);
+    _pos_prov_pub = t_main_handler.advertise<geometry_msgs::Point>("uav_control/uav_position", 1);
+    _ori_prov_pub = t_main_handler.advertise<geometry_msgs::Point>("uav_control/uav_orientation", 1);
     _xpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("x_provider", 1);
     _ypv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("y_provider", 1);
     _zpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("z_provider", 1);
@@ -162,13 +162,13 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
     }
 
     if(x_received && y_received && z_received){
-        geometry_msgs::PointStamped msg;
-        msg.header.seq = ++_seq_pos;
-        msg.header.stamp = ros::Time::now();
-        msg.header.frame_id = "body x y z";
-        msg.point.x = _position.x;
-        msg.point.y = _position.y;
-        msg.point.z = _position.z;
+        geometry_msgs::Point msg;
+        // msg.header.seq = ++_seq_pos;
+        // msg.header.stamp = ros::Time::now();
+        // msg.header.frame_id = "body x y z";
+        msg.x = _position.x;
+        msg.y = _position.y;
+        msg.z = _position.z;
         _pos_prov_pub.publish(msg);
         x_received = false;
         y_received = false;
@@ -176,13 +176,13 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
     }
 
     if(roll_received && pitch_received && yaw_received){
-        geometry_msgs::PointStamped msg;
-        msg.header.seq = ++_seq_ori;
-        msg.header.stamp = ros::Time::now();
-        msg.header.frame_id = "body roll pitch yaw";
-        msg.point.x = _att.roll;
-        msg.point.y = _att.pitch;
-        msg.point.z = _head.yaw;
+        geometry_msgs::Point msg;
+        // msg.header.seq = ++_seq_ori;
+        // msg.header.stamp = ros::Time::now();
+        // msg.header.frame_id = "body roll pitch yaw";
+        msg.x = _att.pitch;
+        msg.y = _att.roll;
+        msg.z = _head.yaw;
         _ori_prov_pub.publish(msg);
         roll_received = false;
         pitch_received = false;

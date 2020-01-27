@@ -2,6 +2,7 @@
 #include "ROSUnit.hpp"
 #include "ROSMsg.hpp"
 #include <geometry_msgs/PointStamped.h>
+#include <geometry_msgs/Point.h>
 #include <std_msgs/Float64MultiArray.h>
 #include <positioning_system/Info.h>
 #include <vector>

@@ -57,8 +57,7 @@ void Switcher::receive_msg_data(DataMessage* t_msg){
         } else if(control_system_msg->getControlSystemMsgType() == control_system_msg_type::SETREFERENCE){
             float reference = control_system_msg->getData();
             if(_active_block->getType() == block_type::reference){
-                //std::cout << "REFERENCE RECEIVED: " << reference << std::endl;
-                Reference* _reference_block = (Reference*)_active_block;
+                Reference* _reference_block = (Reference*)_active_block;                
                 _reference_block->setReferenceValue(reference);
             }
         }

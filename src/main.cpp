@@ -59,7 +59,7 @@
 #undef f_400HZ
 
 const int PWM_FREQUENCY = 50;
-const float SATURATION_VALUE = 0.4;
+const float SATURATION_VALUE = 0.5;
 
 Journaller *gJournal = 0;
 
@@ -420,8 +420,8 @@ int main(int argc, char** argv) {
     
     //***********************INERTIAL TO BODY PROVIDER*****************************
  
-    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody, (int)control_system::yaw_rate);
-    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody, (int)control_system::yaw_rate);
+    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody, (int)control_system::yaw);
+    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody, (int)control_system::yaw);
 
     //***********************SETTING PID INITIAL VALUES*****************************
 

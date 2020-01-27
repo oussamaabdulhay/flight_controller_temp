@@ -1,4 +1,5 @@
 #include "CircularProcessVariableReference.hpp"
+#include <math.h>
 
 CircularProcessVariableReference::CircularProcessVariableReference(block_id t_id) {
     _reference_type = reference_type::process_variable_ref;
@@ -24,9 +25,16 @@ DataMessage* CircularProcessVariableReference::receive_msg_internal(DataMessage*
     float pv = pos_msg->getData().x;
 
     if(fabs(_reference_value - pv) > M_PI){
-        float a = pv - _reference_value;
+        float a = fabs(-pv + _reference_value);
         float b = 2 * M_PI - a;
-        error.x = pv + b;
+        float sign_a;
+        if(pv-_reference_value > 0){
+            sign_a = 1;
+        }else{
+            sign_a = -1;
+        }
+        float ref_a = pv + b * sign_a;
+        error.x = ref_a - pv;
     }else{
         error.x = _reference_value - pv;
     }

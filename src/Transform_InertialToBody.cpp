@@ -20,11 +20,17 @@ void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg){
         } else if (_source == control_system::y && ctrl_sys_msg->getControlSystemMsgType() == control_system_msg_type::to_system){
             _inertial_command->y = ctrl_sys_msg->getData(); 
         }
-
-    }else if(t_msg->getType() == msg_type::VECTOR3D){
-        Vector3DMessage* ros_msg = (Vector3DMessage*)t_msg;
         
-        Vector3D<float> yawpv = ros_msg->getData();
+
+    }
+}
+
+void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg, int t_channel){
+
+    if(t_channel == (int)control_system::yaw){
+        Vector3DMessage* yaw_msg = (Vector3DMessage*)t_msg;
+        
+        Vector3D<float> yawpv = yaw_msg->getData();
 
         Vector3D<float> yaw_rotation;
         yaw_rotation.x = 0.0;
@@ -33,13 +39,6 @@ void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg){
 
         _rotation_matrix.Update(yaw_rotation);
         this->transform();
-    }
-}
-
-void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg, int t_channel){
-
-    if(t_channel == (int)control_system::yaw_rate){
-        
     } 
 }
 

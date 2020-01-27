@@ -43,6 +43,7 @@ catkin_package(
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/include
   ${CMAKE_CURRENT_SOURCE_DIR}/include/Navio2
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/ROSUnits
   ${CMAKE_CURRENT_SOURCE_DIR}/include/Navio2/Common
   ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/src
   ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/src/messagepublishers
@@ -58,6 +59,7 @@ link_directories(${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/lib/xspublic/x
 FILE(GLOB SOURCE_FILES *.hpp *.cpp *.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Navio2_cpp/*.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/ROSUnits/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/src/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/lib/xspublic/xscontroller/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/xsens_ros_mti_driver/lib/xspublic/xscommon/*.cpp

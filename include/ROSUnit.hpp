@@ -7,7 +7,7 @@
 #include "MsgEmitter.hpp"
 #include "common_types.hpp"
 
-
+const int ROSUnit_capacity=5;
 class ROSUnit : public msg_emitter, public msg_receiver{
 
     private:

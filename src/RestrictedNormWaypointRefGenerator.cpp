@@ -2,19 +2,23 @@
 
 
 void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
-    if (t_msg->getType()==msg_type::WAYPOINT)
+    if (t_msg->getType()==msg_type::POSES)
     {
-        WaypointMsg* t_pos_msg=(WaypointMsg*) t_msg;
-        Waypoint t_waypoint;
-        t_waypoint.position.x=t_pos_msg->waypoint.position.x;
-        t_waypoint.position.y=t_pos_msg->waypoint.position.y;
-        t_waypoint.position.z=t_pos_msg->waypoint.position.z;
-        t_waypoint.yaw=t_pos_msg->waypoint.yaw;
-        std::cout << "waypoint X : " << t_waypoint.position.x << std::endl;
-        std::cout << "waypoint Y : " << t_waypoint.position.y << std::endl;
-        std::cout << "waypoint Z : " << t_waypoint.position.z << std::endl;
-        std::cout << "waypoint Yaw : " << t_waypoint.yaw << std::endl;
-        Waypoints.push_back(t_waypoint);
+        PosesMsg* t_pos_msg=(PosesMsg*) t_msg;
+
+        for(int i=0;i<t_pos_msg->p.poses.size();i++){
+            Waypoint t_waypoint;
+            t_waypoint.position.x=t_pos_msg->p.poses[i].x;
+            t_waypoint.position.y=t_pos_msg->p.poses[i].y;
+            t_waypoint.position.z=t_pos_msg->p.poses[i].z;
+            t_waypoint.yaw=t_pos_msg->p.poses[i].yaw;
+            std::cout << "waypoint X : " << t_waypoint.position.x << std::endl;
+            std::cout << "waypoint Y : " << t_waypoint.position.y << std::endl;
+            std::cout << "waypoint Z : " << t_waypoint.position.z << std::endl;
+            std::cout << "waypoint Yaw : " << t_waypoint.yaw << std::endl;
+            Waypoints.push_back(t_waypoint);
+        }
+        
     }
     else if(t_msg->getType()==msg_type::RESTNORMREF_SETTINGS)
     {

@@ -6,7 +6,7 @@
 #include "RestrictedNormRefSettingsMsg.hpp"
 #include "ReferenceMessage.hpp"
 #include "WaypointMsg.hpp"
-#include "Waypoint.hpp"
+#include "PosesMsg.hpp"
 #include <vector>
 #include "ControlSystem.hpp"
 #include "ROSMsg.hpp"

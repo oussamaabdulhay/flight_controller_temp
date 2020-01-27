@@ -50,6 +50,7 @@
 #include "CircularProcessVariableReference.hpp"
 #include "Global2Inertial.hpp"
 #include "ProcessVariableDifferentiator.hpp"
+#include "ROSUnit_Factory.hpp"
 
 #define XSens_IMU_en
 #undef Navio_IMU_en
@@ -94,6 +95,7 @@ int main(int argc, char** argv) {
 
     ros::NodeHandle nh;
     ros::Rate rate(300);
+    ROSUnit_Factory ROSUnit_Factory_main{nh};
 
     ROSUnit* myROSOptitrack = new ROSUnit_Optitrack(nh);
     ROSUnit* myROSUpdateReferenceX = new ROSUnit_UpdateReferenceX(nh);
@@ -107,6 +109,9 @@ int main(int argc, char** argv) {
     ROSUnit* myROSSwitchBlock = new ROSUnit_SwitchBlock(nh);
     ROSUnit* myROSWaypoint = new ROSUnit_Waypoint(nh);
     ROSUnit* myROSRestNormSettings = new ROSUnit_RestNormSettings(nh);
+
+    ROSUnit* ROSUnit_uav_control_set_path = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,ROSUnit_msg_type::ROSUnit_Poses,"uav_control/set_path");
+
 
     //*****************************LOGGER**********************************
     Logger::assignLogger(new StdLogger());
@@ -395,7 +400,7 @@ int main(int argc, char** argv) {
     myROSArm->add_callback_msg_receiver((msg_receiver*) myActuationSystem);
 
     myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)myWaypoint, 111); //111 position channel 
-    myROSWaypoint->add_callback_msg_receiver((msg_receiver*)myWaypoint);
+    ROSUnit_uav_control_set_path->add_callback_msg_receiver((msg_receiver*)myWaypoint);
     myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint);
     
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************

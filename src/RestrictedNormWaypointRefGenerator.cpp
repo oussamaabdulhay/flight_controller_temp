@@ -68,22 +68,22 @@ void RestrictedNormWaypointRefGenerator::updateControlSystemsReferences(Vector3D
     
     ControlSystemMessage x_cont_ref;
     x_cont_ref.setControlSystemMessage(control_system::null_type, control_system_msg_type::to_system, t_pos_ref.x);
-    std::cout << "Setting X Reference: " << t_pos_ref.x << std::endl;
+    //std::cout << "Setting X Reference: " << t_pos_ref.x << std::endl;
     ((msg_receiver*)x_control_system)->receive_msg_data(&x_cont_ref);
 
     ControlSystemMessage y_cont_ref;
     y_cont_ref.setControlSystemMessage(control_system::null_type, control_system_msg_type::to_system, t_pos_ref.y);
-    std::cout << "Setting Y Reference: " << t_pos_ref.y << std::endl;
+    //std::cout << "Setting Y Reference: " << t_pos_ref.y << std::endl;
     ((msg_receiver*)y_control_system)->receive_msg_data(&y_cont_ref);
 
     ControlSystemMessage z_cont_ref;
     z_cont_ref.setControlSystemMessage(control_system::null_type, control_system_msg_type::to_system, t_pos_ref.z);
-    std::cout << "Setting Z Reference: " << t_pos_ref.z << std::endl;
+    //std::cout << "Setting Z Reference: " << t_pos_ref.z << std::endl;
     ((msg_receiver*)z_control_system)->receive_msg_data(&z_cont_ref);
 
     ControlSystemMessage yaw_cont_ref;
     yaw_cont_ref.setControlSystemMessage(control_system::null_type, control_system_msg_type::to_system, t_yaw);
-    std::cout << "Setting Yaw Reference: " << t_yaw << std::endl;
+    //std::cout << "Setting Yaw Reference: " << t_yaw << std::endl;
     ((msg_receiver*)yaw_control_system)->receive_msg_data(&yaw_cont_ref);
 }
 

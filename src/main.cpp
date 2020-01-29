@@ -51,6 +51,7 @@
 #include "Global2Inertial.hpp"
 #include "ProcessVariableDifferentiator.hpp"
 #include "ROSUnit_Factory.hpp"
+#include "BatteryMonitor.hpp"
 
 #define XSens_IMU_en
 #undef Navio_IMU_en
@@ -60,7 +61,8 @@
 #undef f_400HZ
 
 const int PWM_FREQUENCY = 50;
-const float SATURATION_VALUE = 0.5;
+const float SATURATION_VALUE_XY = 0.5;
+const float SATURATION_VALUE_YAWRATE = 0.5;
 
 Journaller *gJournal = 0;
 
@@ -117,6 +119,8 @@ int main(int argc, char** argv) {
     Logger::assignLogger(new StdLogger());
 
     //***********************ADDING SENSORS********************************
+    BatteryMonitor* myBatteryMonitor = new BatteryMonitor();
+
     #ifdef Navio_IMU_en
     NAVIOMPU9250_sensor* myIMU = new NAVIOMPU9250_sensor();
     myIMU->setSettings(ACCELEROMETER, FSR, 16);
@@ -262,8 +266,9 @@ int main(int argc, char** argv) {
 
     RestrictedNormWaypointRefGenerator* myWaypoint = new RestrictedNormWaypointRefGenerator();
 
-    Saturation* X_Saturation = new Saturation(SATURATION_VALUE);
-    Saturation* Y_Saturation = new Saturation(SATURATION_VALUE);
+    Saturation* X_Saturation = new Saturation(SATURATION_VALUE_XY);
+    Saturation* Y_Saturation = new Saturation(SATURATION_VALUE_XY);
+    Saturation* YawRate_Saturation = new Saturation(SATURATION_VALUE_YAWRATE);
 
 
 
@@ -422,6 +427,7 @@ int main(int argc, char** argv) {
     Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myWaypoint->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    myBatteryMonitor->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     
     //***********************INERTIAL TO BODY PROVIDER*****************************
  
@@ -514,7 +520,7 @@ int main(int argc, char** argv) {
     //|      |----->X_Control_System-->RM_X-->Saturation-->Roll_Control_System--->|           |
     //| USER |----->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System-->| Actuation |      
     //|      |----->Z_Control_System--------------------------------------------->|  System   |
-    //|      |----->Yaw_Control_System---------------->YawRate_Control_System---->|           |
+    //|      |----->Yaw_Control_System-->Saturation--->YawRate_Control_System---->|           |
     //========                                                                    =============
     
     myX_UserRef->add_callback_msg_receiver((msg_receiver*)X_ControlSystem);
@@ -530,7 +536,8 @@ int main(int argc, char** argv) {
     Y_Saturation->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
     Pitch_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     Z_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
-    Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem);
+    Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)YawRate_Saturation);
+    YawRate_Saturation->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem);
     YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     
     //******************************LOOP***********************************
@@ -551,7 +558,7 @@ int main(int argc, char** argv) {
     // pthread_create(&loop120hz_func_id, NULL, &Looper::Loop120Hz, NULL); 
 
     while(ros::ok()){
-
+        myBatteryMonitor->getVoltageReading();
         ros::spinOnce();
         rate.sleep();
     }

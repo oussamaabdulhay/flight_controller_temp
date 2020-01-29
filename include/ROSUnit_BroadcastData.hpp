@@ -8,7 +8,7 @@
 #include <vector>
 #include "PositionMsg.hpp"
 #include "Vector3DMessage.hpp"
-
+#include "FloatMsg.hpp"
 class ROSUnit_BroadcastData : public ROSUnit{
 
 private:
@@ -28,6 +28,7 @@ private:
          x_received = false, y_received = false, z_received = false,
          armed_received = false;
     bool _armed = false;
+    float _voltage;
     int _number_of_waypoints = 0;
     static ROSUnit_BroadcastData* _instance_ptr;
     void receive_msg_data(DataMessage* t_msg); 

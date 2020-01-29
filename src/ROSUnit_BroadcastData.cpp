@@ -59,6 +59,7 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
             msg.header.frame_id = "";
             msg.number_of_waypoints = _number_of_waypoints;
             msg.armed = _armed;
+            msg.battery_voltage = _voltage;
             _info_prov_pub.publish(msg);
 
         }else if(ros_msg->getROSMsgType() == ros_msg_type::NUMBER_OF_WAYPOINTS){
@@ -159,13 +160,13 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
             msg.point.z = pitchpv.z;
             _pitchpv_prov_pub.publish(msg);
         }
+    }else if(t_msg->getType() == msg_type::FLOAT){
+        FloatMsg* voltage_msg = (FloatMsg*)t_msg;
+        _voltage = voltage_msg->data;
     }
 
     if(x_received && y_received && z_received){
         geometry_msgs::Point msg;
-        // msg.header.seq = ++_seq_pos;
-        // msg.header.stamp = ros::Time::now();
-        // msg.header.frame_id = "body x y z";
         msg.x = _position.x;
         msg.y = _position.y;
         msg.z = _position.z;
@@ -177,9 +178,6 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
 
     if(roll_received && pitch_received && yaw_received){
         geometry_msgs::Point msg;
-        // msg.header.seq = ++_seq_ori;
-        // msg.header.stamp = ros::Time::now();
-        // msg.header.frame_id = "body roll pitch yaw";
         msg.x = _att.pitch;
         msg.y = _att.roll;
         msg.z = _head.yaw;

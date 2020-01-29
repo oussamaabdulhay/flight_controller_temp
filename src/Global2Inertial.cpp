@@ -14,13 +14,13 @@
 // }
 Global2Inertial::Global2Inertial(){
     //TODO: Ensure altitude is calibrated
-    calib_point1.x=-0.04;
-    calib_point1.y=0.70;
+    calib_point1.x=-1.42;
+    calib_point1.y=0.85;
     calib_point1.z=0.155;
-    calib_point2.x=0.90;
-    calib_point2.y=0.70;
+    calib_point2.x=-1.42;
+    calib_point2.y=-1.38;
     calib_point2.z=0.155;
-    calibrated_reference_inertial_heading=0.*(M_1_PI/180.);
+    calibrated_reference_inertial_heading=-90.*(M_PI/180.);
     Vector3D<double> calib_points_diff = calib_point2 - calib_point1;
     calibrated_global_to_inertial_angle = atan2(calib_points_diff.y, calib_points_diff.x);
     antenna_pose.x=0.;
@@ -49,7 +49,7 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
         results_msg.pose.x = results.x;
         results_msg.pose.y = results.y;
         results_msg.pose.z = results.z;
-        results_msg.pose.yaw = att_vec.z;
+        results_msg.pose.yaw = att_vec.z - calibrated_reference_inertial_heading;
         results_msg.pose.time = opti_msg->getTime();
         // FloatMsg time_msg;
         // time_msg.data = opti_msg->getTime();

@@ -16,7 +16,7 @@ float BatteryMonitor::getVoltageReading(){
         return EXIT_FAILURE;
     }
 
-    _voltage_reading.data = results[BATTERY_VOLTAGE_PIN];
+    _voltage_reading.data = results[BATTERY_VOLTAGE_PIN] * SCALE + OFFSET;
 
-    this->emit_message_unicast((DataMessage*)&_voltage_reading, 222); //222 Battery Voltage Channel //TODO arrange the channels better
+    this->emit_message((DataMessage*)&_voltage_reading); 
 }

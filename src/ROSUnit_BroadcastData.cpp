@@ -65,6 +65,9 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
         }else if(ros_msg->getROSMsgType() == ros_msg_type::NUMBER_OF_WAYPOINTS){
             _number_of_waypoints = ros_msg->getNumberOfWaypoints(); 
         }
+    }else if(t_msg->getType() == msg_type::FLOAT){
+        FloatMsg* voltage_msg = (FloatMsg*)t_msg;
+        _voltage = voltage_msg->data;
     }
 }
 
@@ -160,9 +163,6 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
             msg.point.z = pitchpv.z;
             _pitchpv_prov_pub.publish(msg);
         }
-    }else if(t_msg->getType() == msg_type::FLOAT){
-        FloatMsg* voltage_msg = (FloatMsg*)t_msg;
-        _voltage = voltage_msg->data;
     }
 
     if(x_received && y_received && z_received){

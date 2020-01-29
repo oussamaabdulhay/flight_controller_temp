@@ -109,7 +109,6 @@ int main(int argc, char** argv) {
     ROSUnit* myROSResetController = new ROSUnit_ResetController(nh);
     ROSUnit* myROSBroadcastData = new ROSUnit_BroadcastData(nh);
     ROSUnit* myROSSwitchBlock = new ROSUnit_SwitchBlock(nh);
-    ROSUnit* myROSWaypoint = new ROSUnit_Waypoint(nh);
     ROSUnit* myROSRestNormSettings = new ROSUnit_RestNormSettings(nh);
 
     ROSUnit* ROSUnit_uav_control_set_path = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,ROSUnit_msg_type::ROSUnit_Poses,"uav_control/set_path");

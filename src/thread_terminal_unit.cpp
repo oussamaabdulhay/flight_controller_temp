@@ -23,3 +23,11 @@ void thread_terminal_unit::lock_mutex(){
 void thread_terminal_unit::unlock_mutex(){
     sync_lock[id].unlock();
 }
+
+void thread_terminal_unit::setTerminalUnitAddress(TerminalUnitAddress t_new_address){
+    current_address=t_new_address;
+}
+
+thread_terminal_unit::TerminalUnitAddress thread_terminal_unit::getTerminalAddress(){
+    return current_address;
+}

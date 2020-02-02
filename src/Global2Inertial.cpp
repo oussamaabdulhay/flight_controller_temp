@@ -15,10 +15,10 @@
 Global2Inertial::Global2Inertial(){
     //TODO: Ensure altitude is calibrated
     calib_point1.x=-1.42;
-    calib_point1.y=0.85;
+    calib_point1.y=2.23;
     calib_point1.z=0.155;
     calib_point2.x=-1.42;
-    calib_point2.y=-1.38;
+    calib_point2.y=1.38;
     calib_point2.z=0.155;
     calibrated_reference_inertial_heading=-90.*(M_PI/180.);
     Vector3D<double> calib_points_diff = calib_point2 - calib_point1;

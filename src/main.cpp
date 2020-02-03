@@ -269,6 +269,7 @@ int main(int argc, char** argv) {
     Block* MRFT_yaw = new MRFTController(block_id::MRFT_YAW);
     Block* MRFT_yaw_rate = new MRFTController(block_id::MRFT_YAW_RATE);
 
+    //TODO make all of these Blocks
     Vector3D<float>* inertial_command = new Vector3D<float>();
     Transform_InertialToBody* transform_X_InertialToBody = new Transform_InertialToBody(control_system::x, inertial_command);
     Transform_InertialToBody* transform_Y_InertialToBody = new Transform_InertialToBody(control_system::y, inertial_command);
@@ -288,7 +289,9 @@ int main(int argc, char** argv) {
 
     rtk_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::RTK_pos);
     xsens_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::XSens_pos);
-
+    myGlobal2Inertial->add_callback_msg_receiver(rtk_position_terminal_unit,Global2Inertial::uni_RTK_pos);
+    myGlobal2Inertial->add_callback_msg_receiver(xsens_position_terminal_unit,Global2Inertial::uni_XSens_pos);
+    
     //***********************SETTING CONTROL SYSTEMS***************************
     //TODO Expose switcher to the main, add blocks to the switcher, then make connections between switcher, then add them to the Control System
     ControlSystem* X_ControlSystem = new ControlSystem(control_system::x, block_frequency::hz120);

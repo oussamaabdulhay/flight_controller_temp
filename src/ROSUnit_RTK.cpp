@@ -15,14 +15,12 @@ ROSUnit_RTK::~ROSUnit_RTK() {
 void ROSUnit_RTK::callbackRTK1(const sensor_msgs::NavSatFix::ConstPtr & msg){
     
     Vector3DMessage position_msg;
-    Vector3D<float> pos_data;
+    Vector3D<double> pos_data;
     pos_data.x = msg->latitude;
     pos_data.y = msg->longitude;
     pos_data.z = msg->altitude;
 
-    position_msg.x=pos_data.x;
-    position_msg.y=pos_data.y;
-    position_msg.z=pos_data.z;
+    position_msg.setVector3DMessage(pos_data);
     _instance_ptr->emit_message((DataMessage*) &position_msg,(int)Global2Inertial::receiving_channels::ch_RTK_pos);
 
 }
@@ -31,15 +29,12 @@ void ROSUnit_RTK::callbackRTK1(const sensor_msgs::NavSatFix::ConstPtr & msg){
 void ROSUnit_RTK::callbackRTK2(const geometry_msgs::TwistStamped::ConstPtr& msg){
     
     Vector3DMessage velocity_msg;
-    Vector3D<float> vel_data;
+    Vector3D<double> vel_data;
     vel_data.x = msg->twist.linear.x;
     vel_data.y = msg->twist.linear.y;
     vel_data.z = msg->twist.linear.z;
 
-   
-    velocity_msg.x=vel_data.x;
-    velocity_msg.y=vel_data.y;
-    velocity_msg.z=vel_data.z;
+    velocity_msg.setVector3DMessage(vel_data);
     _instance_ptr->emit_message((DataMessage*) &velocity_msg); 
     
     

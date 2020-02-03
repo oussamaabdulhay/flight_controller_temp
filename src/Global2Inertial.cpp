@@ -99,6 +99,29 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
     }
 }
 
+void Global2Inertial::receive_msg_data(DataMessage* t_msg,int ch){
+    if (t_msg->getType()==msg_type::VECTOR3D){
+        if (ch==Global2Inertial::receiving_channels::ch_RTK_pos){
+            Vector3D<double> results = transformPoint(((Vector3DMessage*)t_msg)->getDataDouble());
+            Vector3DMessage res_msg;
+            res_msg.setVector3DMessage(results);
+            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_RTK_pos);
+        }
+        else if (ch==Global2Inertial::receiving_channels::ch_XSens_pos){
+            Vector3D<double> results = transformPoint(((Vector3DMessage*)t_msg)->getDataDouble());
+            Vector3DMessage res_msg;
+            res_msg.setVector3DMessage(results);
+            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_pos);
+        }
+        else if (ch==Global2Inertial::receiving_channels::ch_XSens_vel){
+            Vector3D<double> results = transformPoint(((Vector3DMessage*)t_msg)->getDataDouble());
+            Vector3DMessage res_msg;
+            res_msg.setVector3DMessage(results);
+            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_vel);
+        }
+    }
+}
+
 Vector3D<double> Global2Inertial::transformPoint(Vector3D<double> t_input_point){
         
     Vector3D<double> euler_calib;

@@ -16,7 +16,7 @@
 #include "PoseStampedMsg.hpp"
 #include <math.h>
 #include "FloatMsg.hpp"
-
+#include "Vector3DMessage.hpp"
 
 class Global2Inertial : public msg_emitter, public msg_receiver
 {
@@ -30,7 +30,10 @@ private:
     Vector3D<double> getEulerfromQuaternion(Quaternion);
     HeadingMsg getHeading(Quaternion);
 public:
+enum unicast_addresses {broadcast,uni_RTK_pos,uni_XSens_pos,uni_Optitrack_pos,uni_XSens_vel};
+enum receiving_channels {ch_broadcast,ch_RTK_pos,ch_XSens_pos,ch_Optitrack_pos,ch_XSens_vel};
     Global2Inertial();
     void receive_msg_data(DataMessage* t_msg);
+    void receive_msg_data(DataMessage* t_msg,int ch);
 
 };

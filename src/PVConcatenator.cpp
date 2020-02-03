@@ -17,13 +17,13 @@ void PVConcatenator::receive_msg_data(DataMessage* t_msg, int t_channel){
         Vector3DMessage* v3d_msg = (Vector3DMessage*)t_msg;
 
         if(t_channel == (int)pv_channel::position){
-            
+            _position = v3d_msg->getData();
         }else if(t_channel == (int)pv_channel::velocity){
-
+            _velocity = v3d_msg->getData();
         }else if(t_channel == (int)pv_channel::angle){
-            
+            _angle = v3d_msg->getData();
         }else if(t_channel == (int)pv_channel::angle_rate){
-            
+            _angle_rate = v3d_msg->getData();
         }
 
         this->concatenate(); //TODO check when this should be triggered

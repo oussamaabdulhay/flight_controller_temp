@@ -55,11 +55,11 @@
 #include "ROSUnit_RTK.hpp"
 #include "HR_LR_position_fusion.hpp"
 #include "Differentiator.hpp"
+#include "PVConcatenator.hpp"
 
 #define XSens_IMU_en
 #undef Navio_IMU_en
-#undef XSens_Thread
-#define XSens_Direct
+#define XSENS_IMU
 #define f_200HZ
 #undef f_400HZ
 #undef XSENS_POSITION
@@ -194,41 +194,49 @@ int main(int argc, char** argv) {
 
     XSens_IMU* myXSensIMU = new XSens_IMU();
 
-    #ifdef XSens_Direct
-    callback.add_callback_msg_receiver((msg_receiver*)myXSensIMU);
-    #endif
-
-    #ifdef XSens_Thread
-    thread_terminal_unit xsens_thread_terminal_unit;
-    callback.add_callback_msg_receiver((msg_receiver*) &xsens_thread_terminal_unit); 
-    thread_initial_unit* roll_pitch_thread = new thread_initial_unit(&xsens_thread_terminal_unit);
-    roll_pitch_thread->add_callback_msg_receiver(myXSensIMU);//emit PV message to roll_control_system and pitch_control_system
-    #ifdef f_200HZ
-    roll_pitch_thread->setLoopFrequency(block_frequency::hz200); //TODO should be one place change
-    #endif
-    #ifdef f_400HZ
-    roll_pitch_thread->setLoopFrequency(block_frequency::hz400); //TODO should be one place change
-    #endif
-    thread* roll_pitch_control_thread = new thread(worker, (TimedBlock*)roll_pitch_thread);
-    #endif
-
     #endif
     
     //***********************SETTING PROVIDERS**********************************
     
     Global2Inertial* myGlobal2Inertial = new Global2Inertial();
     ProcessVariableDifferentiator* myPVDifferentiator = new ProcessVariableDifferentiator();
+    Differentiator* velocityFromPosition = new Differentiator();
+    Differentiator* yawRateFromYaw = new Differentiator();
+    PVConcatenator* CsX_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_x_axis);
+    PVConcatenator* CsY_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_y_axis);
+    PVConcatenator* CsZ_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis);
+    PVConcatenator* CsRoll_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_x_axis);
+    PVConcatenator* CsPitch_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_y_axis);
+    PVConcatenator* CsYaw_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis);
+    PVConcatenator* CsYawRate_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis);
 
     #ifdef OPTITRACK
     myROSOptitrack->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)velocityFromPosition);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)yawRateFromYaw);
+    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, PVConcatenator::receiving_channels::ch_pv_dot);
+    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, PVConcatenator::receiving_channels::ch_pv_dot);
+    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, PVConcatenator::receiving_channels::ch_pv_dot);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, PVConcatenator::receiving_channels::ch_pv);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, PVConcatenator::receiving_channels::ch_pv);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, PVConcatenator::receiving_channels::ch_pv);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator, PVConcatenator::receiving_channels::ch_pv);
+    yawRateFromYaw->add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator, PVConcatenator::receiving_channels::ch_pv);
     #endif
+
+    #ifdef XSENS_IMU
+    callback.add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator, PVConcatenator::receiving_channels::ch_pv_dot);
+    callback.add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator, PVConcatenator::receiving_channels::ch_pv_dot);
+    callback.add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator, PVConcatenator::receiving_channels::ch_pv);
+    callback.add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator, PVConcatenator::receiving_channels::ch_pv);
+    #endif
+
     #ifdef XSENS_POSITION
     //TODO: Read velocity from XSens as well
     callback.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
     #endif
 
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)myPVDifferentiator); //TODO: Must be with OPTITRACK only
-
+    
     #ifdef Navio_IMU_en
     AccGyroAttitudeObserver myAttObserver((BodyAccProvider*) myIMU->getAcc(), 
                                           (BodyRateProvider*) myIMU->getGyro(),
@@ -342,16 +350,15 @@ int main(int argc, char** argv) {
     YawRate_ControlSystem->addBlock(MRFT_yaw_rate);
     YawRate_ControlSystem->addBlock(PV_Ref_yaw_rate);
 
-    //******************ANTI PATTERN PROVIDERS******************************
+    //******************PROVIDERS TO CONTRO SYSTEMS******************************
 
-    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem, (int)control_system::pitch);
-    myXSensIMU->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem, (int)control_system::roll);
-
-    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)X_ControlSystem, (int)control_system::x);
-    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem, (int)control_system::y);
-    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem, (int)control_system::z);
-    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem, (int)control_system::yaw);
-    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem, (int)control_system::yaw_rate);
+    CsX_PVConcatenator->add_callback_msg_receiver((msg_receiver*)X_ControlSystem);
+    CsY_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem);
+    CsZ_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem);
+    CsPitch_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
+    CsRoll_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
+    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem);
+    CsYawRate_PVConcatenator->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem);
 
     //******************SETTING TRAJECTORY GENERATION TOOL******************
 

@@ -52,10 +52,17 @@ void ControlSystem::receive_msg_data(DataMessage* t_msg){
         SwitchBlockMsg* switch_msg = (SwitchBlockMsg*)t_msg;
         this->emit_message((DataMessage*) switch_msg);
     
+    }else if(t_msg->getType() == msg_type::VECTOR3D){
+        Vector3DMessage* provider = (Vector3DMessage*)t_msg;
+        Vector3D<float> pv_data = provider->getData();
+
+        m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, pv_data);
+        this->emit_message((DataMessage*) &m_provider_data_msg);
     }
 }
 
 void ControlSystem::receive_msg_data(DataMessage* t_msg, int t_channel){
+    std::cout <<" you shouldn't be here " << std::endl;
     if(t_msg->getType() == msg_type::VECTOR3D){
         Vector3DMessage* provider = (Vector3DMessage*)t_msg;
         Vector3D<float> pv_data = provider->getData();
@@ -79,13 +86,8 @@ void ControlSystem::getStatus(){
     }
 }
 
-//TODO Provider msg_emitter, remove loopInternal
-//(10)
-void ControlSystem::loopInternal(){
-    // Vector3D<float> data = _providerProcessVariable->getProcessVariable();
-    // m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, data);
 
-    // this->emit_message((DataMessage*) &m_provider_data_msg);
+void ControlSystem::loopInternal(){
 }
 
 void ControlSystem::addBlock(Block* t_block){
@@ -95,7 +97,6 @@ void ControlSystem::addBlock(Block* t_block){
 }
 
 void ControlSystem::runTasks(){
-    //TODO implement
 }
 
 // write_data << roll_provider->getData().y << ", " << timer.tockMilliSeconds() <<"\n";

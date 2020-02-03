@@ -15,6 +15,7 @@
 #include <list>
 #include <string>
 #include "Global2Inertial.hpp"
+#include "PVConcatenator.hpp"
 
 using namespace std;
 #undef DEBUG_XSENS
@@ -59,7 +60,8 @@ enum unicast_addresses {broadcast,unicast_XSens_pos};
 protected:
 	void onLiveDataAvailable(XsDevice*, const XsDataPacket* t_packet) override
 	{
-		XSensMessage m_output_msg;
+		Vector3DMessage pv_msg;
+		Vector3DMessage pv_dot_msg;
 		Vector3DMessage position_msg;
 		xsens::Lock locky(&m_mutex);
 		assert(t_packet != 0);
@@ -78,7 +80,8 @@ protected:
             orientation_euler.x = euler.pitch() * M_PI / 180.0;
             orientation_euler.y = -1 * euler.roll() * M_PI / 180.0; //Arranging the frames to match with the drone's
             orientation_euler.z = euler.yaw() * M_PI / 180.0;
-            m_output_msg.setOrientationEuler(orientation_euler);
+            pv_msg.setVector3DMessage(orientation_euler);
+			this->emit_message_unicast((DataMessage*) &pv_msg, PVConcatenator::receiving_channels::ch_pv);
         }
 
         if (t_packet->containsCalibratedGyroscopeData()){
@@ -88,7 +91,8 @@ protected:
             angular_vel.x = gyr[1];
             angular_vel.y = -1 * gyr[0];
             angular_vel.z = gyr[2];
-            m_output_msg.setAngularVelocity(angular_vel);
+            pv_dot_msg.setVector3DMessage(angular_vel);
+			this->emit_message_unicast((DataMessage*) &pv_dot_msg, PVConcatenator::receiving_channels::ch_pv_dot);
 
         }
 		
@@ -107,7 +111,7 @@ protected:
 		t.tick();
 		#endif
         
-        this->emit_message((DataMessage*) &m_output_msg);
+        
         //**************************************************************
 		++m_numberOfPacketsInBuffer;
 		assert(m_numberOfPacketsInBuffer <= m_maxNumberOfPacketsInBuffer);

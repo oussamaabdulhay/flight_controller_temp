@@ -52,6 +52,8 @@
 #include "ProcessVariableDifferentiator.hpp"
 #include "ROSUnit_Factory.hpp"
 #include "BatteryMonitor.hpp"
+#include "ROSUnit_RTK.hpp"
+#include "HR_LR_position_fusion.hpp"
 
 #define XSens_IMU_en
 #undef Navio_IMU_en
@@ -59,10 +61,12 @@
 #define XSens_Direct
 #define f_200HZ
 #undef f_400HZ
+#define XSENS_POSITION
+#undef OPTITRACK
 
 const int PWM_FREQUENCY = 50;
 const float SATURATION_VALUE_XY = 0.5;
-const float SATURATION_VALUE_YAWRATE = 0.5;
+const float SATURATION_VALUE_YAWRATE = 1.0;
 
 Journaller *gJournal = 0;
 
@@ -112,7 +116,7 @@ int main(int argc, char** argv) {
     ROSUnit* myROSRestNormSettings = new ROSUnit_RestNormSettings(nh);
 
     ROSUnit* ROSUnit_uav_control_set_path = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,ROSUnit_msg_type::ROSUnit_Poses,"uav_control/set_path");
-
+    ROSUnit* myROSRRTK = new ROSUnit_RTK(nh);
 
     //*****************************LOGGER**********************************
     Logger::assignLogger(new StdLogger());
@@ -212,9 +216,15 @@ int main(int argc, char** argv) {
     Global2Inertial* myGlobal2Inertial = new Global2Inertial();
     ProcessVariableDifferentiator* myPVDifferentiator = new ProcessVariableDifferentiator();
 
+    #ifdef OPTITRACK
     myROSOptitrack->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
+    #endif
+    #ifdef XSENS_POSITION
+    //TODO: Read velocity from XSens as well
+    callback.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
+    #endif
 
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)myPVDifferentiator);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)myPVDifferentiator); //TODO: Must be with OPTITRACK only
 
     #ifdef Navio_IMU_en
     AccGyroAttitudeObserver myAttObserver((BodyAccProvider*) myIMU->getAcc(), 
@@ -269,7 +279,15 @@ int main(int argc, char** argv) {
     Saturation* Y_Saturation = new Saturation(SATURATION_VALUE_XY);
     Saturation* YawRate_Saturation = new Saturation(SATURATION_VALUE_YAWRATE);
 
+    //***********************FILTER RTK_GPS*************************************
+    HR_LR_position_fusion* hr_lr_position_fusion = new HR_LR_position_fusion();
+    hr_lr_position_fusion->current_operation_mode = HR_LR_position_fusion::operation_mode::bias_elimination;
 
+    thread_terminal_unit rtk_position_terminal_unit;
+    thread_terminal_unit xsens_position_terminal_unit;
+
+    rtk_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::RTK_pos);
+    xsens_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::XSens_pos);
 
     //***********************SETTING CONTROL SYSTEMS***************************
     //TODO Expose switcher to the main, add blocks to the switcher, then make connections between switcher, then add them to the Control System
@@ -406,6 +424,9 @@ int main(int argc, char** argv) {
     myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)myWaypoint, 111); //111 position channel 
     ROSUnit_uav_control_set_path->add_callback_msg_receiver((msg_receiver*)myWaypoint);
     myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint);
+
+    myROSRTK->add_callback_msg_receiver((msg_receiver*)rtk_position_terminal_unit, );
+    myXSensIMU->add_callback_msg_receiver
     
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************
     myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::x);

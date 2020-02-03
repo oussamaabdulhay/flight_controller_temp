@@ -7,13 +7,13 @@
 #include "common_types.hpp"
 #include "VelocityMsg.hpp"
 #include "PositionMsg.hpp"
+#include "Vector3DMessage.hpp"
+#include "Global2Inertial.hpp"
 
 class ROSUnit_RTK : public ROSUnit{
 
     private:
         static ROSUnit_RTK* _instance_ptr;
-        static VelocityMsg velocity_msg;
-        static PositionMsg position_msg; 
         ros::Subscriber _sub_fix;
         ros::Subscriber _sub_vel;
         static void callbackRTK1(const sensor_msgs::NavSatFix::ConstPtr & msg);

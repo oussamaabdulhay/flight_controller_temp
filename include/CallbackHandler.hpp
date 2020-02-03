@@ -9,7 +9,7 @@
 #include "MsgEmitter.hpp"
 #include "XSensMessage.hpp"
 #include "Timer.hpp"
-
+#include "Vector3DMessage.hpp"
 #include <iostream>
 #include <iomanip>
 #include <list>
@@ -25,6 +25,7 @@ Timer t;
 class CallbackHandler : public XsCallback, public msg_emitter
 {
 public:
+enum unicast_addresses {broadcast,unicast_XSens_pos};
 	CallbackHandler(size_t maxBufferSize = 1)
 		: m_maxNumberOfPacketsInBuffer(maxBufferSize)
 		, m_numberOfPacketsInBuffer(0)
@@ -58,6 +59,7 @@ protected:
 	void onLiveDataAvailable(XsDevice*, const XsDataPacket* t_packet) override
 	{
 		XSensMessage m_output_msg;
+		Vector3DMessage position_msg;
 		xsens::Lock locky(&m_mutex);
 		assert(t_packet != 0);
 		while (m_numberOfPacketsInBuffer >= m_maxNumberOfPacketsInBuffer)
@@ -88,6 +90,17 @@ protected:
             m_output_msg.setAngularVelocity(angular_vel);
 
         }
+		
+		if(t_packet->containsPositionLLA()){
+
+			XsVector pos = t_packet->positionLLA();
+            Vector3D<double> position;
+            position.x = pos[0];
+            position.y = pos[1];
+            position.z = pos[2];
+            position_msg.setVector3DMessage(position);
+			this->emit_message(position_msg,(int)Global2Inertial::receiving_channels::ch_XSens_pos);
+		}
 		#ifdef DEBUG_XSENS
 		std::cout << "TIME: " << t.tockMicroSeconds() << "\n";
 		t.tick();

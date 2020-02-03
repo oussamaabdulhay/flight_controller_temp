@@ -66,6 +66,7 @@
 #define OPTITRACK
 #undef BATTERY_MONITOR
 
+const int OPTITRACK_FREQUENCY = 120;
 const int PWM_FREQUENCY = 50;
 const float SATURATION_VALUE_XY = 0.5;
 const float SATURATION_VALUE_YAWRATE = 1.0;
@@ -184,9 +185,9 @@ int main(int argc, char** argv) {
 
 	cout << "Device: " << device->productCode().toStdString() << ", with ID: " << device->deviceId().toString() << " opened." << endl;
 
-	// Create and attach callback handler to device
-	CallbackHandler callback;
-	device->addCallbackHandler(&callback);
+	// Create and attach callbackXSens handler to device
+	CallbackHandler callbackXSens;
+	device->addCallbackHandler(&callbackXSens);
 
 	cout << "Putting device into measurement mode..." << endl;
 	if (!device->gotoMeasurement())
@@ -199,9 +200,9 @@ int main(int argc, char** argv) {
     //***********************SETTING PROVIDERS**********************************
     
     Global2Inertial* myGlobal2Inertial = new Global2Inertial();
-    ProcessVariableDifferentiator* myPVDifferentiator = new ProcessVariableDifferentiator();
-    Differentiator* velocityFromPosition = new Differentiator();
-    Differentiator* yawRateFromYaw = new Differentiator();
+    Differentiator* velocityFromPosition = new Differentiator(1./OPTITRACK_FREQUENCY);
+    velocityFromPosition->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
+    Differentiator* yawRateFromYaw = new Differentiator(1./OPTITRACK_FREQUENCY);
     PVConcatenator* CsX_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_x_axis);
     PVConcatenator* CsY_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_y_axis);
     PVConcatenator* CsZ_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis);
@@ -214,26 +215,26 @@ int main(int argc, char** argv) {
     myROSOptitrack->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)velocityFromPosition);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)yawRateFromYaw);
-    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, PVConcatenator::receiving_channels::ch_pv_dot);
-    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, PVConcatenator::receiving_channels::ch_pv_dot);
-    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, PVConcatenator::receiving_channels::ch_pv_dot);
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, PVConcatenator::receiving_channels::ch_pv);
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, PVConcatenator::receiving_channels::ch_pv);
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, PVConcatenator::receiving_channels::ch_pv);
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator, PVConcatenator::receiving_channels::ch_pv);
-    yawRateFromYaw->add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator, PVConcatenator::receiving_channels::ch_pv);
+    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)PVConcatenator::receiving_channels::ch_pv_dot);
+    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, (int)PVConcatenator::receiving_channels::ch_pv_dot);
+    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, (int)PVConcatenator::receiving_channels::ch_pv_dot);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)PVConcatenator::receiving_channels::ch_pv);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, (int)PVConcatenator::receiving_channels::ch_pv);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, (int)PVConcatenator::receiving_channels::ch_pv);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator, (int)PVConcatenator::receiving_channels::ch_pv);
+    yawRateFromYaw->add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator, (int)PVConcatenator::receiving_channels::ch_pv);
     #endif
 
     #ifdef XSENS_IMU
-    callback.add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator, PVConcatenator::receiving_channels::ch_pv_dot);
-    callback.add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator, PVConcatenator::receiving_channels::ch_pv_dot);
-    callback.add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator, PVConcatenator::receiving_channels::ch_pv);
-    callback.add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator, PVConcatenator::receiving_channels::ch_pv);
+    callbackXSens.add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator, (int)PVConcatenator::receiving_channels::ch_pv_dot);
+    callbackXSens.add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator, (int)PVConcatenator::receiving_channels::ch_pv_dot);
+    callbackXSens.add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator, (int)PVConcatenator::receiving_channels::ch_pv);
+    callbackXSens.add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator, (int)PVConcatenator::receiving_channels::ch_pv);
     #endif
 
     #ifdef XSENS_POSITION
     //TODO: Read velocity from XSens as well
-    callback.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
+    callbackXSens.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
     #endif
 
     
@@ -434,7 +435,7 @@ int main(int argc, char** argv) {
 
     myROSArm->add_callback_msg_receiver((msg_receiver*) myActuationSystem);
 
-    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)myWaypoint, 111); //111 position channel 
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)myWaypoint); //111 position channel 
     ROSUnit_uav_control_set_path->add_callback_msg_receiver((msg_receiver*)myWaypoint);
     myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint);
 
@@ -442,13 +443,21 @@ int main(int argc, char** argv) {
     //myXSensIMU->add_callback_msg_receiver
     
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************
-    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::x);
-    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::y);
-    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::z);
-    myXSensIMU->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::roll);
-    myXSensIMU->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::pitch);
-    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::yaw);
-    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::yaw_rate);
+    CsX_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::x);
+    CsY_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::y);
+    CsZ_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::z);
+    CsRoll_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::roll);
+    CsPitch_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::pitch);
+    CsYaw_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw);
+    CsYawRate_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw);
+
+    CsX_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)ROSUnit_BroadcastData::ros_broadcast_channels::x);
+    CsY_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)ROSUnit_BroadcastData::ros_broadcast_channels::y);
+    CsZ_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)ROSUnit_BroadcastData::ros_broadcast_channels::z);
+    CsRoll_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)ROSUnit_BroadcastData::ros_broadcast_channels::roll);
+    CsPitch_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)ROSUnit_BroadcastData::ros_broadcast_channels::pitch);
+    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw);
+    CsYawRate_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw_rate);
 
     myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
 
@@ -465,8 +474,8 @@ int main(int argc, char** argv) {
     #endif
     //***********************INERTIAL TO BODY PROVIDER*****************************
  
-    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody, (int)control_system::yaw);
-    myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody, (int)control_system::yaw);
+    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody, (int)control_system::yaw);
+    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody, (int)control_system::yaw);
 
     //***********************SETTING PID INITIAL VALUES*****************************
 

@@ -17,6 +17,6 @@ public:
     ~PVConcatenator();
 
 private:
-    Vector3D<double> pv_vector;
+    Vector3D<float> pv_vector;
     concatenation_axes _selected_concatenation_axes;
 };

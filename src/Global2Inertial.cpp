@@ -45,17 +45,17 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
         _eulerAtt.roll = att_vec.x;
         _bodyHeading.yaw = att_vec.z;
 
-        PoseStampedMsg results_msg;
-        results_msg.pose.x = results.x;
-        results_msg.pose.y = results.y;
-        results_msg.pose.z = results.z;
-        results_msg.pose.yaw = att_vec.z - calibrated_reference_inertial_heading;
-        results_msg.pose.time = opti_msg->getTime();
+        Vector3DMessage results_msg;
+        results_msg.setVector3DMessage(results);
+        FloatMsg yaw_msg;
+        yaw_msg.data = att_vec.z - calibrated_reference_inertial_heading;
+        
         // FloatMsg time_msg;
         // time_msg.data = opti_msg->getTime();
 
         // this->emit_message((DataMessage*)&time_msg);
         this->emit_message((DataMessage*)&results_msg);
+        this->emit_message((DataMessage*)&yaw_msg);
         //this->emit_message((DataMessage*)&_eulerAtt);
         //this->emit_message((DataMessage*)&_bodyHeading);
     }

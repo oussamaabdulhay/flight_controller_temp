@@ -43,6 +43,7 @@ private:
     HeadingMsg _head;
 
 public:
+    enum ros_broadcast_channels {broadcast, x, y, z, roll, pitch, yaw, yaw_rate};
     ROSUnit_BroadcastData(ros::NodeHandle&);
     ~ROSUnit_BroadcastData();
 };

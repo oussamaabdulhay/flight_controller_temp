@@ -12,7 +12,7 @@ ROSUnit_BroadcastData::ROSUnit_BroadcastData(ros::NodeHandle& t_main_handler) : 
     _pitchpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("pitch_provider", 1);
     _yawpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("yaw_provider", 1);
     _yawratepv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("yaw_rate_provider", 1);
-    _cs_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("control_systems_output", 1);
+    _cs_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("control_system_output", 1);
     _act_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("actuation_output", 1);
     _info_prov_pub = t_main_handler.advertise<positioning_system::Info>("info", 1);
 
@@ -75,7 +75,7 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
 
     if(t_msg->getType() == msg_type::VECTOR3D){
         Vector3DMessage* vector3d_msg = (Vector3DMessage*)t_msg;
-        if(t_channel == (int)control_system::x){
+        if(t_channel == (int)ros_broadcast_channels::x){
             Vector3D<float> xpv = vector3d_msg->getData();
             _position.x = xpv.x;
             x_received = true;
@@ -88,7 +88,7 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
             msg.point.z = xpv.z;
             _xpv_prov_pub.publish(msg);
 
-        }else if(t_channel == (int)control_system::y){
+        }else if(t_channel == (int)ros_broadcast_channels::y){
             Vector3D<float> ypv = vector3d_msg->getData();
             _position.y = ypv.x;
             y_received = true;
@@ -101,7 +101,7 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
             msg.point.z = ypv.z;
             _ypv_prov_pub.publish(msg);
 
-        }else if(t_channel == (int)control_system::z){
+        }else if(t_channel == (int)ros_broadcast_channels::z){
             Vector3D<float> zpv = vector3d_msg->getData();
             _position.z = zpv.x;
             z_received = true;
@@ -114,7 +114,7 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
             msg.point.z = zpv.z;
             _zpv_prov_pub.publish(msg);
 
-        }else if(t_channel == (int)control_system::yaw){
+        }else if(t_channel == (int)ros_broadcast_channels::yaw){
             Vector3D<float> yawpv = vector3d_msg->getData();
             _head.yaw = yawpv.x;
             yaw_received = true;
@@ -127,7 +127,7 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
             msg.point.z = yawpv.z;
             _yawpv_prov_pub.publish(msg);
 
-        }else if(t_channel == (int)control_system::yaw_rate){
+        }else if(t_channel == (int)ros_broadcast_channels::yaw_rate){
             Vector3D<float> yawratepv = vector3d_msg->getData();
             geometry_msgs::PointStamped msg;
             msg.header.seq = ++_seq_yawratepv;
@@ -138,7 +138,7 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
             msg.point.z = yawratepv.z;
             _yawratepv_prov_pub.publish(msg);
 
-        }else if(t_channel == (int)control_system::roll){
+        }else if(t_channel == (int)ros_broadcast_channels::roll){
             Vector3D<float> rollpv = vector3d_msg->getData();
             _att.roll = rollpv.x;
             roll_received = true;
@@ -150,7 +150,7 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
             msg.point.y = rollpv.y;
             msg.point.z = rollpv.z;
             _rollpv_prov_pub.publish(msg);
-        }else if(t_channel == (int)control_system::pitch){
+        }else if(t_channel == (int)ros_broadcast_channels::pitch){
             Vector3D<float> pitchpv = vector3d_msg->getData();
             _att.pitch = pitchpv.x;
             pitch_received = true;

@@ -27,7 +27,7 @@ Timer t;
 class CallbackHandler : public XsCallback, public msg_emitter
 {
 public:
-enum unicast_addresses {broadcast,unicast_XSens_pos};
+enum unicast_addresses {broadcast,unicast_XSens_translation,unicast_XSens_orientation};
 	CallbackHandler(size_t maxBufferSize = 1)
 		: m_maxNumberOfPacketsInBuffer(maxBufferSize)
 		, m_numberOfPacketsInBuffer(0)
@@ -81,7 +81,7 @@ protected:
             orientation_euler.y = -1 * euler.roll() * M_PI / 180.0; //Arranging the frames to match with the drone's
             orientation_euler.z = euler.yaw() * M_PI / 180.0;
             pv_msg.setVector3DMessage(orientation_euler);
-			this->emit_message((DataMessage*) &pv_msg, PVConcatenator::receiving_channels::ch_pv);
+			this->emit_message_unicast((DataMessage*) &pv_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation, (int)PVConcatenator::receiving_channels::ch_pv);
         }
 
         if (t_packet->containsCalibratedGyroscopeData()){
@@ -92,7 +92,7 @@ protected:
             angular_vel.y = -1 * gyr[0];
             angular_vel.z = gyr[2];
             pv_dot_msg.setVector3DMessage(angular_vel);
-			this->emit_message((DataMessage*) &pv_dot_msg, PVConcatenator::receiving_channels::ch_pv_dot);
+			//this->emit_message_unicast((DataMessage*) &pv_dot_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation, (int)PVConcatenator::receiving_channels::ch_pv_dot);
 
         }
 		
@@ -104,7 +104,7 @@ protected:
             position.y = pos[1];
             position.z = pos[2];
             position_msg.setVector3DMessage(position);
-			this->emit_message(&position_msg,(int)Global2Inertial::receiving_channels::ch_XSens_pos);
+			this->emit_message_unicast(&position_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation,(int)Global2Inertial::receiving_channels::ch_XSens_pos);
 		}
 		#ifdef DEBUG_XSENS
 		std::cout << "TIME: " << t.tockMicroSeconds() << "\n";

@@ -8,6 +8,7 @@
 #include "Vector3DMessage.hpp"
 #include "Timer.hpp"
 #include "FloatMsg.hpp"
+#include "PVConcatenator.hpp"
 
 class Differentiator : public msg_emitter, public msg_receiver {
 
@@ -17,7 +18,7 @@ private:
     Timer timer;
     float _dt;
 public:
-    void receive_msg_data(DataMessage*);
+    void receive_msg_data(DataMessage*, int);
     void differentiate(float);
     void differentiate(Vector3D<float>);
     Differentiator(float);

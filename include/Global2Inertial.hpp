@@ -17,6 +17,7 @@
 #include <math.h>
 #include "FloatMsg.hpp"
 #include "Vector3DMessage.hpp"
+#include "PVConcatenator.hpp"
 
 class Global2Inertial : public msg_emitter, public msg_receiver
 {

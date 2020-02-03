@@ -1,5 +1,6 @@
 #include "ControlSystem.hpp"
 #include <fstream>
+#undef ControlSystem_debug
 //std::ofstream write_data("/home/pedrohrpbs/catkin_ws_NAVIO//orientation_control_data_control.txt"); 
 
 ControlSystem::ControlSystem(control_system t_control_system, block_frequency t_bf) : TimedBlock(t_bf) {
@@ -41,7 +42,9 @@ void ControlSystem::receive_msg_data(DataMessage* t_msg){
 
         ControlSystemMessage* control_system_msg = (ControlSystemMessage*)t_msg;
         //TODO make the naming more clear
-        //std::cout << "MESSAGE RECEIVED: " << control_system_msg->getData() <<std::endl;
+        #ifdef ControlSystem_debug
+        std::cout << "MESSAGE RECEIVED: " << control_system_msg->getData() <<std::endl;
+        #endif
         if(control_system_msg->getControlSystemMsgType() == control_system_msg_type::to_system){
             m_output_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::SETREFERENCE, control_system_msg->getData());
             this->emit_message((DataMessage*) &m_output_msg);
@@ -56,11 +59,15 @@ void ControlSystem::receive_msg_data(DataMessage* t_msg){
 }
 
 void ControlSystem::receive_msg_data(DataMessage* t_msg, int t_channel){
-    //std::cout <<" you shouldn't be here " << std::endl;
+    #ifdef ControlSystem_debug
+    std::cout <<" you shouldn't be here " << std::endl;
+    #endif
     if(t_msg->getType() == msg_type::VECTOR3D){
         Vector3DMessage* provider = (Vector3DMessage*)t_msg;
         Vector3D<float> pv_data = provider->getData();
+        #ifdef ControlSystem_debug
         std::cout << "pv_data.x " << pv_data.x << ", pv_data.y " << pv_data.y << ", pv_data.z " << pv_data.z << std::endl;
+        #endif
         m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, pv_data);
         this->emit_message((DataMessage*) &m_provider_data_msg);
     }

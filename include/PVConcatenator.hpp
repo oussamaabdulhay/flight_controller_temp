@@ -2,6 +2,7 @@
 #include "MsgEmitter.hpp"
 #include "MsgReceiver.hpp"
 #include "Vector3DMessage.hpp"
+#include <atomic>
 
 class PVConcatenator : public msg_emitter, public msg_receiver{
 
@@ -18,5 +19,7 @@ public:
 
 private:
     Vector3D<double> pv_vector;
+    std::atomic<double> pv_dot;
+    std::atomic<double> pv_dot_dot;
     concatenation_axes _selected_concatenation_axes;
 };

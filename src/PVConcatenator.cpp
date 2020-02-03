@@ -39,10 +39,12 @@ void PVConcatenator::receive_msg_data(DataMessage* t_msg, int t_channel){
             }else if (_selected_concatenation_axes==conc_z_axis){
                 pv_vector.x=v3d_msg->getData().z;
             }
+            pv_vector.y = pv_dot;
+            pv_vector.z = pv_dot_dot;
             Vector3DMessage pv_vector_msg;
             pv_vector_msg.setVector3DMessage(pv_vector);
             #ifdef PVConc_debug
-            //std::cout << "pv_vector.x " << pv_vector.x << ", pv_vector.y " << pv_vector.y << ", pv_vector.z " << pv_vector.z << std::endl;
+            //std::cout << "pv_vector.x " << pv_vector.x << ", pv_dot " << pv_dot << ", pv_dot_dot " << pv_dot_dot << std::endl;
             #endif
             this->emit_message((DataMessage*) &pv_vector_msg);
         }
@@ -54,20 +56,20 @@ void PVConcatenator::receive_msg_data(DataMessage* t_msg, int t_channel){
                 #ifdef PVConc_debug
                 std::cout << "_selected_concatenation_axes==conc_x_axis " << v3d_msg->getData().x << std::endl;
                 #endif
-                pv_vector.y=v3d_msg->getData().x;
+                pv_dot=v3d_msg->getData().x;
             }else if (_selected_concatenation_axes==conc_y_axis){
-                pv_vector.y=v3d_msg->getData().y;
+                pv_dot=v3d_msg->getData().y;
             }else if (_selected_concatenation_axes==conc_z_axis){
-                pv_vector.y=v3d_msg->getData().z;
+                pv_dot=v3d_msg->getData().z;
             }
         }
         else if(t_channel==(int)ch_pv_dot_dot){
             if (_selected_concatenation_axes==conc_x_axis){
-                pv_vector.z=v3d_msg->getData().x;
+                pv_dot_dot=v3d_msg->getData().x;
             }else if (_selected_concatenation_axes==conc_y_axis){
-                pv_vector.z=v3d_msg->getData().y;
+                pv_dot_dot=v3d_msg->getData().y;
             }else if (_selected_concatenation_axes==conc_z_axis){
-                pv_vector.z=v3d_msg->getData().z;
+                pv_dot_dot=v3d_msg->getData().z;
             }
         }
     }    

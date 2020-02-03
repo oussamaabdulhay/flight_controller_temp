@@ -256,6 +256,9 @@ int main(int argc, char** argv) {
     #ifdef RTK
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)&rtk_position_terminal_unit, Global2Inertial::unicast_addresses::uni_RTK_pos);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)&xsens_position_terminal_unit, Global2Inertial::unicast_addresses::uni_XSens_pos);
+    hr_lr_position_fusion->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator);
+    hr_lr_position_fusion->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator);
+    hr_lr_position_fusion->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator);
     #else
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, Global2Inertial::unicast_addresses::uni_XSens_pos);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, Global2Inertial::unicast_addresses::uni_XSens_pos);

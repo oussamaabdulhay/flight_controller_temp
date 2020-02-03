@@ -207,8 +207,8 @@ int main(int argc, char** argv) {
 
     rtk_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::RTK_pos);
     xsens_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::XSens_pos);
-    myGlobal2Inertial->add_callback_msg_receiver(&rtk_position_terminal_unit,Global2Inertial::uni_RTK_pos);
-    myGlobal2Inertial->add_callback_msg_receiver(&xsens_position_terminal_unit,Global2Inertial::uni_XSens_pos);
+    ((thread_initial_unit*)hr_lr_position_fusion)->addTerminalUnit(&rtk_position_terminal_unit);
+    ((thread_initial_unit*)hr_lr_position_fusion)->addTerminalUnit(&xsens_position_terminal_unit);
     #endif
     //***********************SETTING PROVIDERS**********************************
     
@@ -250,8 +250,16 @@ int main(int argc, char** argv) {
     callbackXSens.add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation_rate);
     callbackXSens.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation);
     callbackXSens.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation_rate);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, Global2Inertial::unicast_addresses::uni_XSens_vel);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, Global2Inertial::unicast_addresses::uni_XSens_vel);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, Global2Inertial::unicast_addresses::uni_XSens_vel);
     #ifdef RTK
-    
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)&rtk_position_terminal_unit, Global2Inertial::unicast_addresses::uni_RTK_pos);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)&xsens_position_terminal_unit, Global2Inertial::unicast_addresses::uni_XSens_pos);
+    #else
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, Global2Inertial::unicast_addresses::uni_XSens_pos);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, Global2Inertial::unicast_addresses::uni_XSens_pos);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, Global2Inertial::unicast_addresses::uni_XSens_pos);
     #endif
     #endif
 

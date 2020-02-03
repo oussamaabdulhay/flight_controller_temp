@@ -14,6 +14,7 @@
 #include <iomanip>
 #include <list>
 #include <string>
+#include "Global2Inertial.hpp"
 
 using namespace std;
 #undef DEBUG_XSENS
@@ -99,7 +100,7 @@ protected:
             position.y = pos[1];
             position.z = pos[2];
             position_msg.setVector3DMessage(position);
-			this->emit_message(position_msg,(int)Global2Inertial::receiving_channels::ch_XSens_pos);
+			this->emit_message(&position_msg,(int)Global2Inertial::receiving_channels::ch_XSens_pos);
 		}
 		#ifdef DEBUG_XSENS
 		std::cout << "TIME: " << t.tockMicroSeconds() << "\n";

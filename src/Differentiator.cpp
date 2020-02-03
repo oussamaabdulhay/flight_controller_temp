@@ -38,7 +38,7 @@ void Differentiator::differentiate(float t_float_data){
 
 void Differentiator::differentiate(Vector3D<float> t_vector3d_data){
 
-    Vector3D diff_values;
+    Vector3D<float> diff_values;
     Vector3DMessage output_msg;
     float dt = timer.tockMilliSeconds() / 1000.;
 

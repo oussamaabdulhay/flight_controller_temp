@@ -54,6 +54,7 @@
 #include "BatteryMonitor.hpp"
 #include "ROSUnit_RTK.hpp"
 #include "HR_LR_position_fusion.hpp"
+#include "Differentiator.hpp"
 
 #define XSens_IMU_en
 #undef Navio_IMU_en
@@ -116,7 +117,7 @@ int main(int argc, char** argv) {
     ROSUnit* myROSRestNormSettings = new ROSUnit_RestNormSettings(nh);
 
     ROSUnit* ROSUnit_uav_control_set_path = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,ROSUnit_msg_type::ROSUnit_Poses,"uav_control/set_path");
-    ROSUnit* myROSRRTK = new ROSUnit_RTK(nh);
+    ROSUnit* myROSRTK = new ROSUnit_RTK(nh);
 
     //*****************************LOGGER**********************************
     Logger::assignLogger(new StdLogger());
@@ -289,8 +290,8 @@ int main(int argc, char** argv) {
 
     rtk_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::RTK_pos);
     xsens_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::XSens_pos);
-    myGlobal2Inertial->add_callback_msg_receiver(rtk_position_terminal_unit,Global2Inertial::uni_RTK_pos);
-    myGlobal2Inertial->add_callback_msg_receiver(xsens_position_terminal_unit,Global2Inertial::uni_XSens_pos);
+    myGlobal2Inertial->add_callback_msg_receiver(&rtk_position_terminal_unit,Global2Inertial::uni_RTK_pos);
+    myGlobal2Inertial->add_callback_msg_receiver(&xsens_position_terminal_unit,Global2Inertial::uni_XSens_pos);
     
     //***********************SETTING CONTROL SYSTEMS***************************
     //TODO Expose switcher to the main, add blocks to the switcher, then make connections between switcher, then add them to the Control System
@@ -428,8 +429,8 @@ int main(int argc, char** argv) {
     ROSUnit_uav_control_set_path->add_callback_msg_receiver((msg_receiver*)myWaypoint);
     myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint);
 
-    myROSRTK->add_callback_msg_receiver((msg_receiver*)rtk_position_terminal_unit, );
-    myXSensIMU->add_callback_msg_receiver
+    //myROSRTK->add_callback_msg_receiver((msg_receiver*)rtk_position_terminal_unit, );
+    //myXSensIMU->add_callback_msg_receiver
     
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************
     myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)control_system::x);

@@ -24,6 +24,7 @@ class ProcessVariableDifferentiator : public msg_emitter, msg_receiver {
         double _time, _prev_time, _dt;
         ROSMsg m_ros_msg;
         Vector3DMessage _x_pv_msg, _y_pv_msg, _z_pv_msg, _yaw_pv_msg, _yaw_rate_pv_msg, _pos_pv_msg;
+        
     public:
 
         void updateVelocity(double);

@@ -21,11 +21,6 @@ Vector3D<double> Vector3DMessage::getData(){
 }
 
 
-void Vector3DMessage::setVector3DMessage(Vector3D<float> t_data) {
-    _type = msg_type::VECTOR3D;
-    _data = t_data;
-}
-
 void Vector3DMessage::setVector3DMessage(Vector3D<double> t_data) {
     _type = msg_type::VECTOR3D;
     _data = t_data;

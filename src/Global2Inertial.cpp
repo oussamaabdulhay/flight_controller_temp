@@ -54,7 +54,7 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
         // time_msg.data = opti_msg->getTime();
 
         // this->emit_message((DataMessage*)&time_msg);
-        this->emit_message((DataMessage*)&results_msg);
+        this->emit_message_unicast(&results_msg,Global2Inertial::unicast_addresses::uni_Optitrack_pos);
         this->emit_message((DataMessage*)&yaw_msg);
         //this->emit_message((DataMessage*)&_eulerAtt);
         //this->emit_message((DataMessage*)&_bodyHeading);

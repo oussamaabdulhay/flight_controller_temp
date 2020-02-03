@@ -17,6 +17,5 @@ public:
     Vector3DMessage();
     ~Vector3DMessage();
     
-    void setVector3DMessage(Vector3D<float>);
     void setVector3DMessage(Vector3D<double>);
 };

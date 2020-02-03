@@ -62,8 +62,8 @@
 #define XSENS_IMU
 #define f_200HZ
 #undef f_400HZ
-#undef XSENS_POSITION
-#define OPTITRACK
+#define RTK
+#undef OPTITRACK
 #undef BATTERY_MONITOR
 
 const int OPTITRACK_FREQUENCY = 120;
@@ -196,13 +196,27 @@ int main(int argc, char** argv) {
     XSens_IMU* myXSensIMU = new XSens_IMU();
 
     #endif
-    
+
+    //***********************FILTER RTK_GPS*************************************
+    #ifdef RTK
+    HR_LR_position_fusion* hr_lr_position_fusion = new HR_LR_position_fusion();
+    hr_lr_position_fusion->current_operation_mode = HR_LR_position_fusion::operation_mode::bias_elimination;
+
+    thread_terminal_unit rtk_position_terminal_unit;
+    thread_terminal_unit xsens_position_terminal_unit;
+
+    rtk_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::RTK_pos);
+    xsens_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::XSens_pos);
+    myGlobal2Inertial->add_callback_msg_receiver(&rtk_position_terminal_unit,Global2Inertial::uni_RTK_pos);
+    myGlobal2Inertial->add_callback_msg_receiver(&xsens_position_terminal_unit,Global2Inertial::uni_XSens_pos);
+    #endif
     //***********************SETTING PROVIDERS**********************************
     
     Global2Inertial* myGlobal2Inertial = new Global2Inertial();
     Differentiator* velocityFromPosition = new Differentiator(1./OPTITRACK_FREQUENCY);
     velocityFromPosition->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
     Differentiator* yawRateFromYaw = new Differentiator(1./OPTITRACK_FREQUENCY);
+    yawRateFromYaw->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
     PVConcatenator* CsX_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_x_axis);
     PVConcatenator* CsY_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_y_axis);
     PVConcatenator* CsZ_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis);
@@ -231,9 +245,14 @@ int main(int argc, char** argv) {
     callbackXSens.add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation);
     #endif
 
-    #ifdef XSENS_POSITION
-    //TODO: Read velocity from XSens as well
-    callbackXSens.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
+    #ifdef XSENS_POSE
+    callbackXSens.add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation);
+    callbackXSens.add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation_rate);
+    callbackXSens.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation);
+    callbackXSens.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation_rate);
+    #ifdef RTK
+    
+    #endif
     #endif
 
     
@@ -291,18 +310,6 @@ int main(int argc, char** argv) {
     Saturation* Y_Saturation = new Saturation(SATURATION_VALUE_XY);
     Saturation* YawRate_Saturation = new Saturation(SATURATION_VALUE_YAWRATE);
 
-    //***********************FILTER RTK_GPS*************************************
-    // HR_LR_position_fusion* hr_lr_position_fusion = new HR_LR_position_fusion();
-    // hr_lr_position_fusion->current_operation_mode = HR_LR_position_fusion::operation_mode::bias_elimination;
-
-    // thread_terminal_unit rtk_position_terminal_unit;
-    // thread_terminal_unit xsens_position_terminal_unit;
-
-    // rtk_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::RTK_pos);
-    // xsens_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::XSens_pos);
-    // myGlobal2Inertial->add_callback_msg_receiver(&rtk_position_terminal_unit,Global2Inertial::uni_RTK_pos);
-    // myGlobal2Inertial->add_callback_msg_receiver(&xsens_position_terminal_unit,Global2Inertial::uni_XSens_pos);
-    
     //***********************SETTING CONTROL SYSTEMS***************************
     //TODO Expose switcher to the main, add blocks to the switcher, then make connections between switcher, then add them to the Control System
     ControlSystem* X_ControlSystem = new ControlSystem(control_system::x, block_frequency::hz120);
@@ -445,7 +452,7 @@ int main(int argc, char** argv) {
     CsX_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::x);
     CsY_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::y);
     CsZ_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::z);
-    CsRoll_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::roll);
+    CsRoll_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::roll);  
     CsPitch_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::pitch);
     CsYaw_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw);
     CsYawRate_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw);

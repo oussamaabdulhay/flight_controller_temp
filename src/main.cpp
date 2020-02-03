@@ -62,8 +62,9 @@
 #define XSens_Direct
 #define f_200HZ
 #undef f_400HZ
-#define XSENS_POSITION
-#undef OPTITRACK
+#undef XSENS_POSITION
+#define OPTITRACK
+#undef BATTERY_MONITOR
 
 const int PWM_FREQUENCY = 50;
 const float SATURATION_VALUE_XY = 0.5;
@@ -123,8 +124,9 @@ int main(int argc, char** argv) {
     Logger::assignLogger(new StdLogger());
 
     //***********************ADDING SENSORS********************************
+    #ifdef BATTERY_MONITOR
     BatteryMonitor* myBatteryMonitor = new BatteryMonitor();
-
+    #endif
     #ifdef Navio_IMU_en
     NAVIOMPU9250_sensor* myIMU = new NAVIOMPU9250_sensor();
     myIMU->setSettings(ACCELEROMETER, FSR, 16);
@@ -282,16 +284,16 @@ int main(int argc, char** argv) {
     Saturation* YawRate_Saturation = new Saturation(SATURATION_VALUE_YAWRATE);
 
     //***********************FILTER RTK_GPS*************************************
-    HR_LR_position_fusion* hr_lr_position_fusion = new HR_LR_position_fusion();
-    hr_lr_position_fusion->current_operation_mode = HR_LR_position_fusion::operation_mode::bias_elimination;
+    // HR_LR_position_fusion* hr_lr_position_fusion = new HR_LR_position_fusion();
+    // hr_lr_position_fusion->current_operation_mode = HR_LR_position_fusion::operation_mode::bias_elimination;
 
-    thread_terminal_unit rtk_position_terminal_unit;
-    thread_terminal_unit xsens_position_terminal_unit;
+    // thread_terminal_unit rtk_position_terminal_unit;
+    // thread_terminal_unit xsens_position_terminal_unit;
 
-    rtk_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::RTK_pos);
-    xsens_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::XSens_pos);
-    myGlobal2Inertial->add_callback_msg_receiver(&rtk_position_terminal_unit,Global2Inertial::uni_RTK_pos);
-    myGlobal2Inertial->add_callback_msg_receiver(&xsens_position_terminal_unit,Global2Inertial::uni_XSens_pos);
+    // rtk_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::RTK_pos);
+    // xsens_position_terminal_unit.setTerminalUnitAddress(thread_terminal_unit::XSens_pos);
+    // myGlobal2Inertial->add_callback_msg_receiver(&rtk_position_terminal_unit,Global2Inertial::uni_RTK_pos);
+    // myGlobal2Inertial->add_callback_msg_receiver(&xsens_position_terminal_unit,Global2Inertial::uni_XSens_pos);
     
     //***********************SETTING CONTROL SYSTEMS***************************
     //TODO Expose switcher to the main, add blocks to the switcher, then make connections between switcher, then add them to the Control System
@@ -451,8 +453,9 @@ int main(int argc, char** argv) {
     Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myWaypoint->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    #ifdef BATTERY_MONITOR
     myBatteryMonitor->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    
+    #endif
     //***********************INERTIAL TO BODY PROVIDER*****************************
  
     myPVDifferentiator->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody, (int)control_system::yaw);
@@ -564,25 +567,10 @@ int main(int argc, char** argv) {
     YawRate_Saturation->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem);
     YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     
-    //******************************LOOP***********************************
-    // //TODO  move to looper constructor
-    // pthread_t loop200hz_func_id, loop120hz_func_id, hwloop1khz_func_id;
-    // struct sched_param params;
-
-    // Looper* myLoop = new Looper();
-    // myLoop->addTimedBlock((TimedBlock*)X_ControlSystem);
-    // myLoop->addTimedBlock((TimedBlock*)Y_ControlSystem);
-    // myLoop->addTimedBlock((TimedBlock*)Z_ControlSystem);
-    // myLoop->addTimedBlock((TimedBlock*)Roll_ControlSystem);
-    // myLoop->addTimedBlock((TimedBlock*)Pitch_ControlSystem);
-    // myLoop->addTimedBlock((TimedBlock*)Yaw_ControlSystem);
-    // myLoop->addTimedBlock((TimedBlock*)YawRate_ControlSystem);
-
-    // // Creating a new thread 
-    // pthread_create(&loop120hz_func_id, NULL, &Looper::Loop120Hz, NULL); 
-
     while(ros::ok()){
+        #ifdef BATTERY_MONITOR
         myBatteryMonitor->getVoltageReading();
+        #endif
         ros::spinOnce();
         rate.sleep();
     }

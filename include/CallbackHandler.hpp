@@ -75,8 +75,8 @@ protected:
 		{
             XsEuler euler = t_packet->orientationEuler();
             Vector3D<float> orientation_euler;
-            orientation_euler.x = euler.roll() * M_PI / 180.0;
-            orientation_euler.y = euler.pitch() * M_PI / 180.0;
+            orientation_euler.x = euler.pitch() * M_PI / 180.0;
+            orientation_euler.y = -1 * euler.roll() * M_PI / 180.0; //Arranging the frames to match with the drone's
             orientation_euler.z = euler.yaw() * M_PI / 180.0;
             m_output_msg.setOrientationEuler(orientation_euler);
         }
@@ -85,8 +85,8 @@ protected:
 
             XsVector gyr = t_packet->calibratedGyroscopeData();
             Vector3D<float> angular_vel;
-            angular_vel.x = gyr[0];
-            angular_vel.y = gyr[1];
+            angular_vel.x = gyr[1];
+            angular_vel.y = -1 * gyr[0];
             angular_vel.z = gyr[2];
             m_output_msg.setAngularVelocity(angular_vel);
 

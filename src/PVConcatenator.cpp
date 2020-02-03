@@ -15,18 +15,36 @@ void PVConcatenator::receive_msg_data(DataMessage* t_msg){
 void PVConcatenator::receive_msg_data(DataMessage* t_msg, int t_channel){
     if(t_msg->getType() == msg_type::VECTOR3D){
         Vector3DMessage* v3d_msg = (Vector3DMessage*)t_msg;
-
-        if(t_channel == (int)pv_channel::position){
-            _position = v3d_msg->getData();
-        }else if(t_channel == (int)pv_channel::velocity){
-            _velocity = v3d_msg->getData();
-        }else if(t_channel == (int)pv_channel::angle){
-            _angle = v3d_msg->getData();
-        }else if(t_channel == (int)pv_channel::angle_rate){
-            _angle_rate = v3d_msg->getData();
+        if (t_channel==(int)ch_pv){
+            if (selected_concatenation_axes==conc_x_axis){
+                pv_vector.x=v3d_msg->getData().x;
+            }else if (selected_concatenation_axes==conc_y_axis){
+                pv_vector.x=v3d_msg->getData().y;
+            }else if (selected_concatenation_axes==conc_z_axis){
+                pv_vector.x=v3d_msg->getData().z;
+            }
+            Vector3DMessage pv_vector_msg;
+            pv_vector_msg.setVector3DMessage(pv_vector);
+            emit_message(&pv_vector_msg);
         }
-
-        this->concatenate(); //TODO check when this should be triggered
+        else if(t_channel==(int)ch_pv_dot){
+            if (selected_concatenation_axes==conc_x_axis){
+                pv_vector.y=v3d_msg->getData().x;
+            }else if (selected_concatenation_axes==conc_y_axis){
+                pv_vector.y=v3d_msg->getData().y;
+            }else if (selected_concatenation_axes==conc_z_axis){
+                pv_vector.y=v3d_msg->getData().z;
+            }
+        }
+        else if(t_channel==(int)ch_pv_dot_dot){
+            if (selected_concatenation_axes==conc_x_axis){
+                pv_vector.z=v3d_msg->getData().x;
+            }else if (selected_concatenation_axes==conc_y_axis){
+                pv_vector.z=v3d_msg->getData().y;
+            }else if (selected_concatenation_axes==conc_z_axis){
+                pv_vector.z=v3d_msg->getData().z;
+            }
+        }
     }    
 }
 

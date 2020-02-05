@@ -19,9 +19,11 @@ void HR_LR_position_fusion::runTasks() {
                 }
             }
             else {
+                std::cout<< "last_RTK_position_reading" << last_RTK_position_reading.x <<", "<<last_RTK_position_reading.y<<", " << last_RTK_position_reading.z << "\n";
                 filtered_diff_position.x=three_axis_lpf[0].filterData(last_RTK_position_reading.x-last_XSens_position_reading.x);
                 filtered_diff_position.y=three_axis_lpf[1].filterData(last_RTK_position_reading.y-last_XSens_position_reading.y);
                 filtered_diff_position.z=three_axis_lpf[2].filterData(last_RTK_position_reading.z-last_XSens_position_reading.z);
+                std::cout<< "filtered_diff_position" << filtered_diff_position.x <<", "<<filtered_diff_position.y<<", " << filtered_diff_position.z << "\n";
             }
         }
         else if (thread_terminals[i]->getTerminalAddress()==thread_terminal_unit::XSens_pos){
@@ -33,7 +35,9 @@ void HR_LR_position_fusion::runTasks() {
         }
     }
     Vector3D<double> res;
-    res=last_XSens_position_reading+filtered_diff_position;
+    //res=last_XSens_position_reading+filtered_diff_position;
+    res=last_XSens_position_reading;
+    //res=last_RTK_position_reading;
     Vector3DMessage results;
     results.setVector3DMessage(res);
     emit_message(&results,PVConcatenator::ch_pv);

@@ -14,12 +14,20 @@
 // }
 Global2Inertial::Global2Inertial(){
     //TODO: Ensure altitude is calibrated
-    calib_point1.x=24.4487401883;
-    calib_point1.y=54.3972450683;
-    calib_point1.z=0;
-    calib_point2.x=24.4487282683;
-    calib_point2.y=54.3969143183;
-    calib_point2.z=0;
+    calib_point1.x = 24.4482901933;
+    calib_point1.y = 54.3968237;
+    calib_point1.z = -2.44;
+
+    calib_point2.x = 24.44825802;
+    calib_point2.y = 54.3967831917;
+    calib_point2.z = -2.483;
+
+    // calib_point1.x=0;
+    // calib_point1.y=0;
+    // calib_point1.z=0;
+    // calib_point2.x=0;
+    // calib_point2.y=0;
+    // calib_point2.z=0;
     calibrated_reference_inertial_heading=-90.*(M_PI/180.);
     Vector3D<double> calib_points_diff = calib_point2 - calib_point1;
     calibrated_global_to_inertial_angle = atan2(calib_points_diff.y, calib_points_diff.x);
@@ -36,7 +44,8 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
         Vector3D<double> pos_point = opti_msg->getPosition();
         Quaternion _bodyAtt = opti_msg->getAttitudeHeading();
         //HeadingMsg _bodyHeading = this->getHeading(_bodyAtt);
-        Vector3D<float> results = transformPoint(pos_point);
+        //Vector3D<float> results = transformPoint(pos_point); //TODO uncomment
+        Vector3D<float> results = pos_point; //TODO uncomment
         Vector3D<float> att_vec = getEulerfromQuaternion(_bodyAtt);
         AttitudeMsg _eulerAtt;
 
@@ -102,18 +111,28 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
 void Global2Inertial::receive_msg_data(DataMessage* t_msg,int ch){
     if (t_msg->getType()==msg_type::VECTOR3D){
         if (ch==Global2Inertial::receiving_channels::ch_RTK_pos){
-            Vector3D<double> results = transformPoint(((Vector3DMessage*)t_msg)->getData());
-            results=changeLLAtoMeters(results);
+            Vector3D<double> results = changeLLAtoMeters(calib_point1, ((Vector3DMessage*)t_msg)->getData()); //TODO uncoment
+            Vector3D<double> results_elev=offsetElevation(results,-calib_point1.z);
+            //std::cout << "RTK BEFORE results.x=" << results.x << " results.y=" << results.y << " results.z=" << results.z << std::endl;
+            Vector3D<double> results_rot=rotatePoint(results_elev);
+            //std::cout << "RTK AFTER  results.x=" << results_rot.x << " results.y=" << results_rot.y << " results.z=" << results_rot.z << std::endl;  
             Vector3DMessage res_msg;
-            res_msg.setVector3DMessage(results);
+            res_msg.setVector3DMessage(results_rot);
             emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_RTK_pos);
         }
         else if (ch==Global2Inertial::receiving_channels::ch_XSens_pos){
-            Vector3D<double> results = transformPoint(((Vector3DMessage*)t_msg)->getData());
-            results=changeLLAtoMeters(results);
+            //std::cout << "RAW.x=" << ((Vector3DMessage*)t_msg)->getData().x << " RAW.y=" << ((Vector3DMessage*)t_msg)->getData().y << " RAW.z=" << ((Vector3DMessage*)t_msg)->getData().z << std::endl;
+            Vector3D<double> results = changeLLAtoMeters(calib_point1,((Vector3DMessage*)t_msg)->getData());
+            //std::cout << "BEFORE results.x=" << results.x << " results.y=" << results.y << " results.z=" << results.z << std::endl;
+            Vector3D<double> results_rot=rotatePoint(results);
+            //std::cout << "AFTER  results.x=" << results_rot.x << " results.y=" << results_rot.y << " results.z=" << results_rot.z << std::endl;  
             Vector3DMessage res_msg;
-            res_msg.setVector3DMessage(results);
+            res_msg.setVector3DMessage(results_rot);
+            #ifdef RTK
             emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_pos);
+            #else
+            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_pos,(int)PVConcatenator::receiving_channels::ch_pv);
+            #endif
         }
         else if (ch==Global2Inertial::receiving_channels::ch_XSens_vel){
             Vector3D<double> results = transformVelocity(((Vector3DMessage*)t_msg)->getData());
@@ -124,15 +143,30 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg,int ch){
     }
 }
 
-Vector3D<double> Global2Inertial::transformPoint(Vector3D<double> t_input_point){
+Vector3D<double> Global2Inertial::translatePoint(Vector3D<double> t_input_point){
         
-    Vector3D<double> euler_calib;
-    euler_calib.z = calibrated_global_to_inertial_angle;
 
     Vector3D<double> origin = calib_point1;
     Vector3D<double> calibrated_input_point;
     
     calibrated_input_point = t_input_point - origin;
+    
+    return calibrated_input_point;
+}
+
+Vector3D<double> Global2Inertial::offsetElevation(Vector3D<double> t_input,double elev_offset){
+    Vector3D<double> t_res;
+    t_res=t_input;
+    t_res.z=t_res.z+elev_offset;
+    return t_res;
+}
+
+
+Vector3D<double> Global2Inertial::rotatePoint(Vector3D<double> t_input_point){
+        
+    Vector3D<double> euler_calib;
+    euler_calib.z = calibrated_global_to_inertial_angle;
+    Vector3D<double> calibrated_input_point;
     RotationMatrix3by3 G_I_rot_matrix;
 
     G_I_rot_matrix.Update(euler_calib);
@@ -140,14 +174,9 @@ Vector3D<double> Global2Inertial::transformPoint(Vector3D<double> t_input_point)
     //calibrated_input_point = G_I_rot_matrix.TransformVector(calibrated_input_point);
  
     G_I_rot_matrix.Transpose();
-    calibrated_input_point = G_I_rot_matrix.TransformVector(calibrated_input_point);
+    calibrated_input_point = G_I_rot_matrix.TransformVector(t_input_point);
 
-    Vector3D<double> t_results;
-    t_results.x = calibrated_input_point.x;
-    t_results.y = calibrated_input_point.y;
-    t_results.z = calibrated_input_point.z;
-
-    return t_results;
+    return calibrated_input_point;
 }
 
 Vector3D<double> Global2Inertial::transformVelocity(Vector3D<double> t_input_point){
@@ -191,10 +220,18 @@ HeadingMsg Global2Inertial::getHeading(Quaternion t_bodyAtt)
     return t_heading_msg;
 }
 
-Vector3D<double> Global2Inertial::changeLLAtoMeters(Vector3D<double> t_input){
+Vector3D<double> Global2Inertial::changeLLAtoMeters(Vector3D<double> t_origin,Vector3D<double> t_input2){
+    //StackOverflow: "How to convert latitude or longitude to meters". Answer by JJones
     Vector3D<double> res;
-    res.x=Earth_R*cos((t_input.x)*(M_PI/180.))*cos((t_input.y)*(M_PI/180.));
-    res.y=Earth_R*cos((t_input.x)*(M_PI/180.))*sin((t_input.y)*(M_PI/180.));
-    res.y=Earth_R*sin((t_input.x)*(M_PI/180.));
+    double latMid,m_per_deg_lat,m_per_deg_long,deltaLat,deltaLong,dist_m;
+    latMid=(t_origin.x+t_input2.x)/2.;
+    m_per_deg_lat=111132.954-559.822 * cos(2.*latMid)+1.175*cos(4.0*latMid);
+    m_per_deg_long=(M_PI/180.)*6367449.0*cos(latMid);
+    deltaLat=t_input2.x-t_origin.x;
+    deltaLong=t_input2.y-t_origin.y;
+    res.x=deltaLat*m_per_deg_lat;
+    res.y=deltaLong*m_per_deg_long;
+    res.z=t_input2.z;
+    
     return res;
 }

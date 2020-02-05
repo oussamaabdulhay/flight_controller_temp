@@ -111,8 +111,10 @@ protected:
             position.y = pos[1];
             position.z = pos[2];
             position_msg.setVector3DMessage(position);
-			//std::cout << "position.x " << position.x << " position.y " << position.y << " position.z " << position.z << std::endl;
-
+			// std::cout << "position.x " << std::setprecision(12) << position.x << 
+			// " position.y "<< std::setprecision(12) << position.y <<
+			//  " position.z " << std::setprecision(12)<< position.z << std::endl;
+			
 			this->emit_message_unicast(&position_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation,(int)Global2Inertial::receiving_channels::ch_XSens_pos);
 		}
 		if (t_packet->containsVelocity()){

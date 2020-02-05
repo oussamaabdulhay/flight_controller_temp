@@ -28,10 +28,12 @@ private:
     double calibrated_reference_inertial_heading;//TODO: This needs to be moved to XSens node
     Vector3D<double> antenna_pose;
     Vector3D<double> last_known_orientation;
-    Vector3D<double> changeLLAtoMeters(Vector3D<double>);
-    Vector3D<double> transformPoint(Vector3D<double>);
+    Vector3D<double> changeLLAtoMeters(Vector3D<double>,Vector3D<double>);
+    Vector3D<double> translatePoint(Vector3D<double>);
+    Vector3D<double> rotatePoint(Vector3D<double>);
     Vector3D<double> transformVelocity(Vector3D<double>);
     Vector3D<double> getEulerfromQuaternion(Quaternion);
+    Vector3D<double> offsetElevation(Vector3D<double>,double);
     HeadingMsg getHeading(Quaternion);
 public:
 enum unicast_addresses {broadcast,uni_RTK_pos,uni_XSens_pos,uni_Optitrack_pos,uni_XSens_vel};

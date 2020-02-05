@@ -14,12 +14,12 @@
 // }
 Global2Inertial::Global2Inertial(){
     //TODO: Ensure altitude is calibrated
-    calib_point1.x=-1.42;
-    calib_point1.y=2.23;
-    calib_point1.z=0.155;
-    calib_point2.x=-1.42;
-    calib_point2.y=1.38;
-    calib_point2.z=0.155;
+    calib_point1.x=24.4487401883;
+    calib_point1.y=54.3972450683;
+    calib_point1.z=0;
+    calib_point2.x=24.4487282683;
+    calib_point2.y=54.3969143183;
+    calib_point2.z=0;
     calibrated_reference_inertial_heading=-90.*(M_PI/180.);
     Vector3D<double> calib_points_diff = calib_point2 - calib_point1;
     calibrated_global_to_inertial_angle = atan2(calib_points_diff.y, calib_points_diff.x);
@@ -103,21 +103,23 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg,int ch){
     if (t_msg->getType()==msg_type::VECTOR3D){
         if (ch==Global2Inertial::receiving_channels::ch_RTK_pos){
             Vector3D<double> results = transformPoint(((Vector3DMessage*)t_msg)->getData());
+            results=changeLLAtoMeters(results);
             Vector3DMessage res_msg;
             res_msg.setVector3DMessage(results);
             emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_RTK_pos);
         }
         else if (ch==Global2Inertial::receiving_channels::ch_XSens_pos){
             Vector3D<double> results = transformPoint(((Vector3DMessage*)t_msg)->getData());
+            results=changeLLAtoMeters(results);
             Vector3DMessage res_msg;
             res_msg.setVector3DMessage(results);
             emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_pos);
         }
         else if (ch==Global2Inertial::receiving_channels::ch_XSens_vel){
-            Vector3D<double> results = transformPoint(((Vector3DMessage*)t_msg)->getData());
+            Vector3D<double> results = transformVelocity(((Vector3DMessage*)t_msg)->getData());
             Vector3DMessage res_msg;
             res_msg.setVector3DMessage(results);
-            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_vel);
+            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_vel,(int)PVConcatenator::receiving_channels::ch_pv_dot);
         }
     }
 }
@@ -146,6 +148,15 @@ Vector3D<double> Global2Inertial::transformPoint(Vector3D<double> t_input_point)
     t_results.z = calibrated_input_point.z;
 
     return t_results;
+}
+
+Vector3D<double> Global2Inertial::transformVelocity(Vector3D<double> t_input_point){
+    RotationMatrix3by3 G_I_rot_matrix;
+    Vector3D<double> euler_calib;
+    euler_calib.z = calibrated_global_to_inertial_angle;
+    G_I_rot_matrix.Update(euler_calib);
+    G_I_rot_matrix.Transpose();
+    return G_I_rot_matrix.TransformVector(t_input_point);
 }
 
 Vector3D<double> Global2Inertial::getEulerfromQuaternion(Quaternion q){
@@ -178,4 +189,12 @@ HeadingMsg Global2Inertial::getHeading(Quaternion t_bodyAtt)
     t_heading_msg.yaw = rpy.z;
 
     return t_heading_msg;
+}
+
+Vector3D<double> Global2Inertial::changeLLAtoMeters(Vector3D<double> t_input){
+    Vector3D<double> res;
+    res.x=Earth_R*cos((t_input.x)*(M_PI/180.))*cos((t_input.y)*(M_PI/180.));
+    res.y=Earth_R*cos((t_input.x)*(M_PI/180.))*sin((t_input.y)*(M_PI/180.));
+    res.y=Earth_R*sin((t_input.x)*(M_PI/180.));
+    return res;
 }

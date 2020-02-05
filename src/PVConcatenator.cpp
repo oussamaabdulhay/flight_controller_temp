@@ -12,7 +12,7 @@ PVConcatenator::~PVConcatenator() {
 
 void PVConcatenator::receive_msg_data(DataMessage* t_msg){
     #ifdef PVConc_debug
-    //std::cout << "PVConcatenator::receive_msg_data(DataMessage* t_msg)" << std::endl;
+    std::cout << "PVConcatenator::receive_msg_data(DataMessage* t_msg)" << std::endl;
     #endif
 }
 
@@ -50,11 +50,11 @@ void PVConcatenator::receive_msg_data(DataMessage* t_msg, int t_channel){
         }
         else if(t_channel==(int)ch_pv_dot){
             #ifdef PVConc_debug
-            std::cout << "t_channel==(int)ch_pv_dot" << std::endl;
+            //std::cout << "t_channel==(int)ch_pv_dot" << std::endl;
             #endif
             if (_selected_concatenation_axes==conc_x_axis){
                 #ifdef PVConc_debug
-                std::cout << "_selected_concatenation_axes==conc_x_axis " << v3d_msg->getData().x << std::endl;
+                //std::cout << "_selected_concatenation_axes==conc_x_axis " << v3d_msg->getData().x << std::endl;
                 #endif
                 pv_dot=v3d_msg->getData().x;
             }else if (_selected_concatenation_axes==conc_y_axis){

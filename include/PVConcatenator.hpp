@@ -21,5 +21,7 @@ private:
     Vector3D<double> pv_vector;
     std::atomic<double> pv_dot;
     std::atomic<double> pv_dot_dot;
+    // double pv_dot;
+    // double pv_dot_dot;
     concatenation_axes _selected_concatenation_axes;
 };

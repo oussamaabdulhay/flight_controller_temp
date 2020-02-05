@@ -23,11 +23,14 @@ class Global2Inertial : public msg_emitter, public msg_receiver
 {
 private:
     Vector3D<double> calib_point1, calib_point2;
+    const double Earth_R=6371000.;
     double calibrated_global_to_inertial_angle;
     double calibrated_reference_inertial_heading;//TODO: This needs to be moved to XSens node
     Vector3D<double> antenna_pose;
     Vector3D<double> last_known_orientation;
+    Vector3D<double> changeLLAtoMeters(Vector3D<double>);
     Vector3D<double> transformPoint(Vector3D<double>);
+    Vector3D<double> transformVelocity(Vector3D<double>);
     Vector3D<double> getEulerfromQuaternion(Quaternion);
     HeadingMsg getHeading(Quaternion);
 public:

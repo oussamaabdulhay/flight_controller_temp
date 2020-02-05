@@ -27,7 +27,7 @@ Timer t;
 class CallbackHandler : public XsCallback, public msg_emitter
 {
 public:
-enum unicast_addresses {broadcast,unicast_XSens_translation,unicast_XSens_orientation,unicast_XSens_orientation_rate,unicast_XSens_translation_rate};
+enum unicast_addresses {broadcast,unicast_XSens_translation,unicast_XSens_orientation,unicast_XSens_attitude_rate,unicast_XSens_yaw_rate,unicast_XSens_translation_rate};
 	CallbackHandler(size_t maxBufferSize = 1)
 		: m_maxNumberOfPacketsInBuffer(maxBufferSize)
 		, m_numberOfPacketsInBuffer(0)
@@ -77,9 +77,11 @@ protected:
 		{
             XsEuler euler = t_packet->orientationEuler();
             Vector3D<double> orientation_euler;
-            orientation_euler.x = euler.pitch() * M_PI / 180.0;
-            orientation_euler.y = -1 * euler.roll() * M_PI / 180.0; //Arranging the frames to match with the drone's
+            orientation_euler.x = -1 * euler.pitch() * M_PI / 180.0;
+            orientation_euler.y = euler.roll() * M_PI / 180.0; //Arranging the frames to match with the drone's
             orientation_euler.z = euler.yaw() * M_PI / 180.0;
+			//std::cout << "orientation_euler.x " << orientation_euler.x << " orientation_euler.y " << orientation_euler.y << " orientation_euler.z " << orientation_euler.z << std::endl;
+
             pv_msg.setVector3DMessage(orientation_euler);
 			this->emit_message_unicast((DataMessage*) &pv_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation, (int)PVConcatenator::receiving_channels::ch_pv);
         }
@@ -88,18 +90,20 @@ protected:
 
             XsVector gyr = t_packet->calibratedGyroscopeData();
             Vector3D<double> angular_vel;
-            angular_vel.x = gyr[1];
-            angular_vel.y = -1 * gyr[0];
+            angular_vel.x = -1 * gyr[1];
+            angular_vel.y = gyr[0];
             angular_vel.z = gyr[2];
             pv_dot_msg.setVector3DMessage(angular_vel);
 			#ifdef XSENS_POSE
-			this->emit_message_unicast((DataMessage*) &pv_dot_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation_rate, (int)PVConcatenator::receiving_channels::ch_pv);
+			//std::cout << "angular_vel.x " << angular_vel.x << " angular_vel.y " << angular_vel.y << " angular_vel.z " << angular_vel.z << std::endl;
+			this->emit_message_unicast((DataMessage*) &pv_dot_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_attitude_rate, (int)PVConcatenator::receiving_channels::ch_pv_dot);
+			this->emit_message_unicast((DataMessage*) &pv_dot_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_yaw_rate, (int)PVConcatenator::receiving_channels::ch_pv);
 			#else
 			this->emit_message_unicast((DataMessage*) &pv_dot_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation_rate, (int)PVConcatenator::receiving_channels::ch_pv_dot);
 			#endif
         }
 		
-		if(t_packet->containsPositionLLA()){
+		if (t_packet->containsPositionLLA()){
 
 			XsVector pos = t_packet->positionLLA();
             Vector3D<double> position;
@@ -107,9 +111,11 @@ protected:
             position.y = pos[1];
             position.z = pos[2];
             position_msg.setVector3DMessage(position);
+			//std::cout << "position.x " << position.x << " position.y " << position.y << " position.z " << position.z << std::endl;
+
 			this->emit_message_unicast(&position_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation,(int)Global2Inertial::receiving_channels::ch_XSens_pos);
 		}
-		if(t_packet->containsVelocity()){
+		if (t_packet->containsVelocity()){
 			XsVector vel=t_packet->velocity();
 			Vector3D<double> velocity;
 			Vector3DMessage velocity_msg;
@@ -117,6 +123,8 @@ protected:
             velocity.y = vel[1];
             velocity.z = vel[2];
 			velocity_msg.setVector3DMessage(velocity);
+			//std::cout << "velocity.x " << velocity.x << " velocity.y " << velocity.y << " velocity.z " << velocity.z << std::endl;
+
 			this->emit_message_unicast(&velocity_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation_rate,(int)Global2Inertial::receiving_channels::ch_XSens_vel);
 		}
 		#ifdef DEBUG_XSENS

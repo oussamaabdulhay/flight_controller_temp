@@ -11,7 +11,7 @@ void thread_initial_unit::runTasks(){
         thread_terminals[0]->lock_mutex(); //TODO check if this can be moved to thread_terminal_unit
         DataMessage* current_msg=thread_terminals[0]->clone_last_message();
         thread_terminals[0]->unlock_mutex();
-        this->emit_message(current_msg);  
+        this->emit_message(current_msg,(int)PVConcatenator::receiving_channels::ch_pv);  
         delete current_msg;
     }
 }

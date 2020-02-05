@@ -4,6 +4,7 @@
 #include "ButterWorthFilter.hpp"
 #include "Vector3D.hpp"
 #include <vector>
+#include "PVConcatenator.hpp"
 
 class HR_LR_position_fusion : public thread_initial_unit
 {

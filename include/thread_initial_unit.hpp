@@ -7,6 +7,7 @@
 #include "thread_terminal_unit.hpp"
 #include "MsgEmitter.hpp"
 #include <vector>
+#include "PVConcatenator.hpp"
 
 class thread_initial_unit : public TimedBlock, public msg_emitter {
 protected:

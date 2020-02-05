@@ -25,6 +25,7 @@ void HR_LR_position_fusion::runTasks() {
             }
         }
         else if (thread_terminals[i]->getTerminalAddress()==thread_terminal_unit::XSens_pos){
+
             thread_terminals[i]->lock_mutex();
             DataMessage* XSens_msg=thread_terminals[i]->clone_last_message();
             thread_terminals[i]->unlock_mutex();
@@ -35,7 +36,7 @@ void HR_LR_position_fusion::runTasks() {
     res=last_XSens_position_reading+filtered_diff_position;
     Vector3DMessage results;
     results.setVector3DMessage(res);
-    emit_message(&results);
+    emit_message(&results,PVConcatenator::ch_pv);
 }
 
 HR_LR_position_fusion::HR_LR_position_fusion(){

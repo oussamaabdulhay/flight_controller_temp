@@ -9,6 +9,7 @@
 #include <queue>
 #include <deque>
 #include <iostream>
+#include "Vector3DMessage.hpp"
 
 //TODO Move this to a different header and source files
 template <typename T, int MaxLen, typename Container=std::deque<T>>

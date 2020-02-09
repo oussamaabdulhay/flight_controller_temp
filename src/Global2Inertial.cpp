@@ -14,13 +14,13 @@
 // }
 Global2Inertial::Global2Inertial(){
     //TODO: Ensure altitude is calibrated
-    calib_point1.x = 24.4482901933;
-    calib_point1.y = 54.3968237;
-    calib_point1.z = -2.44;
+    calib_point1.x = 24.44830160;
+    calib_point1.y = 54.39683060;
+    calib_point1.z = -12.80;
 
-    calib_point2.x = 24.44825802;
-    calib_point2.y = 54.3967831917;
-    calib_point2.z = -2.483;
+    calib_point2.x = 24.44826904;
+    calib_point2.y = 54.39678780;
+    calib_point2.z = -12.80;
 
     // calib_point1.x=0;
     // calib_point1.y=0;

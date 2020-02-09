@@ -85,7 +85,7 @@ void worker(TimedBlock* timed_block) {
         }
         timed_block->tickTimer();
         if(timed_block->getLoopRemainingMicroSec() < 0){
-            Logger::getAssignedLogger()->log("exceeded loop time 200hz ",LoggerLevel::Warning);
+            Logger::getAssignedLogger()->log("exceeded loop time 100hz ",LoggerLevel::Warning);
         } else {
             usleep(timed_block->getLoopRemainingMicroSec());
         }
@@ -158,32 +158,51 @@ int main(int argc, char** argv) {
 	};
 
 	cout << "Scanning for devices..." << endl;
-	XsPortInfoArray portInfoArray = XsScanner::scanPorts();
-
+	//XsPortInfoArray portInfoArray = XsScanner::scanPorts(XsBaudRate::XBR_460k8,100,false);
 	// Find an MTi device
 	XsPortInfo mtPort;
-	for (auto const &portInfo : portInfoArray)
+    
+    XsString portName("/dev/ttyAMA0");
+    cout << "Input: " << portName.toStdString() << " @ baud: " <<(int) XsBaudRate::XBR_460k8 << endl;
+
+    XsPortInfo ManualmtPort=XsScanner::scanPort(portName, XsBaudRate::XBR_460k8);
+    //XsPortInfo ManualmtPort(portName, XsBaudRate::XBR_460k8);
+    // uint64_t serialNumber=80001313;//0080001313
+    // XsDeviceId dev_id(serialNumber);
+    // ManualmtPort.setDeviceId(dev_id);
+    cout << "List: " << ManualmtPort.deviceId().toString().toStdString() << " @ port: " << ManualmtPort.portName().toStdString() << ", baudrate: " << ManualmtPort.baudrate() << endl;
+    //ManualmtPort.deviceId().isMti(); 
+    //ManualmtPort.deviceId().isMtig();
+    cout << "isMti: " << ManualmtPort.deviceId().isMti() << " @ MtiG: " << ManualmtPort.deviceId().isMtig() << endl;
+
+    //ManualmtPort.deviceId().isMti(); 
+    //ManualmtPort.deviceId().isMtig();
+    XsPortInfoArray portInfoArray; //TODO: Remove
+    for (auto const &portInfo : portInfoArray)
 	{
 		if (portInfo.deviceId().isMti() || portInfo.deviceId().isMtig())
 		{
 			mtPort = portInfo;
 			break;
 		}
+	    cout << "List: " << portInfo.deviceId().toString().toStdString() << " @ port: " << portInfo.portName().toStdString() << ", baudrate: " << portInfo.baudrate() << endl;
 	}
 
-	if (mtPort.empty())
+	if (ManualmtPort.empty())
 		return handleError("No MTi device found. Aborting.");
 
-	cout << "Found a device with ID: " << mtPort.deviceId().toString().toStdString() << " @ port: " << mtPort.portName().toStdString() << ", baudrate: " << mtPort.baudrate() << endl;
+	cout << "Found a device with ID: " << ManualmtPort.deviceId().toString().toStdString() << " @ port: " << ManualmtPort.portName().toStdString() << ", baudrate: " << ManualmtPort.baudrate() << endl;
 
 	cout << "Opening port..." << endl;
-	if (!control->openPort(mtPort.portName().toStdString(), mtPort.baudrate()))
-		return handleError("Could not open port. Aborting.");
+    if (!control->openPort(ManualmtPort.portName().toStdString(), ManualmtPort.baudrate())){//Timeout in ms
+        return handleError("Could not open port. Aborting.");
+    }
+
 
 	// Get the device object
-	XsDevice* device = control->device(mtPort.deviceId());
-	assert(device != 0);
 
+	XsDevice* device = control->device(ManualmtPort.deviceId());
+	assert(device != 0);
 	cout << "Device: " << device->productCode().toStdString() << ", with ID: " << device->deviceId().toString() << " opened." << endl;
 
 	// Create and attach callbackXSens handler to device
@@ -201,7 +220,7 @@ int main(int argc, char** argv) {
     //***********************FILTER RTK_GPS*************************************
     #ifdef RTK
     HR_LR_position_fusion* hr_lr_position_fusion = new HR_LR_position_fusion();
-    hr_lr_position_fusion->setLoopFrequency(block_frequency::hz200);
+    hr_lr_position_fusion->setLoopFrequency(block_frequency::hz100);
     hr_lr_position_fusion->current_operation_mode = HR_LR_position_fusion::operation_mode::bias_elimination;
 
     thread_terminal_unit rtk_position_terminal_unit;
@@ -329,7 +348,7 @@ int main(int argc, char** argv) {
 
     //***********************SETTING CONTROL SYSTEMS***************************
     //TODO Expose switcher to the main, add blocks to the switcher, then make connections between switcher, then add them to the Control System
-    ControlSystem* X_ControlSystem = new ControlSystem(control_system::x, block_frequency::hz120);
+    ControlSystem* X_ControlSystem = new ControlSystem(control_system::x, block_frequency::hz100);
     X_ControlSystem->addBlock(PID_x);
     X_ControlSystem->addBlock(MRFT_x);
     X_ControlSystem->addBlock(PV_Ref_x);
@@ -344,7 +363,7 @@ int main(int argc, char** argv) {
     Pitch_ControlSystem->addBlock(MRFT_pitch);
     Pitch_ControlSystem->addBlock(PV_Ref_pitch);
     
-    ControlSystem* Y_ControlSystem = new ControlSystem(control_system::y, block_frequency::hz120);
+    ControlSystem* Y_ControlSystem = new ControlSystem(control_system::y, block_frequency::hz100);
     Y_ControlSystem->addBlock(PID_y);
     Y_ControlSystem->addBlock(MRFT_y);
     Y_ControlSystem->addBlock(PV_Ref_y);
@@ -359,17 +378,17 @@ int main(int argc, char** argv) {
     Roll_ControlSystem->addBlock(MRFT_roll);
     Roll_ControlSystem->addBlock(PV_Ref_roll);
     
-    ControlSystem* Z_ControlSystem = new ControlSystem(control_system::z, block_frequency::hz120);
+    ControlSystem* Z_ControlSystem = new ControlSystem(control_system::z, block_frequency::hz100);
     Z_ControlSystem->addBlock(PID_z);
     Z_ControlSystem->addBlock(MRFT_z);
     Z_ControlSystem->addBlock(PV_Ref_z);
 
-    ControlSystem* Yaw_ControlSystem = new ControlSystem(control_system::yaw, block_frequency::hz120);
+    ControlSystem* Yaw_ControlSystem = new ControlSystem(control_system::yaw, block_frequency::hz200);
     Yaw_ControlSystem->addBlock(PID_yaw);
     Yaw_ControlSystem->addBlock(MRFT_yaw);
     Yaw_ControlSystem->addBlock(PV_Ref_yaw);
 
-    ControlSystem* YawRate_ControlSystem = new ControlSystem(control_system::yaw_rate, block_frequency::hz120);
+    ControlSystem* YawRate_ControlSystem = new ControlSystem(control_system::yaw_rate, block_frequency::hz200);
     YawRate_ControlSystem->addBlock(PID_yaw_rate);
     YawRate_ControlSystem->addBlock(MRFT_yaw_rate);
     YawRate_ControlSystem->addBlock(PV_Ref_yaw_rate);
@@ -615,7 +634,7 @@ int main(int argc, char** argv) {
     }
 
 	cout << "Closing port..." << endl;
-	control->closePort(mtPort.portName().toStdString());
+	control->closePort(ManualmtPort.portName().toStdString());
 
 	cout << "Freeing XsControl object..." << endl;
 	control->destruct();

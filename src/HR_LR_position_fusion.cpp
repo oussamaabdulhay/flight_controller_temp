@@ -35,9 +35,9 @@ void HR_LR_position_fusion::runTasks() {
         }
     }
     Vector3D<double> res;
-    res=last_XSens_position_reading+filtered_diff_position;
+    //res=last_XSens_position_reading+filtered_diff_position;
     //res=last_XSens_position_reading;
-    //res=last_RTK_position_reading;
+    res=last_RTK_position_reading;
     res.y = -res.y;
     Vector3DMessage results;
     results.setVector3DMessage(res);

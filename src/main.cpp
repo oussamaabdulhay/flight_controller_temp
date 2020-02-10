@@ -516,8 +516,8 @@ int main(int argc, char** argv) {
     #endif
     //***********************INERTIAL TO BODY PROVIDER*****************************
  
-    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody, (int)control_system::yaw);
-    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody, (int)control_system::yaw);
+    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody);
+    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody);
 
     //***********************SETTING PID INITIAL VALUES*****************************
 

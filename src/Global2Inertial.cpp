@@ -14,13 +14,13 @@
 // }
 Global2Inertial::Global2Inertial(){
     //TODO: Ensure altitude is calibrated
-    calib_point1.x = 24.44830160;
-    calib_point1.y = 54.39683060;
-    calib_point1.z = -12.80;
+    calib_point1.x = 24.44825350;
+    calib_point1.y = 54.39679505;
+    calib_point1.z = -8.2;
 
-    calib_point2.x = 24.44826904;
-    calib_point2.y = 54.39678780;
-    calib_point2.z = -12.80;
+    calib_point2.x = 24.44823994;
+    calib_point2.y = 54.39677780;
+    calib_point2.z = -8.2;
 
     // calib_point1.x=0;
     // calib_point1.y=0;
@@ -28,7 +28,7 @@ Global2Inertial::Global2Inertial(){
     // calib_point2.x=0;
     // calib_point2.y=0;
     // calib_point2.z=0;
-    calibrated_reference_inertial_heading=-90.*(M_PI/180.);
+    calibrated_reference_inertial_heading=-126.*(M_PI/180.);
     Vector3D<double> calib_points_diff = calib_point2 - calib_point1;
     calibrated_global_to_inertial_angle = atan2(calib_points_diff.y, calib_points_diff.x);
     antenna_pose.x=0.;

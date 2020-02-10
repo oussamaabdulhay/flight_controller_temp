@@ -30,5 +30,6 @@ public:
     void add_z_control_system(ControlSystem*);
     void add_yaw_control_system(ControlSystem*);
     void receive_msg_data(DataMessage* t_msg);
+    void receive_msg_data(DataMessage* t_msg, int t_channel);
 
 };

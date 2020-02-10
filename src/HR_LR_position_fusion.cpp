@@ -49,7 +49,7 @@ HR_LR_position_fusion::HR_LR_position_fusion(){
         ButterWorthFilter fil;
         fil.setFilterOrder(2);
         fil.setFilterType(ButterWorthFilter::lpf);
-        fil.setCoefficients(ButterWorthFilter::lpf_ratio1_50);
+        fil.setCoefficients(ButterWorthFilter::lpf_ratio1_500);
         three_axis_lpf.push_back(fil);
     }
     for (int i=0; i<num_filteration_ch;i++){

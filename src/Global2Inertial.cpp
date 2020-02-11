@@ -28,9 +28,9 @@ Global2Inertial::Global2Inertial(){
     // calib_point2.x=0;
     // calib_point2.y=0;
     // calib_point2.z=0;
-    calibrated_reference_inertial_heading=-90.*(M_PI/180.);
+    calibrated_reference_inertial_heading=90.*(M_PI/180.);
     Vector3D<double> calib_points_diff = calib_point2 - calib_point1;
-    calibrated_global_to_inertial_angle = atan2(calib_points_diff.y, calib_points_diff.x);
+    calibrated_global_to_inertial_angle = atan2(calib_points_diff.x, calib_points_diff.y);
     antenna_pose.x=0.;
     antenna_pose.y=0.1;
     antenna_pose.z=0.1;
@@ -143,6 +143,13 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg,int ch){
             Vector3DMessage res_msg;
             res_msg.setVector3DMessage(results);
             emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_vel,(int)PVConcatenator::receiving_channels::ch_pv_dot);
+        }
+        else if (ch==Global2Inertial::receiving_channels::ch_XSens_ori){
+            Vector3D<double> results = ((Vector3DMessage*)t_msg)->getData();
+            results.z = results.z - calibrated_reference_inertial_heading - calibrated_global_to_inertial_angle;
+            Vector3DMessage res_msg;
+            res_msg.setVector3DMessage(results);
+            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_ori,(int)PVConcatenator::receiving_channels::ch_pv);
         }
     }
 }

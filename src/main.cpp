@@ -57,6 +57,7 @@
 #include "Differentiator.hpp"
 #include "PVConcatenator.hpp"
 #include <thread>
+#include "xsstatusflag.h"
 
 #define XSens_IMU_en
 #undef Navio_IMU_en
@@ -209,6 +210,63 @@ int main(int argc, char** argv) {
 	if (!device->gotoMeasurement())
 		return handleError("Could not put device into measurement mode. Aborting.");
 
+    char ans;
+    uint16_t ans_time;
+    std::cout << "Do gyro calibration? (y/n)" << std::endl;
+    std::cin >> ans;
+    if(ans == 'y'){
+        //************* GYRO CALIBRATION PROCEDURE *****************
+        std::cout << "For how long? (recommended: 6) (s)" << std::endl;
+        std::cin >> ans_time;
+        XsTime::msleep(100); //Give the device a little bit of time to enter measurement mode
+        uint16_t biasEstimateDuration = ans_time;
+        device->setNoRotation(biasEstimateDuration);
+        bool noRotationStarted = false;
+        int64_t biasEstimateStart = XsTime::timeStampNow();
+        while (true){
+            if (callbackXSens.packetAvailable()){
+                    XsDataPacket packet = callbackXSens.getNextPacket();
+                    uint32_t noRotationStatus = packet.status() & XSF_NoRotationMask;
+
+                if (!noRotationStarted){
+                    if (noRotationStatus == XSF_NoRotationRunningNormally){
+                        std::cout << "No rotation started"<< std::endl;
+                        noRotationStarted = true;
+                    }
+                }
+                else{
+                    if (noRotationStatus == 0){
+                        std::cout << "No rotation ended successfully"<< std::endl;
+                        break;
+                    }
+                }
+
+                if (noRotationStatus == XSF_NoRotationAborted){
+                    std::cout << "No rotation aborted" << std::endl;
+                    break;
+                }
+
+                if (noRotationStatus == XSF_NoRotationSamplesRejected){
+                    std::cout << "No rotation ended with rejected samples" << std::endl;
+                    break;
+                }
+            }
+
+            //Check for timeout
+            int64_t timeout = ((int64_t)biasEstimateDuration * 1000 + 500);
+            if ( (XsTime::timeStampNow() - biasEstimateStart) > timeout)
+            {
+            if (!noRotationStarted)
+            std::cout << "No rotation did not start in time" << std::endl;
+            else
+            std::cout << "No rotation did not end in time" << std::endl;
+            break;
+            }
+            XsTime::msleep(0);
+        }
+        //************* END OF GYRO CALIBRATION PROCEDURE *****************
+    }
+    
     XSens_IMU* myXSensIMU = new XSens_IMU();
 
     #endif
@@ -265,10 +323,11 @@ int main(int argc, char** argv) {
     #endif
 
     #ifdef XSENS_POSE
-    callbackXSens.add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation);
     callbackXSens.add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_yaw_rate);
+    callbackXSens.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation);
     callbackXSens.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation);
     callbackXSens.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation_rate);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_ori);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);

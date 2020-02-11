@@ -84,7 +84,8 @@ protected:
 
             pv_msg.setVector3DMessage(orientation_euler);
 			this->emit_message_unicast((DataMessage*) &pv_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation, (int)PVConcatenator::receiving_channels::ch_pv);
-        }
+			this->emit_message_unicast((DataMessage*) &pv_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation, (int)Global2Inertial::receiving_channels::ch_XSens_ori);
+		}
 
         if (t_packet->containsCalibratedGyroscopeData()){
 

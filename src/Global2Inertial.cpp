@@ -28,7 +28,7 @@ Global2Inertial::Global2Inertial(){
     // calib_point2.x=0;
     // calib_point2.y=0;
     // calib_point2.z=0;
-    calibrated_reference_inertial_heading=-126.*(M_PI/180.);
+    calibrated_reference_inertial_heading=-90.*(M_PI/180.);
     Vector3D<double> calib_points_diff = calib_point2 - calib_point1;
     calibrated_global_to_inertial_angle = atan2(calib_points_diff.y, calib_points_diff.x);
     antenna_pose.x=0.;
@@ -105,6 +105,10 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
         HeadingMsg calibrated_heading_msg;
         calibrated_heading_msg.yaw=last_known_orientation.z-calibrated_reference_inertial_heading;
         emit_message((DataMessage*)&calibrated_heading_msg);
+    }
+    else if (t_msg->getType()==msg_type::FLOAT){
+        calib_point1.z = ((FloatMsg*)t_msg)->data;
+        std::cout << "NEW HEIGHT OFFSET = " << calib_point1.z << std::endl;
     }
 }
 

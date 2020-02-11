@@ -121,6 +121,8 @@ int main(int argc, char** argv) {
     ROSUnit* myROSRestNormSettings = new ROSUnit_RestNormSettings(nh);
 
     ROSUnit* ROSUnit_uav_control_set_path = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,ROSUnit_msg_type::ROSUnit_Poses,"uav_control/set_path");
+    ROSUnit* ROSUnit_set_height_offset = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,ROSUnit_msg_type::ROSUnit_Float,"/set_height_offset");
+    
     ROSUnit* myROSRTK = new ROSUnit_RTK(nh);
 
     //*****************************LOGGER**********************************
@@ -166,17 +168,11 @@ int main(int argc, char** argv) {
     cout << "Input: " << portName.toStdString() << " @ baud: " <<(int) XsBaudRate::XBR_460k8 << endl;
 
     XsPortInfo ManualmtPort=XsScanner::scanPort(portName, XsBaudRate::XBR_460k8);
-    //XsPortInfo ManualmtPort(portName, XsBaudRate::XBR_460k8);
-    // uint64_t serialNumber=80001313;//0080001313
-    // XsDeviceId dev_id(serialNumber);
-    // ManualmtPort.setDeviceId(dev_id);
+    
     cout << "List: " << ManualmtPort.deviceId().toString().toStdString() << " @ port: " << ManualmtPort.portName().toStdString() << ", baudrate: " << ManualmtPort.baudrate() << endl;
-    //ManualmtPort.deviceId().isMti(); 
-    //ManualmtPort.deviceId().isMtig();
+    
     cout << "isMti: " << ManualmtPort.deviceId().isMti() << " @ MtiG: " << ManualmtPort.deviceId().isMtig() << endl;
 
-    //ManualmtPort.deviceId().isMti(); 
-    //ManualmtPort.deviceId().isMtig();
     XsPortInfoArray portInfoArray; //TODO: Remove
     for (auto const &portInfo : portInfoArray)
 	{
@@ -481,6 +477,7 @@ int main(int argc, char** argv) {
     ROSUnit_uav_control_set_path->add_callback_msg_receiver((msg_receiver*)myWaypoint);
     myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint);
 
+    ROSUnit_set_height_offset->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
     //myROSRTK->add_callback_msg_receiver((msg_receiver*)rtk_position_terminal_unit, );
     //myXSensIMU->add_callback_msg_receiver
     

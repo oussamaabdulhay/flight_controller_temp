@@ -38,10 +38,10 @@ void HR_LR_position_fusion::runTasks() {
     //res=last_XSens_position_reading+filtered_diff_position;
     //res=last_XSens_position_reading;
     res=last_RTK_position_reading;
-    res.y = -res.y;
     Vector3DMessage results;
     results.setVector3DMessage(res);
-    emit_message(&results,PVConcatenator::ch_pv);
+    emit_message_unicast(&results,(int)HR_LR_position_fusion::unicast_address::uni_pv_receiver,PVConcatenator::ch_pv);
+    emit_message_unicast(&results,(int)HR_LR_position_fusion::unicast_address::uni_waypoint_receiver);
 }
 
 HR_LR_position_fusion::HR_LR_position_fusion(){

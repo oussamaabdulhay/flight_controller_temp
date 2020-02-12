@@ -83,7 +83,6 @@ protected:
 			//std::cout << "orientation_euler.x " << orientation_euler.x << " orientation_euler.y " << orientation_euler.y << " orientation_euler.z " << orientation_euler.z << std::endl;
 
             pv_msg.setVector3DMessage(orientation_euler);
-			this->emit_message_unicast((DataMessage*) &pv_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation, (int)PVConcatenator::receiving_channels::ch_pv);
 			this->emit_message_unicast((DataMessage*) &pv_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation, (int)Global2Inertial::receiving_channels::ch_XSens_ori);
 		}
 
@@ -115,8 +114,8 @@ protected:
 			// std::cout << "position.x " << std::setprecision(12) << position.x << 
 			// " position.y "<< std::setprecision(12) << position.y <<
 			//  " position.z " << std::setprecision(12)<< position.z << std::endl;
-			
-			this->emit_message_unicast(&position_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation,(int)Global2Inertial::receiving_channels::ch_XSens_pos);
+			// TODO: guard using #ifdef
+			//this->emit_message_unicast(&position_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation,(int)Global2Inertial::receiving_channels::ch_XSens_pos);
 		}
 		if (t_packet->containsVelocity()){
 			XsVector vel=t_packet->velocity();

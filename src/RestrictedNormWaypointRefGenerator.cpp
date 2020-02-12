@@ -32,11 +32,7 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
             Waypoints.clear();
         }
     }
-}
-
-void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg, int t_channel){
-    if(t_msg->getType()==msg_type::VECTOR3D){
-        std::cout << "if(t_msg->getType()==msg_type::VECTOR3D){" << std::endl;
+    else if(t_msg->getType()==msg_type::VECTOR3D){
         Vector3DMessage* t_current_pos=(Vector3DMessage*) t_msg;
         Vector3D<double> t_current_pos_vec;
         t_current_pos_vec = t_current_pos->getData();

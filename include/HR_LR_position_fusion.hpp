@@ -10,6 +10,7 @@
 class HR_LR_position_fusion : public thread_initial_unit
 {
 public:
+    enum unicast_address {broadcast, uni_pv_receiver,uni_waypoint_receiver};
     void runTasks() override;
     enum operation_mode {complementary_filter,bias_elimination};
     operation_mode current_operation_mode=bias_elimination; // TODO: complementary_filter is not implemented

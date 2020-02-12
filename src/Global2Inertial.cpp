@@ -14,13 +14,13 @@
 // }
 Global2Inertial::Global2Inertial(){
     //TODO: Ensure altitude is calibrated
-    calib_point1.x = 24.44825350;
-    calib_point1.y = 54.39679505;
-    calib_point1.z = -8.2;
+    calib_point1.x = 24.44828723;
+    calib_point1.y = 54.39683993;
+    calib_point1.z = 0.0;
 
-    calib_point2.x = 24.44823994;
-    calib_point2.y = 54.39677780;
-    calib_point2.z = -8.2;
+    calib_point2.x = 24.44814808;
+    calib_point2.y = 54.39666318;
+    calib_point2.z = 0.0;
 
     // calib_point1.x=0;
     // calib_point1.y=0;
@@ -28,7 +28,7 @@ Global2Inertial::Global2Inertial(){
     // calib_point2.x=0;
     // calib_point2.y=0;
     // calib_point2.z=0;
-    calibrated_reference_inertial_heading=90.*(M_PI/180.);
+    calibrated_reference_inertial_heading=180.*(M_PI/180.);
     Vector3D<double> calib_points_diff = calib_point2 - calib_point1;
     calibrated_global_to_inertial_angle = atan2(calib_points_diff.x, calib_points_diff.y);
     antenna_pose.x=0.;
@@ -115,6 +115,7 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
 void Global2Inertial::receive_msg_data(DataMessage* t_msg,int ch){
     if (t_msg->getType()==msg_type::VECTOR3D){
         if (ch==Global2Inertial::receiving_channels::ch_RTK_pos){
+            //std::cout << "RTK RAW results.x=" << ((Vector3DMessage*)t_msg)->getData().x << " results.y=" << ((Vector3DMessage*)t_msg)->getData().y << " results.z=" << ((Vector3DMessage*)t_msg)->getData().z << std::endl;
             Vector3D<double> results = changeLLAtoMeters(calib_point1, ((Vector3DMessage*)t_msg)->getData()); //TODO uncoment
             Vector3D<double> results_elev=offsetElevation(results,-calib_point1.z);
             //std::cout << "RTK BEFORE results.x=" << results.x << " results.y=" << results.y << " results.z=" << results.z << std::endl;
@@ -146,7 +147,9 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg,int ch){
         }
         else if (ch==Global2Inertial::receiving_channels::ch_XSens_ori){
             Vector3D<double> results = ((Vector3DMessage*)t_msg)->getData();
+		//std::cout << "raw results.z " << results.z << "\n";
             results.z = results.z - calibrated_reference_inertial_heading - calibrated_global_to_inertial_angle;
+            //std::cout << "results.z " << results.z << ", "<<calibrated_reference_inertial_heading<<","<<calibrated_global_to_inertial_angle<<"\n";
             Vector3DMessage res_msg;
             res_msg.setVector3DMessage(results);
             emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_ori,(int)PVConcatenator::receiving_channels::ch_pv);
@@ -240,8 +243,8 @@ Vector3D<double> Global2Inertial::changeLLAtoMeters(Vector3D<double> t_origin,Ve
     m_per_deg_long=(M_PI/180.)*6367449.0*cos(latMid);
     deltaLat=t_input2.x-t_origin.x;
     deltaLong=t_input2.y-t_origin.y;
-    res.x=deltaLat*m_per_deg_lat;
-    res.y=deltaLong*m_per_deg_long;
+    res.y=deltaLat*m_per_deg_lat;
+    res.x=deltaLong*m_per_deg_long;
     res.z=t_input2.z;
     
     return res;

@@ -41,6 +41,7 @@ public:
     void setYaw_PV(Vector3D<float>);
     void setYawRate_PV(Vector3D<float>);
     void setControlSystem(float, control_system);
+    void setControlSystemReference(float, control_system);
     void setActuation(float*);
     void setSource(control_system);
     void setArmed(bool);

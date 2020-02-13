@@ -62,6 +62,11 @@ void ROSMsg::setControlSystem(float tmp, control_system t_source){
     _control_system = tmp;
     _source = t_source;
 }
+void ROSMsg::setControlSystemReference(float tmp, control_system t_source){
+    _ros_type = ros_msg_type::CONTROLSYSTEMREFERENCE;
+    _control_system = tmp;
+    _source = t_source;
+}
 void ROSMsg::setActuation(float* tmp){
     _ros_type = ros_msg_type::ACTUATION;
     _actuation = tmp;

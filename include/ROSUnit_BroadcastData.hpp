@@ -21,6 +21,7 @@ private:
     ros::Publisher _pitchpv_prov_pub;
     ros::Publisher _yawpv_prov_pub;
     ros::Publisher _cs_prov_pub;
+    ros::Publisher _csr_prov_pub;
     ros::Publisher _act_prov_pub;
     ros::Publisher _yawratepv_prov_pub;
     ros::Publisher _info_prov_pub;
@@ -37,6 +38,7 @@ private:
     int _seq_rollpv = 0, _seq_pitchpv = 0, _seq_yawpv = 0, _seq_cs = 0, _seq_act = 0;
     int _seq_yawratepv = 0, _seq_info = 0;
     std::vector<double> _cs_outputs{ 0, 0, 0, 0, 0, 0, 0 }; 
+    std::vector<double> _cs_references{ 0, 0, 0, 0, 0, 0, 0 };
     std::vector<double> _act_outputs{ 0, 0, 0, 0, 0, 0 }; 
     PositionMsg _position;
     AttitudeMsg _att;

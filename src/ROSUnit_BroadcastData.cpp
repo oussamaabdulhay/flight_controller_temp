@@ -13,6 +13,7 @@ ROSUnit_BroadcastData::ROSUnit_BroadcastData(ros::NodeHandle& t_main_handler) : 
     _yawpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("yaw_provider", 1);
     _yawratepv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("yaw_rate_provider", 1);
     _cs_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("control_system_output", 1);
+    _csr_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("control_system_reference", 1);
     _act_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("actuation_output", 1);
     _info_prov_pub = t_main_handler.advertise<positioning_system::Info>("info", 1);
 
@@ -39,6 +40,14 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
             std_msgs::Float64MultiArray msg;
             msg.data = _cs_outputs;
             _cs_prov_pub.publish(msg);
+
+        }else if(ros_msg->getROSMsgType() == ros_msg_type::CONTROLSYSTEMREFERENCE){
+            int i = (int)ros_msg->getSource();
+            _cs_references[i] = ros_msg->getControlSystem();
+
+            std_msgs::Float64MultiArray msg;
+            msg.data = _cs_references;
+            _csr_prov_pub.publish(msg);
 
         }else if(ros_msg->getROSMsgType() == ros_msg_type::ACTUATION){
             float* pointer = ros_msg->getActuation();

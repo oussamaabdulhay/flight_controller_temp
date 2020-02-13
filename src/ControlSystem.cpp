@@ -34,6 +34,7 @@ void ControlSystem::receive_msg_data(DataMessage* t_msg){
         this->emit_message((DataMessage*) &m_output_msg);
 
         //Emiting msg to ROSUnit
+        ROSMsg m_ros_msg;
         m_ros_msg.setControlSystem(switcher_msg->getFloatData(), this->getControlSystemType());
         this->emit_message((DataMessage*) &m_ros_msg);
             
@@ -48,7 +49,12 @@ void ControlSystem::receive_msg_data(DataMessage* t_msg){
         if(control_system_msg->getControlSystemMsgType() == control_system_msg_type::to_system){
             m_output_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::SETREFERENCE, control_system_msg->getData());
             this->emit_message((DataMessage*) &m_output_msg);
-        }//TODO add the update parameters msg
+
+            //Emiting msg to ROSUnit
+            ROSMsg m_ros_msg;
+            m_ros_msg.setControlSystemReference(control_system_msg->getData(), this->getControlSystemType());
+            this->emit_message((DataMessage*) &m_ros_msg);
+        }
 
     }else if(t_msg->getType() == msg_type::SWITCHBLOCK){
 

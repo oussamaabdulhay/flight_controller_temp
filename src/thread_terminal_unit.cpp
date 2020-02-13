@@ -3,6 +3,7 @@ using namespace std;
 
 void thread_terminal_unit::receive_msg_data(DataMessage* t_msg){
     this->lock_mutex();
+    delete synced_message[id];
     synced_message[id]=t_msg->Clone();
     Vector3D<double> results = ((Vector3DMessage*)synced_message[id])->getData();
     this->unlock_mutex();

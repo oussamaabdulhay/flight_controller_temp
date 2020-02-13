@@ -1,0 +1,5 @@
+<launch> 
+  <node pkg="positioning_system" type="positioning_system" 
+  name="positioning_system" output="screen" 
+  launch-prefix="valgrind"/> 
+</launch> 

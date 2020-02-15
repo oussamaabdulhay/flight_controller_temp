@@ -126,7 +126,8 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg,int ch){
             #ifndef DEBUG_HR_LR_DECOUPLED
             emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_RTK_pos);
             #else
-            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_RTK_pos, (int)PVConcatenator::receiving_channels::ch_pv);
+            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_RTK_pos_pv, (int)PVConcatenator::receiving_channels::ch_pv);
+            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_RTK_pos_wp);
             #endif
         }
         else if (ch==Global2Inertial::receiving_channels::ch_XSens_pos){

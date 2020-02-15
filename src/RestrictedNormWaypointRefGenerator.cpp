@@ -88,7 +88,6 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
         pthread_mutex_unlock(&lock);
         #endif
     }
-    
 
 }
 

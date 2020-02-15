@@ -14,11 +14,13 @@ public:
     void receive_msg_data(DataMessage*);
     void receive_msg_data(DataMessage*, int);
 
-    PVConcatenator(concatenation_axes);
+    PVConcatenator(concatenation_axes, act_on);
     ~PVConcatenator();
 
 private:
+    act_on _act_on;
     Vector3D<double> pv_vector;
+    std::atomic<double> pv;
     std::atomic<double> pv_dot;
     std::atomic<double> pv_dot_dot;
     // double pv_dot;

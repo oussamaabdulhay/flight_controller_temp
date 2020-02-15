@@ -294,13 +294,13 @@ int main(int argc, char** argv) {
     velocityFromPosition->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
     Differentiator* yawRateFromYaw = new Differentiator(1./OPTITRACK_FREQUENCY);
     yawRateFromYaw->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
-    PVConcatenator* CsX_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_x_axis);
-    PVConcatenator* CsY_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_y_axis);
-    PVConcatenator* CsZ_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis);
-    PVConcatenator* CsRoll_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_x_axis);
-    PVConcatenator* CsPitch_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_y_axis);
-    PVConcatenator* CsYaw_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis);
-    PVConcatenator* CsYawRate_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis);
+    PVConcatenator* CsX_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_x_axis, act_on::pv_dot);
+    PVConcatenator* CsY_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_y_axis, act_on::pv_dot);
+    PVConcatenator* CsZ_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis, act_on::pv_dot);
+    PVConcatenator* CsRoll_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_x_axis, act_on::pv);
+    PVConcatenator* CsPitch_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_y_axis, act_on::pv);
+    PVConcatenator* CsYaw_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis, act_on::pv);
+    PVConcatenator* CsYawRate_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis, act_on::pv);
 
     WrapAroundFunction* wrap_around_yaw = new WrapAroundFunction();
     wrap_around_yaw->assignParametersRange(-M_PI, M_PI);
@@ -340,16 +340,16 @@ int main(int argc, char** argv) {
     #ifdef RTK
     myROSRTK->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
     #ifndef DEBUG_HR_LR_DECOUPLED
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)&rtk_position_terminal_unit, (int)Global2Inertial::unicast_addresses::uni_RTK_pos);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)&rtk_position_terminal_unit, (int)Global2Inertial::unicast_addresses::uni_RTK_pos_pv);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)&xsens_position_terminal_unit, (int)Global2Inertial::unicast_addresses::uni_XSens_pos);
     hr_lr_position_fusion->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator,HR_LR_position_fusion::uni_pv_receiver);
     hr_lr_position_fusion->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator,HR_LR_position_fusion::uni_pv_receiver);
     hr_lr_position_fusion->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator,HR_LR_position_fusion::uni_pv_receiver);
     thread* hr_lr_position_fusion_thread = new thread(worker, (TimedBlock*)hr_lr_position_fusion);
     #else
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_RTK_pos);
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_RTK_pos);
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_RTK_pos);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_RTK_pos_pv);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_RTK_pos_pv);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_RTK_pos_pv);
     #endif
     #else
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_pos);
@@ -548,6 +548,8 @@ int main(int argc, char** argv) {
     #else
     #ifndef DEBUG_HR_LR_DECOUPLED
     hr_lr_position_fusion->add_callback_msg_receiver((msg_receiver*)myWaypoint,HR_LR_position_fusion::uni_waypoint_receiver);
+    #else
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)myWaypoint, (int)Global2Inertial::unicast_addresses::uni_RTK_pos_wp); 
     #endif
     #endif
     ROSUnit_uav_control_set_path->add_callback_msg_receiver((msg_receiver*)myWaypoint);

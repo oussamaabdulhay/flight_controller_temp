@@ -61,6 +61,8 @@
 #include "WrapAroundFunction.hpp"
 #include "IntegerMsg.hpp"
 
+#define DEBUG_HR_LR_DECOUPLED
+
 const int OPTITRACK_FREQUENCY = 120;
 const int PWM_FREQUENCY = 50;
 const float SATURATION_VALUE_XY = 0.5;
@@ -337,12 +339,18 @@ int main(int argc, char** argv) {
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator,(int)Global2Inertial::unicast_addresses::uni_XSens_ori);
     #ifdef RTK
     myROSRTK->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
+    #ifndef DEBUG_HR_LR_DECOUPLED
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)&rtk_position_terminal_unit, (int)Global2Inertial::unicast_addresses::uni_RTK_pos);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)&xsens_position_terminal_unit, (int)Global2Inertial::unicast_addresses::uni_XSens_pos);
     hr_lr_position_fusion->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator,HR_LR_position_fusion::uni_pv_receiver);
     hr_lr_position_fusion->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator,HR_LR_position_fusion::uni_pv_receiver);
     hr_lr_position_fusion->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator,HR_LR_position_fusion::uni_pv_receiver);
     thread* hr_lr_position_fusion_thread = new thread(worker, (TimedBlock*)hr_lr_position_fusion);
+    #else
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_RTK_pos);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_RTK_pos);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_RTK_pos);
+    #endif
     #else
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_pos);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator,(int) Global2Inertial::unicast_addresses::uni_XSens_pos);
@@ -538,7 +546,9 @@ int main(int argc, char** argv) {
     #ifdef OPTITRACK
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)myWaypoint); 
     #else
+    #ifndef DEBUG_HR_LR_DECOUPLED
     hr_lr_position_fusion->add_callback_msg_receiver((msg_receiver*)myWaypoint,HR_LR_position_fusion::uni_waypoint_receiver);
+    #endif
     #endif
     ROSUnit_uav_control_set_path->add_callback_msg_receiver((msg_receiver*)myWaypoint);
     myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint);

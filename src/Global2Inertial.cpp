@@ -1,5 +1,5 @@
 #include "Global2Inertial.hpp"
-
+#define DEBUG_HR_LR_DECOUPLED
 // const float PI = atan(1.0)*4.0;
 
 // float MeasureGPStoMeters(float lat1, float lon1, float lat2, float lon2)
@@ -123,7 +123,11 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg,int ch){
             //std::cout << "RTK AFTER  results.x=" << results_rot.x << " results.y=" << results_rot.y << " results.z=" << results_rot.z << std::endl;  
             Vector3DMessage res_msg;
             res_msg.setVector3DMessage(results_rot);
+            #ifndef DEBUG_HR_LR_DECOUPLED
             emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_RTK_pos);
+            #else
+            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_RTK_pos, (int)PVConcatenator::receiving_channels::ch_pv);
+            #endif
         }
         else if (ch==Global2Inertial::receiving_channels::ch_XSens_pos){
             //std::cout << "RAW.x=" << ((Vector3DMessage*)t_msg)->getData().x << " RAW.y=" << ((Vector3DMessage*)t_msg)->getData().y << " RAW.z=" << ((Vector3DMessage*)t_msg)->getData().z << std::endl;

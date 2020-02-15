@@ -16,6 +16,7 @@ ROSUnit_BroadcastData::ROSUnit_BroadcastData(ros::NodeHandle& t_main_handler) : 
     _csr_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("control_system_reference", 1);
     _act_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("actuation_output", 1);
     _info_prov_pub = t_main_handler.advertise<positioning_system::Info>("info", 1);
+    _error_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("error", 1);
 
     _att.roll = 0;
     _head.yaw = 0;
@@ -77,6 +78,17 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
     }else if(t_msg->getType() == msg_type::FLOAT){
         FloatMsg* voltage_msg = (FloatMsg*)t_msg;
         _voltage = voltage_msg->data;
+    }else if(t_msg->getType() == msg_type::INTEGER){
+        IntegerMsg* error_msg = (IntegerMsg*)t_msg;
+        _error_accumulator += error_msg->data;
+        geometry_msgs::PointStamped msg;
+        msg.header.seq = ++_seq_xpv;
+        msg.header.stamp = ros::Time::now();
+        msg.header.frame_id = "";
+        msg.point.x = _error_accumulator;
+        msg.point.y = 0.;
+        msg.point.z = 0.;
+        _error_prov_pub.publish(msg);
     }
 }
 

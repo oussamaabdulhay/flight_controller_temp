@@ -1,11 +1,14 @@
 #include "RestrictedNormWaypointRefGenerator.hpp"
+pthread_mutex_t RestrictedNormWaypointRefGenerator::lock;
 
 
 void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
     if (t_msg->getType()==msg_type::POSES)
     {
         PosesMsg* t_pos_msg=(PosesMsg*) t_msg;
-
+        #ifdef mutex_safety
+        pthread_mutex_lock(&lock);
+        #endif
         for(int i=0;i<t_pos_msg->p.poses.size();i++){
             Waypoint t_waypoint;
             t_waypoint.position.x=t_pos_msg->p.poses[i].x;
@@ -18,10 +21,20 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
             std::cout << "waypoint Yaw : " << t_waypoint.yaw << std::endl;
             Waypoints.push_back(t_waypoint);
         }
-        
+        if(old_size != Waypoints.size()){
+            ros_msg.setNumberOfWaypoints(Waypoints.size());
+            this->emit_message((DataMessage*) &ros_msg);
+            old_size = Waypoints.size();
+        }
+        #ifdef mutex_safety
+        pthread_mutex_unlock(&lock);
+        #endif
     }
     else if(t_msg->getType()==msg_type::RESTNORMREF_SETTINGS)
     {
+        #ifdef mutex_safety
+        pthread_mutex_lock(&lock);
+        #endif
         RestrictedNormRefSettingsMsg* t_settings_msg=(RestrictedNormRefSettingsMsg*) t_msg;
         max_norm=t_settings_msg->getMaxNorm();
         enabled=t_settings_msg->enabled;
@@ -31,12 +44,22 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
         if (t_settings_msg->delete_existing_waypoints){
             Waypoints.clear();
         }
+        if(old_size != Waypoints.size()){
+            ros_msg.setNumberOfWaypoints(Waypoints.size());
+            this->emit_message((DataMessage*) &ros_msg);
+            old_size = Waypoints.size();
+        }
+        #ifdef mutex_safety
+        pthread_mutex_unlock(&lock);
+        #endif
     }
     else if(t_msg->getType()==msg_type::VECTOR3D){
         Vector3DMessage* t_current_pos=(Vector3DMessage*) t_msg;
         Vector3D<double> t_current_pos_vec;
         t_current_pos_vec = t_current_pos->getData();
-        
+        #ifdef mutex_safety
+        pthread_mutex_lock(&lock);
+        #endif
         if (Waypoints.size()>0 && enabled){
             Vector3D<double> diff_pos_waypoint=Waypoints[0].position-t_current_pos_vec;
             double t_dist= Vector3D<double>::getL2Norm(diff_pos_waypoint);
@@ -56,13 +79,17 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
                 }
             }
         }
+        if(old_size != Waypoints.size()){
+            ros_msg.setNumberOfWaypoints(Waypoints.size());
+            this->emit_message((DataMessage*) &ros_msg);
+            old_size = Waypoints.size();
+        }
+        #ifdef mutex_safety
+        pthread_mutex_unlock(&lock);
+        #endif
     }
+    
 
-    if(old_size != Waypoints.size()){
-        ros_msg.setNumberOfWaypoints(Waypoints.size());
-        this->emit_message((DataMessage*) &ros_msg);
-        old_size = Waypoints.size();
-    }
 }
 
 

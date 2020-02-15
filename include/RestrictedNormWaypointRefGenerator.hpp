@@ -10,10 +10,14 @@
 #include <vector>
 #include "ControlSystem.hpp"
 #include "ROSMsg.hpp"
-
+#define mutex_safety
+#ifdef mutex_safety
+#include <pthread.h>
+#endif
 class RestrictedNormWaypointRefGenerator : public msg_emitter, public msg_receiver{
 
     private:
+    static pthread_mutex_t lock;
     std::vector<Waypoint> Waypoints;
     double max_norm = 0.2;
     bool enabled=false;
@@ -30,5 +34,4 @@ public:
     void add_z_control_system(ControlSystem*);
     void add_yaw_control_system(ControlSystem*);
     void receive_msg_data(DataMessage* t_msg);
-
 };

@@ -59,12 +59,15 @@
 #include <thread>
 #include "xsstatusflag.h"
 #include "WrapAroundFunction.hpp"
-
+#include "IntegerMsg.hpp"
 
 const int OPTITRACK_FREQUENCY = 120;
 const int PWM_FREQUENCY = 50;
 const float SATURATION_VALUE_XY = 0.5;
 const float SATURATION_VALUE_YAWRATE = 1.0;
+
+ROSUnit* myROSBroadcastData;
+msg_emitter error_emitter;
 
 Journaller *gJournal = 0;
 
@@ -79,6 +82,11 @@ void worker(TimedBlock* timed_block) {
         timed_block->tickTimer();
         if(timed_block->getLoopRemainingMicroSec() < 0){
             Logger::getAssignedLogger()->log("exceeded loop time 100hz ",LoggerLevel::Warning);
+            
+            IntegerMsg error_msg; //TODO make enum of different errors
+            error_msg.data = 1;
+            error_emitter.emit_message((DataMessage*)&error_msg);
+            
         } else {
             usleep(timed_block->getLoopRemainingMicroSec());
         }
@@ -569,6 +577,7 @@ int main(int argc, char** argv) {
     #ifdef BATTERY_MONITOR
     myBatteryMonitor->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     #endif
+    error_emitter.add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     //***********************INERTIAL TO BODY PROVIDER*****************************
  
     CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody);

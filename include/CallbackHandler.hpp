@@ -27,6 +27,9 @@ Timer t;
 class CallbackHandler : public XsCallback, public msg_emitter
 {
 public:
+Timer xsens_timer_1;
+Timer xsens_timer_2;
+
 enum unicast_addresses {broadcast,unicast_XSens_translation,unicast_XSens_orientation,unicast_XSens_attitude_rate,unicast_XSens_yaw_rate,unicast_XSens_translation_rate};
 	CallbackHandler(size_t maxBufferSize = 1)
 		: m_maxNumberOfPacketsInBuffer(maxBufferSize)
@@ -75,6 +78,12 @@ protected:
 
 		if (t_packet->containsOrientation())
 		{
+			// int interval =  xsens_timer_1.tockMicroSeconds() - 10000;
+			// std::cout << "xsens_timer1 us:" << interval << "\n";
+			// if(interval > 0){
+			// 	std::cout << "######################### WARNING ############################\n" ;
+			// }
+			// xsens_timer_1.tick();
             XsEuler euler = t_packet->orientationEuler();
             Vector3D<double> orientation_euler;
             orientation_euler.x = -1 * euler.pitch() * M_PI / 180.0;
@@ -87,7 +96,7 @@ protected:
 		}
 
         if (t_packet->containsCalibratedGyroscopeData()){
-
+			
             XsVector gyr = t_packet->calibratedGyroscopeData();
             Vector3D<double> angular_vel;
             angular_vel.x = -1 * gyr[1];
@@ -118,6 +127,12 @@ protected:
 			//this->emit_message_unicast(&position_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation,(int)Global2Inertial::receiving_channels::ch_XSens_pos);
 		}
 		if (t_packet->containsVelocity()){
+			// int interval =  xsens_timer_2.tockMicroSeconds() - 10000;
+			// std::cout << "xsens_timer2 us:" << interval << "\n";
+			// if(interval > 0){
+			// 	std::cout << "######################### WARNING ############################\n" ;
+			// }
+			// xsens_timer_2.tick();
 			XsVector vel=t_packet->velocity();
 			Vector3D<double> velocity;
 			Vector3DMessage velocity_msg;

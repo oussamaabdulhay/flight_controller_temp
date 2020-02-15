@@ -25,9 +25,11 @@ ControlSystem::~ControlSystem() {
 
 void ControlSystem::receive_msg_data(DataMessage* t_msg){
     // (2)
+    ControlSystemMessage m_output_msg;
     if(t_msg->getType() == msg_type::switcher){
 
         SwitcherMessage* switcher_msg = (SwitcherMessage*)t_msg;
+        
 
         m_output_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::to_system, switcher_msg->getFloatData());
 
@@ -65,6 +67,7 @@ void ControlSystem::receive_msg_data(DataMessage* t_msg){
 }
 
 void ControlSystem::receive_msg_data(DataMessage* t_msg, int t_channel){
+    ControlSystemMessage m_provider_data_msg;
     #ifdef ControlSystem_debug
     std::cout <<" you shouldn't be here " << std::endl;
     #endif
@@ -98,6 +101,7 @@ void ControlSystem::loopInternal(){
 }
 
 void ControlSystem::addBlock(Block* t_block){
+    ControlSystemMessage m_add_block_msg;
     m_add_block_msg.setControlSystemMessage(control_system_msg_type::add_block, t_block);
 
     this->emit_message((DataMessage*) &m_add_block_msg);

@@ -7,12 +7,13 @@
 #include "cmath"
 #include "RotationMatrix3by3.hpp"
 #include "ControlSystemMessage.hpp"
-
+#include <atomic>
 class Transform_InertialToBody : public msg_emitter, public msg_receiver {
 
 private:
-    Vector3D<float>* _inertial_command;
-    Vector3D<float> _body_command;
+    static std::atomic<float>  _inertial_command_x;
+    static std::atomic<float>  _inertial_command_y;
+    static std::atomic<float>  _inertial_command_z;
     bool _opti_x_received = false, _opti_y_received = false, _current_yaw_received = false;
     UpdatePoseMessage _body_xy;
     RotationMatrix3by3 _rotation_matrix;
@@ -23,7 +24,7 @@ public:
 
     void receive_msg_data(DataMessage*);
     void receive_msg_data(DataMessage*, int);
-    void transform();
-    Transform_InertialToBody(control_system,  Vector3D<float>* );
+    //void transform(); // TODO-Chehadeh: this is better removed
+    Transform_InertialToBody(control_system);
     ~Transform_InertialToBody();
 };

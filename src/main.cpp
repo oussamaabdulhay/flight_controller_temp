@@ -395,9 +395,9 @@ int main(int argc, char** argv) {
     Block* MRFT_yaw_rate = new MRFTController(block_id::MRFT_YAW_RATE);
 
     //TODO make all of these Blocks
-    Vector3D<float>* inertial_command = new Vector3D<float>();
-    Transform_InertialToBody* transform_X_InertialToBody = new Transform_InertialToBody(control_system::x, inertial_command);
-    Transform_InertialToBody* transform_Y_InertialToBody = new Transform_InertialToBody(control_system::y, inertial_command);
+    // Vector3D<float>* inertial_command = new Vector3D<float>(); //TODO-Chehadeh
+    Transform_InertialToBody* transform_X_InertialToBody = new Transform_InertialToBody(control_system::x);
+    Transform_InertialToBody* transform_Y_InertialToBody = new Transform_InertialToBody(control_system::y);
 
     RestrictedNormWaypointRefGenerator* myWaypoint = new RestrictedNormWaypointRefGenerator();
 

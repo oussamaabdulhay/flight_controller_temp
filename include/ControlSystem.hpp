@@ -26,11 +26,11 @@ class ControlSystem : public TimedBlock, public msg_emitter, public msg_receiver
         std::vector<Switcher*> _switchers;
         block_frequency _frequency;
 
-        ControlSystemMessage m_output_msg;
+         // TODO-Chehadeh: make automatic storage
 
-        ControlSystemMessage m_provider_data_msg;
-        ControlSystemMessage m_add_block_msg;
-        ControlSystemMessage m_change_PID_msg;
+         // TODO-Chehadeh: make automatic storage
+         // TODO-Chehadeh: make automatic storage
+        //ControlSystemMessage m_change_PID_msg;  // TODO-Chehadeh: delete as unused
         float _dt;
 
     public:

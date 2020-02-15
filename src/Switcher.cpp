@@ -26,12 +26,12 @@ void Switcher::receive_msg_data(DataMessage* t_msg){
     if(t_msg->getType() == msg_type::control_system){
 
         ControlSystemMessage* control_system_msg = (ControlSystemMessage*)t_msg;
-        Block* block_to_add = control_system_msg->getBlockToAdd();
+        Block* block_to_add = control_system_msg->getBlockToAdd(); 
         
         if (control_system_msg->getControlSystemMsgType() == control_system_msg_type::add_block
                     && static_cast<int>(this->getType()) == static_cast<int>(block_to_add->getType())){ //TODO Refactor
                 
-            Block* block_to_add = control_system_msg->getBlockToAdd();
+            //Block* block_to_add = control_system_msg->getBlockToAdd(); // TODO-Chehadeh: delete as possible redundant
             if(this->_blocks.empty()){
                 _active_block = block_to_add;
             }

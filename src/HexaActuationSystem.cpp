@@ -74,6 +74,7 @@ void HexaActuationSystem::receive_msg_data(DataMessage* t_msg){
                 case control_system::pitch:
                 {
                     _movements[1] = control_system_msg->getData();
+                    this->command();
                     break;
                 }
                 case control_system::yaw_rate:
@@ -94,10 +95,8 @@ void HexaActuationSystem::receive_msg_data(DataMessage* t_msg){
                 _movements[1] = 0.0;
                 _movements[2] = 0.0;
                 _movements[3] = 0.0;
+                this->command();
             }
-            pthread_mutex_lock(&lock); 
-            this->command();
-            pthread_mutex_unlock(&lock); 
         }
           
     }else if(t_msg->getType() == msg_type::BOOLEAN){

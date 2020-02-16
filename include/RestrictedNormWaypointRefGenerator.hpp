@@ -10,7 +10,7 @@
 #include <vector>
 #include "ControlSystem.hpp"
 #include "ROSMsg.hpp"
-#define mutex_safety
+#undef mutex_safety
 #ifdef mutex_safety
 #include <pthread.h>
 #endif

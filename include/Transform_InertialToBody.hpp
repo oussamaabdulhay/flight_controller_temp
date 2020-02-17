@@ -2,12 +2,12 @@
 #include "MsgEmitter.hpp"
 #include "MsgReceiver.hpp"
 #include "UpdatePoseMessage.hpp"
-#include "Yaw_PVProvider.hpp"
 #include "ROSMsg.hpp"
 #include "cmath"
 #include "RotationMatrix3by3.hpp"
 #include "ControlSystemMessage.hpp"
 #include <atomic>
+#include "Vector3DMessage.hpp"
 class Transform_InertialToBody : public msg_emitter, public msg_receiver {
 
 private:

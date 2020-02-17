@@ -6,7 +6,6 @@
 #include "ControlSystemMessage.hpp"
 #include "PID_values.hpp"
 #include "UpdatePoseMessage.hpp"
-#include "PVProvider.hpp"
 #include "ReferenceMessage.hpp"
 #include "TimedBlock.hpp"
 #include "ROSMsg.hpp"
@@ -22,7 +21,6 @@ class ControlSystem : public TimedBlock, public msg_emitter, public msg_receiver
         control_system _control_system;
         Switcher* controllerSwitcher;
         Switcher* referenceSwitcher;
-        PVProvider* _providerProcessVariable;
         std::vector<Switcher*> _switchers;
         block_frequency _frequency;
 

@@ -1,6 +1,4 @@
 #pragma once
-#include "Roll_PVProvider.hpp"
-#include "Pitch_PVProvider.hpp"
 #include "AttitudeMsg.hpp"
 #include "BodyRateMsg.hpp"
 #include "QuaternionMessage.hpp"

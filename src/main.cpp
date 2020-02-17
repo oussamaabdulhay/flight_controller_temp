@@ -60,8 +60,10 @@
 #include "xsstatusflag.h"
 #include "WrapAroundFunction.hpp"
 #include "IntegerMsg.hpp"
+#include "ROSUnit_Xsens.hpp"
 
 #define DEBUG_HR_LR_DECOUPLED
+#define XSENS_OVER_ROS
 
 const int OPTITRACK_FREQUENCY = 120;
 const int PWM_FREQUENCY = 50;
@@ -108,7 +110,7 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "testing_node");
 
     ros::NodeHandle nh;
-    ros::Rate rate(300);
+    ros::Rate rate(100);
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
     ROSUnit* myROSOptitrack = new ROSUnit_Optitrack(nh);
@@ -141,6 +143,7 @@ int main(int argc, char** argv) {
     myIMU->setSettings(MAGNETOMETER, FSR, 16);
     #endif
     
+    #ifndef XSENS_OVER_ROS
     #ifdef XSens_IMU_en
     
     //For the XSens to wokr over USB/FTDI connection, it's necessary to install a program called "setserial" on Linux
@@ -241,7 +244,8 @@ int main(int argc, char** argv) {
                         std::cout << "No rotation ended successfully"<< std::endl;
                         break;
                     }
-                }
+                }liseconds(100));
+
 
                 if (noRotationStatus == XSF_NoRotationAborted){
                     std::cout << "No rotation aborted" << std::endl;
@@ -271,6 +275,9 @@ int main(int argc, char** argv) {
     
     XSens_IMU* myXSensIMU = new XSens_IMU();
 
+    #endif
+    #else
+    ROSUnit* myROSUnit_Xsens = new ROSUnit_Xsens(nh);
     #endif
 
     //***********************FILTER RTK_GPS*************************************
@@ -320,16 +327,27 @@ int main(int argc, char** argv) {
     #endif
 
     #ifdef XSENS_IMU
-
+    #ifndef XSENS_OVER_ROS
     callbackXSens.add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_attitude_rate);
     callbackXSens.add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_attitude_rate);
+    #else
+    myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_attitude_rate);
+    myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_attitude_rate);
+    #endif
     #endif
 
     #ifdef XSENS_POSE
+    #ifndef XSENS_OVER_ROS
     callbackXSens.add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_yaw_rate);
     callbackXSens.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation);
     callbackXSens.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation);
     callbackXSens.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation_rate);
+    #else
+    myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_yaw_rate);
+    myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_orientation);
+    myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_translation);
+    myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_translation_rate);
+    #endif
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)wrap_around_yaw, (int)Global2Inertial::unicast_addresses::uni_XSens_ori);
     wrap_around_yaw->add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
@@ -709,6 +727,7 @@ int main(int argc, char** argv) {
         rate.sleep();
     }
 
+    #ifndef XSENS_OVER_ROS
 	cout << "Closing port..." << endl;
 	control->closePort(ManualmtPort.portName().toStdString());
 
@@ -716,7 +735,7 @@ int main(int argc, char** argv) {
 	control->destruct();
 
 	cout << "Successful exit." << endl;
-    
+    #endif
     return 0;
 
 }

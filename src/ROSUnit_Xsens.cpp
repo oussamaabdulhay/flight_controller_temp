@@ -1,19 +1,13 @@
 #include "ROSUnit_Xsens.hpp"
 #include <iostream>
 ROSUnit_Xsens* ROSUnit_Xsens::_instance_ptr = NULL;
-AttitudeMsg ROSUnit_Xsens::attitude_msg;
-VelocityMsg ROSUnit_Xsens::velocity_msg;
-HeadingMsg ROSUnit_Xsens::heading_msg;
-PositionMsg ROSUnit_Xsens::position_msg;
-BodyRateMsg ROSUnit_Xsens::bodyrate_msg;
+Timer ROSUnit_Xsens::t_pedro;
 
-AccelerationMsg ROSUnit_Xsens::acceleration_msg;
-//COMMIT change all subscribers buffers to 1
 ROSUnit_Xsens::ROSUnit_Xsens(ros::NodeHandle& t_main_handler) : ROSUnit(t_main_handler){
     _sub_attitude = t_main_handler.subscribe("filter/quaternion", 1, callbackXsensAttitude);
     _sub_body_rate = t_main_handler.subscribe("imu/angular_velocity", 1, callbackXsensBodyRate);
     //_sub_position = t_main_handler.subscribe("filter/positionlla", 1, callbackXsensPosition);
-    //_sub_velocity = t_main_handler.subscribe("filter/velocity", 1, callbackXsensVelocity);
+    _sub_velocity = t_main_handler.subscribe("filter/twist", 1, callbackXsensVelocity);
     _instance_ptr = this;
 }
 
@@ -23,34 +17,31 @@ ROSUnit_Xsens::~ROSUnit_Xsens() {
 
 void ROSUnit_Xsens::callbackXsensBodyRate(const geometry_msgs::Vector3Stamped& msg_bodyrate){
     
-    Vector3D<float> att_data;
-    att_data.x = msg_bodyrate.vector.x;
-    att_data.y = msg_bodyrate.vector.y;
-    att_data.z = msg_bodyrate.vector.z;
+    Vector3DMessage pv_dot_msg;
+    Vector3D<double> angular_vel;
+    angular_vel.x = -1 * msg_bodyrate.vector.y;
+    angular_vel.y = msg_bodyrate.vector.x;
+    angular_vel.z = msg_bodyrate.vector.z;
 
-    bodyrate_msg.x = att_data.x;
-    bodyrate_msg.y = att_data.y;
-    bodyrate_msg.z = att_data.z;
-
-    _instance_ptr->emit_message((DataMessage*) &bodyrate_msg);
+    pv_dot_msg.setVector3DMessage(angular_vel);
+	//std::cout << "angular_vel.x " << angular_vel.x << " angular_vel.y " << angular_vel.y << " angular_vel.z " << angular_vel.z << std::endl;
+	_instance_ptr->emit_message_unicast((DataMessage*) &pv_dot_msg,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_attitude_rate, (int)PVConcatenator::receiving_channels::ch_pv_dot);
+	_instance_ptr->emit_message_unicast((DataMessage*) &pv_dot_msg,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_yaw_rate, (int)PVConcatenator::receiving_channels::ch_pv);
+			
 }
 
 
 void ROSUnit_Xsens::callbackXsensPosition(const geometry_msgs::Vector3Stamped& msg_position){
     
-    Vector3D<float> pos_data;
-    pos_data.x = msg_position.vector.x;
-    pos_data.y = msg_position.vector.y;
-    pos_data.z = msg_position.vector.z;
-
-    position_msg.x=pos_data.x;
-    position_msg.y=pos_data.y;
-    position_msg.z=pos_data.z;
-    _instance_ptr->emit_message((DataMessage*) &position_msg);
+   
 }
 
 void ROSUnit_Xsens::callbackXsensAttitude( const geometry_msgs::QuaternionStamped& msg_attitude){
 
+    
+    t_xsens_loop.tick();
+
+    Vector3DMessage pv_msg;
     Quaternion att_data;
     att_data.x = msg_attitude.quaternion.x;
     att_data.y = msg_attitude.quaternion.y;
@@ -78,33 +69,31 @@ void ROSUnit_Xsens::callbackXsensAttitude( const geometry_msgs::QuaternionStampe
     _euler.z= atan2(siny_cosp, cosy_cosp);
 
 
+    Vector3D<double> orientation_euler;
+    orientation_euler.x = -1 * _euler.y;
+    orientation_euler.y = _euler.x; //Arranging the frames to match with the drone's
+    orientation_euler.z = _euler.z;
 
-    attitude_msg.pitch=_euler.x;
-    attitude_msg.roll=_euler.y;
-    heading_msg.yaw=_euler.z;
+	//std::cout << "orientation_euler.x " << orientation_euler.x << " orientation_euler.y " << orientation_euler.y << " orientation_euler.z " << orientation_euler.z << std::endl;
 
-    _instance_ptr->emit_message((DataMessage*) &attitude_msg);    
-    _instance_ptr->emit_message((DataMessage*) &heading_msg); 
+    pv_msg.setVector3DMessage(orientation_euler);
+	_instance_ptr->emit_message_unicast((DataMessage*) &pv_msg,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_orientation, (int)Global2Inertial::receiving_channels::ch_XSens_ori);
+		
 }
-void ROSUnit_Xsens::callbackXsensVelocity(const geometry_msgs::Vector3Stamped& msg_velocity){
-   
-    Vector3D<float> vel_data;
-    vel_data.x = msg_velocity.vector.x;
-    vel_data.y = msg_velocity.vector.y;
-    vel_data.z = msg_velocity.vector.z;
+void ROSUnit_Xsens::callbackXsensVelocity(const geometry_msgs::TwistStamped& msg_velocity){
+ 
+    Vector3D<double> velocity;
+	Vector3DMessage velocity_msg;
+    velocity.x = msg_velocity.twist.linear.x;
+    velocity.y = msg_velocity.twist.linear.y;
+    velocity.z = msg_velocity.twist.linear.z;
+	velocity_msg.setVector3DMessage(velocity);
+	//std::cout << "velocity.x " << velocity.x << " velocity.y " << velocity.y << " velocity.z " << velocity.z << std::endl;
 
-
-    ros::Time t_time = msg_velocity.header.stamp;
-
-    double t_dt = t_time.toSec();
-
-    
-    velocity_msg.dx=vel_data.x;
-    velocity_msg.dy=vel_data.y;
-    velocity_msg.dz=vel_data.z;
-    _instance_ptr->emit_message((DataMessage*) &velocity_msg); 
+	_instance_ptr->emit_message_unicast(&velocity_msg,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_translation_rate,(int)Global2Inertial::receiving_channels::ch_XSens_vel);
+		
 }
 
-void ROSUnit_Xsens::receive_msg_data(DataMessage* t_msg){
+void ROSUnit_Xsens::receive_msg_data(DataMessage*){
 
 }

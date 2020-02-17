@@ -44,6 +44,11 @@ void HexaActuationSystem::command(){
 
     ros_msg.setArmed(_armed);
     this->emit_message((DataMessage*) &ros_msg);
+    int interval =  t_xsens_loop.tockMicroSeconds() - 10000;
+    std::cout << "t_xsens_loop us:" << interval << "\n";
+    if(interval > 0){
+        std::cout << "######################### WARNING ############################\n" ;
+    }
 }
 
 int HexaActuationSystem::constrain(float value, int min_value, int max_value) {

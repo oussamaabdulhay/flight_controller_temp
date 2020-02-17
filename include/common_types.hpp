@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include "Timer.hpp"
 #define XSens_IMU_en
 #undef Navio_IMU_en
 #define XSENS_IMU
@@ -17,7 +18,7 @@ const struct tPacketProp{
 	uint8_t pad_EOH = 0xFF;
 	uint8_t pad_EOP = 0xFF;
 }PacketProp;
-
+static Timer t_xsens_loop;
 enum class msg_type {VECTOR, DOUBLE, rtkposition, POSE, RESTNORMREF_SETTINGS, WAYPOINT, ROLL_PROVIDER, 
 					PITCH_PROVIDER, XSENS, QUATERNION, BODYRATE, SWITCHBLOCK, SWITCHOUT, TESTMSG, SERIALDATA, THREEAXISSENSORMSG, 
 					VELOCITY, ACCELERATION, THERMALIMAGE, optitrack, FLIGHTSCENARIO, POSITION, ATTITUDE, HEADING, NOZZLEMSG, 

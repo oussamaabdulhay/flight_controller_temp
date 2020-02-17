@@ -287,10 +287,6 @@ int main(int argc, char** argv) {
     //***********************SETTING PROVIDERS**********************************
     
     Global2Inertial* myGlobal2Inertial = new Global2Inertial();
-    Differentiator* velocityFromPosition = new Differentiator(1./OPTITRACK_FREQUENCY);
-    velocityFromPosition->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
-    Differentiator* yawRateFromYaw = new Differentiator(1./OPTITRACK_FREQUENCY);
-    yawRateFromYaw->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
     PVConcatenator* CsX_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_x_axis, act_on::pv_dot);
     PVConcatenator* CsY_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_y_axis, act_on::pv_dot);
     PVConcatenator* CsZ_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis, act_on::pv_dot);
@@ -302,6 +298,10 @@ int main(int argc, char** argv) {
     WrapAroundFunction* wrap_around_yaw = new WrapAroundFunction();
     wrap_around_yaw->assignParametersRange(-M_PI, M_PI);
     #ifdef OPTITRACK
+    Differentiator* velocityFromPosition = new Differentiator(1./OPTITRACK_FREQUENCY);
+    velocityFromPosition->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
+    Differentiator* yawRateFromYaw = new Differentiator(1./OPTITRACK_FREQUENCY);
+    yawRateFromYaw->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
     myGlobal2Inertial->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
     myROSOptitrack->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)velocityFromPosition);
@@ -428,12 +428,10 @@ int main(int argc, char** argv) {
     X_ControlSystem->addBlock(MRFT_x);
     X_ControlSystem->addBlock(PV_Ref_x);
 
-    #ifdef f_400Hz
+    #ifdef f_400Hz //TODO remove
     ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, myPitchPV, block_frequency::hz400);
     #endif
-    #ifdef f_200HZ
-    ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, block_frequency::hz200);
-    #endif
+    ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, block_frequency::hz100);
     Pitch_ControlSystem->addBlock(PID_pitch);
     Pitch_ControlSystem->addBlock(MRFT_pitch);
     Pitch_ControlSystem->addBlock(PV_Ref_pitch);
@@ -446,9 +444,7 @@ int main(int argc, char** argv) {
     #ifdef f_400Hz
     ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, block_frequency::hz400);
     #endif
-    #ifdef f_200HZ
-    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, block_frequency::hz200);
-    #endif
+    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, block_frequency::hz100);
     Roll_ControlSystem->addBlock(PID_roll);
     Roll_ControlSystem->addBlock(MRFT_roll);
     Roll_ControlSystem->addBlock(PV_Ref_roll);
@@ -458,12 +454,12 @@ int main(int argc, char** argv) {
     Z_ControlSystem->addBlock(MRFT_z);
     Z_ControlSystem->addBlock(PV_Ref_z);
 
-    ControlSystem* Yaw_ControlSystem = new ControlSystem(control_system::yaw, block_frequency::hz200);
+    ControlSystem* Yaw_ControlSystem = new ControlSystem(control_system::yaw, block_frequency::hz100);
     Yaw_ControlSystem->addBlock(PID_yaw);
     Yaw_ControlSystem->addBlock(MRFT_yaw);
     Yaw_ControlSystem->addBlock(PV_Ref_yaw);
 
-    ControlSystem* YawRate_ControlSystem = new ControlSystem(control_system::yaw_rate, block_frequency::hz200);
+    ControlSystem* YawRate_ControlSystem = new ControlSystem(control_system::yaw_rate, block_frequency::hz100);
     YawRate_ControlSystem->addBlock(PID_yaw_rate);
     YawRate_ControlSystem->addBlock(MRFT_yaw_rate);
     YawRate_ControlSystem->addBlock(PV_Ref_yaw_rate);
@@ -712,12 +708,12 @@ int main(int argc, char** argv) {
     Timer timer_main;
     timer_main.tick();
     while(ros::ok()){
-        int interval =  timer_main.tockMicroSeconds() - 10000;
-        std::cout << "timer_main us:" << interval << "\n";
-        if(interval > 0){
-            std::cout << "######################### WARNING ############################\n" ;
-        }
-        timer_main.tick();
+        // int interval =  timer_main.tockMicroSeconds() - 10000;
+        // std::cout << "timer_main us:" << interval << "\n";
+        // if(interval > 0){
+        //     std::cout << "######################### WARNING ############################\n" ;
+        // }
+        // timer_main.tick(); //TODO handle debug
         #ifdef BATTERY_MONITOR
         myBatteryMonitor->getVoltageReading();
         #endif

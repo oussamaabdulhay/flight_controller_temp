@@ -38,9 +38,6 @@ void ROSUnit_Xsens::callbackXsensPosition(const geometry_msgs::Vector3Stamped& m
 
 void ROSUnit_Xsens::callbackXsensAttitude( const geometry_msgs::QuaternionStamped& msg_attitude){
 
-    
-    t_xsens_loop.tick();
-
     Vector3DMessage pv_msg;
     Quaternion att_data;
     att_data.x = msg_attitude.quaternion.x;

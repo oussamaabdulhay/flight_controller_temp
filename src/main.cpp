@@ -1,20 +1,14 @@
 #include <iostream>
 #include <vector>
-#include "../include/UM8E.hpp"
 #include "../include/ROSUnit_Optitrack.hpp"
 #include "../include/PIDController.hpp"
 #include "../include/ControlSystem.hpp"
 #include "../include/PID_values.hpp"
 #include "../include/ProcessVariableReference.hpp"
 #include "../include/ActuationSystem.hpp"
-#include "../include/looper.hpp"
 #include "../include/std_logger.hpp"
 #include "../include/HexaActuationSystem.hpp"
 #include "../include/esc_motor.hpp"
-#include "../include/NavioMPU9250Sensor.hpp"
-#include "../include/AccGyroAttitudeObserver.hpp"
-#include "../include/GyroMagHeadingObserver.hpp"
-#include "../include/ComplementaryFilter.hpp"
 #include "../include/X_UserReference.hpp"
 #include "../include/Y_UserReference.hpp"
 #include "../include/Z_UserReference.hpp"
@@ -74,8 +68,6 @@ ROSUnit* myROSBroadcastData;
 msg_emitter error_emitter;
 
 Journaller *gJournal = 0;
-
-void performCalibration(NAVIOMPU9250_sensor*);
 
 void worker(TimedBlock* timed_block) {
     timed_block->tickTimer();
@@ -719,7 +711,15 @@ int main(int argc, char** argv) {
     YawRate_Saturation->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem);
     YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     
+    Timer timer_main;
+    timer_main.tick();
     while(ros::ok()){
+        int interval =  timer_main.tockMicroSeconds() - 10000;
+        std::cout << "timer_main us:" << interval << "\n";
+        if(interval > 0){
+            std::cout << "######################### WARNING ############################\n" ;
+        }
+        timer_main.tick();
         #ifdef BATTERY_MONITOR
         myBatteryMonitor->getVoltageReading();
         #endif

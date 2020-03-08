@@ -36,22 +36,3 @@ void XSens_IMU::receive_msg_data(DataMessage* t_msg){
     }
 
 }
-
-AttitudeMsg XSens_IMU::getAttitude(){
-    // AttitudeMsg t_att_msg;
-    
-    // t_att_msg.roll = last_euler_angles.x;
-    // t_att_msg.pitch = last_euler_angles.y;
-
-    // return t_att_msg;
-}
-
-Vector3D<float> XSens_IMU::getBodyRate(){
-    // BodyRateMsg _transform;
-    // Vector3D<float> v3d_bodyrate;
-
-    // v3d_bodyrate.y = _bodyrate.x;
-    // v3d_bodyrate.x = _bodyrate.y;
-
-    // return v3d_bodyrate;
-}

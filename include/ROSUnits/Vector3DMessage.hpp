@@ -6,16 +6,16 @@ class Vector3DMessage : public DataMessage{
 
 private:
     msg_type _type;
-    Vector3D<double> _data;
+    Vector3D<float> _data;
+
 public:
 
     msg_type getType();
     const int getSize();
-    DataMessage* Clone(){ return new Vector3DMessage(*this); }
-    Vector3D<double> getData();
-
+    Vector3D<float> getData();
+    
     Vector3DMessage();
     ~Vector3DMessage();
-    
-    void setVector3DMessage(Vector3D<double>);
+
+    void setVector3DMessage(Vector3D<float>);
 };

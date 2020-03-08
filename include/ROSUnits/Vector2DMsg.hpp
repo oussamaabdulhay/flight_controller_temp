@@ -11,6 +11,6 @@ public:
 
     msg_type getType();
     const int getSize();
-    DataMessage* Clone(){ return new Vector2DMsg(*this); }
+
     Vector2D<float> data;
 };

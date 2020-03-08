@@ -14,6 +14,6 @@ public:
     ~TaggedPosesMsg();
     msg_type getType();
     const int getSize();
-    DataMessage* Clone(){ return new TaggedPosesMsg(*this); }
+
     TaggedPoses tagged_poses;
 };

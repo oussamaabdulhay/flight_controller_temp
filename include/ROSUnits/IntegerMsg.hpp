@@ -7,7 +7,7 @@ public:
 
     IntegerMsg();
     ~IntegerMsg();
-    DataMessage* Clone(){ return new IntegerMsg(*this); }
+
     msg_type getType();
     const int getSize();
 

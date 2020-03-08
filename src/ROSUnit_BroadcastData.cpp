@@ -18,8 +18,8 @@ ROSUnit_BroadcastData::ROSUnit_BroadcastData(ros::NodeHandle& t_main_handler) : 
     _info_prov_pub = t_main_handler.advertise<flight_controller::Info>("info", 1);
     _error_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("error", 1);
 
-    _att.roll = 0;
-    _head.yaw = 0;
+    _att.x = 0;
+    _head = 0;
 
     _instance_ptr = this;
 }
@@ -137,7 +137,7 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
 
         }else if(t_channel == (int)ros_broadcast_channels::yaw){
             Vector3D<float> yawpv = vector3d_msg->getData();
-            _head.yaw = yawpv.x;
+            _head = yawpv.x;
             yaw_received = true;
             geometry_msgs::PointStamped msg;
             msg.header.seq = ++_seq_yawpv;
@@ -161,7 +161,7 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
 
         }else if(t_channel == (int)ros_broadcast_channels::roll){
             Vector3D<float> rollpv = vector3d_msg->getData();
-            _att.roll = rollpv.x;
+            _att.x = rollpv.x;
             roll_received = true;
             geometry_msgs::PointStamped msg;
             msg.header.seq = ++_seq_rollpv;
@@ -173,7 +173,7 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
             _rollpv_prov_pub.publish(msg);
         }else if(t_channel == (int)ros_broadcast_channels::pitch){
             Vector3D<float> pitchpv = vector3d_msg->getData();
-            _att.pitch = pitchpv.x;
+            _att.y = pitchpv.x;
             pitch_received = true;
             geometry_msgs::PointStamped msg;
             msg.header.seq = ++_seq_pitchpv;
@@ -199,9 +199,9 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
 
     if(roll_received && pitch_received && yaw_received){
         geometry_msgs::Point msg;
-        msg.x = _att.pitch;
-        msg.y = _att.roll;
-        msg.z = _head.yaw;
+        msg.x = _att.x;
+        msg.y = _att.y;
+        msg.z = _head;
         _ori_prov_pub.publish(msg);
         roll_received = false;
         pitch_received = false;

@@ -10,6 +10,6 @@ public:
     ~VectorMsg();
     msg_type getType();
     const int getSize();
-    DataMessage* Clone(){ return new VectorMsg(*this); }
+
     Vector3D<float> p1, p2;
 };

@@ -6,18 +6,15 @@
 
 #include "MsgEmitter.hpp"
 #include "MsgReceiver.hpp"
-#include "OptitrackMessage.hpp"
 #include "Vector3D.hpp"
-#include "HeadingMsg.hpp"
-#include "AttitudeMsg.hpp"
 #include "RotationMatrix3by3.hpp"
 #include "RTKMessagePosition.hpp"
 #include "RTKMessageVelocity.hpp"
-#include "PoseStampedMsg.hpp"
 #include <math.h>
 #include "FloatMsg.hpp"
 #include "Vector3DMessage.hpp"
 #include "PVConcatenator.hpp"
+#include "OptitrackMessage.hpp"
 
 class Global2Inertial : public msg_emitter, public msg_receiver
 {
@@ -37,10 +34,9 @@ private:
     Vector3D<double> transformVelocity(Vector3D<double>);
     Vector3D<double> getEulerfromQuaternion(Quaternion);
     Vector3D<double> offsetElevation(Vector3D<double>,double);
-    HeadingMsg getHeading(Quaternion);
     Vector3D<double> correctNonHomogeneousSpace(Vector3D<double> t_uncorr_pt);
 public:
-enum unicast_addresses {broadcast,uni_RTK_pos_pv,uni_RTK_pos_wp,uni_XSens_pos,uni_Optitrack_pos,uni_XSens_vel,uni_XSens_ori};
+enum unicast_addresses {broadcast,uni_RTK_pos_pv,uni_RTK_pos_wp,uni_XSens_pos,uni_Optitrack_pos,uni_Optitrack_heading,uni_XSens_vel,uni_XSens_ori};
 enum receiving_channels {ch_broadcast,ch_RTK_pos,ch_XSens_pos,ch_Optitrack_pos,ch_XSens_vel, ch_XSens_ori};
     Global2Inertial();
     void receive_msg_data(DataMessage* t_msg);

@@ -10,7 +10,7 @@ make
 sudo ./Servo
 */
 
-#include "esc_motor.hpp"
+#include "ESCMotor.hpp"
 
 ESCMotor::ESCMotor(int t_pin, int t_freq){
     _pwmPin = t_pin;

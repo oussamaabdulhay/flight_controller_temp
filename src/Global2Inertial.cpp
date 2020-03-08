@@ -80,26 +80,17 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
         //Vector3D<float> results = transformPoint(pos_point); //TODO uncomment
         Vector3D<float> results = pos_point; //TODO uncomment
         Vector3D<float> att_vec = getEulerfromQuaternion(_bodyAtt);
-        AttitudeMsg _eulerAtt;
 
-        HeadingMsg _bodyHeading;
-        _eulerAtt.pitch = att_vec.y;
-        _eulerAtt.roll = att_vec.x;
-        _bodyHeading.yaw = att_vec.z;
-
+      
         Vector3DMessage results_msg;
         results_msg.setVector3DMessage(results);
         FloatMsg yaw_msg;
         yaw_msg.data = att_vec.z - calibrated_reference_inertial_heading;
         
-        // FloatMsg time_msg;
-        // time_msg.data = opti_msg->getTime();
-
-        // this->emit_message((DataMessage*)&time_msg);
+  
         this->emit_message_unicast(&results_msg,Global2Inertial::unicast_addresses::uni_Optitrack_pos);
-        this->emit_message((DataMessage*)&yaw_msg);
-        //this->emit_message((DataMessage*)&_eulerAtt);
-        //this->emit_message((DataMessage*)&_bodyHeading);
+        this->emit_message_unicast(&yaw_msg, Global2Inertial::unicast_addresses::uni_Optitrack_heading);
+    
     }
     else if (t_msg->getType()==msg_type::rtkposition){
         #ifdef planC_dual_RTK
@@ -123,21 +114,6 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
         }
         #endif
         
-    }
-    else if (t_msg->getType()==msg_type::POSITION){//TODO: XSesns position
-
-    }
-    else if (t_msg->getType()==msg_type::ATTITUDE){
-        AttitudeMsg* att_msg = ((AttitudeMsg*)t_msg);
-        last_known_orientation.x=att_msg->pitch;
-        last_known_orientation.y=att_msg->roll;
-    }
-    else if (t_msg->getType()==msg_type::HEADING){
-        HeadingMsg* hdng_msg = ((HeadingMsg*)t_msg);
-        last_known_orientation.z=hdng_msg->yaw;
-        HeadingMsg calibrated_heading_msg;
-        calibrated_heading_msg.yaw=last_known_orientation.z-calibrated_reference_inertial_heading;
-        emit_message((DataMessage*)&calibrated_heading_msg);
     }
     else if (t_msg->getType()==msg_type::FLOAT){
         calib_point1.z = ((FloatMsg*)t_msg)->data;
@@ -261,15 +237,6 @@ Vector3D<double> Global2Inertial::getEulerfromQuaternion(Quaternion q){
     _euler.z = atan2(siny_cosp, cosy_cosp);
 
     return _euler;
-}
-
-HeadingMsg Global2Inertial::getHeading(Quaternion t_bodyAtt)
-{
-    Vector3D<float> rpy = getEulerfromQuaternion(t_bodyAtt);
-    HeadingMsg t_heading_msg;
-    t_heading_msg.yaw = rpy.z;
-
-    return t_heading_msg;
 }
 
 Vector3D<double> Global2Inertial::changeLLAtoMeters(Vector3D<double> t_origin,Vector3D<double> t_input2){

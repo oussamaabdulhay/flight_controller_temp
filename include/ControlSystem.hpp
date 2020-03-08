@@ -6,12 +6,9 @@
 #include "ControlSystemMessage.hpp"
 #include "PID_values.hpp"
 #include "UpdatePoseMessage.hpp"
-#include "ReferenceMessage.hpp"
 #include "TimedBlock.hpp"
 #include "ROSMsg.hpp"
 #include "SwitchBlockMsg.hpp"
-#include "RollProviderMessage.hpp"
-#include "PitchProviderMessage.hpp"
 #include "Timer.hpp"
 
 class ControlSystem : public TimedBlock, public msg_emitter, public msg_receiver{

@@ -6,10 +6,10 @@
 #include <std_msgs/Float64MultiArray.h>
 #include <flight_controller/Info.h>
 #include <vector>
-#include "PositionMsg.hpp"
 #include "Vector3DMessage.hpp"
 #include "FloatMsg.hpp"
 #include "IntegerMsg.hpp"
+//TODO refactor all msgs
 
 class ROSUnit_BroadcastData : public ROSUnit{
 
@@ -44,9 +44,9 @@ private:
     std::vector<double> _cs_outputs{ 0, 0, 0, 0, 0, 0, 0 }; 
     std::vector<double> _cs_references{ 0, 0, 0, 0, 0, 0, 0 };
     std::vector<double> _act_outputs{ 0, 0, 0, 0, 0, 0 }; 
-    PositionMsg _position;
-    AttitudeMsg _att;
-    HeadingMsg _head;
+    Vector3D<double> _position;
+    Vector3D<double> _att;
+    double _head;
 
 public:
     enum ros_broadcast_channels {broadcast, x, y, z, roll, pitch, yaw, yaw_rate};

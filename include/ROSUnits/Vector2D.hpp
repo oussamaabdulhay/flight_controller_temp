@@ -1,14 +1,13 @@
-// Version: 2.1
+// Version: 3.0
 // Author: Mohamad Chehadeh
-// Date: 23 Jan 2020
-// Revision Note: Added static operations on vectors
-// Minor Revision Note: Added conversion to Vector3D
+// Last Modification By: Mohamad Wahbah
+// Date: 30 Dec 2019
+//Revision Note: Overloaded assignment operator to accept initializer list
 #pragma once 
-template  <class L> class Vector2D;
+
 #include <cstdint>
 #include <math.h>
-#include "Vector3D.hpp"
-
+#include <initializer_list>
 template <class T>  
 class Vector2D
 {
@@ -57,7 +56,11 @@ class Vector2D
                         this->x = tmp;
                         this->y = tmp;
                 }
-
+                void operator = (std::initializer_list<T> tmp)
+                {
+                        this->x = *tmp.begin();
+                        this->y = *(tmp.begin()+1);
+                }
                 template <typename M>
                 operator Vector2D<M>()
                 {
@@ -65,14 +68,6 @@ class Vector2D
                         tmp.x = M(this->x);
                         tmp.y = M(this->y);
                         return tmp;
-                }
-
-                Vector3D<T> convertTo3D(T z){
-                        Vector3D<T> res;
-                        res.x=this->x;
-                        res.y=this->y;
-                        res.z=z;
-                        return res;
                 }
 
                 static double getL2Norm(Vector2D<T> vec1,Vector2D<T> vec2){
@@ -94,5 +89,4 @@ class Vector2D
                 static double dotProduct(Vector2D<T> vec1,Vector2D<T> vec2){
                         return vec1.x*vec2.x+vec1.y*vec2.y;
                 }
-
 };

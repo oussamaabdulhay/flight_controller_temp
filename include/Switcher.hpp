@@ -8,10 +8,7 @@
 #include "Vector3DMessage.hpp"
 #include "PIDController.hpp"
 #include "ProcessVariableReference.hpp"
-#include "PositioningProvider.hpp"
 #include <algorithm>
-#include "AttitudeProvider.hpp"
-#include "ReferenceMessage.hpp"
 #include "logger.hpp"
 #include "SwitchBlockMsg.hpp"
 

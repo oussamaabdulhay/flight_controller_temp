@@ -12,6 +12,6 @@ public:
     ~PosesMsg();
     msg_type getType();
     const int getSize();
-    DataMessage* Clone(){ return new PosesMsg(*this); }
+
     Poses p;
 };

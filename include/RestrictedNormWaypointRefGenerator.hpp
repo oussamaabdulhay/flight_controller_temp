@@ -2,9 +2,7 @@
 #include "MsgEmitter.hpp"
 #include "MsgReceiver.hpp"
 #include "Vector3D.hpp"
-#include "PositionMsg.hpp"
 #include "RestrictedNormRefSettingsMsg.hpp"
-#include "ReferenceMessage.hpp"
 #include "WaypointMsg.hpp"
 #include "PosesMsg.hpp"
 #include <vector>

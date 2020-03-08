@@ -7,7 +7,7 @@ public:
 
     EmptyMsg();
     ~EmptyMsg();
-    DataMessage* Clone(){ return new EmptyMsg(*this); }
+
     msg_type getType();
     const int getSize();    
 };

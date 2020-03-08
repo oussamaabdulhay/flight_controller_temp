@@ -5,8 +5,6 @@
 #include "ROSUnit.hpp"
 #include "Vector3D.hpp"
 #include "common_types.hpp"
-#include "VelocityMsg.hpp"
-#include "PositionMsg.hpp"
 #include "Vector3DMessage.hpp"
 #include "Global2Inertial.hpp"
 

@@ -10,6 +10,6 @@ public:
     ~PoseMsg();
     msg_type getType();
     const int getSize();
-    DataMessage* Clone(){ return new PoseMsg(*this); }
+
     Pose pose;
 };

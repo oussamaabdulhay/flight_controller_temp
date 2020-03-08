@@ -8,7 +8,7 @@
 #include "../include/ActuationSystem.hpp"
 #include "../include/std_logger.hpp"
 #include "../include/HexaActuationSystem.hpp"
-#include "../include/esc_motor.hpp"
+#include "../include/ESCMotor.hpp"
 #include "../include/X_UserReference.hpp"
 #include "../include/Y_UserReference.hpp"
 #include "../include/Z_UserReference.hpp"
@@ -29,8 +29,6 @@
 #include "../include/ROSUnit_Xsens.hpp"
 #include "../include/XSens_IMU.hpp"
 #include "../include/Transform_InertialToBody.hpp"
-#include "thread_terminal_unit.hpp"
-#include "thread_initial_unit.hpp"
 #include "TimedBlock.hpp"
 #include <iostream>
 #include <stdexcept>
@@ -457,7 +455,7 @@ int main(int argc, char** argv) {
     YawRate_ControlSystem->addBlock(MRFT_yaw_rate);
     YawRate_ControlSystem->addBlock(PV_Ref_yaw_rate);
 
-    //******************PROVIDERS TO CONTRO SYSTEMS******************************
+    //******************PROVIDERS TO CONTROL SYSTEMS******************************
 
     CsX_PVConcatenator->add_callback_msg_receiver((msg_receiver*)X_ControlSystem);
     CsY_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem);
@@ -696,15 +694,7 @@ int main(int argc, char** argv) {
     YawRate_Saturation->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem);
     YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     
-    Timer timer_main;
-    timer_main.tick();
     while(ros::ok()){
-        // int interval =  timer_main.tockMicroSeconds() - 10000;
-        // std::cout << "timer_main us:" << interval << "\n";
-        // if(interval > 0){
-        //     std::cout << "######################### WARNING ############################\n" ;
-        // }
-        // timer_main.tick(); //TODO handle debug
         #ifdef BATTERY_MONITOR
         myBatteryMonitor->getVoltageReading();
         #endif

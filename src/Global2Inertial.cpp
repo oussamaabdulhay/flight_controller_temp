@@ -18,9 +18,25 @@ Global2Inertial::Global2Inertial(){
     calib_point1.y = 54.39683993;
     calib_point1.z = 0.0;
 
-    calib_point2.x = 24.44814808;
+    calib_point2.x = 24.44814808; //defines x(+) axis
     calib_point2.y = 54.39666318;
     calib_point2.z = 0.0;
+
+    calib_point3.x = 24.44814808; //correcting x offset in y
+    calib_point3.y = 54.39666318;
+    calib_point3.z = 0.0;
+
+    calib_point3_true_SI.x = 0; //Take this using hand measurement. this would scale y with no effect on x. in meters
+    calib_point3_true_SI.y = 6;
+    calib_point3_true_SI.z = 0.0;
+
+    calib_point4.x = 24.44814808; //This is a validation point
+    calib_point4.y = 54.39666318;
+    calib_point4.z = 0.0;
+
+    calib_point4_true_SI.x = 24; //Take this using hand measurement. For validation
+    calib_point4_true_SI.y = 6 ;
+    calib_point4_true_SI.z = 0.0;
 
     // calib_point1.x=0;
     // calib_point1.y=0;
@@ -31,6 +47,23 @@ Global2Inertial::Global2Inertial(){
     calibrated_reference_inertial_heading=180.*(M_PI/180.);
     Vector3D<double> calib_points_diff = calib_point2 - calib_point1;
     calibrated_global_to_inertial_angle = atan2(calib_points_diff.x, calib_points_diff.y);
+
+    Vector3D<double> results = changeLLAtoMeters(calib_point1, calib_point3); // Compute homogenueity calibration terms
+    Vector3D<double> results_elev=offsetElevation(results,-calib_point1.z);
+    Vector3D<double> calib_point3_meas_SI=rotatePoint(results_elev);
+
+    x_off_calib_slope=-1.0*(calib_point3_meas_SI.x/calib_point3_meas_SI.y);
+    y_scale_coeff=calib_point3_true_SI.y/calib_point3_meas_SI.y;
+
+    //Validate calibration
+    results = changeLLAtoMeters(calib_point1, calib_point4); //
+    results_elev=offsetElevation(results,-calib_point1.z);
+    Vector3D<double> calib_point4_meas_SI=rotatePoint(results_elev);
+    double error_calib_homo=sqrt(pow((calib_point4_meas_SI.x-calib_point4_true_SI.x), 2)+pow((calib_point4_meas_SI.y-calib_point4_true_SI.y), 2)+pow((calib_point4_meas_SI.z-calib_point4_true_SI.z), 2));
+    std::cout << "*** Homogenuity calibration results: ***\n";
+    std::cout << "error_calib_homo: "<<error_calib_homo <<"\n";
+    std::cout << "Is within tolerance?: "<< (error_calib_homo<error_calib_homo_tol) <<"\n";
+    std::cout << "****************************************\n";
     antenna_pose.x=0.;
     antenna_pose.y=0.1;
     antenna_pose.z=0.1;
@@ -252,5 +285,13 @@ Vector3D<double> Global2Inertial::changeLLAtoMeters(Vector3D<double> t_origin,Ve
     res.x=deltaLong*m_per_deg_long;
     res.z=t_input2.z;
     
+    return res;
+}
+
+Vector3D<double> Global2Inertial::correctNonHomogeneousSpace(Vector3D<double> t_uncorr_pt){
+    Vector3D<double> res;
+    res.x=t_uncorr_pt.x+x_off_calib_slope*t_uncorr_pt.y;
+    res.y=t_uncorr_pt.y*y_scale_coeff;
+    res.z=t_uncorr_pt.z;
     return res;
 }

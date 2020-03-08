@@ -43,7 +43,7 @@ void PVConcatenator::receive_msg_data(DataMessage* t_msg, int t_channel){
             if(_act_on == act_on::pv){
                 pv_vector.x = pv;
                 pv_vector.y = pv_dot;
-                pv_vector.z = pv_dot_dot;
+                pv_vector.z = 0.0; //TODO add pv_dot_dot if needed
                 Vector3DMessage pv_vector_msg;
                 pv_vector_msg.setVector3DMessage(pv_vector);
                 #ifdef PVConc_debug
@@ -69,7 +69,7 @@ void PVConcatenator::receive_msg_data(DataMessage* t_msg, int t_channel){
             if(_act_on == act_on::pv_dot){
                 pv_vector.x = pv;
                 pv_vector.y = pv_dot;
-                pv_vector.z = pv_dot_dot;
+                pv_vector.z = 0.0; //TODO add pv_dot_dot if needed
                 Vector3DMessage pv_vector_msg;
                 pv_vector_msg.setVector3DMessage(pv_vector);
                 this->emit_message((DataMessage*) &pv_vector_msg);

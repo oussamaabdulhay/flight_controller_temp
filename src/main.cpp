@@ -56,6 +56,10 @@
 
 #define DEBUG_HR_LR_DECOUPLED
 #define XSENS_OVER_ROS
+#undef RTK_GPS_FILTER
+#undef XSENS_OVER_SERIAL
+#define RTK_ONLY
+#undef XSENS_GPS_ONLY
 
 const int OPTITRACK_FREQUENCY = 120;
 const int PWM_FREQUENCY = 50;
@@ -67,6 +71,7 @@ msg_emitter error_emitter;
 
 Journaller *gJournal = 0;
 
+#ifdef RTK_GPS_FILTER
 void worker(TimedBlock* timed_block) {
     timed_block->tickTimer();
     usleep(timed_block->getLoopRemainingMicroSec());
@@ -86,7 +91,7 @@ void worker(TimedBlock* timed_block) {
         }
     }
 }
-
+#endif
 
 int main(int argc, char** argv) {
     
@@ -95,7 +100,7 @@ int main(int argc, char** argv) {
     //TODO make a single pattern to follow for providers
     //TODO makedirect connection between Xsens and Raspberry
 
-     //*****************************ROS UNITS*******************************
+    //*****************************ROS UNITS*******************************
 
     ros::init(argc, argv, "testing_node");
 
@@ -114,10 +119,8 @@ int main(int argc, char** argv) {
     ROSUnit* myROSBroadcastData = new ROSUnit_BroadcastData(nh);
     ROSUnit* myROSSwitchBlock = new ROSUnit_SwitchBlock(nh);
     ROSUnit* myROSRestNormSettings = new ROSUnit_RestNormSettings(nh);
-
     ROSUnit* ROSUnit_uav_control_set_path = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,ROSUnit_msg_type::ROSUnit_Poses,"uav_control/set_path");
     ROSUnit* ROSUnit_set_height_offset = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,ROSUnit_msg_type::ROSUnit_Float,"set_height_offset");
-    
     ROSUnit* myROSRTK = new ROSUnit_RTK(nh);
 
     //*****************************LOGGER**********************************
@@ -133,8 +136,8 @@ int main(int argc, char** argv) {
     myIMU->setSettings(MAGNETOMETER, FSR, 16);
     #endif
     
-    #ifndef XSENS_OVER_ROS
-    #ifdef XSens_IMU_en
+    
+    #ifdef XSENS_OVER_SERIAL
     
     //For the XSens to wokr over USB/FTDI connection, it's necessary to install a program called "setserial" on Linux
     //Once installed, run the command "setserial /name/of/the/dev/port low_latency". Doing so, will reduce the buffering
@@ -234,7 +237,7 @@ int main(int argc, char** argv) {
                         std::cout << "No rotation ended successfully"<< std::endl;
                         break;
                     }
-                }liseconds(100));
+                }
 
 
                 if (noRotationStatus == XSF_NoRotationAborted){
@@ -266,12 +269,11 @@ int main(int argc, char** argv) {
     XSens_IMU* myXSensIMU = new XSens_IMU();
 
     #endif
-    #else
-    ROSUnit* myROSUnit_Xsens = new ROSUnit_Xsens(nh);
-    #endif
+
+    
 
     //***********************FILTER RTK_GPS*************************************
-    #ifdef RTK
+    #ifdef RTK_GPS_FILTER
     HR_LR_position_fusion* hr_lr_position_fusion = new HR_LR_position_fusion();
     hr_lr_position_fusion->setLoopFrequency(block_frequency::hz100);
     hr_lr_position_fusion->current_operation_mode = HR_LR_position_fusion::operation_mode::bias_elimination;
@@ -297,6 +299,7 @@ int main(int argc, char** argv) {
 
     WrapAroundFunction* wrap_around_yaw = new WrapAroundFunction();
     wrap_around_yaw->assignParametersRange(-M_PI, M_PI);
+    
     #ifdef OPTITRACK
     Differentiator* velocityFromPosition = new Differentiator(1./OPTITRACK_FREQUENCY);
     velocityFromPosition->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
@@ -316,54 +319,50 @@ int main(int argc, char** argv) {
     yawRateFromYaw->add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator);
     #endif
 
-    #ifdef XSENS_IMU
-    #ifndef XSENS_OVER_ROS
+    #ifdef XSENS_OVER_SERIAL
     callbackXSens.add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_attitude_rate);
     callbackXSens.add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_attitude_rate);
-    #else
-    myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_attitude_rate);
-    myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_attitude_rate);
-    #endif
-    #endif
-
-    #ifdef XSENS_POSE
-    #ifndef XSENS_OVER_ROS
     callbackXSens.add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_yaw_rate);
     callbackXSens.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation);
     callbackXSens.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation);
     callbackXSens.add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation_rate);
-    #else
+    #endif
+    #ifdef XSENS_OVER_ROS
+    ROSUnit* myROSUnit_Xsens = new ROSUnit_Xsens(nh);
+    myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_attitude_rate);
+    myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_attitude_rate);
     myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_yaw_rate);
     myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_orientation);
     myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_translation);
     myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_translation_rate);
     #endif
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)wrap_around_yaw, (int)Global2Inertial::unicast_addresses::uni_XSens_ori);
-    wrap_around_yaw->add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator);
+
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)wrap_around_yaw, (int)Global2Inertial::unicast_addresses::uni_XSens_ori);
+    wrap_around_yaw->add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator,(int)Global2Inertial::unicast_addresses::uni_XSens_ori); //TODO bad grouping with ifdef
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator,(int)Global2Inertial::unicast_addresses::uni_XSens_ori);
-    #ifdef RTK
-    myROSRTK->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
-    #ifndef DEBUG_HR_LR_DECOUPLED
+
+    #ifdef RTK_GPS_FILTER
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)&rtk_position_terminal_unit, (int)Global2Inertial::unicast_addresses::uni_RTK_pos_pv);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)&xsens_position_terminal_unit, (int)Global2Inertial::unicast_addresses::uni_XSens_pos);
     hr_lr_position_fusion->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator,HR_LR_position_fusion::uni_pv_receiver);
     hr_lr_position_fusion->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator,HR_LR_position_fusion::uni_pv_receiver);
     hr_lr_position_fusion->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator,HR_LR_position_fusion::uni_pv_receiver);
     thread* hr_lr_position_fusion_thread = new thread(worker, (TimedBlock*)hr_lr_position_fusion);
-    #else
+    #endif
+    #ifdef RTK_ONLY
+    myROSRTK->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_RTK_pos_pv);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_RTK_pos_pv);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_RTK_pos_pv);
     #endif
-    #else
+    #ifdef XSENS_GPS_ONLY
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_pos);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator,(int) Global2Inertial::unicast_addresses::uni_XSens_pos);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_pos);
-    #endif
     #endif
 
     
@@ -428,9 +427,6 @@ int main(int argc, char** argv) {
     X_ControlSystem->addBlock(MRFT_x);
     X_ControlSystem->addBlock(PV_Ref_x);
 
-    #ifdef f_400Hz //TODO remove
-    ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, myPitchPV, block_frequency::hz400);
-    #endif
     ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, block_frequency::hz100);
     Pitch_ControlSystem->addBlock(PID_pitch);
     Pitch_ControlSystem->addBlock(MRFT_pitch);
@@ -441,9 +437,6 @@ int main(int argc, char** argv) {
     Y_ControlSystem->addBlock(MRFT_y);
     Y_ControlSystem->addBlock(PV_Ref_y);
 
-    #ifdef f_400Hz
-    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, block_frequency::hz400);
-    #endif
     ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, block_frequency::hz100);
     Roll_ControlSystem->addBlock(PID_roll);
     Roll_ControlSystem->addBlock(MRFT_roll);
@@ -560,8 +553,6 @@ int main(int argc, char** argv) {
     myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint);
 
     ROSUnit_set_height_offset->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
-    //myROSRTK->add_callback_msg_receiver((msg_receiver*)rtk_position_terminal_unit, );
-    //myXSensIMU->add_callback_msg_receiver
     
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************
     CsX_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::x);
@@ -721,7 +712,7 @@ int main(int argc, char** argv) {
         rate.sleep();
     }
 
-    #ifndef XSENS_OVER_ROS
+    #ifdef XSENS_OVER_SERIAL
 	cout << "Closing port..." << endl;
 	control->closePort(ManualmtPort.portName().toStdString());
 

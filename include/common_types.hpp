@@ -1,15 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include "Timer.hpp"
-#define XSens_IMU_en
-#undef Navio_IMU_en
-#define XSENS_IMU
-#define f_200HZ
-#undef f_400HZ
-#define RTK
-#undef OPTITRACK
-#define BATTERY_MONITOR
-#define XSENS_POSE
+
 const struct tPacketProp{
 	uint8_t pad_len = 3;
 	uint8_t hdr_len = 2;

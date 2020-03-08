@@ -1,39 +1,38 @@
 #include <iostream>
 #include <vector>
-#include "../include/ROSUnit_Optitrack.hpp"
-#include "../include/PIDController.hpp"
-#include "../include/ControlSystem.hpp"
-#include "../include/PID_values.hpp"
-#include "../include/ProcessVariableReference.hpp"
-#include "../include/ActuationSystem.hpp"
-#include "../include/std_logger.hpp"
-#include "../include/HexaActuationSystem.hpp"
-#include "../include/ESCMotor.hpp"
-#include "../include/X_UserReference.hpp"
-#include "../include/Y_UserReference.hpp"
-#include "../include/Z_UserReference.hpp"
-#include "../include/Yaw_UserReference.hpp"
-#include "../include/ROSUnit_Arm.hpp"
-#include "../include/ROSUnit_Waypoint.hpp"
-#include "../include/ROSUnit_UpdateController.hpp"
-#include "../include/ROSUnit_ResetController.hpp"
-#include "../include/ROSUnit_BroadcastData.hpp"
-#include "../include/ROSUnit_SwitchBlock.hpp"
-#include "../include/MRFTController.hpp"
-#include "../include/MRFT_values.hpp"
-#include "../include/ControllerMessage.hpp"
-#include "../include/ROSUnit_UpdateReferenceX.hpp"
-#include "../include/ROSUnit_UpdateReferenceY.hpp"
-#include "../include/ROSUnit_UpdateReferenceZ.hpp"
-#include "../include/ROSUnit_UpdateReferenceYaw.hpp"
-#include "../include/ROSUnit_Xsens.hpp"
-#include "../include/XSens_IMU.hpp"
-#include "../include/Transform_InertialToBody.hpp"
+#include "ROSUnit_Optitrack.hpp"
+#include "PIDController.hpp"
+#include "ControlSystem.hpp"
+#include "PID_values.hpp"
+#include "ProcessVariableReference.hpp"
+#include "ActuationSystem.hpp"
+#include "std_logger.hpp"
+#include "HexaActuationSystem.hpp"
+#include "ESCMotor.hpp"
+#include "X_UserReference.hpp"
+#include "Y_UserReference.hpp"
+#include "Z_UserReference.hpp"
+#include "Yaw_UserReference.hpp"
+#include "ROSUnit_Arm.hpp"
+#include "ROSUnit_Waypoint.hpp"
+#include "ROSUnit_UpdateController.hpp"
+#include "ROSUnit_ResetController.hpp"
+#include "ROSUnit_BroadcastData.hpp"
+#include "ROSUnit_SwitchBlock.hpp"
+#include "MRFTController.hpp"
+#include "MRFT_values.hpp"
+#include "ControllerMessage.hpp"
+#include "ROSUnit_UpdateReferenceX.hpp"
+#include "ROSUnit_UpdateReferenceY.hpp"
+#include "ROSUnit_UpdateReferenceZ.hpp"
+#include "ROSUnit_UpdateReferenceYaw.hpp"
+#include "ROSUnit_Xsens.hpp"
+#include "XSens_IMU.hpp"
+#include "Transform_InertialToBody.hpp"
 #include "TimedBlock.hpp"
 #include <iostream>
 #include <stdexcept>
 #include <string>
-#include <thread>
 #include "CallbackHandler.hpp"
 #include "RestrictedNormWaypointRefGenerator.hpp"
 #include "ROSUnit_RestNormSettings.hpp"
@@ -55,8 +54,12 @@
 #define XSENS_OVER_ROS
 #undef RTK_GPS_FILTER
 #undef XSENS_OVER_SERIAL
-#define RTK_ONLY
+#undef RTK_ONLY
 #undef XSENS_GPS_ONLY
+
+#undef Navio_IMU_en
+#define OPTITRACK
+#undef BATTERY_MONITOR
 
 const int OPTITRACK_FREQUENCY = 120;
 const int PWM_FREQUENCY = 50;
@@ -99,7 +102,7 @@ int main(int argc, char** argv) {
 
     //*****************************ROS UNITS*******************************
 
-    ros::init(argc, argv, "testing_node");
+    ros::init(argc, argv, "flight_controller_node");
 
     ros::NodeHandle nh;
     ros::Rate rate(100);
@@ -589,8 +592,6 @@ int main(int argc, char** argv) {
 
     //***********************SETTING PID INITIAL VALUES*****************************
 
-    //TODO remove this after adding to FlightScenario
-    //TODO find a better way to pass dt to the controllers
     ControllerMessage ctrl_msg;
     PID_parameters pid_para_init;
 
@@ -671,7 +672,7 @@ int main(int argc, char** argv) {
     //***********************************SETTING CONNECTIONS***********************************
     //========                                                                    =============
     //|      |----->X_Control_System-->RM_X-->Saturation-->Roll_Control_System--->|           |
-    //| USER |----->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System-->| Actuation |      
+    //| USER |----->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System-->| Actuation |
     //|      |----->Z_Control_System--------------------------------------------->|  System   |
     //|      |----->Yaw_Control_System-->Saturation--->YawRate_Control_System---->|           |
     //========                                                                    =============

@@ -5,7 +5,7 @@
 #include "BoolMessage.hpp"
 #include "Vector3D.hpp"
 #include "ResetControllerMsg.hpp"
-#include <positioning_system/Reset_Controller.h>
+#include <flight_controller/Reset_Controller.h>
 
 class ROSUnit_ResetController :  public ROSUnit{
 
@@ -14,7 +14,7 @@ class ROSUnit_ResetController :  public ROSUnit{
         static ROSUnit_ResetController* _instance_ptr;
         static ResetControllerMsg _reset_msg; 
         ros::ServiceServer _srv_reset_controller;
-        static bool callbackResetController(positioning_system::Reset_Controller::Request  &req, positioning_system::Reset_Controller::Response &res);
+        static bool callbackResetController(flight_controller::Reset_Controller::Request  &req, flight_controller::Reset_Controller::Response &res);
         void receive_msg_data(DataMessage* t_msg);  
 
     public:

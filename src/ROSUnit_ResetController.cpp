@@ -16,7 +16,7 @@ void ROSUnit_ResetController::receive_msg_data(DataMessage* t_msg){
 
 }
 
-bool ROSUnit_ResetController::callbackResetController(positioning_system::Reset_Controller::Request &req, positioning_system::Reset_Controller::Response &res){
+bool ROSUnit_ResetController::callbackResetController(flight_controller::Reset_Controller::Request &req, flight_controller::Reset_Controller::Response &res){
 
     int data;
     data = req.id;

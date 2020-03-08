@@ -18,8 +18,8 @@ void ROSUnit_UpdateReferenceYaw::receive_msg_data(DataMessage* t_msg){
 
 }
 
-bool ROSUnit_UpdateReferenceYaw::callbackSetpoint(positioning_system::Update_Yaw_Reference::Request  &req, 
-                                                positioning_system::Update_Yaw_Reference::Response &res){
+bool ROSUnit_UpdateReferenceYaw::callbackSetpoint(flight_controller::Update_Yaw_Reference::Request  &req, 
+                                                flight_controller::Update_Yaw_Reference::Response &res){
 
     float setpoint = req.setpoint_yaw;
 

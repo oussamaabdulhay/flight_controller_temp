@@ -18,8 +18,8 @@ void ROSUnit_Waypoint::receive_msg_data(DataMessage* t_msg){
 
 }
 
-bool ROSUnit_Waypoint::callbackSetpoint( positioning_system::Update_Pose_Reference::Request  &req, 
-                                                positioning_system::Update_Pose_Reference::Response &res){
+bool ROSUnit_Waypoint::callbackSetpoint( flight_controller::Update_Pose_Reference::Request  &req, 
+                                                flight_controller::Update_Pose_Reference::Response &res){
 
     //TODO change to receive only one reference at a time
     Waypoint t_waypoint;

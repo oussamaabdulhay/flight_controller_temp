@@ -4,7 +4,7 @@
 #include <geometry_msgs/PointStamped.h>
 #include <geometry_msgs/Point.h>
 #include <std_msgs/Float64MultiArray.h>
-#include <positioning_system/Info.h>
+#include <flight_controller/Info.h>
 #include <vector>
 #include "PositionMsg.hpp"
 #include "Vector3DMessage.hpp"

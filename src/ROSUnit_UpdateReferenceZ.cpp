@@ -18,8 +18,8 @@ void ROSUnit_UpdateReferenceZ::receive_msg_data(DataMessage* t_msg){
 
 }
 
-bool ROSUnit_UpdateReferenceZ::callbackSetpoint(positioning_system::Update_Z_Reference::Request  &req, 
-                                                positioning_system::Update_Z_Reference::Response &res){
+bool ROSUnit_UpdateReferenceZ::callbackSetpoint(flight_controller::Update_Z_Reference::Request  &req, 
+                                                flight_controller::Update_Z_Reference::Response &res){
 
     float setpoint = req.setpoint_z;
 

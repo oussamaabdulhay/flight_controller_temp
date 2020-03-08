@@ -15,7 +15,7 @@ ROSUnit_BroadcastData::ROSUnit_BroadcastData(ros::NodeHandle& t_main_handler) : 
     _cs_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("control_system_output", 1);
     _csr_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("control_system_reference", 1);
     _act_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("actuation_output", 1);
-    _info_prov_pub = t_main_handler.advertise<positioning_system::Info>("info", 1);
+    _info_prov_pub = t_main_handler.advertise<flight_controller::Info>("info", 1);
     _error_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("error", 1);
 
     _att.roll = 0;
@@ -63,7 +63,7 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
             
         }else if(ros_msg->getROSMsgType() == ros_msg_type::ARMED){
             _armed = ros_msg->getArmed();
-            positioning_system::Info msg;
+            flight_controller::Info msg;
             msg.header.seq = ++_seq_info;
             msg.header.stamp = ros::Time::now();
             msg.header.frame_id = "";

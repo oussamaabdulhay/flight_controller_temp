@@ -19,8 +19,8 @@ void ROSUnit_UpdateController::receive_msg_data(DataMessage* t_msg){
 
 }
 
-bool ROSUnit_UpdateController::callbackUpdateController(positioning_system::Update_Controller::Request  &req, 
-                                                        positioning_system::Update_Controller::Response &res){
+bool ROSUnit_UpdateController::callbackUpdateController(flight_controller::Update_Controller::Request  &req, 
+                                                        flight_controller::Update_Controller::Response &res){
 
     block_id _id = static_cast<block_id>((int)req.controller_parameters.id);
     

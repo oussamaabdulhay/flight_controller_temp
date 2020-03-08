@@ -16,8 +16,8 @@ void ROSUnit_SwitchBlock::receive_msg_data(DataMessage* t_msg){
 
 }
 
-bool ROSUnit_SwitchBlock::callbackSwitchBlocks(positioning_system::SwitchBlock::Request &req, 
-                                               positioning_system::SwitchBlock::Response &res){
+bool ROSUnit_SwitchBlock::callbackSwitchBlocks(flight_controller::SwitchBlock::Request &req, 
+                                               flight_controller::SwitchBlock::Response &res){
 
     int block_in, block_out;
     block_in = req.block_in;

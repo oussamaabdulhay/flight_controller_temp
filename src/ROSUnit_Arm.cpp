@@ -16,7 +16,7 @@ void ROSUnit_Arm::receive_msg_data(DataMessage* t_msg){
 
 }
 
-bool ROSUnit_Arm::callbackArm(positioning_system::Arm::Request &req, positioning_system::Arm::Response &res){
+bool ROSUnit_Arm::callbackArm(flight_controller::Arm::Request &req, flight_controller::Arm::Response &res){
 
     bool data;
     data = req.armed;

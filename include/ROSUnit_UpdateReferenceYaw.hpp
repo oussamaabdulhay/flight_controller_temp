@@ -2,7 +2,7 @@
 #include "ROSUnit.hpp"
 #include "FlightScenarioMessage.hpp"
 #include "UpdatePoseMessage.hpp"
-#include <positioning_system/Update_Yaw_Reference.h>
+#include <flight_controller/Update_Yaw_Reference.h>
 #include "Vector3D.hpp"
 
 class ROSUnit_UpdateReferenceYaw :  public ROSUnit{
@@ -12,8 +12,8 @@ class ROSUnit_UpdateReferenceYaw :  public ROSUnit{
         static ROSUnit_UpdateReferenceYaw* _instance_ptr;
         static UpdatePoseMessage _pose_ref_msg; 
         ros::ServiceServer _srv_setpoint;
-        static bool callbackSetpoint(positioning_system::Update_Yaw_Reference::Request  &req, 
-                                     positioning_system::Update_Yaw_Reference::Response &res);
+        static bool callbackSetpoint(flight_controller::Update_Yaw_Reference::Request  &req, 
+                                     flight_controller::Update_Yaw_Reference::Response &res);
         void receive_msg_data(DataMessage* t_msg);  
 
     public:

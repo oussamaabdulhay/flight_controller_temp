@@ -10,9 +10,9 @@
                 "/home/pedrohrpbs/catkin_ws/src/kuri_mbzirc_offboard_control/include/**",
                 "/home/pedrohrpbs/catkin_ws/src/mocap_optitrack/include/**",
                 "/usr/include/**",
-                "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/include/**",
-                "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/**",
-                "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/xsens_ros_mti_driver/**"
+                "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/**",
+                "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/**",
+                "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/xsens_ros_mti_driver/**"
             ],
             "name": "ROS",
             "intelliSenseMode": "gcc-x64",

@@ -17,8 +17,8 @@ void ROSUnit_RestNormSettings::receive_msg_data(DataMessage* t_msg){
 
 }
 
-bool ROSUnit_RestNormSettings::callbackSettings(positioning_system::Restricted_Norm_Settings::Request  &req, 
-                                                positioning_system::Restricted_Norm_Settings::Response &res){
+bool ROSUnit_RestNormSettings::callbackSettings(flight_controller::Restricted_Norm_Settings::Request  &req, 
+                                                flight_controller::Restricted_Norm_Settings::Response &res){
 
     _settings_msg.enabled = req.enabled;
     _settings_msg.delete_existing_waypoints = req.delete_existing_waypoints;

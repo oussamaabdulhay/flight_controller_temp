@@ -1,5 +1,5 @@
 <launch> 
-  <node pkg="positioning_system" type="positioning_system" 
-  name="positioning_system" output="screen" 
+  <node pkg="flight_controller" type="flight_controller" 
+  name="flight_controller" output="screen" 
   launch-prefix="valgrind"/> 
 </launch> 

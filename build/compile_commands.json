@@ -1,138 +1,138 @@
 [
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/ROSUnit_Positioning.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/ROSUnit_Positioning.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/ROSUnit_Positioning.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/ROSUnit_Positioning.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ROSUnit_Positioning.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ROSUnit_Positioning.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/Quaternion.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/Quaternion.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/Quaternion.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/Quaternion.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Quaternion.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Quaternion.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/msg_receiver.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/msg_receiver.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/msg_receiver.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/msg_receiver.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/msg_receiver.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/msg_receiver.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/ProcessVariableDifferentiator.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/ProcessVariableDifferentiator.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/ProcessVariableDifferentiator.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/ProcessVariableDifferentiator.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ProcessVariableDifferentiator.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ProcessVariableDifferentiator.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/AttitudeHeadingProvider.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/AttitudeHeadingProvider.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/AttitudeHeadingProvider.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/AttitudeHeadingProvider.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/AttitudeHeadingProvider.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/AttitudeHeadingProvider.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/MotionCapture.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/MotionCapture.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/MotionCapture.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/MotionCapture.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/MotionCapture.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/MotionCapture.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/Vector3D.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/Vector3D.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/Vector3D.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/Vector3D.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Vector3D.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Vector3D.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/main.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/main.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/main.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/main.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/main.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/main.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/msg_emitter.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/msg_emitter.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/msg_emitter.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/msg_emitter.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/msg_emitter.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/msg_emitter.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/ROSUnit.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/ROSUnit.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/ROSUnit.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/ROSUnit.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ROSUnit.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ROSUnit.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/UM8E.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/UM8E.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/UM8E.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/UM8E.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/UM8E.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/UM8E.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/PositioningProvider.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/PositioningProvider.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/PositioningProvider.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/PositioningProvider.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/PositioningProvider.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/PositioningProvider.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/AttitudeProvider.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/AttitudeProvider.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/AttitudeProvider.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/AttitudeProvider.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/AttitudeProvider.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/AttitudeProvider.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/HeadingProvider.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/HeadingProvider.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/HeadingProvider.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/HeadingProvider.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/HeadingProvider.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/HeadingProvider.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/GPS.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/GPS.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/GPS.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/GPS.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/GPS.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/GPS.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
-  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"positioning_system\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/positioning_system.dir/src/ROSUnit_Attitude.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/ROSUnit_Attitude.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/src/ROSUnit_Attitude.cpp"
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
+  "command": "/usr/bin/g++-7   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I../include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/ROSUnit_Attitude.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ROSUnit_Attitude.cpp",
+  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ROSUnit_Attitude.cpp"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
   "command": "/usr/bin/g++-7   -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_main_EXPORTS -I/usr/src/gmock/include -I/usr/src/gmock -I/usr/src/gtest/include -I/usr/src/gtest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -std=c++11 -o gtest/CMakeFiles/gmock_main.dir/usr/src/gtest/src/gtest-all.cc.o -c /usr/src/gtest/src/gtest-all.cc",
   "file": "/usr/src/gtest/src/gtest-all.cc"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
   "command": "/usr/bin/g++-7   -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_main_EXPORTS -I/usr/src/gmock/include -I/usr/src/gmock -I/usr/src/gtest/include -I/usr/src/gtest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -std=c++11 -o gtest/CMakeFiles/gmock_main.dir/src/gmock-all.cc.o -c /usr/src/gmock/src/gmock-all.cc",
   "file": "/usr/src/gmock/src/gmock-all.cc"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
   "command": "/usr/bin/g++-7   -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_main_EXPORTS -I/usr/src/gmock/include -I/usr/src/gmock -I/usr/src/gtest/include -I/usr/src/gtest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -std=c++11 -o gtest/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o -c /usr/src/gmock/src/gmock_main.cc",
   "file": "/usr/src/gmock/src/gmock_main.cc"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
   "command": "/usr/bin/g++-7   -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_EXPORTS -I/usr/src/gmock/include -I/usr/src/gmock -I/usr/src/gtest/include -I/usr/src/gtest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -std=c++11 -o gtest/CMakeFiles/gmock.dir/usr/src/gtest/src/gtest-all.cc.o -c /usr/src/gtest/src/gtest-all.cc",
   "file": "/usr/src/gtest/src/gtest-all.cc"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
   "command": "/usr/bin/g++-7   -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_EXPORTS -I/usr/src/gmock/include -I/usr/src/gmock -I/usr/src/gtest/include -I/usr/src/gtest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -std=c++11 -o gtest/CMakeFiles/gmock.dir/src/gmock-all.cc.o -c /usr/src/gmock/src/gmock-all.cc",
   "file": "/usr/src/gmock/src/gmock-all.cc"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
   "command": "/usr/bin/g++-7   -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgtest_main_EXPORTS -I/usr/src/gtest/include -I/usr/src/gtest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -std=c++11 -o gtest/gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o -c /usr/src/gtest/src/gtest_main.cc",
   "file": "/usr/src/gtest/src/gtest_main.cc"
 },
 
 {
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build",
+  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
   "command": "/usr/bin/g++-7   -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgtest_EXPORTS -I/usr/src/gtest/include -I/usr/src/gtest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -std=c++11 -o gtest/gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.o -c /usr/src/gtest/src/gtest-all.cc",
   "file": "/usr/src/gtest/src/gtest-all.cc"
 }

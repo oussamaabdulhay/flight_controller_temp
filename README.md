@@ -1,2 +1,2 @@
-# positioning_system
+# flight_controller
 Linux based flight controller

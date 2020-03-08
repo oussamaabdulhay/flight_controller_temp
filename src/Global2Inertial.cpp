@@ -1,17 +1,6 @@
 #include "Global2Inertial.hpp"
 #define DEBUG_HR_LR_DECOUPLED
-// const float PI = atan(1.0)*4.0;
 
-// float MeasureGPStoMeters(float lat1, float lon1, float lat2, float lon2)
-// {  
-//     float R    = 6378.137; // Radius of earth in km
-//     float dLat = lat2*(PI/180) - lat1*(PI/180);
-//     float dLon = lon2*(PI/180) - lon1*(PI/180);
-//     float a    = sin(dLat/2)*sin(dLat/2) + cos(lat1*PI/180)*cos(lat2*PI/180)*sin(dLon/2)*sin(dLon/2);
-//     float c    = 2 * atan2(sqrt(a), sqrt(1-a));
-//     float d    = R * c;
-//     return d*1000; // meters
-// }
 Global2Inertial::Global2Inertial(){
     //TODO: Ensure altitude is calibrated
     calib_point1.x = 24.44828723;

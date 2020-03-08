@@ -43,7 +43,6 @@
 #include "ROSUnit_Factory.hpp"
 #include "BatteryMonitor.hpp"
 #include "ROSUnit_RTK.hpp"
-#include "HR_LR_position_fusion.hpp"
 #include "Differentiator.hpp"
 #include "PVConcatenator.hpp"
 #include <thread>

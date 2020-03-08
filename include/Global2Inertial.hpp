@@ -8,8 +8,6 @@
 #include "MsgReceiver.hpp"
 #include "Vector3D.hpp"
 #include "RotationMatrix3by3.hpp"
-#include "RTKMessagePosition.hpp"
-#include "RTKMessageVelocity.hpp"
 #include <math.h>
 #include "FloatMsg.hpp"
 #include "Vector3DMessage.hpp"

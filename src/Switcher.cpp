@@ -21,6 +21,10 @@ Block* Switcher::getActiveBlock(){
     return _active_block;
 }
 
+void Switcher::receive_msg_data(DataMessage* t_msg, int t_channel){
+    
+}
+
 void Switcher::receive_msg_data(DataMessage* t_msg){
     
     if(t_msg->getType() == msg_type::control_system){

@@ -28,6 +28,7 @@ class Switcher : public msg_receiver, public msg_emitter{
         switcher_type getType();
         Block* getActiveBlock();
         void receive_msg_data(DataMessage* t_msg);
+        void receive_msg_data(DataMessage* t_msg, int t_channel);
         void loopInternal();
         //TODO Send a message to Block
         //TODO Receive a message from Block

@@ -4,6 +4,7 @@
 #include "MsgReceiver.hpp"
 #include "UpdatePoseMessage.hpp"
 #include "FlightScenarioMessage.hpp"
+#include "ControlSystem.hpp"
 
 class UserReference : public msg_emitter, public msg_receiver{
 

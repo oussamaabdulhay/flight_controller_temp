@@ -10,7 +10,6 @@ public:
 
     msg_type getType();
     const int getSize();
-    DataMessage* Clone(){ return new DoubleMsg(*this); }
 
     double data;
     

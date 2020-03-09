@@ -4,6 +4,7 @@
 #include "BoolMessage.hpp"
 #include "ROSMsg.hpp"
 #include <pthread.h>
+#include "ROSUnit_BroadcastData.hpp"
 
 // GEOMETRY
 //      CW(3) (5)CCW                y
@@ -36,7 +37,7 @@ private:
                              {-0.866025 * -1,  0.5 * -1,  1, 1}};
     static pthread_mutex_t lock;
 public:
-
+    enum unicast_addresses {broadcast, unicast_ActuationSystem_commands, unicast_ActuationSystem_armed};
     void receive_msg_data(DataMessage* t_msg);
     void command();
     int constrain(float value, int min_value, int max_value);

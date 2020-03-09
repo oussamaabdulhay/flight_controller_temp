@@ -24,7 +24,7 @@ void HexaActuationSystem::command(){
 
     //_movements (PID outputs) should be between 0 and 1. Thus, we have to adjust for the range 1150 to 2000 on _commands.
     //Normalize and Constrain
-    //TODO make it more general    
+
     for(int i = 0; i < 6; i++){
         if(_armed){
             _commands[i] = (_commands[i] * (_escMax-_escMin_armed)) + _escMin_armed;
@@ -40,10 +40,14 @@ void HexaActuationSystem::command(){
     }
 
     ros_msg.setActuation(&_commands[0]);
-    this->emit_message((DataMessage*) &ros_msg);
+    this->emit_message_unicast((DataMessage*) &ros_msg, 
+                                HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_commands,
+                                ROSUnit_BroadcastData::ros_broadcast_channels::actuation);
 
     ros_msg.setArmed(_armed);
-    this->emit_message((DataMessage*) &ros_msg);
+    this->emit_message_unicast((DataMessage*) &ros_msg,
+                                HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_armed,
+                                ROSUnit_BroadcastData::ros_broadcast_channels::armed);
 }
 
 int HexaActuationSystem::constrain(float value, int min_value, int max_value) {

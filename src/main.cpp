@@ -329,8 +329,8 @@ int main(int argc, char** argv) {
     #endif
     #ifdef XSENS_OVER_ROS
     ROSUnit* myROSUnit_Xsens = new ROSUnit_Xsens(nh);
-    myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_attitude_rate);
-    myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator,(int)CallbackHandler::unicast_addresses::unicast_XSens_attitude_rate);
+    myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_attitude_rate);
+    myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_attitude_rate);
     myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_yaw_rate);
     myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_orientation);
     myROSUnit_Xsens->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_translation);

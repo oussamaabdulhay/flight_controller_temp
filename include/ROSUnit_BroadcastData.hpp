@@ -49,7 +49,7 @@ private:
     double _head;
 
 public:
-    enum ros_broadcast_channels {broadcast, x, y, z, roll, pitch, yaw, yaw_rate};
+    enum ros_broadcast_channels {broadcast, x, y, z, roll, pitch, yaw, yaw_rate, actuation, armed, control_outputs, references, info, error};
     ROSUnit_BroadcastData(ros::NodeHandle&);
     ~ROSUnit_BroadcastData();
 };

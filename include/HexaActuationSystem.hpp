@@ -1,10 +1,11 @@
 #pragma once
 #include "ActuationSystem.hpp"
 #include "ControlSystemMessage.hpp"
-#include "BoolMessage.hpp"
+#include "BooleanMsg.hpp"
 #include "ROSMsg.hpp"
 #include <pthread.h>
 #include "ROSUnit_BroadcastData.hpp"
+#include "DoublePointerMsg.hpp"
 
 // GEOMETRY
 //      CW(3) (5)CCW                y

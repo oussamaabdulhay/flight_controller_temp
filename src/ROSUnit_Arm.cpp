@@ -1,6 +1,6 @@
 #include "ROSUnit_Arm.hpp"
 ROSUnit_Arm* ROSUnit_Arm::_instance_ptr = NULL;
-BoolMessage ROSUnit_Arm::_bool_msg;
+BooleanMsg ROSUnit_Arm::_bool_msg;
 //TODO change to a Service
 ROSUnit_Arm::ROSUnit_Arm(ros::NodeHandle& t_main_handler) : ROSUnit(t_main_handler) {
     _srv_armed = t_main_handler.advertiseService("arm", callbackArm);

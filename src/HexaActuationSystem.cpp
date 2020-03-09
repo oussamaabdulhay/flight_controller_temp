@@ -39,13 +39,15 @@ void HexaActuationSystem::command(){
         _actuators[i]->applyCommand(_commands[i]);
     }
 
-    ros_msg.setActuation(&_commands[0]);
-    this->emit_message_unicast((DataMessage*) &ros_msg, 
+    DoublePointerMsg commands_msg;
+    commands_msg.data_ptr = &_commands[0];
+    this->emit_message_unicast((DataMessage*) &commands_msg, 
                                 HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_commands,
                                 ROSUnit_BroadcastData::ros_broadcast_channels::actuation);
 
-    ros_msg.setArmed(_armed);
-    this->emit_message_unicast((DataMessage*) &ros_msg,
+    BooleanMsg armed_msg;
+    armed_msg.data = _armed;
+    this->emit_message_unicast((DataMessage*) &armed_msg,
                                 HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_armed,
                                 ROSUnit_BroadcastData::ros_broadcast_channels::armed);
 }
@@ -105,7 +107,7 @@ void HexaActuationSystem::receive_msg_data(DataMessage* t_msg){
           
     }else if(t_msg->getType() == msg_type::BOOLEAN){
 
-        BoolMessage* bool_msg = (BoolMessage*)t_msg;
+        BooleanMsg* bool_msg = (BooleanMsg*)t_msg;
         _armed = bool_msg->getData();
 
     }

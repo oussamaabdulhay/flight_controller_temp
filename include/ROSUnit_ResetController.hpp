@@ -2,7 +2,7 @@
 #include "ROSUnit.hpp"
 #include "FlightScenarioMessage.hpp"
 #include <std_msgs/Bool.h>
-#include "BoolMessage.hpp"
+#include "BooleanMsg.hpp"
 #include "Vector3D.hpp"
 #include "ResetControllerMsg.hpp"
 #include <flight_controller/Reset_Controller.h>

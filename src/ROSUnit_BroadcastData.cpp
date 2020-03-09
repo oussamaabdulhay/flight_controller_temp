@@ -50,34 +50,13 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
             msg.data = _cs_references;
             _csr_prov_pub.publish(msg);
 
-        }else if(ros_msg->getROSMsgType() == ros_msg_type::ACTUATION){
-            float* pointer = ros_msg->getActuation();
-
-            for(int i=0;i<6;i++){
-                _act_outputs[i] = *pointer++;
-            }
-            
-            std_msgs::Float64MultiArray msg;
-            msg.data = _act_outputs;
-            _act_prov_pub.publish(msg);
-            
-        }else if(ros_msg->getROSMsgType() == ros_msg_type::ARMED){
-            _armed = ros_msg->getArmed();
-            flight_controller::Info msg;
-            msg.header.seq = ++_seq_info;
-            msg.header.stamp = ros::Time::now();
-            msg.header.frame_id = "";
-            msg.number_of_waypoints = _number_of_waypoints;
-            msg.armed = _armed;
-            msg.battery_voltage = _voltage;
-            _info_prov_pub.publish(msg);
-
         }else if(ros_msg->getROSMsgType() == ros_msg_type::NUMBER_OF_WAYPOINTS){
             _number_of_waypoints = ros_msg->getNumberOfWaypoints(); 
         }
     }else if(t_msg->getType() == msg_type::FLOAT){
         FloatMsg* voltage_msg = (FloatMsg*)t_msg;
         _voltage = voltage_msg->data;
+
     }else if(t_msg->getType() == msg_type::INTEGER){
         IntegerMsg* error_msg = (IntegerMsg*)t_msg;
         _error_accumulator += error_msg->data;
@@ -89,6 +68,19 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
         msg.point.y = 0.;
         msg.point.z = 0.;
         _error_prov_pub.publish(msg);
+
+    }else if(t_msg->getType() == msg_type::BOOLEAN){
+        BooleanMsg* armed_msg = (BooleanMsg*)t_msg;
+        _armed = armed_msg->data;
+        flight_controller::Info msg;
+        msg.header.seq = ++_seq_info;
+        msg.header.stamp = ros::Time::now();
+        msg.header.frame_id = "";
+        msg.number_of_waypoints = _number_of_waypoints;
+        msg.armed = _armed;
+        msg.battery_voltage = _voltage;
+        _info_prov_pub.publish(msg);
+
     }
 }
 
@@ -183,6 +175,20 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
             msg.point.y = pitchpv.y;
             msg.point.z = pitchpv.z;
             _pitchpv_prov_pub.publish(msg);
+        }
+    }else if(t_msg->getType() == msg_type::DOUBLEPOINTER){
+
+        if(t_channel == (int)ros_broadcast_channels::actuation){
+            DoublePointerMsg* actuation_msg = (DoublePointerMsg*)t_msg;
+            double* pointer = actuation_msg->data_ptr;
+
+            for(int i=0;i<6;i++){
+                _act_outputs[i] = *pointer++;
+            }
+            
+            std_msgs::Float64MultiArray msg;
+            msg.data = _act_outputs;
+            _act_prov_pub.publish(msg);
         }
     }
 

@@ -9,6 +9,9 @@
 #include "Vector3DMessage.hpp"
 #include "FloatMsg.hpp"
 #include "IntegerMsg.hpp"
+#include "BooleanMsg.hpp"
+#include "DoublePointerMsg.hpp"
+
 //TODO refactor all msgs
 
 class ROSUnit_BroadcastData : public ROSUnit{

@@ -9,6 +9,7 @@ class WrapAroundFunction : public msg_emitter, public msg_receiver
     double min_val,max_val,span;
 
 public:
+    enum unicast_adresses {broadcast};
     void assignParametersRange(double t_min_val,double t_max_val);
     double wrapAround(double input);
     void receive_msg_data(DataMessage*);

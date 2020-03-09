@@ -341,7 +341,7 @@ int main(int argc, char** argv) {
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)wrap_around_yaw, (int)Global2Inertial::unicast_addresses::uni_XSens_ori);
-    wrap_around_yaw->add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator);
+    wrap_around_yaw->add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator, (int)WrapAroundFunction::unicast_addresses::broadcast);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator,(int)Global2Inertial::unicast_addresses::uni_XSens_ori); //TODO bad grouping with ifdef
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator,(int)Global2Inertial::unicast_addresses::uni_XSens_ori);
 
@@ -571,7 +571,8 @@ int main(int argc, char** argv) {
     CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     CsYawRate_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
 
-    myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_commands);
+    myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_armed;
 
     X_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     Y_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);

@@ -21,14 +21,11 @@ class ControlSystem : public TimedBlock, public msg_emitter, public msg_receiver
         std::vector<Switcher*> _switchers;
         block_frequency _frequency;
 
-         // TODO-Chehadeh: make automatic storage
-
-         // TODO-Chehadeh: make automatic storage
-         // TODO-Chehadeh: make automatic storage
-        //ControlSystemMessage m_change_PID_msg;  // TODO-Chehadeh: delete as unused
         float _dt;
 
     public:
+        enum receiving_channels {ch_broadcast, ch_Reference};
+
         void receive_msg_data(DataMessage* t_msg);
         void receive_msg_data(DataMessage* t_msg, int t_channel);
         void getStatus();

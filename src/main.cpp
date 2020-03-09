@@ -678,7 +678,7 @@ int main(int argc, char** argv) {
     //|      |----->Yaw_Control_System-->Saturation--->YawRate_Control_System---->|           |
     //========                                                                    =============
     
-    myX_UserRef->add_callback_msg_receiver((msg_receiver*)X_ControlSystem);
+    myX_UserRef->add_callback_msg_receiver((msg_receiver*)X_ControlSystem, (int)X_UserReference::unicast_addresses::broadcast);
     myY_UserRef->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem);
     myZ_UserRef->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem);
     myYaw_UserRef->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem);

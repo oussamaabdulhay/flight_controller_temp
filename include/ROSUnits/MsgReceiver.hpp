@@ -1,7 +1,8 @@
-// Version: 2.0
-// Author: M. CHehadeh
-// Date: 22 Jan 2020
-// Release note: Added channels for emitter and receiver
+// Version: 3.0
+// Author: P. Silva
+// Date: 09 Mar 2020
+// Release note: Removed broadcast channels
+
 #pragma once
 
 #include <iostream>
@@ -15,6 +16,6 @@ public:
     msg_receiver();
     void assign_message_type_ID(msg_type i);
     msg_type get_message_type_ID();
-    virtual void receive_msg_data(DataMessage* t_msg);
-    virtual void receive_msg_data(DataMessage* t_msg,int channel_id);
+    virtual void receive_msg_data(DataMessage* t_msg) = 0;
+    virtual void receive_msg_data(DataMessage* t_msg, int channel_id) = 0;
 };

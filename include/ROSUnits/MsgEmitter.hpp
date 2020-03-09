@@ -1,7 +1,8 @@
-// Version: 2.1
-// Author: M. CHehadeh
-// Date: 26 Jan 2020
-// Release note: Added unitcast/mulitcast handling to emitters
+// Version: 3.0
+// Author: P. Silva
+// Date: 09 Mar 2020
+// Release note: Removed broadcast channels
+
 #pragma once
 #include <vector>
 #include <iterator> 
@@ -21,10 +22,7 @@ public:
     void setEmittingChannel(int);
     int getEmittingChannel();
     msg_emitter();
-    void add_callback_msg_receiver(msg_receiver* _callback_msg_receiver);
     void add_callback_msg_receiver(msg_receiver* _callback_msg_receiver,int t_associated_unicast_mask);
-    void emit_message(DataMessage* t_msg);
-    void emit_message(DataMessage* t_msg,int t_channel_id);
     void emit_message_unicast(DataMessage* t_msg,int t_unicast_mask);
     void emit_message_unicast(DataMessage* t_msg,int t_unicast_mask,int t_channel_id);
 };

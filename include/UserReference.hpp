@@ -11,7 +11,7 @@ private:
     UpdatePoseMessage _user_msg;
 
 public:
-
+    enum unicast_addresses {broadcast, x, y, z, yaw};
     virtual void receive_msg_data(DataMessage*) = 0;
 
     UserReference();

@@ -17,7 +17,7 @@ void X_UserReference::receive_msg_data(DataMessage* t_msg){
             x_reference_msg.data = user_msg->getX();
             std::cout << "Setting X Reference: " << user_msg->getX() << std::endl;
             this->emit_message_unicast((DataMessage*) &x_reference_msg, 
-                                        X_UserReference::unicast_addresses::broadcast,
+                                        UserReference::unicast_addresses::x,
                                         ControlSystem::receiving_channels::ch_Reference);
         }    
     }

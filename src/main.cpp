@@ -678,10 +678,10 @@ int main(int argc, char** argv) {
     //|      |----->Yaw_Control_System-->Saturation--->YawRate_Control_System---->|           |
     //========                                                                    =============
     
-    myX_UserRef->add_callback_msg_receiver((msg_receiver*)X_ControlSystem, (int)X_UserReference::unicast_addresses::broadcast);
-    myY_UserRef->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem);
-    myZ_UserRef->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem);
-    myYaw_UserRef->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem);
+    myX_UserRef->add_callback_msg_receiver((msg_receiver*)X_ControlSystem, (int)UserReference::unicast_addresses::x);
+    myY_UserRef->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem, (int)UserReference::unicast_addresses::y);
+    myZ_UserRef->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem, (int)UserReference::unicast_addresses::z);
+    myYaw_UserRef->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem, , (int)UserReference::unicast_addresses::yaw);
     X_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody);
     transform_X_InertialToBody->add_callback_msg_receiver((msg_receiver*)X_Saturation);
     X_Saturation->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);

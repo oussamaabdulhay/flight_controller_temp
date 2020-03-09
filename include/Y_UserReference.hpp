@@ -1,11 +1,8 @@
 #pragma once
 #include "UserReference.hpp"
-#include "ControlSystemMessage.hpp"
+#include "DoubleMsg.hpp"
 
 class Y_UserReference : public UserReference{
-
-private:
-    ControlSystemMessage m_output_msg;
 
 public:
 

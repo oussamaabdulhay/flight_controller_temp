@@ -109,10 +109,6 @@ int main(int argc, char** argv) {
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
     ROSUnit* myROSOptitrack = new ROSUnit_Optitrack(nh);
-    ROSUnit* myROSUpdateReferenceX = new ROSUnit_UpdateReferenceX(nh);
-    ROSUnit* myROSUpdateReferenceY = new ROSUnit_UpdateReferenceY(nh);
-    ROSUnit* myROSUpdateReferenceZ = new ROSUnit_UpdateReferenceZ(nh);
-    ROSUnit* myROSUpdateReferenceYaw = new ROSUnit_UpdateReferenceYaw(nh);
     ROSUnit* myROSArm = new ROSUnit_Arm(nh);
     ROSUnit* myROSUpdateController = new ROSUnit_UpdateController(nh);
     ROSUnit* myROSResetController = new ROSUnit_ResetController(nh);
@@ -488,16 +484,6 @@ int main(int argc, char** argv) {
     ActuationSystem* myActuationSystem = new HexaActuationSystem(actuators);
     
     //***********************SETTING FLIGHT SCENARIO INPUTS****************************
-    X_UserReference* myX_UserRef = new X_UserReference();
-    Y_UserReference* myY_UserRef = new Y_UserReference();
-    Z_UserReference* myZ_UserRef = new Z_UserReference();
-    Yaw_UserReference* myYaw_UserRef = new Yaw_UserReference();
-
-    myROSUpdateReferenceX->add_callback_msg_receiver((msg_receiver*)myX_UserRef);
-    myROSUpdateReferenceY->add_callback_msg_receiver((msg_receiver*)myY_UserRef);
-    myROSUpdateReferenceZ->add_callback_msg_receiver((msg_receiver*)myZ_UserRef);
-    myROSUpdateReferenceYaw->add_callback_msg_receiver((msg_receiver*)myYaw_UserRef);
-
     myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_x);
     myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_y);
     myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_z);
@@ -671,17 +657,13 @@ int main(int argc, char** argv) {
     myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
 
     //***********************************SETTING CONNECTIONS***********************************
-    //========                                                                    =============
-    //|      |----->X_Control_System-->RM_X-->Saturation-->Roll_Control_System--->|           |
-    //| USER |----->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System-->| Actuation |
-    //|      |----->Z_Control_System--------------------------------------------->|  System   |
-    //|      |----->Yaw_Control_System-->Saturation--->YawRate_Control_System---->|           |
-    //========                                                                    =============
+    //========                                                                     =============
+    //|      |--x--->X_Control_System-->RM_X-->Saturation-->Roll_Control_System--->|           |
+    //| USER |--x--->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System-->| Actuation |
+    //|      |--x--->Z_Control_System--------------------------------------------->|  System   |
+    //|      |--x--->Yaw_Control_System-->Saturation--->YawRate_Control_System---->|           |
+    //========                                                                     =============
     
-    myX_UserRef->add_callback_msg_receiver((msg_receiver*)X_ControlSystem, (int)UserReference::unicast_addresses::x);
-    myY_UserRef->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem, (int)UserReference::unicast_addresses::y);
-    myZ_UserRef->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem, (int)UserReference::unicast_addresses::z);
-    myYaw_UserRef->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem, (int)UserReference::unicast_addresses::yaw);
     X_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody, (int)ControlSystem::unicast_addresses::unicast_control_system);
     transform_X_InertialToBody->add_callback_msg_receiver((msg_receiver*)X_Saturation);
     X_Saturation->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);

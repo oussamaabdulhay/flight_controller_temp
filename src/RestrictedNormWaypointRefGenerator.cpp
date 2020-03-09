@@ -94,25 +94,25 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
 
 void RestrictedNormWaypointRefGenerator::updateControlSystemsReferences(Vector3D<double> t_pos_ref, double t_yaw){
     
-    ControlSystemMessage x_cont_ref;
-    x_cont_ref.setControlSystemMessage(control_system::null_type, control_system_msg_type::to_system, t_pos_ref.x);
+    DoubleMsg x_cont_ref;
+    x_cont_ref.data = t_pos_ref.x;
     //std::cout << "Setting X Reference: " << t_pos_ref.x << std::endl;
-    ((msg_receiver*)x_control_system)->receive_msg_data(&x_cont_ref);
+    ((msg_receiver*)x_control_system)->receive_msg_data(&x_cont_ref, (int)ControlSystem::receiving_channels::ch_reference);
 
-    ControlSystemMessage y_cont_ref;
-    y_cont_ref.setControlSystemMessage(control_system::null_type, control_system_msg_type::to_system, t_pos_ref.y);
+    DoubleMsg y_cont_ref;
+    y_cont_ref.data = t_pos_ref.y;
     //std::cout << "Setting Y Reference: " << t_pos_ref.y << std::endl;
-    ((msg_receiver*)y_control_system)->receive_msg_data(&y_cont_ref);
+    ((msg_receiver*)y_control_system)->receive_msg_data(&y_cont_ref, (int)ControlSystem::receiving_channels::ch_reference);
 
-    ControlSystemMessage z_cont_ref;
-    z_cont_ref.setControlSystemMessage(control_system::null_type, control_system_msg_type::to_system, t_pos_ref.z);
+    DoubleMsg z_cont_ref;
+    z_cont_ref.data = t_pos_ref.z;
     //std::cout << "Setting Z Reference: " << t_pos_ref.z << std::endl;
-    ((msg_receiver*)z_control_system)->receive_msg_data(&z_cont_ref);
+    ((msg_receiver*)z_control_system)->receive_msg_data(&z_cont_ref, (int)ControlSystem::receiving_channels::ch_reference);
 
-    ControlSystemMessage yaw_cont_ref;
-    yaw_cont_ref.setControlSystemMessage(control_system::null_type, control_system_msg_type::to_system, t_yaw);
+    DoubleMsg yaw_cont_ref;
+    yaw_cont_ref.data = t_yaw;
     //std::cout << "Setting Yaw Reference: " << t_yaw << std::endl;
-    ((msg_receiver*)yaw_control_system)->receive_msg_data(&yaw_cont_ref);
+    ((msg_receiver*)yaw_control_system)->receive_msg_data(&yaw_cont_ref, (int)ControlSystem::receiving_channels::ch_reference);
 }
 
 void RestrictedNormWaypointRefGenerator::add_x_control_system(ControlSystem* t_sys){

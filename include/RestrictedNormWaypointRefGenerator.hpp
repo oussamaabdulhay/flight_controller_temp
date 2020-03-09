@@ -8,6 +8,8 @@
 #include <vector>
 #include "ControlSystem.hpp"
 #include "ROSMsg.hpp"
+#include "DoubleMsg.hpp"
+
 #undef mutex_safety
 #ifdef mutex_safety
 #include <pthread.h>

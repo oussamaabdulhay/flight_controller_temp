@@ -10,8 +10,8 @@ Y_UserReference::~Y_UserReference() {
 
 void Y_UserReference::receive_msg_data(DataMessage* t_msg){
 
-    if(t_msg->getType() == msg_type::USERREFERENCE){   
-        UpdatePoseMessage* user_msg = (UpdatePoseMessage*)t_msg;
+    if(t_msg->getType() == msg_type::FLOAT){   
+        FloatMsg* user_msg = (FloatMsg*)t_msg;
         if(user_msg->getRefType() == msg_type_reference::Y){
             DoubleMsg y_reference_msg;
             y_reference_msg.data = user_msg->getY();

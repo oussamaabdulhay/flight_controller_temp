@@ -108,7 +108,7 @@ void HexaActuationSystem::receive_msg_data(DataMessage* t_msg){
     }else if(t_msg->getType() == msg_type::BOOLEAN){
 
         BooleanMsg* bool_msg = (BooleanMsg*)t_msg;
-        _armed = bool_msg->getData();
+        _armed = bool_msg->data;
 
     }
 }

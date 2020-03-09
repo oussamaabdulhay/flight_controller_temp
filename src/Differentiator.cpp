@@ -41,7 +41,9 @@ void Differentiator::differentiate(float t_float_data){
     #ifdef Differentiator_debug
     std::cout << "this->emit_message((DataMessage*) &output_msg, PVConcatenator::receiving_channels::ch_pv_dot)" << std::endl;
     #endif
-    this->emit_message((DataMessage*) &output_msg, PVConcatenator::receiving_channels::ch_pv_dot);
+    this->emit_message_unicast((DataMessage*) &output_msg, 
+                                Differentiator::unicast_addresses::broadcast, 
+                                PVConcatenator::receiving_channels::ch_pv_dot);
     _old_float_data = t_float_data;
 }
 
@@ -57,7 +59,9 @@ void Differentiator::differentiate(Vector3D<float> t_vector3d_data){
     #ifdef Differentiator_debug
     std::cout << "diff_values.x " << diff_values.x << ", diff_values.y " << diff_values.y << ", diff_values.z " << diff_values.z << std::endl;
     #endif
-    this->emit_message((DataMessage*) &output_msg, PVConcatenator::receiving_channels::ch_pv_dot);
+    this->emit_message_unicast((DataMessage*) &output_msg, 
+                                Differentiator::unicast_addresses::broadcast, 
+                                PVConcatenator::receiving_channels::ch_pv_dot);
     _old_vector3d_data = t_vector3d_data;
 }
     

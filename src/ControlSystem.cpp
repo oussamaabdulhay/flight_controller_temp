@@ -23,10 +23,8 @@ ControlSystem::~ControlSystem() {
 
 void ControlSystem::receive_msg_data(DataMessage* t_msg){
     if(t_msg->getType() == msg_type::SWITCHBLOCK){
-
-        SwitchBlockMsg* switch_msg = (SwitchBlockMsg*)t_msg;
-        this->emit_message((DataMessage*) switch_msg);
-    
+        this->emit_message_unicast((DataMessage*) t_msg, ControlSystem::unicast_addresses::unicast_controller_switcher);
+        this->emit_message_unicast((DataMessage*) t_msg, ControlSystem::unicast_addresses::unicast_reference_switcher);
     }
 }
 

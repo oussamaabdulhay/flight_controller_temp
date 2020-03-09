@@ -59,25 +59,21 @@ Global2Inertial::Global2Inertial(){
 }
 void Global2Inertial::receive_msg_data(DataMessage* t_msg)
 {
-    if(t_msg->getType() == msg_type::optitrack){ //TODO: Refactor message types
-
-        //TODO implement for GPS
+    if(t_msg->getType() == msg_type::optitrack){ 
+        
         OptitrackMessage* opti_msg = ((OptitrackMessage*)t_msg);
         Vector3D<double> pos_point = opti_msg->getPosition();
         Quaternion _bodyAtt = opti_msg->getAttitudeHeading();
-        //HeadingMsg _bodyHeading = this->getHeading(_bodyAtt);
-        //Vector3D<float> results = transformPoint(pos_point); //TODO uncomment
-        Vector3D<float> results = pos_point; //TODO uncomment
-        Vector3D<float> att_vec = getEulerfromQuaternion(_bodyAtt);
+        Vector3D<double> att_vec = getEulerfromQuaternion(_bodyAtt);
 
       
         Vector3DMessage results_msg;
-        results_msg.setVector3DMessage(results);
+        results_msg.setVector3DMessage(pos_point);
         FloatMsg yaw_msg;
-        yaw_msg.data = att_vec.z - calibrated_reference_inertial_heading;
+        yaw_msg.data = att_vec.z; // - calibrated_reference_inertial_heading;
         
   
-        this->emit_message_unicast(&results_msg,Global2Inertial::unicast_addresses::uni_Optitrack_pos);
+        this->emit_message_unicast(&results_msg, Global2Inertial::unicast_addresses::uni_Optitrack_pos);
         this->emit_message_unicast(&yaw_msg, Global2Inertial::unicast_addresses::uni_Optitrack_heading);
     
     }

@@ -14,7 +14,6 @@
 #include "Z_UserReference.hpp"
 #include "Yaw_UserReference.hpp"
 #include "ROSUnit_Arm.hpp"
-#include "ROSUnit_Waypoint.hpp"
 #include "ROSUnit_UpdateController.hpp"
 #include "ROSUnit_ResetController.hpp"
 #include "ROSUnit_BroadcastData.hpp"
@@ -302,17 +301,17 @@ int main(int argc, char** argv) {
     Differentiator* yawRateFromYaw = new Differentiator(1./OPTITRACK_FREQUENCY);
     yawRateFromYaw->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
     myGlobal2Inertial->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
-    myROSOptitrack->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)velocityFromPosition);
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)yawRateFromYaw);
-    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator);
-    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator);
-    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator);
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator);
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator);
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator);
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator);
-    yawRateFromYaw->add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator);
+    myROSOptitrack->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial, (int)ROSUnit_Optitrack::unicast_addresses::broadcast);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)velocityFromPosition, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)yawRateFromYaw, (int)Global2Inertial::unicast_addresses::uni_Optitrack_heading);
+    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)Differentiator::unicast_addresses::broadcast);
+    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, (int)Differentiator::unicast_addresses::broadcast);
+    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, (int)Differentiator::unicast_addresses::broadcast);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_heading);
+    yawRateFromYaw->add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator, (int)Differentiator::unicast_addresses::broadcast);
     #endif
 
     #ifdef XSENS_OVER_SERIAL
@@ -516,7 +515,6 @@ int main(int argc, char** argv) {
     myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw);
     myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw_rate);
 
-    //TODO after Switchers are exposed, connect ROSUnit_SwitchBlocks with them
     myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)X_ControlSystem);
     myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem);
     myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem);

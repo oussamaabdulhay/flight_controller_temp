@@ -18,6 +18,7 @@ private:
     Timer timer;
     float _dt;
 public:
+    enum unicast_addresses {broadcast};
     void receive_msg_data(DataMessage*, int);
     void differentiate(float);
     void differentiate(Vector3D<float>);

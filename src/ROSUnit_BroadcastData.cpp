@@ -30,29 +30,9 @@ ROSUnit_BroadcastData::~ROSUnit_BroadcastData() {
 
 
 void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
-    //TODO refactor to remove ROS message, because these messages can go to more places
-    if(t_msg->getType() == msg_type::ROS){
-        ROSMsg* ros_msg = (ROSMsg*)t_msg;
-
-        if(ros_msg->getROSMsgType() == ros_msg_type::NUMBER_OF_WAYPOINTS){
-            _number_of_waypoints = ros_msg->getNumberOfWaypoints(); 
-        }
-        
-    }else if(t_msg->getType() == msg_type::FLOAT){
+    if(t_msg->getType() == msg_type::FLOAT){
         FloatMsg* voltage_msg = (FloatMsg*)t_msg;
         _voltage = voltage_msg->data;
-
-    }else if(t_msg->getType() == msg_type::INTEGER){
-        IntegerMsg* error_msg = (IntegerMsg*)t_msg;
-        _error_accumulator += error_msg->data;
-        geometry_msgs::PointStamped msg;
-        msg.header.seq = ++_seq_xpv;
-        msg.header.stamp = ros::Time::now();
-        msg.header.frame_id = "";
-        msg.point.x = _error_accumulator;
-        msg.point.y = 0.;
-        msg.point.z = 0.;
-        _error_prov_pub.publish(msg);
 
     }else if(t_msg->getType() == msg_type::BOOLEAN){
         BooleanMsg* armed_msg = (BooleanMsg*)t_msg;
@@ -186,6 +166,22 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
             std_msgs::Float64MultiArray msg;
             msg.data = _cs_outputs;
             _cs_prov_pub.publish(msg);
+        }
+    }else if(t_msg->getType() == msg_type::INTEGER){
+        IntegerMsg* integer_msg = (IntegerMsg*)t_msg;
+        if(t_channel == ros_broadcast_channels::waypoints){
+            _number_of_waypoints = integer_msg->data; 
+            
+        }else if(t_channel == ros_broadcast_channels::error){
+            _error_accumulator += integer_msg->data;
+            geometry_msgs::PointStamped msg;
+            msg.header.seq = ++_seq_xpv;
+            msg.header.stamp = ros::Time::now();
+            msg.header.frame_id = "";
+            msg.point.x = _error_accumulator;
+            msg.point.y = 0.;
+            msg.point.z = 0.;
+            _error_prov_pub.publish(msg);
         }
     }
 

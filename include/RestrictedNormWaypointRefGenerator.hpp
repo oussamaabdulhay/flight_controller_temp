@@ -29,6 +29,7 @@ class RestrictedNormWaypointRefGenerator : public msg_emitter, public msg_receiv
     int old_size = 0;
     void updateControlSystemsReferences(Vector3D<double> position,double yaw);
 public:
+    enum unicast_addresses {broadcast};
     void add_x_control_system(ControlSystem*);
     void add_y_control_system(ControlSystem*);
     void add_z_control_system(ControlSystem*);

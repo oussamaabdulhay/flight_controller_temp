@@ -9,10 +9,6 @@
 #include "std_logger.hpp"
 #include "HexaActuationSystem.hpp"
 #include "ESCMotor.hpp"
-#include "X_UserReference.hpp"
-#include "Y_UserReference.hpp"
-#include "Z_UserReference.hpp"
-#include "Yaw_UserReference.hpp"
 #include "ROSUnit_Arm.hpp"
 #include "ROSUnit_UpdateController.hpp"
 #include "ROSUnit_ResetController.hpp"
@@ -21,10 +17,6 @@
 #include "MRFTController.hpp"
 #include "MRFT_values.hpp"
 #include "ControllerMessage.hpp"
-#include "ROSUnit_UpdateReferenceX.hpp"
-#include "ROSUnit_UpdateReferenceY.hpp"
-#include "ROSUnit_UpdateReferenceZ.hpp"
-#include "ROSUnit_UpdateReferenceYaw.hpp"
 #include "ROSUnit_Xsens.hpp"
 #include "XSens_IMU.hpp"
 #include "Transform_InertialToBody.hpp"
@@ -454,13 +446,13 @@ int main(int argc, char** argv) {
 
     //******************PROVIDERS TO CONTROL SYSTEMS******************************
 
-    CsX_PVConcatenator->add_callback_msg_receiver((msg_receiver*)X_ControlSystem);
-    CsY_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem);
-    CsZ_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem);
-    CsPitch_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
-    CsRoll_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
-    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem);
-    CsYawRate_PVConcatenator->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem);
+    CsX_PVConcatenator->add_callback_msg_receiver((msg_receiver*)X_ControlSystem, (int)PVConcatenator::unicast_addresses::broadcast);
+    CsY_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem, (int)PVConcatenator::unicast_addresses::broadcast);
+    CsZ_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem, (int)PVConcatenator::unicast_addresses::broadcast);
+    CsPitch_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem, (int)PVConcatenator::unicast_addresses::broadcast);
+    CsRoll_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem, (int)PVConcatenator::unicast_addresses::broadcast);
+    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem, (int)PVConcatenator::unicast_addresses::broadcast);
+    CsYawRate_PVConcatenator->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem, (int)PVConcatenator::unicast_addresses::broadcast);
 
     //******************SETTING TRAJECTORY GENERATION TOOL******************
 
@@ -527,14 +519,10 @@ int main(int argc, char** argv) {
     #ifdef OPTITRACK
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)myWaypoint); 
     #else
-    #ifndef DEBUG_HR_LR_DECOUPLED
-    hr_lr_position_fusion->add_callback_msg_receiver((msg_receiver*)myWaypoint,HR_LR_position_fusion::uni_waypoint_receiver);
-    #else
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)myWaypoint, (int)Global2Inertial::unicast_addresses::uni_RTK_pos_wp); 
     #endif
-    #endif
     ROSUnit_uav_control_set_path->add_callback_msg_receiver((msg_receiver*)myWaypoint);
-    myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint);
+    myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint, (int)ROSUnit_RestNormSettings::unicast_addresses::broadcast);
 
     ROSUnit_set_height_offset->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
     
@@ -565,7 +553,7 @@ int main(int argc, char** argv) {
     Pitch_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    myWaypoint->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    myWaypoint->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)RestrictedNormWaypointRefGenerator::unicast_addresses::broadcast);
     #ifdef BATTERY_MONITOR
     myBatteryMonitor->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     #endif

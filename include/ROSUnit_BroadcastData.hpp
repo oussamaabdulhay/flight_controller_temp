@@ -10,7 +10,7 @@
 #include "FloatMsg.hpp"
 #include "IntegerMsg.hpp"
 #include "BooleanMsg.hpp"
-#include "DoublePointerMsg.hpp"
+#include "VectorDoubleMsg.hpp"
 
 //TODO refactor all msgs
 

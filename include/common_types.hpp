@@ -16,7 +16,7 @@ enum class msg_type {VECTOR, DOUBLE, rtkposition, POSE, RESTNORMREF_SETTINGS, WA
 					VELOCITY, ACCELERATION, THERMALIMAGE, optitrack, FLIGHTSCENARIO, POSITION, ATTITUDE, HEADING, NOZZLEMSG, 
 					UPDATECONTROLLER, RESETCONTROLLER, control_system, USERREFERENCE, controller, FLOAT, BOOLEAN, INTEGER, 
 					switcher, VECTOR3D, external_reference, ack,internal_msg_start, ROS, TAGGEDPOSES, VECTOR2D, FILTER_POINT,
-					EMPTY, POINTS, POSES, DOUBLEPOINTER};
+					EMPTY, POINTS, POSES, VECTORDOUBLE};
 enum class msg_type_optitrack {position, attitude};
 enum class msg_type_flight_scenario {USER, SET_PID};
 enum class control_system {roll=3, pitch=4, yaw=5, x=0, y=1, z=2, pitch_rate = 7, yaw_rate = 6, null_type};

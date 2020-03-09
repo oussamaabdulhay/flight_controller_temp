@@ -12,7 +12,7 @@ HexaActuationSystem::~HexaActuationSystem() {
 void HexaActuationSystem::command(){
 
     for(int i = 0; i < 6; i++){
-        _commands[i] = 0;
+        _commands[i] = 0.0;
     }
     
     //Update pulse values
@@ -39,8 +39,8 @@ void HexaActuationSystem::command(){
         _actuators[i]->applyCommand(_commands[i]);
     }
 
-    DoublePointerMsg commands_msg;
-    commands_msg.data_ptr = &_commands[0];
+    VectorDoubleMsg commands_msg;
+    commands_msg.data = _commands;
     this->emit_message_unicast((DataMessage*) &commands_msg, 
                                 HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_commands,
                                 ROSUnit_BroadcastData::ros_broadcast_channels::actuation);

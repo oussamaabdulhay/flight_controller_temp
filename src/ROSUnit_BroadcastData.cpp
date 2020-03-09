@@ -34,25 +34,10 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
     if(t_msg->getType() == msg_type::ROS){
         ROSMsg* ros_msg = (ROSMsg*)t_msg;
 
-        if(ros_msg->getROSMsgType() == ros_msg_type::CONTROLSYSTEM){
-            int i = (int)ros_msg->getSource();
-            _cs_outputs[i] = ros_msg->getControlSystem();
-
-            std_msgs::Float64MultiArray msg;
-            msg.data = _cs_outputs;
-            _cs_prov_pub.publish(msg);
-
-        }else if(ros_msg->getROSMsgType() == ros_msg_type::CONTROLSYSTEMREFERENCE){
-            int i = (int)ros_msg->getSource();
-            _cs_references[i] = ros_msg->getControlSystem();
-
-            std_msgs::Float64MultiArray msg;
-            msg.data = _cs_references;
-            _csr_prov_pub.publish(msg);
-
-        }else if(ros_msg->getROSMsgType() == ros_msg_type::NUMBER_OF_WAYPOINTS){
+        if(ros_msg->getROSMsgType() == ros_msg_type::NUMBER_OF_WAYPOINTS){
             _number_of_waypoints = ros_msg->getNumberOfWaypoints(); 
         }
+        
     }else if(t_msg->getType() == msg_type::FLOAT){
         FloatMsg* voltage_msg = (FloatMsg*)t_msg;
         _voltage = voltage_msg->data;
@@ -176,19 +161,31 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
             msg.point.z = pitchpv.z;
             _pitchpv_prov_pub.publish(msg);
         }
-    }else if(t_msg->getType() == msg_type::DOUBLEPOINTER){
-
+    }else if(t_msg->getType() == msg_type::VECTORDOUBLE){
+        VectorDoubleMsg* vector_double_msg = (VectorDoubleMsg*)t_msg;
+        
         if(t_channel == (int)ros_broadcast_channels::actuation){
-            DoublePointerMsg* actuation_msg = (DoublePointerMsg*)t_msg;
-            double* pointer = actuation_msg->data_ptr;
+            _act_outputs = vector_double_msg->data;
 
-            for(int i=0;i<6;i++){
-                _act_outputs[i] = *pointer++;
-            }
-            
             std_msgs::Float64MultiArray msg;
             msg.data = _act_outputs;
             _act_prov_pub.publish(msg);
+
+        }else if(t_channel == (int)ros_broadcast_channels::references){
+             int i = (int)(vector_double_msg->data[0]);
+            _cs_references[i] = vector_double_msg->data[1];
+
+            std_msgs::Float64MultiArray msg;
+            msg.data = _cs_references;
+            _csr_prov_pub.publish(msg);
+
+        }else if(t_channel == (int)ros_broadcast_channels::control_outputs){
+            int i = (int)(vector_double_msg->data[0]);
+            _cs_outputs[i] = vector_double_msg->data[1];
+
+            std_msgs::Float64MultiArray msg;
+            msg.data = _cs_outputs;
+            _cs_prov_pub.publish(msg);
         }
     }
 

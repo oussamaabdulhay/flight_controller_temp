@@ -24,6 +24,8 @@ class Switcher : public msg_receiver, public msg_emitter{
         SwitcherMessage m_out_switcher_msg;
 
     public:
+        enum unicast_addresses {broadcast, unicast_controller_switcher, unicast_control_system};
+        enum receiving_channels {ch_broadcast, ch_provider, ch_error, ch_reference};
         void addBlock(Block* b);
         switcher_type getType();
         Block* getActiveBlock();

@@ -681,19 +681,19 @@ int main(int argc, char** argv) {
     myX_UserRef->add_callback_msg_receiver((msg_receiver*)X_ControlSystem, (int)UserReference::unicast_addresses::x);
     myY_UserRef->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem, (int)UserReference::unicast_addresses::y);
     myZ_UserRef->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem, (int)UserReference::unicast_addresses::z);
-    myYaw_UserRef->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem, , (int)UserReference::unicast_addresses::yaw);
-    X_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody);
+    myYaw_UserRef->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem, (int)UserReference::unicast_addresses::yaw);
+    X_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody, (int)ControlSystem::unicast_addresses::unicast_control_system);
     transform_X_InertialToBody->add_callback_msg_receiver((msg_receiver*)X_Saturation);
     X_Saturation->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
     Roll_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
-    Y_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody);
+    Y_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody, (int)ControlSystem::unicast_addresses::unicast_control_system);
     transform_Y_InertialToBody->add_callback_msg_receiver((msg_receiver*)Y_Saturation);
     Y_Saturation->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
     Pitch_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
-    Z_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
-    Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)YawRate_Saturation);
+    Z_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_control_system);
+    Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)YawRate_Saturation, (int)ControlSystem::unicast_addresses::unicast_control_system);
     YawRate_Saturation->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem);
-    YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
+    YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_control_system);
     
     while(ros::ok()){
         #ifdef BATTERY_MONITOR

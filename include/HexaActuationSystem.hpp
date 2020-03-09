@@ -5,7 +5,8 @@
 #include "ROSMsg.hpp"
 #include <pthread.h>
 #include "ROSUnit_BroadcastData.hpp"
-#include "DoublePointerMsg.hpp"
+#include "VectorDoubleMsg.hpp"
+#include <vector>
 
 // GEOMETRY
 //      CW(3) (5)CCW                y
@@ -29,7 +30,7 @@ private:
     const int _escMax = 2000;
     bool _armed = false;
     float _movements[4]; //[roll, pitch, yaw, throttle]
-    float _commands[6];
+    std::vector<double> _commands;
     float _geometry[6][4] = {{       0  * -1,   -1 * -1,  1, 1},
                              {       0  * -1,    1 * -1, -1, 1},
                              { 0.866025 * -1,  0.5 * -1,  1, 1},

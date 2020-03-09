@@ -1,10 +1,8 @@
 #include "ControlSystem.hpp"
 #include <fstream>
 #undef ControlSystem_debug
-//std::ofstream write_data("/home/pedrohrpbs/catkin_ws_NAVIO//orientation_control_data_control.txt"); 
 
 ControlSystem::ControlSystem(control_system t_control_system, block_frequency t_bf) : TimedBlock(t_bf) {
-    // timer.tick();
     _control_system = t_control_system;
     
     controllerSwitcher = new Switcher(switcher_type::controller);
@@ -13,10 +11,10 @@ ControlSystem::ControlSystem(control_system t_control_system, block_frequency t_
     _frequency = t_bf;
     _dt = 1.0f / (int)_frequency;
 
-    this->add_callback_msg_receiver((msg_receiver*)controllerSwitcher);
-    this->add_callback_msg_receiver((msg_receiver*)referenceSwitcher);
-    referenceSwitcher->add_callback_msg_receiver((msg_receiver*)controllerSwitcher);
-    controllerSwitcher->add_callback_msg_receiver((msg_receiver*)this);
+    this->add_callback_msg_receiver((msg_receiver*)controllerSwitcher, ControlSystem::unicast_addresses::unicast_controller_switcher);
+    this->add_callback_msg_receiver((msg_receiver*)referenceSwitcher, ControlSystem::unicast_addresses::unicast_reference_switcher);
+    referenceSwitcher->add_callback_msg_receiver((msg_receiver*)controllerSwitcher, Switcher::unicast_addresses::unicast_controller_switcher);
+    controllerSwitcher->add_callback_msg_receiver((msg_receiver*)this, Switcher::unicast_addresses::unicast_control_system);
 }
 
 ControlSystem::~ControlSystem() {
@@ -24,24 +22,7 @@ ControlSystem::~ControlSystem() {
 }
 
 void ControlSystem::receive_msg_data(DataMessage* t_msg){
-    // (2)
-    ControlSystemMessage m_output_msg;
-    if(t_msg->getType() == msg_type::switcher){
-
-        SwitcherMessage* switcher_msg = (SwitcherMessage*)t_msg;
-        
-
-        m_output_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::to_system, switcher_msg->getFloatData());
-
-        this->emit_message((DataMessage*) &m_output_msg);
-
-        //Emiting msg to ROSUnit
-        ROSMsg m_ros_msg;
-        m_ros_msg.setControlSystem(switcher_msg->getFloatData(), this->getControlSystemType());
-        this->emit_message((DataMessage*) &m_ros_msg);
-            
-    // (3)
-    }else if(t_msg->getType() == msg_type::SWITCHBLOCK){
+    if(t_msg->getType() == msg_type::SWITCHBLOCK){
 
         SwitchBlockMsg* switch_msg = (SwitchBlockMsg*)t_msg;
         this->emit_message((DataMessage*) switch_msg);
@@ -50,28 +31,41 @@ void ControlSystem::receive_msg_data(DataMessage* t_msg){
 }
 
 void ControlSystem::receive_msg_data(DataMessage* t_msg, int t_channel){
-    ControlSystemMessage m_provider_data_msg;
-    #ifdef ControlSystem_debug
-    std::cout <<" you shouldn't be here " << std::endl;
-    #endif
+   
     if(t_msg->getType() == msg_type::VECTOR3D){
         Vector3DMessage* provider = (Vector3DMessage*)t_msg;
-        Vector3D<float> pv_data = provider->getData();
-        #ifdef ControlSystem_debug
-        std::cout << "pv_data.x " << pv_data.x << ", pv_data.y " << pv_data.y << ", pv_data.z " << pv_data.z << std::endl;
-        #endif
-        m_provider_data_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::PROVIDER, pv_data);
-        this->emit_message((DataMessage*) &m_provider_data_msg);
-        
-    }else if(t_msg->getType() == msg_type::DOUBLE){
-        if(t_channel == (int)ControlSystem::receiving_channels::ch_Reference){
-            m_output_msg.setControlSystemMessage(this->getControlSystemType(), control_system_msg_type::SETREFERENCE, control_system_msg->getData());
-            this->emit_message((DataMessage*) &m_output_msg);
+        this->emit_message_unicast((DataMessage*) &provider, 
+                                    ControlSystem::unicast_addresses::unicast_reference_switcher,
+                                    Switcher::receiving_channels::ch_provider);
 
-            //Emiting msg to ROSUnit
-            ROSMsg m_ros_msg;
-            m_ros_msg.setControlSystemReference(control_system_msg->getData(), this->getControlSystemType());
-            this->emit_message((DataMessage*) &m_ros_msg);
+    }else if(t_msg->getType() == msg_type::DOUBLE){
+        DoubleMsg double_msg = (DoubleMsg*)t_msg;
+
+        if(t_channel == (int)ControlSystem::receiving_channels::ch_reference){
+           
+            this->emit_message_unicast((DataMessage*) &double_msg,
+                                        ControlSystem::unicast_addresses::unicast_reference_switcher,
+                                        Switcher::receiving_channels::ch_reference);
+
+            VectorDoubleMsg reference_ros_msg;
+            reference_ros_msg.data[0] = (int)(this->getControlSystemType());
+            reference_ros_msg.data[1] = double_msg.data;
+            this->emit_message_unicast((DataMessage*) &reference_ros_msg,
+                                        ControlSystem::unicast_addresses::unicast_reference_switcher,
+                                        ROSUnit_BroadcastData::ros_broadcast_channels::references);
+
+        }else if(t_channel == (int)ControlSystem::receiving_channels::ch_controller){
+
+            this->emit_message_unicast((DataMessage*) &double_msg,
+                                        ControlSystem::unicast_addresses::unicast_control_system,
+                                        ControlSystem::receiving_channels::ch_reference);
+
+            VectorDoubleMsg controller_ros_msg;
+            controller_ros_msg.data[0] = (int)(this->getControlSystemType());
+            controller_ros_msg.data[1] = double_msg.data;
+            this->emit_message_unicast((DataMessage*) &controller_ros_msg,
+                                        ControlSystem::unicast_addresses::unicast_control_system,
+                                        ROSUnit_BroadcastData::ros_broadcast_channels::control_outputs);
         }
 
     }
@@ -91,19 +85,9 @@ void ControlSystem::getStatus(){
     }
 }
 
-
-void ControlSystem::loopInternal(){
-}
-
 void ControlSystem::addBlock(Block* t_block){
     ControlSystemMessage m_add_block_msg;
     m_add_block_msg.setControlSystemMessage(control_system_msg_type::add_block, t_block);
 
     this->emit_message((DataMessage*) &m_add_block_msg);
 }
-
-void ControlSystem::runTasks(){
-}
-
-// write_data << roll_provider->getData().y << ", " << timer.tockMilliSeconds() <<"\n";
-// timer.tick();

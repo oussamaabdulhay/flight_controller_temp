@@ -16,7 +16,7 @@ class ROSUnit_RestNormSettings :  public ROSUnit{
         void receive_msg_data(DataMessage* t_msg);  
 
     public:
-        enum unicast_addresses {broadcast};
+        
         ROSUnit_RestNormSettings(ros::NodeHandle&);
         ~ROSUnit_RestNormSettings();
 };

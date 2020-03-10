@@ -15,7 +15,7 @@ class ROSUnit_Optitrack : public ROSUnit{
         void receive_msg_data(DataMessage* t_msg);  
         
     public:
-        enum unicast_addresses {broadcast};
+        
         ROSUnit_Optitrack(ros::NodeHandle&);
         ~ROSUnit_Optitrack();
 

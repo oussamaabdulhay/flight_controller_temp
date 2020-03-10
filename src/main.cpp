@@ -293,17 +293,17 @@ int main(int argc, char** argv) {
     Differentiator* yawRateFromYaw = new Differentiator(1./OPTITRACK_FREQUENCY);
     yawRateFromYaw->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
     myGlobal2Inertial->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
-    myROSOptitrack->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial, (int)ROSUnit_Optitrack::unicast_addresses::broadcast);
+    myROSOptitrack->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial, -1);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)velocityFromPosition, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)yawRateFromYaw, (int)Global2Inertial::unicast_addresses::uni_Optitrack_heading);
-    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)Differentiator::unicast_addresses::broadcast);
-    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, (int)Differentiator::unicast_addresses::broadcast);
-    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, (int)Differentiator::unicast_addresses::broadcast);
+    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, -1);
+    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, -1);
+    velocityFromPosition->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, -1);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_heading);
-    yawRateFromYaw->add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator, (int)Differentiator::unicast_addresses::broadcast);
+    yawRateFromYaw->add_callback_msg_receiver((msg_receiver*)CsYawRate_PVConcatenator, -1);
     #endif
 
     #ifdef XSENS_OVER_SERIAL
@@ -328,7 +328,7 @@ int main(int argc, char** argv) {
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)wrap_around_yaw, (int)Global2Inertial::unicast_addresses::uni_XSens_ori);
-    wrap_around_yaw->add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator, (int)WrapAroundFunction::unicast_addresses::broadcast);
+    wrap_around_yaw->add_callback_msg_receiver((msg_receiver*)CsYaw_PVConcatenator, -1);
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsRoll_PVConcatenator,(int)Global2Inertial::unicast_addresses::uni_XSens_ori); //TODO bad grouping with ifdef
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)CsPitch_PVConcatenator,(int)Global2Inertial::unicast_addresses::uni_XSens_ori);
 
@@ -446,13 +446,13 @@ int main(int argc, char** argv) {
 
     //******************PROVIDERS TO CONTROL SYSTEMS******************************
 
-    CsX_PVConcatenator->add_callback_msg_receiver((msg_receiver*)X_ControlSystem, (int)PVConcatenator::unicast_addresses::broadcast);
-    CsY_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem, (int)PVConcatenator::unicast_addresses::broadcast);
-    CsZ_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem, (int)PVConcatenator::unicast_addresses::broadcast);
-    CsPitch_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem, (int)PVConcatenator::unicast_addresses::broadcast);
-    CsRoll_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem, (int)PVConcatenator::unicast_addresses::broadcast);
-    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem, (int)PVConcatenator::unicast_addresses::broadcast);
-    CsYawRate_PVConcatenator->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem, (int)PVConcatenator::unicast_addresses::broadcast);
+    CsX_PVConcatenator->add_callback_msg_receiver((msg_receiver*)X_ControlSystem, -1);
+    CsY_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem, -1);
+    CsZ_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem, -1);
+    CsPitch_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem, -1);
+    CsRoll_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem, -1);
+    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem, -1);
+    CsYawRate_PVConcatenator->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem, -1);
 
     //******************SETTING TRAJECTORY GENERATION TOOL******************
 
@@ -522,7 +522,7 @@ int main(int argc, char** argv) {
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)myWaypoint, (int)Global2Inertial::unicast_addresses::uni_RTK_pos_wp); 
     #endif
     ROSUnit_uav_control_set_path->add_callback_msg_receiver((msg_receiver*)myWaypoint);
-    myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint, (int)ROSUnit_RestNormSettings::unicast_addresses::broadcast);
+    myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint, -1);
 
     ROSUnit_set_height_offset->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
     
@@ -553,7 +553,7 @@ int main(int argc, char** argv) {
     Pitch_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     Yaw_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    myWaypoint->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)RestrictedNormWaypointRefGenerator::unicast_addresses::broadcast);
+    myWaypoint->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, -1);
     #ifdef BATTERY_MONITOR
     myBatteryMonitor->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     #endif

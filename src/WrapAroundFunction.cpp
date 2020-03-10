@@ -10,7 +10,7 @@ void WrapAroundFunction::receive_msg_data(DataMessage* rec_msg, int ch){
         Vector3DMessage emit_msg;
         emit_msg.setVector3DMessage(msg_data);
         emit_message_unicast(&emit_msg, 
-                            WrapAroundFunction::unicast_addresses::broadcast, 
+                            -1, 
                             ch);
     }
 }

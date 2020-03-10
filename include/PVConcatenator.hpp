@@ -18,7 +18,7 @@ public:
     ~PVConcatenator();
 
 private:
-    enum unicast_addresses {broadcast};
+    
     act_on _act_on;
     Vector3D<double> pv_vector;
     std::atomic<double> pv;

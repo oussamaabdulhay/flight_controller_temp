@@ -59,7 +59,7 @@ void RestrictedNormWaypointRefGenerator::receive_msg_data(DataMessage* t_msg){
             IntegerMsg num_waypoints_ros;
             num_waypoints_ros.data = Waypoints.size();
             this->emit_message((DataMessage*) &num_waypoints_ros, 
-                                RestrictedNormWaypointRefGenerator::unicast_addresses::broadcast,
+                                -1,
                                 ROSUnit_BroadcastData::ros_broadcast_channels::waypoints);
             old_size = Waypoints.size();
         }

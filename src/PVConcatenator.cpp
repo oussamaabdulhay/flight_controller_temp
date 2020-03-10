@@ -49,7 +49,7 @@ void PVConcatenator::receive_msg_data(DataMessage* t_msg, int t_channel){
                 #ifdef PVConc_debug
                 //std::cout << "pv_vector.x " << pv_vector.x << ", pv_dot " << pv_dot << ", pv_dot_dot " << pv_dot_dot << std::endl;
                 #endif
-                this->emit_message_unicast((DataMessage*) &pv_vector_msg, PVConcatenator::unicast_addresses::broadcast);
+                this->emit_message_unicast((DataMessage*) &pv_vector_msg, -1);
             }
         }
         else if(t_channel==(int)ch_pv_dot){
@@ -72,7 +72,7 @@ void PVConcatenator::receive_msg_data(DataMessage* t_msg, int t_channel){
                 pv_vector.z = 0.0; //TODO add pv_dot_dot if needed
                 Vector3DMessage pv_vector_msg;
                 pv_vector_msg.setVector3DMessage(pv_vector);
-                this->emit_message_unicast((DataMessage*) &pv_vector_msg, PVConcatenator::unicast_addresses::broadcast);
+                this->emit_message_unicast((DataMessage*) &pv_vector_msg, -1);
             }
 
         }

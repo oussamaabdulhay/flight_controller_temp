@@ -24,7 +24,7 @@ bool ROSUnit_RestNormSettings::callbackSettings(flight_controller::Restricted_No
     _settings_msg.delete_existing_waypoints = req.delete_existing_waypoints;
     _settings_msg.setMaxNorm(req.max_norm);
 
-    _instance_ptr->emit_message_unicast((DataMessage*) &_settings_msg, ROSUnit_RestNormSettings::unicast_addresses::broadcast);
+    _instance_ptr->emit_message_unicast((DataMessage*) &_settings_msg, -1);
 
     return true;
 

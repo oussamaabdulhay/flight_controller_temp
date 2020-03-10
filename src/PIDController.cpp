@@ -43,15 +43,16 @@ void PIDController::receive_msg_data(DataMessage* t_msg){
 
 DataMessage* PIDController::receive_msg_internal(DataMessage* t_msg){
         
-	SwitcherMessage* controller_msg = (SwitcherMessage*)t_msg;
+	Vector3DMessage* controller_msg = (Vector3DMessage*)t_msg;
 
-    Vector3D<float> data = controller_msg->getVector3DData();
-	_command = pid_direct(data.x, data.y, data.z);
-	_filter_y = _filter.perform(_command);
+    Vector3D<float> data = controller_msg->getData();
+	float command = pid_direct(data.x, data.y, data.z);
+	_filter_y = _filter.perform(command);
 
-    m_output_msg.data = _command;
+	FloatMsg command_msg;
+	command_msg.data = command;
 
-	return (DataMessage*) &m_output_msg;
+	return (DataMessage*) &command_msg;
 }
 
 void PIDController::reset(){

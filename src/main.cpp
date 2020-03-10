@@ -560,8 +560,8 @@ int main(int argc, char** argv) {
     error_emitter.add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     //***********************INERTIAL TO BODY PROVIDER*****************************
  
-    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody);
-    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody);
+    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody, -1);
+    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody, -1);
 
     //***********************SETTING PID INITIAL VALUES*****************************
 
@@ -651,7 +651,7 @@ int main(int argc, char** argv) {
     //========                                                                     =============
     
     X_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_X_InertialToBody, (int)ControlSystem::unicast_addresses::unicast_control_system);
-    transform_X_InertialToBody->add_callback_msg_receiver((msg_receiver*)X_Saturation);
+    transform_X_InertialToBody->add_callback_msg_receiver((msg_receiver*)X_Saturation, -1);
     X_Saturation->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
     Roll_ControlSystem->add_callback_msg_receiver((msg_receiver*)myActuationSystem);
     Y_ControlSystem->add_callback_msg_receiver((msg_receiver*)transform_Y_InertialToBody, (int)ControlSystem::unicast_addresses::unicast_control_system);

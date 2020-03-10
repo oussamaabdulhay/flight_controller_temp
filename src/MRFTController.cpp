@@ -55,9 +55,9 @@ void MRFTController::reset(){
 
 DataMessage* MRFTController::receive_msg_internal(DataMessage* t_msg){
         
-	SwitcherMessage* controller_msg = (SwitcherMessage*)t_msg;
+	Vector3DMessage* controller_msg = (Vector3DMessage*)t_msg;
 
-    Vector3D<float> data = controller_msg->getVector3DData();
+    Vector3D<float> data = controller_msg->getData();
 	
 	// data.x is Error
 	// data.y is PV_First
@@ -72,9 +72,10 @@ DataMessage* MRFTController::receive_msg_internal(DataMessage* t_msg){
 		//local_comm.send_packet((void*)&mrft_period, sizeof(mrft_bag), local_comm.mrft_bag);
 		//TODO add a Warning
 	}
+	FloatMsg command_msg;
+    command_msg.data = command;
 
-    m_output_msg.data = command;
-	return (DataMessage*) &m_output_msg;
+	return (DataMessage*) &command_msg;
 }
 
 // Start of Chehadeh's Code

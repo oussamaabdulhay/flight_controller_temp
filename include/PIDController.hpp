@@ -5,7 +5,7 @@
 #include "PID_values.hpp"
 #include "FloatMsg.hpp"
 #include "Controller.hpp"
-#include "SwitcherMessage.hpp"
+#include "Vector3DMessage.hpp"
 #include "FloatMsg.hpp"
 #include "ResetControllerMsg.hpp"
 #include "ButterFilter_2nd_200Hz.hpp"
@@ -16,10 +16,8 @@ class PIDController : public Controller{
 
     private:
         controller_type _controller_type;
-        FloatMsg m_output_msg;
         SwitchOutMsg m_switchout_msg;
         block_id _id;
-        float _command;
         ButterFilter_2nd_200Hz _filter;
         float _filter_y;
         //Chehadeh's code

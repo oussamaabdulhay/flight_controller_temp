@@ -21,10 +21,6 @@ Block* Switcher::getActiveBlock(){
     return _active_block;
 }
 
-void Switcher::receive_msg_data(DataMessage* t_msg, int t_channel){
-    
-}
-
 void Switcher::receive_msg_data(DataMessage* t_msg){
     
     if(t_msg->getType() == msg_type::control_system){
@@ -35,48 +31,11 @@ void Switcher::receive_msg_data(DataMessage* t_msg){
         if (control_system_msg->getControlSystemMsgType() == control_system_msg_type::add_block
                     && static_cast<int>(this->getType()) == static_cast<int>(block_to_add->getType())){ //TODO Refactor
                 
-            //Block* block_to_add = control_system_msg->getBlockToAdd(); // TODO-Chehadeh: delete as possible redundant
             if(this->_blocks.empty()){
                 _active_block = block_to_add;
             }
             this->addBlock(block_to_add);
-        //(7)
-        } else if(control_system_msg->getControlSystemMsgType() == control_system_msg_type::PROVIDER){
-            
-            Vector3D<float> data_provided = control_system_msg->getV3DData();
-            
-            if(_active_block->getType() == block_type::reference){
-                
-                Reference* reference_block = (Reference*)_active_block;
-                // std::cout << (int)reference_block->getID() <<" PROVIDER RECEIVED: " << data_provided.x << std::endl;
-                m_process_variable.setVector3DMessage(data_provided);
-                DataMessage* ref_output_msg = reference_block->receive_msg_internal((DataMessage*) &m_process_variable);
-                Vector3DMessage* v3d_ref_output_msg = (Vector3DMessage*)ref_output_msg;
-
-                m_reference_msg.setSwitcherMessage(v3d_ref_output_msg->getData()); 
-                this->emit_message((DataMessage*) &m_reference_msg);
-            }
-        
-        //(9)
-        } else if(control_system_msg->getControlSystemMsgType() == control_system_msg_type::SETREFERENCE){
-            float reference = control_system_msg->getData();
-            if(_active_block->getType() == block_type::reference){
-                Reference* _reference_block = (Reference*)_active_block;                
-                _reference_block->setReferenceValue(reference);
-            }
         }
-
-    //(8)  //Controller Switcher
-    }else if(t_msg->getType() == msg_type::switcher){
-
-        SwitcherMessage* switcher_msg = (SwitcherMessage*)t_msg;
-                      
-        DataMessage* output = _active_block->receive_msg_internal((DataMessage*)switcher_msg);
-
-        FloatMsg* float_msg = (FloatMsg*)output;
-        m_out_switcher_msg.setSwitcherMessage(float_msg->data);
-        
-        this->emit_message((DataMessage*) &m_out_switcher_msg);
 
     }else if(t_msg->getType() == msg_type::SWITCHBLOCK){
         SwitchBlockMsg* switch_msg = (SwitchBlockMsg*)t_msg;
@@ -111,3 +70,31 @@ void Switcher::receive_msg_data(DataMessage* t_msg){
         }
     }
 }
+
+void Switcher::receive_msg_data(DataMessage* t_msg, int t_channel){
+    if(t_msg->getType() == msg_type::VECTOR3D){
+       Vector3DMessage* vector3D_msg = (Vector3DMessage*)t_msg;
+
+        if(t_channel == Switcher::receiving_channels::ch_provider){
+            DataMessage* ref_output_msg = _active_block->receive_msg_internal((DataMessage*) vector3D_msg);
+
+            this->emit_message((DataMessage*) ref_output_msg,
+                                Switcher::unicast_addresses::unicast_controller_switcher,
+                                Switcher::receiving_channels::ch_error);
+
+        }else if(t_channel == Switcher::receiving_channels::ch_error){                      
+            DataMessage* ctrl_output_msg = _active_block->receive_msg_internal((DataMessage*) vector3D_msg);
+
+            this->emit_message((DataMessage*) ctrl_output_msg,
+                                Switcher::unicast_addresses::unicast_control_system,
+                                ControlSystem::receiving_channels::ch_controller);
+
+        }
+    }else if(t_msg->getType() == msg_type::FLOAT){
+        FloatMsg* float_msg = (FloatMsg*)t_msg;
+        _active_block->setReferenceValue(float_msg->data);
+
+    }
+}
+
+

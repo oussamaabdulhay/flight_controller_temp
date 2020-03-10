@@ -6,7 +6,7 @@
 #include "Controller.hpp"
 #include "ResetControllerMsg.hpp"
 #include "Timer.hpp"
-#include "SwitcherMessage.hpp"
+#include "Vector3DMessage.hpp"
 #include "SwitchOutMsg.hpp"
 #include "logger.hpp"
 
@@ -16,7 +16,6 @@ private:
 	Timer _timer;
 	block_id _id;
     controller_type _controller_type;
-	FloatMsg m_output_msg;
 	float _dt;
     //Chehadeh's code
 	//TODO add to MRFT parameters

@@ -72,9 +72,14 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg)
         FloatMsg yaw_msg;
         yaw_msg.data = att_vec.z; // - calibrated_reference_inertial_heading;
         
+        std::cout << "Global2Inertial pos_point.x " << pos_point.x << "\n";
   
-        this->emitMsgUnicast(&results_msg, Global2Inertial::unicast_addresses::uni_Optitrack_pos);
-        this->emitMsgUnicast(&yaw_msg, Global2Inertial::unicast_addresses::uni_Optitrack_heading);
+        this->emitMsgUnicast(&results_msg, 
+                            Global2Inertial::unicast_addresses::uni_Optitrack_pos,
+                            PVConcatenator::receiving_channels::ch_pv);
+        this->emitMsgUnicast(&yaw_msg,
+                            Global2Inertial::unicast_addresses::uni_Optitrack_heading,
+                            PVConcatenator::receiving_channels::ch_pv);
     
     }
     else if (t_msg->getType()==msg_type::rtkposition){

@@ -20,7 +20,14 @@ void MsgEmitter::emitMsgUnicastDefault(DataMessage* t_msg, int t_channel_id){
 }
 
 void MsgEmitter::emitMsgUnicastDefault(DataMessage* t_msg){
-    this->emitMsgUnicast(t_msg, DEFAULT_UNICAST);
+
+    if (this->emitting_channel!=msg_broadcast_channel){
+        this->emitMsgUnicast(t_msg, DEFAULT_UNICAST, this->emitting_channel);
+    }
+    else{
+        this->emitMsgUnicast(t_msg, DEFAULT_UNICAST);
+    }
+
 }
 
 void MsgEmitter::emitMsgUnicast(DataMessage* t_msg,int t_unicast_mask){

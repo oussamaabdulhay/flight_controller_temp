@@ -290,20 +290,21 @@ int main(int argc, char** argv) {
     #ifdef OPTITRACK
     Differentiator* velocityFromPosition = new Differentiator(1./OPTITRACK_FREQUENCY);
     velocityFromPosition->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
+    
     Differentiator* yawRateFromYaw = new Differentiator(1./OPTITRACK_FREQUENCY);
     yawRateFromYaw->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
-    myGlobal2Inertial->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
-    myROSOptitrack->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial, -1);
+    
+    myROSOptitrack->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)velocityFromPosition, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)yawRateFromYaw, (int)Global2Inertial::unicast_addresses::uni_Optitrack_heading);
-    velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator, -1);
-    velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator, -1);
-    velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator, -1);
+    velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator);
+    velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator);
+    velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsYaw_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_heading);
-    yawRateFromYaw->addCallbackMsgReceiver((MsgReceiver*)CsYawRate_PVConcatenator, -1);
+    yawRateFromYaw->addCallbackMsgReceiver((MsgReceiver*)CsYawRate_PVConcatenator);
     #endif
 
     #ifdef XSENS_OVER_SERIAL
@@ -328,7 +329,7 @@ int main(int argc, char** argv) {
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)wrap_around_yaw, (int)Global2Inertial::unicast_addresses::uni_XSens_ori);
-    wrap_around_yaw->addCallbackMsgReceiver((MsgReceiver*)CsYaw_PVConcatenator, -1);
+    wrap_around_yaw->addCallbackMsgReceiver((MsgReceiver*)CsYaw_PVConcatenator);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsRoll_PVConcatenator,(int)Global2Inertial::unicast_addresses::uni_XSens_ori); //TODO bad grouping with ifdef
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsPitch_PVConcatenator,(int)Global2Inertial::unicast_addresses::uni_XSens_ori);
 
@@ -446,13 +447,13 @@ int main(int argc, char** argv) {
 
     //******************PROVIDERS TO CONTROL SYSTEMS******************************
 
-    CsX_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)X_ControlSystem, -1);
-    CsY_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Y_ControlSystem, -1);
-    CsZ_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem, -1);
-    CsPitch_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem, -1);
-    CsRoll_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem, -1);
-    CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem, -1);
-    CsYawRate_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem, -1);
+    CsX_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)X_ControlSystem);
+    CsY_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Y_ControlSystem);
+    CsZ_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
+    CsPitch_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
+    CsRoll_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
+    CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
+    CsYawRate_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
 
     //******************SETTING TRAJECTORY GENERATION TOOL******************
 
@@ -475,56 +476,56 @@ int main(int argc, char** argv) {
     ActuationSystem* myActuationSystem = new HexaActuationSystem(actuators);
     
     //***********************SETTING FLIGHT SCENARIO INPUTS****************************
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_x, -1);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_y, -1);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_z, -1);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_roll, -1);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_pitch, -1);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_yaw, -1);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_yaw_rate, -1);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_x);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_y);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_z);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_roll);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_pitch);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_yaw);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_yaw_rate);
 
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_x, -1);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_y, -1);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_z, -1);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_roll, -1);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_pitch, -1);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_yaw, -1);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_yaw_rate, -1);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_x);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_y);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_z);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_roll);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_pitch);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_yaw);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_yaw_rate);
 
-    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_x, -1);
-    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_y, -1);
-    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_z, -1);
-    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_roll, -1);
-    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_pitch, -1);
-    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_yaw, -1);
-    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_yaw_rate, -1);
+    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_x);
+    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_y);
+    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_z);
+    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_roll);
+    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_pitch);
+    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_yaw);
+    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_yaw_rate);
 
-    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)MRFT_x, -1);
-    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)MRFT_y, -1);
-    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)MRFT_z, -1);
-    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)MRFT_roll, -1);
-    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)MRFT_pitch, -1);
-    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)MRFT_yaw, -1);
-    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)MRFT_yaw_rate, -1);
+    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)MRFT_x);
+    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)MRFT_y);
+    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)MRFT_z);
+    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)MRFT_roll);
+    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)MRFT_pitch);
+    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)MRFT_yaw);
+    myROSResetController->addCallbackMsgReceiver((MsgReceiver*)MRFT_yaw_rate);
 
-    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)X_ControlSystem, -1);
-    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Y_ControlSystem, -1);
-    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem, -1);
-    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem, -1);
-    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem, -1);
-    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem, -1);
-    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem, -1);
+    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)X_ControlSystem);
+    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Y_ControlSystem);
+    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
+    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
+    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
+    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
+    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
 
-    myROSArm->addCallbackMsgReceiver((MsgReceiver*) myActuationSystem, -1);
+    myROSArm->addCallbackMsgReceiver((MsgReceiver*) myActuationSystem);
     #ifdef OPTITRACK
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)myWaypoint, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos); 
     #else
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)myWaypoint, (int)Global2Inertial::unicast_addresses::uni_RTK_pos_wp); 
     #endif
-    ROSUnit_uav_control_set_path->addCallbackMsgReceiver((MsgReceiver*)myWaypoint, -1);
-    myROSRestNormSettings->addCallbackMsgReceiver((MsgReceiver*)myWaypoint, -1);
+    ROSUnit_uav_control_set_path->addCallbackMsgReceiver((MsgReceiver*)myWaypoint);
+    myROSRestNormSettings->addCallbackMsgReceiver((MsgReceiver*)myWaypoint);
 
-    ROSUnit_set_height_offset->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial, -1);
+    ROSUnit_set_height_offset->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial);
     
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************
     CsX_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::x);
@@ -535,13 +536,13 @@ int main(int argc, char** argv) {
     CsYaw_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw);
     CsYawRate_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw_rate);
 
-    CsX_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData, -1);
-    CsY_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData, -1);
-    CsZ_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData, -1);
-    CsRoll_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData, -1);
-    CsPitch_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData, -1);
-    CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData, -1);
-    CsYawRate_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData, -1);
+    CsX_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    CsY_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    CsZ_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    CsRoll_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    CsPitch_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    CsYawRate_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
 
     myActuationSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData, (int)HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_commands);
     myActuationSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData, (int)HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_armed);
@@ -553,15 +554,15 @@ int main(int argc, char** argv) {
     Pitch_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     Yaw_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     YawRate_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-    myWaypoint->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData, -1);
+    myWaypoint->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     #ifdef BATTERY_MONITOR
-    myBatteryMonitor->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData, -1);
+    myBatteryMonitor->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     #endif
     error_emitter.addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     //***********************INERTIAL TO BODY PROVIDER*****************************
  
-    CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)transform_X_InertialToBody, -1);
-    CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)transform_Y_InertialToBody, -1);
+    CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)transform_X_InertialToBody);
+    CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)transform_Y_InertialToBody);
 
     //***********************SETTING PID INITIAL VALUES*****************************
 
@@ -651,7 +652,7 @@ int main(int argc, char** argv) {
     //========                                                                     =============
     
     X_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)transform_X_InertialToBody, (int)ControlSystem::unicast_addresses::unicast_control_system);
-    transform_X_InertialToBody->addCallbackMsgReceiver((MsgReceiver*)X_Saturation, -1);
+    transform_X_InertialToBody->addCallbackMsgReceiver((MsgReceiver*)X_Saturation);
     X_Saturation->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
     Roll_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem);
     Y_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)transform_Y_InertialToBody, (int)ControlSystem::unicast_addresses::unicast_control_system);

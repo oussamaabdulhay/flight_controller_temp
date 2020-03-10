@@ -17,11 +17,10 @@ private:
     Vector3D<float> _old_vector3d_data;
     Timer timer;
     float _dt;
+    
 public:
     
     void receiveMsgData(DataMessage*, int);
-    void differentiate(float);
-    void differentiate(Vector3D<float>);
     Differentiator(float);
     ~Differentiator();
 };

@@ -49,18 +49,13 @@ void PVConcatenator::receiveMsgData(DataMessage* t_msg, int t_channel){
                 #ifdef PVConc_debug
                 //std::cout << "pv_vector.x " << pv_vector.x << ", pv_dot " << pv_dot << ", pv_dot_dot " << pv_dot_dot << std::endl;
                 #endif
-                this->emitMsgUnicast((DataMessage*) &pv_vector_msg, -1);
+                this->emitMsgUnicastDefault((DataMessage*) &pv_vector_msg);
             }
         }
         else if(t_channel==(int)ch_pv_dot){
-            #ifdef PVConc_debug
-            //std::cout << "t_channel==(int)ch_pv_dot" << std::endl;
-            #endif
             if (_selected_concatenation_axes==conc_x_axis){
-                #ifdef PVConc_debug
-                //std::cout << "_selected_concatenation_axes==conc_x_axis " << v3d_msg->getData().x << std::endl;
-                #endif
                 pv_dot=v3d_msg->getData().x;
+                std::cout << "ch_pv_dot pv_dot " << pv_dot << "\n";
             }else if (_selected_concatenation_axes==conc_y_axis){
                 pv_dot=v3d_msg->getData().y;
             }else if (_selected_concatenation_axes==conc_z_axis){
@@ -72,7 +67,7 @@ void PVConcatenator::receiveMsgData(DataMessage* t_msg, int t_channel){
                 pv_vector.z = 0.0; //TODO add pv_dot_dot if needed
                 Vector3DMessage pv_vector_msg;
                 pv_vector_msg.setVector3DMessage(pv_vector);
-                this->emitMsgUnicast((DataMessage*) &pv_vector_msg, -1);
+                this->emitMsgUnicastDefault((DataMessage*) &pv_vector_msg);
             }
 
         }

@@ -24,7 +24,7 @@ bool ROSUnit_SwitchBlock::callbackSwitchBlocks(flight_controller::SwitchBlock::R
     block_out = req.block_out;
 
     _switch_msg.setSwitchBlockMsg(block_in, block_out);
-    _instance_ptr->emitMsgUnicast((DataMessage*) &_switch_msg, -1);
+    _instance_ptr->emitMsgUnicastDefault((DataMessage*) &_switch_msg);
     
     return true;
 }

@@ -41,7 +41,7 @@ bool ROSUnit_UpdateController::callbackUpdateController(flight_controller::Updat
 
     _update_controller_msg.setPIDParam(pid_data);
     _update_controller_msg.setMRFTParam(mrft_data);
-    _instance_ptr->emitMsgUnicast((DataMessage*) &_update_controller_msg, -1);
+    _instance_ptr->emitMsgUnicastDefault((DataMessage*) &_update_controller_msg);
     
     return true;
 }

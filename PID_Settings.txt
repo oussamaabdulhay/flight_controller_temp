@@ -9,7 +9,7 @@ PID_ParametersMsg pid_msg;
     pid_para_test.id = block_id::PID_X;
     pid_msg.setPIDParam(pid_para_test);
     pid_msg.set_dt(X_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &pid_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &pid_msg);
 
     pid_para_test.kp = 0.8;
     pid_para_test.ki = 0.0;
@@ -20,7 +20,7 @@ PID_ParametersMsg pid_msg;
     pid_para_test.id = block_id::PID_Y;
     pid_msg.setPIDParam(pid_para_test);
     pid_msg.set_dt(Y_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &pid_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &pid_msg);
 
     pid_para_test.kp = 0.4;
     pid_para_test.ki = 0.04;
@@ -31,7 +31,7 @@ PID_ParametersMsg pid_msg;
     pid_para_test.id = block_id::PID_Z;
     pid_msg.setPIDParam(pid_para_test);
     pid_msg.set_dt(Z_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &pid_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &pid_msg);
 
     pid_para_test.kp = 0.3;
     pid_para_test.ki = 0.0;
@@ -42,7 +42,7 @@ PID_ParametersMsg pid_msg;
     pid_para_test.id = block_id::PID_ROLL;
     pid_msg.setPIDParam(pid_para_test);
     pid_msg.set_dt(Roll_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &pid_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &pid_msg);
 
     pid_para_test.kp = 0.3;
     pid_para_test.ki = 0.0;
@@ -53,7 +53,7 @@ PID_ParametersMsg pid_msg;
     pid_para_test.id = block_id::PID_PITCH;
     pid_msg.setPIDParam(pid_para_test);
     pid_msg.set_dt(Pitch_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &pid_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &pid_msg);
 
     pid_para_test.kp = 0.8;
     pid_para_test.ki = 0.0;

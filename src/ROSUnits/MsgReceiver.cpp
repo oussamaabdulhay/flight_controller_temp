@@ -14,3 +14,10 @@ msg_type msg_receiver::get_message_type_ID(){
 }
 msg_receiver::msg_receiver(){
 }
+
+void msg_receiver::receive_msg_data(DataMessage* t_msg){
+
+}
+void msg_receiver::receive_msg_data(DataMessage* t_msg,int channel_id){
+
+}

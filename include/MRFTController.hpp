@@ -48,7 +48,7 @@ public:
     DataMessage* switchOut();
 	void receive_msg_data(DataMessage* t_msg); 
     void reset();
-	DataMessage* receive_msg_internal(DataMessage*);
+	DataMessage* runTask(DataMessage*);
     controller_type getControllerType(){ return _controller_type; }
     block_id getID(){ return _id; }
 

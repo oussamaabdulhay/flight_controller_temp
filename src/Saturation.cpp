@@ -8,28 +8,22 @@ Saturation::~Saturation() {
 
 }
 
-void Saturation::receive_msg_data(DataMessage* t_msg){
+void Saturation::receive_msg_data(DataMessage* t_msg, int t_channel){
 
-    if(t_msg->getType() == msg_type::control_system){
+    if(t_msg->getType() == msg_type::FLOAT){
 
-        ControlSystemMessage* ctrl_sys_msg = (ControlSystemMessage*)t_msg;
+        FloatMsg* float_msg = (FloatMsg*)t_msg;
+        FloatMsg output;
+        output.data = float_msg->data;
 
-        if(ctrl_sys_msg->getControlSystemMsgType() == control_system_msg_type::to_system){
-            this->clip(ctrl_sys_msg->getData());
+        if(output.data > _clip_value){
+            output.data = _clip_value;
+        }else if(output.data < -_clip_value){
+            output.data = -_clip_value;
         }
+
+        this->emit_message_unicast((DataMessage*) &output,
+                                    -1,
+                                    ControlSystem::receiving_channels::ch_reference);   
     }
-}
-
-void Saturation::clip(float t_value_to_clip){
-
-    if(t_value_to_clip > _clip_value){
-        m_output_msg.setControlSystemMessage(control_system::null_type, control_system_msg_type::to_system, _clip_value);
-    }else if(t_value_to_clip < -_clip_value){
-        m_output_msg.setControlSystemMessage(control_system::null_type, control_system_msg_type::to_system, -_clip_value);
-    }else{
-        m_output_msg.setControlSystemMessage(control_system::null_type, control_system_msg_type::to_system, t_value_to_clip);
-    }   
-    this->emit_message((DataMessage*) &m_output_msg);
-    
-    
 }

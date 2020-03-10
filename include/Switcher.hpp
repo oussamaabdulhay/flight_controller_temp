@@ -3,14 +3,13 @@
 #include <list>
 #include "MsgReceiver.hpp"
 #include "MsgEmitter.hpp"
-#include "ControlSystemMessage.hpp"
-#include "SwitcherMessage.hpp"
 #include "Vector3DMessage.hpp"
 #include "PIDController.hpp"
 #include "ProcessVariableReference.hpp"
 #include <algorithm>
 #include "logger.hpp"
 #include "SwitchBlockMsg.hpp"
+#include "ControlSystem.hpp"
 
 class Switcher : public msg_receiver, public msg_emitter{
 
@@ -19,9 +18,6 @@ class Switcher : public msg_receiver, public msg_emitter{
         std::list<Block*>::iterator _it;
         switcher_type _type;
         Block* _active_block;
-        Vector3DMessage m_process_variable;
-        SwitcherMessage m_reference_msg;
-        SwitcherMessage m_out_switcher_msg;
 
     public:
         enum unicast_addresses {broadcast, unicast_controller_switcher, unicast_control_system};
@@ -31,9 +27,6 @@ class Switcher : public msg_receiver, public msg_emitter{
         Block* getActiveBlock();
         void receive_msg_data(DataMessage* t_msg);
         void receive_msg_data(DataMessage* t_msg, int t_channel);
-        void loopInternal();
-        //TODO Send a message to Block
-        //TODO Receive a message from Block
         Switcher(switcher_type t_type);
         ~Switcher();
 };

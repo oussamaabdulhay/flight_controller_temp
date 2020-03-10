@@ -34,7 +34,7 @@ bool ROSUnit_SetVectorSrv::srv_callback1(common_srv::set_vector::Request& req, c
     t_msg.p2.x = req.p2.x;
     t_msg.p2.y = req.p2.y;
     t_msg.p2.z = req.p2.z;
-    m_ptr[0]->emit_message((DataMessage*) &t_msg);
+    m_ptr[0]->emit_message_unicast_default((DataMessage*) &t_msg);
     return true;
 }
 
@@ -48,7 +48,7 @@ bool ROSUnit_SetVectorSrv::srv_callback2(common_srv::set_vector::Request& req, c
     t_msg.p2.x = req.p2.x;
     t_msg.p2.y = req.p2.y;
     t_msg.p2.z = req.p2.z;
-    m_ptr[1]->emit_message((DataMessage*) &t_msg);
+    m_ptr[1]->emit_message_unicast_default((DataMessage*) &t_msg);
     return true;
 }
 
@@ -62,7 +62,7 @@ bool ROSUnit_SetVectorSrv::srv_callback3(common_srv::set_vector::Request& req, c
     t_msg.p2.x = req.p2.x;
     t_msg.p2.y = req.p2.y;
     t_msg.p2.z = req.p2.z;
-    m_ptr[2]->emit_message((DataMessage*) &t_msg);
+    m_ptr[2]->emit_message_unicast_default((DataMessage*) &t_msg);
     return true;
 }
 
@@ -76,7 +76,7 @@ bool ROSUnit_SetVectorSrv::srv_callback4(common_srv::set_vector::Request& req, c
     t_msg.p2.x = req.p2.x;
     t_msg.p2.y = req.p2.y;
     t_msg.p2.z = req.p2.z;
-    m_ptr[3]->emit_message((DataMessage*) &t_msg);
+    m_ptr[3]->emit_message_unicast_default((DataMessage*) &t_msg);
     return true;
 }
 
@@ -90,6 +90,6 @@ bool ROSUnit_SetVectorSrv::srv_callback5(common_srv::set_vector::Request& req, c
     t_msg.p2.x = req.p2.x;
     t_msg.p2.y = req.p2.y;
     t_msg.p2.z = req.p2.z;
-    m_ptr[4]->emit_message((DataMessage*) &t_msg);
+    m_ptr[4]->emit_message_unicast_default((DataMessage*) &t_msg);
     return true;
 }

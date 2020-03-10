@@ -75,7 +75,7 @@ void worker(TimedBlock* timed_block) {
             
             IntegerMsg error_msg; //TODO make enum of different errors
             error_msg.data = 1;
-            error_emitter.emit_message((DataMessage*)&error_msg);
+            error_emitter.emit_message_unicast_default((DataMessage*)&error_msg);
             
         } else {
             usleep(timed_block->getLoopRemainingMicroSec());
@@ -507,24 +507,24 @@ int main(int argc, char** argv) {
     myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw, -1);
     myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw_rate, -1);
 
-    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)X_ControlSystem);
-    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem);
-    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem);
-    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem);
-    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem);
-    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem);
-    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem);
+    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)X_ControlSystem, -1);
+    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem, -1);
+    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Z_ControlSystem, -1);
+    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Roll_ControlSystem, -1);
+    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Pitch_ControlSystem, -1);
+    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Yaw_ControlSystem, -1);
+    myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)YawRate_ControlSystem, -1);
 
-    myROSArm->add_callback_msg_receiver((msg_receiver*) myActuationSystem);
+    myROSArm->add_callback_msg_receiver((msg_receiver*) myActuationSystem, -1);
     #ifdef OPTITRACK
-    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)myWaypoint); 
+    myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)myWaypoint, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos); 
     #else
     myGlobal2Inertial->add_callback_msg_receiver((msg_receiver*)myWaypoint, (int)Global2Inertial::unicast_addresses::uni_RTK_pos_wp); 
     #endif
-    ROSUnit_uav_control_set_path->add_callback_msg_receiver((msg_receiver*)myWaypoint);
+    ROSUnit_uav_control_set_path->add_callback_msg_receiver((msg_receiver*)myWaypoint, -1);
     myROSRestNormSettings->add_callback_msg_receiver((msg_receiver*)myWaypoint, -1);
 
-    ROSUnit_set_height_offset->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial);
+    ROSUnit_set_height_offset->add_callback_msg_receiver((msg_receiver*)myGlobal2Inertial, -1);
     
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************
     CsX_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::x);
@@ -535,13 +535,13 @@ int main(int argc, char** argv) {
     CsYaw_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw);
     CsYawRate_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw_rate);
 
-    CsX_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    CsY_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    CsZ_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    CsRoll_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    CsPitch_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
-    CsYawRate_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    CsX_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, -1);
+    CsY_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, -1);
+    CsZ_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, -1);
+    CsRoll_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, -1);
+    CsPitch_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, -1);
+    CsYaw_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, -1);
+    CsYawRate_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, -1);
 
     myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_commands);
     myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_armed;
@@ -571,37 +571,37 @@ int main(int argc, char** argv) {
     pid_para_init.id = block_id::PID_X;
     ctrl_msg.setPIDParam(pid_para_init);
     ctrl_msg.set_dt(X_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &ctrl_msg);
 
     pid_para_init.id = block_id::PID_Y;
     ctrl_msg.setPIDParam(pid_para_init);
     ctrl_msg.set_dt(Y_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &ctrl_msg);
 
     pid_para_init.id = block_id::PID_Z;
     ctrl_msg.setPIDParam(pid_para_init);
     ctrl_msg.set_dt(Z_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &ctrl_msg);
 
     pid_para_init.id = block_id::PID_ROLL;
     ctrl_msg.setPIDParam(pid_para_init);
     ctrl_msg.set_dt(Roll_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &ctrl_msg);
 
     pid_para_init.id = block_id::PID_PITCH;
     ctrl_msg.setPIDParam(pid_para_init);
     ctrl_msg.set_dt(Pitch_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &ctrl_msg);
 
     pid_para_init.id = block_id::PID_YAW;
     ctrl_msg.setPIDParam(pid_para_init);
     ctrl_msg.set_dt(Yaw_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &ctrl_msg);
 
     pid_para_init.id = block_id::PID_YAW_RATE;
     ctrl_msg.setPIDParam(pid_para_init);
     ctrl_msg.set_dt(YawRate_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &ctrl_msg);
 
     //***********************SETTING MRFT INITIAL VALUES*****************************
 
@@ -610,37 +610,37 @@ int main(int argc, char** argv) {
     mrft_para_init.id = block_id::MRFT_X;
     ctrl_msg.setMRFTParam(mrft_para_init);
     ctrl_msg.set_dt(X_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &ctrl_msg);
 
     mrft_para_init.id = block_id::MRFT_Y;
     ctrl_msg.setMRFTParam(mrft_para_init);
     ctrl_msg.set_dt(Y_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &ctrl_msg);
 
     mrft_para_init.id = block_id::MRFT_Z;
     ctrl_msg.setMRFTParam(mrft_para_init);
     ctrl_msg.set_dt(Z_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &ctrl_msg);
 
     mrft_para_init.id = block_id::MRFT_ROLL;
     ctrl_msg.setMRFTParam(mrft_para_init);
     ctrl_msg.set_dt(Roll_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &ctrl_msg);
 
     mrft_para_init.id = block_id::MRFT_PITCH;
     ctrl_msg.setMRFTParam(mrft_para_init);
     ctrl_msg.set_dt(Pitch_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &ctrl_msg);
 
     mrft_para_init.id = block_id::MRFT_YAW;
     ctrl_msg.setMRFTParam(mrft_para_init);
     ctrl_msg.set_dt(Yaw_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &ctrl_msg);
 
     mrft_para_init.id = block_id::MRFT_YAW_RATE;
     ctrl_msg.setMRFTParam(mrft_para_init);
     ctrl_msg.set_dt(YawRate_ControlSystem->get_dt());
-    myROSUpdateController->emit_message((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emit_message_unicast_default((DataMessage*) &ctrl_msg);
 
     //***********************************SETTING CONNECTIONS***********************************
     //========                                                                     =============

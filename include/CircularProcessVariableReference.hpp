@@ -17,7 +17,7 @@ public:
     reference_type getReferenceType();
       
     void setReferenceValue(float);
-    DataMessage* receive_msg_internal(DataMessage*);
+    DataMessage* runTask(DataMessage*);
     block_id getID(){ return _id; }
     CircularProcessVariableReference(block_id t_id);
     ~CircularProcessVariableReference();

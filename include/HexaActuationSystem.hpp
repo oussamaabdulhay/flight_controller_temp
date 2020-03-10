@@ -23,7 +23,6 @@ class HexaActuationSystem : public ActuationSystem {
 
 private:    
     std::vector<Actuator*> _actuators;
-    ROSMsg ros_msg;
     const int _escMin = 1000;
     const int _escMin_armed = 1150;
     const int _escMax = 2000;

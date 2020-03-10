@@ -39,7 +39,7 @@ void Differentiator::differentiate(float t_float_data){
 
     diff_value = (t_float_data - _old_float_data) / _dt;
     #ifdef Differentiator_debug
-    std::cout << "this->emit_message((DataMessage*) &output_msg, PVConcatenator::receiving_channels::ch_pv_dot)" << std::endl;
+    std::cout << "this->emit_message_unicast_default((DataMessage*) &output_msg, PVConcatenator::receiving_channels::ch_pv_dot)" << std::endl;
     #endif
     this->emit_message_unicast((DataMessage*) &output_msg, 
                                 -1, 

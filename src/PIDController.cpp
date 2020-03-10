@@ -42,7 +42,7 @@ void PIDController::receive_msg_data(DataMessage* t_msg){
 	}
 }
 
-DataMessage* PIDController::receive_msg_internal(DataMessage* t_msg){
+DataMessage* PIDController::runTask(DataMessage* t_msg){
         
 	Vector3DMessage* controller_msg = (Vector3DMessage*)t_msg;
 

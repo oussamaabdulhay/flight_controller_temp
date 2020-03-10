@@ -25,7 +25,6 @@ class RestrictedNormWaypointRefGenerator : public msg_emitter, public msg_receiv
     ControlSystem* y_control_system;
     ControlSystem* z_control_system;
     ControlSystem* yaw_control_system;
-    ROSMsg ros_msg;
     int old_size = 0;
     void updateControlSystemsReferences(Vector3D<double> position,double yaw);
 public:

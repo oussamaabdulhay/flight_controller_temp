@@ -54,7 +54,7 @@ void MRFTController::reset(){
 	maxpeak_out = 0;
 }
 
-DataMessage* MRFTController::receive_msg_internal(DataMessage* t_msg){
+DataMessage* MRFTController::runTask(DataMessage* t_msg){
         
 	Vector3DMessage* controller_msg = (Vector3DMessage*)t_msg;
 

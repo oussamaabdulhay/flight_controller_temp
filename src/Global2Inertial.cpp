@@ -95,7 +95,7 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
             results_msg.pose.x = t_inertial_drone_position.x;
             results_msg.pose.y = t_inertial_drone_position.y;
             results_msg.pose.z = t_inertial_drone_position.z;
-            this->emit_message((DataMessage*)&results_msg);
+            this->emit_message_unicast_default((DataMessage*)&results_msg);
         }
         #endif
         

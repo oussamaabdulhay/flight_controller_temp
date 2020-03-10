@@ -15,7 +15,7 @@ reference_type CircularProcessVariableReference::getReferenceType(){
     return _reference_type;
 }
 
-DataMessage* CircularProcessVariableReference::receive_msg_internal(DataMessage* t_msg){
+DataMessage* CircularProcessVariableReference::runTask(DataMessage* t_msg){
     // std::cout << " My current Reference Variable Value: " << _reference_value << std::endl;
 
     Vector3DMessage* pos_msg = (Vector3DMessage*)t_msg;

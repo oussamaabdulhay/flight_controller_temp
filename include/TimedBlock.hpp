@@ -13,8 +13,6 @@ private:
     Timer internal_timer;
     
 public:
-    //TODO remove loopInternal later
-    virtual void loopInternal() =0;
     virtual void runTasks() = 0;
     void tickTimer();
     block_frequency getLoopFrequency();

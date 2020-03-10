@@ -29,7 +29,7 @@ void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg){
             inertial_command.z=_inertial_command_z;
             body_command = _rotation_matrix.TransformVector(inertial_command);
 
-            output.data = _body_command.x;
+            output.data = body_command.x;
             this->emit_message_unicast((DataMessage*) &output,
                                         -1,
                                         ControlSystem::receiving_channels::ch_reference);
@@ -42,7 +42,7 @@ void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg){
             inertial_command.z=_inertial_command_z;
             body_command = _rotation_matrix.TransformVector(inertial_command);
 
-            output.data = _body_command.y;
+            output.data = body_command.y;
             this->emit_message_unicast((DataMessage*) &output,
                                         -1,
                                         ControlSystem::receiving_channels::ch_reference);

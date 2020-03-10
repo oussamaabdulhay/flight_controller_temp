@@ -33,7 +33,7 @@ bool ROSUnit_SetPointSrv::srv_callback1(common_srv::set_point::Request& req, com
     t_vec.y = req.p.y;
     t_vec.z = req.p.z;
     t_msg.setVector3DMessage(t_vec);
-    m_ptr[0]->emit_message((DataMessage*) &t_msg);
+    m_ptr[0]->emit_message_unicast_default((DataMessage*) &t_msg);
     return true;
 }
 
@@ -46,7 +46,7 @@ bool ROSUnit_SetPointSrv::srv_callback2(common_srv::set_point::Request& req, com
     t_vec.y = req.p.y;
     t_vec.z = req.p.z;
     t_msg.setVector3DMessage(t_vec);
-    m_ptr[1]->emit_message((DataMessage*) &t_msg);
+    m_ptr[1]->emit_message_unicast_default((DataMessage*) &t_msg);
     return true;
 }
 
@@ -59,7 +59,7 @@ bool ROSUnit_SetPointSrv::srv_callback3(common_srv::set_point::Request& req, com
     t_vec.y = req.p.y;
     t_vec.z = req.p.z;
     t_msg.setVector3DMessage(t_vec);
-    m_ptr[2]->emit_message((DataMessage*) &t_msg);
+    m_ptr[2]->emit_message_unicast_default((DataMessage*) &t_msg);
     return true;
 }
 
@@ -72,7 +72,7 @@ bool ROSUnit_SetPointSrv::srv_callback4(common_srv::set_point::Request& req, com
     t_vec.y = req.p.y;
     t_vec.z = req.p.z;
     t_msg.setVector3DMessage(t_vec);
-    m_ptr[3]->emit_message((DataMessage*) &t_msg);
+    m_ptr[3]->emit_message_unicast_default((DataMessage*) &t_msg);
     return true;
 }
 
@@ -85,6 +85,6 @@ bool ROSUnit_SetPointSrv::srv_callback5(common_srv::set_point::Request& req, com
     t_vec.y = req.p.y;
     t_vec.z = req.p.z;
     t_msg.setVector3DMessage(t_vec);
-    m_ptr[4]->emit_message((DataMessage*) &t_msg);
+    m_ptr[4]->emit_message_unicast_default((DataMessage*) &t_msg);
     return true;
 }

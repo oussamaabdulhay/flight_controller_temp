@@ -36,7 +36,7 @@ bool ROSUnit_SetPosesSrv::srv_callback1(common_srv::set_poses::Request& req, com
         t_pose.yaw = req.poses.pose.at(i).yaw.data;
         t_msg.p.poses.push_back(t_pose);
     }
-    m_ptr[0]->emit_message((DataMessage*) &t_msg);
+    m_ptr[0]->emit_message_unicast_default((DataMessage*) &t_msg);
     return true;
 }
 
@@ -53,7 +53,7 @@ bool ROSUnit_SetPosesSrv::srv_callback2(common_srv::set_poses::Request& req, com
         t_pose.yaw = req.poses.pose.at(i).yaw.data;
         t_msg.p.poses.push_back(t_pose);
     }
-    m_ptr[1]->emit_message((DataMessage*) &t_msg);
+    m_ptr[1]->emit_message_unicast_default((DataMessage*) &t_msg);
     return true;
 }
 
@@ -70,7 +70,7 @@ bool ROSUnit_SetPosesSrv::srv_callback3(common_srv::set_poses::Request& req, com
         t_pose.yaw = req.poses.pose.at(i).yaw.data;
         t_msg.p.poses.push_back(t_pose);
     }
-    m_ptr[2]->emit_message((DataMessage*) &t_msg);
+    m_ptr[2]->emit_message_unicast_default((DataMessage*) &t_msg);
     return true;
 }
 
@@ -87,7 +87,7 @@ bool ROSUnit_SetPosesSrv::srv_callback4(common_srv::set_poses::Request& req, com
         t_pose.yaw = req.poses.pose.at(i).yaw.data;
         t_msg.p.poses.push_back(t_pose);
     }
-    m_ptr[3]->emit_message((DataMessage*) &t_msg);
+    m_ptr[3]->emit_message_unicast_default((DataMessage*) &t_msg);
     return true;
 }
 
@@ -104,6 +104,6 @@ bool ROSUnit_SetPosesSrv::srv_callback5(common_srv::set_poses::Request& req, com
         t_pose.yaw = req.poses.pose.at(i).yaw.data;
         t_msg.p.poses.push_back(t_pose);
     }
-    m_ptr[4]->emit_message((DataMessage*) &t_msg);
+    m_ptr[4]->emit_message_unicast_default((DataMessage*) &t_msg);
     return true;
 }

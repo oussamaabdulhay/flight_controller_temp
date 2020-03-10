@@ -37,7 +37,7 @@ void ROSUnit_RTK::callbackRTK2(const geometry_msgs::TwistStamped::ConstPtr& msg)
 
     velocity_msg.setVector3DMessage(vel_data);
     //TODO fix later
-    //_instance_ptr->emit_message((DataMessage*) &velocity_msg); 
+    //_instance_ptr->emit_message_unicast_default((DataMessage*) &velocity_msg); 
     
     
 }

@@ -6,9 +6,21 @@
 #include "MsgEmitter.hpp"
 using namespace std;
 
+void msg_emitter::add_callback_msg_receiver(msg_receiver* _callback_msg_receiver){
+    this->add_callback_msg_receiver(_callback_msg_receiver, DEFAULT_UNICAST);
+}
+
 void msg_emitter::add_callback_msg_receiver(msg_receiver* _callback_msg_receiver, int associated_publishing_channel){
     _list_of_msg_receivers.push_back(_callback_msg_receiver);
     _list_of_receivers_mask_unicast.push_back(associated_publishing_channel);
+}
+
+void msg_emitter::emit_message_unicast_default(DataMessage* t_msg, int t_channel_id){
+    this->emit_message_unicast(t_msg, DEFAULT_UNICAST, t_channel_id);
+}
+
+void msg_emitter::emit_message_unicast_default(DataMessage* t_msg){
+    this->emit_message_unicast(t_msg, DEFAULT_UNICAST);
 }
 
 void msg_emitter::emit_message_unicast(DataMessage* t_msg,int t_unicast_mask){

@@ -1,6 +1,5 @@
 #include "ControlSystem.hpp"
 #include <fstream>
-#undef ControlSystem_debug
 
 ControlSystem::ControlSystem(control_system t_control_system, block_frequency t_bf) : TimedBlock(t_bf) {
     _control_system = t_control_system;

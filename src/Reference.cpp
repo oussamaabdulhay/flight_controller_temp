@@ -13,7 +13,6 @@ block_type Reference::getType() {
 }
 
 void Reference::switchIn(DataMessage* data){
-    //this->emit_message_unicast_default(data);
 }
 
 

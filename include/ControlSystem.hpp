@@ -7,13 +7,13 @@
 #include "PID_values.hpp"
 #include "UpdatePoseMessage.hpp"
 #include "TimedBlock.hpp"
-
 #include "SwitchBlockMsg.hpp"
 #include "Timer.hpp"
 #include "DoubleMsg.hpp"
 #include "ROSUnit_BroadcastData.hpp"
 #include "VectorDoubleMsg.hpp"
 
+class Switcher;
 class ControlSystem : public TimedBlock, public msg_emitter, public msg_receiver{
 
     private:

@@ -13,7 +13,8 @@ private:
     Timer internal_timer;
     
 public:
-    virtual void runTasks() = 0;
+    //TODO what to do with runTasks?
+    virtual void runTasks(){}
     void tickTimer();
     block_frequency getLoopFrequency();
     void setLoopFrequency(block_frequency);

@@ -544,7 +544,7 @@ int main(int argc, char** argv) {
     CsYawRate_PVConcatenator->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, -1);
 
     myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_commands);
-    myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_armed;
+    myActuationSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, (int)HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_armed);
 
     X_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     Y_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);

@@ -93,7 +93,7 @@ void Switcher::receive_msg_data(DataMessage* t_msg, int t_channel){
         }
     }else if(t_msg->getType() == msg_type::FLOAT){
         FloatMsg* float_msg = (FloatMsg*)t_msg;
-        (Reference*)_active_block->setReferenceValue(float_msg->data);
+        ((Reference*)_active_block)->setReferenceValue(float_msg->data);
 
     }
 }

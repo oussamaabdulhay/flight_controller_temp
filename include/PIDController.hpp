@@ -7,10 +7,10 @@
 #include "Controller.hpp"
 #include "Vector3DMessage.hpp"
 #include "FloatMsg.hpp"
-#include "ResetControllerMsg.hpp"
 #include "ButterFilter_2nd_200Hz.hpp"
 #include "SwitchOutMsg.hpp"
 #include "logger.hpp"
+#include "IntegerMsg.hpp"
 
 class PIDController : public Controller{
 
@@ -18,6 +18,7 @@ class PIDController : public Controller{
         controller_type _controller_type;
         SwitchOutMsg m_switchout_msg;
         block_id _id;
+        FloatMsg _command_msg;
         ButterFilter_2nd_200Hz _filter;
         float _filter_y;
         //Chehadeh's code
@@ -36,7 +37,7 @@ class PIDController : public Controller{
         float pid_direct(float err, float pv_first, float pv_second=-1);
         void set_I_term(float);
         //---------------
-        
+        enum receiving_channels {ch_update, ch_reset};
         void switchIn(DataMessage*);
         DataMessage* switchOut();
         void receive_msg_data(DataMessage* t_msg); 

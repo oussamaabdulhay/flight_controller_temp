@@ -2,7 +2,7 @@
 #include "MsgEmitter.hpp"
 #include "MsgReceiver.hpp"
 #include "UpdatePoseMessage.hpp"
-#include "ROSMsg.hpp"
+
 #include "cmath"
 #include "ControlSystemMessage.hpp"
 

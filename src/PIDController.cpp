@@ -24,20 +24,21 @@ DataMessage* PIDController::switchOut(){
 void PIDController::receive_msg_data(DataMessage* t_msg){
 
 	if(t_msg->getType() == msg_type::UPDATECONTROLLER){
-		ControllerMessage* _pid_msg = (ControllerMessage*)t_msg;
-		PID_parameters _params = _pid_msg->getPIDParam();
+		ControllerMessage* pid_msg = (ControllerMessage*)t_msg;
+		PID_parameters params = pid_msg->getPIDParam();
 		
-		if(_pid_msg->getID() == this->_id){		
-			this->initialize(&_params);	
+		if(pid_msg->getID() == this->_id){		
+			this->initialize(&params);	
 		}
 		
-	}else if(t_msg->getType() == msg_type::RESETCONTROLLER){
-		ResetControllerMsg* reset_msg = (ResetControllerMsg*)t_msg;
+	}else if(t_msg->getType() == msg_type::INTEGER){
+		IntegerMsg* integer_msg = (IntegerMsg*)t_msg;
 
-		if(static_cast<block_id>(reset_msg->getData()) == this->_id){
+		if(static_cast<block_id>(integer_msg->data) == this->_id){
 			Logger::getAssignedLogger()->log("RESET CONTROLLER: %.0f", (int)this->_id, LoggerLevel::Warning);
 			this->reset();
 		}
+	
 	}
 }
 
@@ -49,10 +50,9 @@ DataMessage* PIDController::receive_msg_internal(DataMessage* t_msg){
 	float command = pid_direct(data.x, data.y, data.z);
 	_filter_y = _filter.perform(command);
 
-	FloatMsg command_msg;
-	command_msg.data = command;
+	_command_msg.data = command;
 
-	return (DataMessage*) &command_msg;
+	return (DataMessage*) &_command_msg;
 }
 
 void PIDController::reset(){

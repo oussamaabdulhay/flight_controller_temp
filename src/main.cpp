@@ -475,37 +475,37 @@ int main(int argc, char** argv) {
     ActuationSystem* myActuationSystem = new HexaActuationSystem(actuators);
     
     //***********************SETTING FLIGHT SCENARIO INPUTS****************************
-    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_x);
-    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_y);
-    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_z);
-    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_roll);
-    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_pitch);
-    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_yaw);
-    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_yaw_rate);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_x, -1);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_y, -1);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_z, -1);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_roll, -1);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_pitch, -1);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_yaw, -1);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)PID_yaw_rate, -1);
 
-    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_x);
-    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_y);
-    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_z);
-    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_roll);
-    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_pitch);
-    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw);
-    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw_rate);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_x, -1);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_y, -1);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_z, -1);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_roll, -1);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_pitch, -1);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw, -1);
+    myROSUpdateController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw_rate, -1);
 
-    myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_x);
-    myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_y);
-    myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_z);
-    myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_roll);
-    myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_pitch);
-    myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_yaw);
-    myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_yaw_rate);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_x, -1);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_y, -1);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_z, -1);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_roll, -1);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_pitch, -1);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_yaw, -1);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)PID_yaw_rate, -1);
 
-    myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_x);
-    myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_y);
-    myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_z);
-    myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_roll);
-    myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_pitch);
-    myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw);
-    myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw_rate);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_x, -1);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_y, -1);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_z, -1);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_roll, -1);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_pitch, -1);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw, -1);
+    myROSResetController->add_callback_msg_receiver((msg_receiver*)MRFT_yaw_rate, -1);
 
     myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)X_ControlSystem);
     myROSSwitchBlock->add_callback_msg_receiver((msg_receiver*)Y_ControlSystem);
@@ -555,7 +555,7 @@ int main(int argc, char** argv) {
     YawRate_ControlSystem->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     myWaypoint->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, -1);
     #ifdef BATTERY_MONITOR
-    myBatteryMonitor->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
+    myBatteryMonitor->add_callback_msg_receiver((msg_receiver*)myROSBroadcastData, -1);
     #endif
     error_emitter.add_callback_msg_receiver((msg_receiver*)myROSBroadcastData);
     //***********************INERTIAL TO BODY PROVIDER*****************************

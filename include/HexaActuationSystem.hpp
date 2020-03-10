@@ -2,7 +2,6 @@
 #include "ActuationSystem.hpp"
 #include "ControlSystemMessage.hpp"
 #include "BooleanMsg.hpp"
-#include "ROSMsg.hpp"
 #include <pthread.h>
 #include "ROSUnit_BroadcastData.hpp"
 #include "VectorDoubleMsg.hpp"

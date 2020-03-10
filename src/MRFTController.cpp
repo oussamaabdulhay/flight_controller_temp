@@ -33,13 +33,14 @@ void MRFTController::receive_msg_data(DataMessage* t_msg){
 			this->initialize(&_params);	
 		}
 		
-	}else if(t_msg->getType() == msg_type::RESETCONTROLLER){
-		ResetControllerMsg* reset_msg = (ResetControllerMsg*)t_msg;
+	}else if(t_msg->getType() == msg_type::INTEGER){
+		IntegerMsg* integer_msg = (IntegerMsg*)t_msg;
 
-		if(static_cast<block_id>(reset_msg->getData()) == this->_id){
+		if(static_cast<block_id>(integer_msg->data) == this->_id){
 			Logger::getAssignedLogger()->log("RESET CONTROLLER: %.0f", (int)this->_id, LoggerLevel::Warning);
 			this->reset();
 		}
+	
 	}
 
 }
@@ -72,10 +73,10 @@ DataMessage* MRFTController::receive_msg_internal(DataMessage* t_msg){
 		//local_comm.send_packet((void*)&mrft_period, sizeof(mrft_bag), local_comm.mrft_bag);
 		//TODO add a Warning
 	}
-	FloatMsg command_msg;
-    command_msg.data = command;
+	
+    _command_msg.data = command;
 
-	return (DataMessage*) &command_msg;
+	return (DataMessage*) &_command_msg;
 }
 
 // Start of Chehadeh's Code

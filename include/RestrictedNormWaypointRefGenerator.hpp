@@ -7,7 +7,7 @@
 #include "PosesMsg.hpp"
 #include <vector>
 #include "ControlSystem.hpp"
-#include "ROSMsg.hpp"
+
 #include "DoubleMsg.hpp"
 
 #undef mutex_safety

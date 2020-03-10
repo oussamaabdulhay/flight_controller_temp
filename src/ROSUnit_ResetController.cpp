@@ -1,6 +1,6 @@
 #include "ROSUnit_ResetController.hpp"
 ROSUnit_ResetController* ROSUnit_ResetController::_instance_ptr = NULL;
-ResetControllerMsg ROSUnit_ResetController::_reset_msg;
+IntegerMsg ROSUnit_ResetController::_reset_msg;
 
 ROSUnit_ResetController::ROSUnit_ResetController(ros::NodeHandle& t_main_handler) : ROSUnit(t_main_handler) {
     _srv_reset_controller = t_main_handler.advertiseService("reset_controller", callbackResetController);
@@ -21,8 +21,8 @@ bool ROSUnit_ResetController::callbackResetController(flight_controller::Reset_C
     int data;
     data = req.id;
 
-    _reset_msg.setResetControllerMessage(data);
-    _instance_ptr->emit_message((DataMessage*) &_reset_msg);
+    _reset_msg.data = data;
+    _instance_ptr->emit_message_unicast((DataMessage*) &_reset_msg, -1);
     
     return true;
 }

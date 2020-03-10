@@ -21,8 +21,8 @@ bool ROSUnit_Arm::callbackArm(flight_controller::Arm::Request &req, flight_contr
     bool data;
     data = req.armed;
 
-    _bool_msg.setBoolMessage(data);
-    _instance_ptr->emit_message((DataMessage*) &_bool_msg);
+    _bool_msg.data = data;
+    _instance_ptr->emit_message_unicast((DataMessage*) &_bool_msg, -1);
     
     return true;
 }

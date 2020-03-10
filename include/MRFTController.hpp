@@ -4,11 +4,11 @@
 #include "FloatMsg.hpp"
 #include "MRFT_values.hpp"
 #include "Controller.hpp"
-#include "ResetControllerMsg.hpp"
 #include "Timer.hpp"
 #include "Vector3DMessage.hpp"
 #include "SwitchOutMsg.hpp"
 #include "logger.hpp"
+#include "IntegerMsg.hpp"
 
 class MRFTController : public Controller{
 
@@ -17,6 +17,7 @@ private:
 	block_id _id;
     controller_type _controller_type;
 	float _dt;
+	FloatMsg _command_msg;
     //Chehadeh's code
 	//TODO add to MRFT parameters
 	const uint8_t iterations_lock_count = 10; //COMMIT change from 20 to 5

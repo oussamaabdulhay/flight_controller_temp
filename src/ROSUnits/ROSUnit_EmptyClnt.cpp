@@ -10,7 +10,7 @@ ROSUnit_EmptyClnt::~ROSUnit_EmptyClnt()
 
 }
 
-void ROSUnit_EmptyClnt::receive_msg_data(DataMessage* t_msg)
+void ROSUnit_EmptyClnt::receiveMsgData(DataMessage* t_msg)
 {
     //Change the below code to match your received msg
     if(t_msg->getType() == msg_type::EMPTY)

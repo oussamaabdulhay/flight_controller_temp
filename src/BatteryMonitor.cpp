@@ -18,5 +18,5 @@ float BatteryMonitor::getVoltageReading(){
 
     _voltage_reading.data = results[BATTERY_VOLTAGE_PIN] * SCALE + OFFSET;
 
-    this->emit_message_unicast((DataMessage*)&_voltage_reading, -1); 
+    this->emitMsgUnicast((DataMessage*)&_voltage_reading, -1); 
 }

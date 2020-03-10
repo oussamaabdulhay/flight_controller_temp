@@ -10,7 +10,7 @@ ROSUnit_SetPointsClnt::~ROSUnit_SetPointsClnt()
 
 }
 
-void ROSUnit_SetPointsClnt::receive_msg_data(DataMessage* t_msg)
+void ROSUnit_SetPointsClnt::receiveMsgData(DataMessage* t_msg)
 {
     //Change the below code to match your received msg
     if(t_msg->getType() == msg_type::POINTS)

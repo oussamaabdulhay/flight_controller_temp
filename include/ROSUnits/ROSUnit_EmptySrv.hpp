@@ -11,7 +11,7 @@ class ROSUnit_EmptySrv : public ROSUnit
     
         ROSUnit_EmptySrv(std::string, ros::NodeHandle&);
         ~ROSUnit_EmptySrv();
-        void receive_msg_data(DataMessage* t_msg) {};
+        void receiveMsgData(DataMessage* t_msg) {};
 
     private:
 

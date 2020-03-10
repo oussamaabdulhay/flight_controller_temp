@@ -41,13 +41,13 @@ void HexaActuationSystem::command(){
 
     VectorDoubleMsg commands_msg;
     commands_msg.data = _commands;
-    this->emit_message_unicast((DataMessage*) &commands_msg, 
+    this->emitMsgUnicast((DataMessage*) &commands_msg, 
                                 HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_commands,
                                 ROSUnit_BroadcastData::ros_broadcast_channels::actuation);
 
     BooleanMsg armed_msg;
     armed_msg.data = _armed;
-    this->emit_message_unicast((DataMessage*) &armed_msg,
+    this->emitMsgUnicast((DataMessage*) &armed_msg,
                                 HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_armed,
                                 ROSUnit_BroadcastData::ros_broadcast_channels::armed);
 }
@@ -63,7 +63,7 @@ int HexaActuationSystem::constrain(float value, int min_value, int max_value) {
     return int(value);
 }
 
-void HexaActuationSystem::receive_msg_data(DataMessage* t_msg){
+void HexaActuationSystem::receiveMsgData(DataMessage* t_msg){
 
     if(t_msg->getType() == msg_type::control_system){
         ControlSystemMessage* control_system_msg = (ControlSystemMessage*)t_msg;

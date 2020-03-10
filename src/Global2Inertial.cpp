@@ -57,7 +57,7 @@ Global2Inertial::Global2Inertial(){
     antenna_pose.y=0.1;
     antenna_pose.z=0.1;
 }
-void Global2Inertial::receive_msg_data(DataMessage* t_msg)
+void Global2Inertial::receiveMsgData(DataMessage* t_msg)
 {
     if(t_msg->getType() == msg_type::optitrack){ 
         
@@ -73,8 +73,8 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
         yaw_msg.data = att_vec.z; // - calibrated_reference_inertial_heading;
         
   
-        this->emit_message_unicast(&results_msg, Global2Inertial::unicast_addresses::uni_Optitrack_pos);
-        this->emit_message_unicast(&yaw_msg, Global2Inertial::unicast_addresses::uni_Optitrack_heading);
+        this->emitMsgUnicast(&results_msg, Global2Inertial::unicast_addresses::uni_Optitrack_pos);
+        this->emitMsgUnicast(&yaw_msg, Global2Inertial::unicast_addresses::uni_Optitrack_heading);
     
     }
     else if (t_msg->getType()==msg_type::rtkposition){
@@ -95,7 +95,7 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
             results_msg.pose.x = t_inertial_drone_position.x;
             results_msg.pose.y = t_inertial_drone_position.y;
             results_msg.pose.z = t_inertial_drone_position.z;
-            this->emit_message_unicast_default((DataMessage*)&results_msg);
+            this->emitMsgUnicastDefault((DataMessage*)&results_msg);
         }
         #endif
         
@@ -106,7 +106,7 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg)
     }
 }
 
-void Global2Inertial::receive_msg_data(DataMessage* t_msg,int ch){
+void Global2Inertial::receiveMsgData(DataMessage* t_msg,int ch){
     if (t_msg->getType()==msg_type::VECTOR3D){
         if (ch==Global2Inertial::receiving_channels::ch_RTK_pos){
             //std::cout << "RTK RAW results.x=" << ((Vector3DMessage*)t_msg)->getData().x << " results.y=" << ((Vector3DMessage*)t_msg)->getData().y << " results.z=" << ((Vector3DMessage*)t_msg)->getData().z << std::endl;
@@ -118,10 +118,10 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg,int ch){
             Vector3DMessage res_msg;
             res_msg.setVector3DMessage(results_rot);
             #ifndef DEBUG_HR_LR_DECOUPLED
-            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_RTK_pos);
+            emitMsgUnicast(&res_msg,Global2Inertial::unicast_addresses::uni_RTK_pos);
             #else
-            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_RTK_pos_pv, (int)PVConcatenator::receiving_channels::ch_pv);
-            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_RTK_pos_wp);
+            emitMsgUnicast(&res_msg,Global2Inertial::unicast_addresses::uni_RTK_pos_pv, (int)PVConcatenator::receiving_channels::ch_pv);
+            emitMsgUnicast(&res_msg,Global2Inertial::unicast_addresses::uni_RTK_pos_wp);
             #endif
         }
         else if (ch==Global2Inertial::receiving_channels::ch_XSens_pos){
@@ -133,16 +133,16 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg,int ch){
             Vector3DMessage res_msg;
             res_msg.setVector3DMessage(results_rot);
             #ifdef RTK
-            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_pos);
+            emitMsgUnicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_pos);
             #else
-            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_pos,(int)PVConcatenator::receiving_channels::ch_pv);
+            emitMsgUnicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_pos,(int)PVConcatenator::receiving_channels::ch_pv);
             #endif
         }
         else if (ch==Global2Inertial::receiving_channels::ch_XSens_vel){
             Vector3D<double> results = transformVelocity(((Vector3DMessage*)t_msg)->getData());
             Vector3DMessage res_msg;
             res_msg.setVector3DMessage(results);
-            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_vel,(int)PVConcatenator::receiving_channels::ch_pv_dot);
+            emitMsgUnicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_vel,(int)PVConcatenator::receiving_channels::ch_pv_dot);
         }
         else if (ch==Global2Inertial::receiving_channels::ch_XSens_ori){
             Vector3D<double> results = ((Vector3DMessage*)t_msg)->getData();
@@ -151,7 +151,7 @@ void Global2Inertial::receive_msg_data(DataMessage* t_msg,int ch){
             //std::cout << "results.z " << results.z << ", "<<calibrated_reference_inertial_heading<<","<<calibrated_global_to_inertial_angle<<"\n";
             Vector3DMessage res_msg;
             res_msg.setVector3DMessage(results);
-            emit_message_unicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_ori,(int)PVConcatenator::receiving_channels::ch_pv);
+            emitMsgUnicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_ori,(int)PVConcatenator::receiving_channels::ch_pv);
         }
     }
 }

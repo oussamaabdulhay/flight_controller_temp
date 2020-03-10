@@ -14,7 +14,7 @@
 #ifdef mutex_safety
 #include <pthread.h>
 #endif
-class RestrictedNormWaypointRefGenerator : public msg_emitter, public msg_receiver{
+class RestrictedNormWaypointRefGenerator : public MsgEmitter, public MsgReceiver{
 
     private:
     static pthread_mutex_t lock;
@@ -33,5 +33,5 @@ public:
     void add_y_control_system(ControlSystem*);
     void add_z_control_system(ControlSystem*);
     void add_yaw_control_system(ControlSystem*);
-    void receive_msg_data(DataMessage* t_msg);
+    void receiveMsgData(DataMessage* t_msg);
 };

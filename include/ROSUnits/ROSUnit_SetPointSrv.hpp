@@ -11,7 +11,7 @@ public:
 
     ROSUnit_SetPointSrv(std::string, ros::NodeHandle&);
     ~ROSUnit_SetPointSrv();
-    void receive_msg_data(DataMessage* t_msg){};
+    void receiveMsgData(DataMessage* t_msg){};
 
 private:
     ros::ServiceServer m_server;

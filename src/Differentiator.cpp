@@ -10,9 +10,9 @@ Differentiator::~Differentiator() {
 
 }
 
-void Differentiator::receive_msg_data(DataMessage* t_msg, int t_channel){
+void Differentiator::receiveMsgData(DataMessage* t_msg, int t_channel){
     #ifdef Differentiator_debug
-    std::cout << "Differentiator::receive_msg_data(DataMessage* t_msg)" << std::endl;
+    std::cout << "Differentiator::receiveMsgData(DataMessage* t_msg)" << std::endl;
     #endif
     if(t_msg->getType() == msg_type::VECTOR3D){
         #ifdef Differentiator_debug
@@ -39,9 +39,9 @@ void Differentiator::differentiate(float t_float_data){
 
     diff_value = (t_float_data - _old_float_data) / _dt;
     #ifdef Differentiator_debug
-    std::cout << "this->emit_message_unicast_default((DataMessage*) &output_msg, PVConcatenator::receiving_channels::ch_pv_dot)" << std::endl;
+    std::cout << "this->emitMsgUnicastDefault((DataMessage*) &output_msg, PVConcatenator::receiving_channels::ch_pv_dot)" << std::endl;
     #endif
-    this->emit_message_unicast((DataMessage*) &output_msg, 
+    this->emitMsgUnicast((DataMessage*) &output_msg, 
                                 -1, 
                                 PVConcatenator::receiving_channels::ch_pv_dot);
     _old_float_data = t_float_data;
@@ -59,7 +59,7 @@ void Differentiator::differentiate(Vector3D<float> t_vector3d_data){
     #ifdef Differentiator_debug
     std::cout << "diff_values.x " << diff_values.x << ", diff_values.y " << diff_values.y << ", diff_values.z " << diff_values.z << std::endl;
     #endif
-    this->emit_message_unicast((DataMessage*) &output_msg, 
+    this->emitMsgUnicast((DataMessage*) &output_msg, 
                                 -1, 
                                 PVConcatenator::receiving_channels::ch_pv_dot);
     _old_vector3d_data = t_vector3d_data;

@@ -12,7 +12,7 @@ class ROSUnit_Optitrack : public ROSUnit{
         ros::Subscriber _sub_attitude;
         static OptitrackMessage optitrack_msg; 
         static void callbackOptitrack(const geometry_msgs::PoseStamped& msg);
-        void receive_msg_data(DataMessage* t_msg);  
+        void receiveMsgData(DataMessage* t_msg);  
         
     public:
         

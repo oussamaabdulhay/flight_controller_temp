@@ -11,7 +11,7 @@ class ROSUnit_SetIntSrv : public ROSUnit
 
         ROSUnit_SetIntSrv(std::string, ros::NodeHandle&);
         ~ROSUnit_SetIntSrv();
-        void receive_msg_data(DataMessage* t_msg) {};
+        void receiveMsgData(DataMessage* t_msg) {};
 
     private:
         ros::ServiceServer m_server;

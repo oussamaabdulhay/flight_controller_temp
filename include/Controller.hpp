@@ -17,7 +17,7 @@ public:
     virtual block_id getID() = 0;
     virtual controller_type getControllerType() = 0;
     virtual DataMessage* runTask(DataMessage*) = 0;
-    virtual void receive_msg_data(DataMessage* t_msg) = 0;
+    virtual void receiveMsgData(DataMessage* t_msg) = 0;
     
     Controller();
     ~Controller();

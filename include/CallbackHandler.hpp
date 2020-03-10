@@ -24,7 +24,7 @@ using namespace std;
 Timer t;
 #endif
 
-class CallbackHandler : public XsCallback, public msg_emitter
+class CallbackHandler : public XsCallback, public MsgEmitter
 {
 public:
 Timer xsens_timer_1;
@@ -92,7 +92,7 @@ protected:
 			//std::cout << "orientation_euler.x " << orientation_euler.x << " orientation_euler.y " << orientation_euler.y << " orientation_euler.z " << orientation_euler.z << std::endl;
 
             pv_msg.setVector3DMessage(orientation_euler);
-			this->emit_message_unicast((DataMessage*) &pv_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation, (int)Global2Inertial::receiving_channels::ch_XSens_ori);
+			this->emitMsgUnicast((DataMessage*) &pv_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation, (int)Global2Inertial::receiving_channels::ch_XSens_ori);
 		}
 
         if (t_packet->containsCalibratedGyroscopeData()){
@@ -105,10 +105,10 @@ protected:
             pv_dot_msg.setVector3DMessage(angular_vel);
 			#ifdef XSENS_POSE
 			//std::cout << "angular_vel.x " << angular_vel.x << " angular_vel.y " << angular_vel.y << " angular_vel.z " << angular_vel.z << std::endl;
-			this->emit_message_unicast((DataMessage*) &pv_dot_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_attitude_rate, (int)PVConcatenator::receiving_channels::ch_pv_dot);
-			this->emit_message_unicast((DataMessage*) &pv_dot_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_yaw_rate, (int)PVConcatenator::receiving_channels::ch_pv);
+			this->emitMsgUnicast((DataMessage*) &pv_dot_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_attitude_rate, (int)PVConcatenator::receiving_channels::ch_pv_dot);
+			this->emitMsgUnicast((DataMessage*) &pv_dot_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_yaw_rate, (int)PVConcatenator::receiving_channels::ch_pv);
 			#else
-			this->emit_message_unicast((DataMessage*) &pv_dot_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation_rate, (int)PVConcatenator::receiving_channels::ch_pv_dot);
+			this->emitMsgUnicast((DataMessage*) &pv_dot_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_orientation_rate, (int)PVConcatenator::receiving_channels::ch_pv_dot);
 			#endif
         }
 		
@@ -124,7 +124,7 @@ protected:
 			// " position.y "<< std::setprecision(12) << position.y <<
 			//  " position.z " << std::setprecision(12)<< position.z << std::endl;
 			// TODO: guard using #ifdef
-			//this->emit_message_unicast(&position_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation,(int)Global2Inertial::receiving_channels::ch_XSens_pos);
+			//this->emitMsgUnicast(&position_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation,(int)Global2Inertial::receiving_channels::ch_XSens_pos);
 		}
 		if (t_packet->containsVelocity()){
 			int interval =  xsens_timer_2.tockMicroSeconds() - 10000;
@@ -142,7 +142,7 @@ protected:
 			velocity_msg.setVector3DMessage(velocity);
 			//std::cout << "velocity.x " << velocity.x << " velocity.y " << velocity.y << " velocity.z " << velocity.z << std::endl;
 
-			this->emit_message_unicast(&velocity_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation_rate,(int)Global2Inertial::receiving_channels::ch_XSens_vel);
+			this->emitMsgUnicast(&velocity_msg,(int)CallbackHandler::unicast_addresses::unicast_XSens_translation_rate,(int)Global2Inertial::receiving_channels::ch_XSens_vel);
 		}
 		#ifdef DEBUG_XSENS
 		std::cout << "TIME: " << t.tockMicroSeconds() << "\n";

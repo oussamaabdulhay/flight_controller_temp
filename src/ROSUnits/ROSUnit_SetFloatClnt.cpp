@@ -10,7 +10,7 @@ ROSUnit_SetFloatClnt::~ROSUnit_SetFloatClnt()
 
 }
 
-void ROSUnit_SetFloatClnt::receive_msg_data(DataMessage* t_msg)
+void ROSUnit_SetFloatClnt::receiveMsgData(DataMessage* t_msg)
 {
     //Change the below code to match your received msg
     if(t_msg->getType() == msg_type::FLOAT)

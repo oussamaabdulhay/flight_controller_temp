@@ -11,7 +11,7 @@ public:
 
     ROSUnit_SetFloatSrv(std::string, ros::NodeHandle&);
     ~ROSUnit_SetFloatSrv();
-    void receive_msg_data(DataMessage* t_msg) {};
+    void receiveMsgData(DataMessage* t_msg) {};
     
 private:
 

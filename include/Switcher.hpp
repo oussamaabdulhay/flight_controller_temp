@@ -11,7 +11,7 @@
 #include "SwitchBlockMsg.hpp"
 #include "ControlSystem.hpp"
 
-class Switcher : public msg_receiver, public msg_emitter{
+class Switcher : public MsgReceiver, public MsgEmitter{
 
     private:
         std::list<Block*> _blocks;
@@ -25,8 +25,8 @@ class Switcher : public msg_receiver, public msg_emitter{
         void addBlock(Block* b);
         switcher_type getType();
         Block* getActiveBlock();
-        void receive_msg_data(DataMessage* t_msg);
-        void receive_msg_data(DataMessage* t_msg, int t_channel);
+        void receiveMsgData(DataMessage* t_msg);
+        void receiveMsgData(DataMessage* t_msg, int t_channel);
         Switcher(switcher_type t_type);
         ~Switcher();
 };

@@ -11,8 +11,8 @@ class ROSUnit_SetVectorClnt : public ROSUnit
     
         ROSUnit_SetVectorClnt(std::string, ros::NodeHandle&);
         ~ROSUnit_SetVectorClnt();
-        //Change the receive_msg_data code to reflect your system
-        void receive_msg_data(DataMessage* t_msg);
+        //Change the receiveMsgData code to reflect your system
+        void receiveMsgData(DataMessage* t_msg);
 
     private:
 

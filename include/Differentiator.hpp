@@ -10,7 +10,7 @@
 #include "FloatMsg.hpp"
 #include "PVConcatenator.hpp"
 
-class Differentiator : public msg_emitter, public msg_receiver {
+class Differentiator : public MsgEmitter, public MsgReceiver {
 
 private:
     float _old_float_data;
@@ -19,7 +19,7 @@ private:
     float _dt;
 public:
     
-    void receive_msg_data(DataMessage*, int);
+    void receiveMsgData(DataMessage*, int);
     void differentiate(float);
     void differentiate(Vector3D<float>);
     Differentiator(float);

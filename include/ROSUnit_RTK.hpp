@@ -16,7 +16,7 @@ class ROSUnit_RTK : public ROSUnit{
         ros::Subscriber _sub_vel;
         static void callbackRTK1(const sensor_msgs::NavSatFix::ConstPtr & msg);
         static void callbackRTK2(const geometry_msgs::TwistStamped::ConstPtr & msg);
-        void receive_msg_data(DataMessage* t_msg);  
+        void receiveMsgData(DataMessage* t_msg);  
         
     public:
         ROSUnit_RTK(ros::NodeHandle&);

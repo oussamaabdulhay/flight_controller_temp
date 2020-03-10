@@ -14,7 +14,7 @@
 #include "PVConcatenator.hpp"
 #include "OptitrackMessage.hpp"
 
-class Global2Inertial : public msg_emitter, public msg_receiver
+class Global2Inertial : public MsgEmitter, public MsgReceiver
 {
 private:
     Vector3D<double> calib_point1, calib_point2,calib_point3,calib_point4,calib_point3_true_SI,calib_point4_true_SI;
@@ -37,7 +37,7 @@ public:
 enum unicast_addresses {broadcast,uni_RTK_pos_pv,uni_RTK_pos_wp,uni_XSens_pos,uni_Optitrack_pos,uni_Optitrack_heading,uni_XSens_vel,uni_XSens_ori};
 enum receiving_channels {ch_broadcast,ch_RTK_pos,ch_XSens_pos,ch_Optitrack_pos,ch_XSens_vel, ch_XSens_ori};
     Global2Inertial();
-    void receive_msg_data(DataMessage* t_msg);
-    void receive_msg_data(DataMessage* t_msg,int ch);
+    void receiveMsgData(DataMessage* t_msg);
+    void receiveMsgData(DataMessage* t_msg,int ch);
 
 };

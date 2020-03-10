@@ -12,7 +12,7 @@ XSens_IMU::~XSens_IMU() {
 
 }
 
-void XSens_IMU::receive_msg_data(DataMessage* t_msg){
+void XSens_IMU::receiveMsgData(DataMessage* t_msg){
     
     if(t_msg->getType() == msg_type::XSENS){
         XSensMessage* xsens_msg = (XSensMessage*)t_msg;
@@ -25,14 +25,14 @@ void XSens_IMU::receive_msg_data(DataMessage* t_msg){
         roll_pv.y = body_rate.x;
         roll_pv.z = 0.0;
         _roll_pv_msg.setVector3DMessage(roll_pv);
-        this->emit_message_unicast((DataMessage*) &_roll_pv_msg, (int)control_system::roll, (int)control_system::roll);
+        this->emitMsgUnicast((DataMessage*) &_roll_pv_msg, (int)control_system::roll, (int)control_system::roll);
 
         Vector3D<float> pitch_pv;
         pitch_pv.x = orientation_euler.y;
         pitch_pv.y = body_rate.y;
         pitch_pv.z = 0.0;
         _pitch_pv_msg.setVector3DMessage(pitch_pv);
-        this->emit_message_unicast((DataMessage*) &_pitch_pv_msg, (int)control_system::pitch, (int)control_system::pitch);
+        this->emitMsgUnicast((DataMessage*) &_pitch_pv_msg, (int)control_system::pitch, (int)control_system::pitch);
     }
 
 }

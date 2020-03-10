@@ -21,7 +21,7 @@ Block* Switcher::getActiveBlock(){
     return _active_block;
 }
 
-void Switcher::receive_msg_data(DataMessage* t_msg){
+void Switcher::receiveMsgData(DataMessage* t_msg){
     
     if(t_msg->getType() == msg_type::control_system){
 
@@ -71,14 +71,14 @@ void Switcher::receive_msg_data(DataMessage* t_msg){
     }
 }
 
-void Switcher::receive_msg_data(DataMessage* t_msg, int t_channel){
+void Switcher::receiveMsgData(DataMessage* t_msg, int t_channel){
     if(t_msg->getType() == msg_type::VECTOR3D){
        Vector3DMessage* vector3D_msg = (Vector3DMessage*)t_msg;
 
         if(t_channel == Switcher::receiving_channels::ch_provider){
             DataMessage* ref_output_msg = _active_block->runTask((DataMessage*) vector3D_msg);
 
-            this->emit_message_unicast((DataMessage*) ref_output_msg,
+            this->emitMsgUnicast((DataMessage*) ref_output_msg,
                                         Switcher::unicast_addresses::unicast_controller_switcher,
                                         Switcher::receiving_channels::ch_error);
 
@@ -86,7 +86,7 @@ void Switcher::receive_msg_data(DataMessage* t_msg, int t_channel){
             Controller* controller_block = (Controller*)_active_block;                     
             DataMessage* ctrl_output_msg = _active_block->runTask((DataMessage*) vector3D_msg);
 
-            this->emit_message_unicast((DataMessage*) ctrl_output_msg,
+            this->emitMsgUnicast((DataMessage*) ctrl_output_msg,
                                         Switcher::unicast_addresses::unicast_control_system,
                                         ControlSystem::receiving_channels::ch_controller);
 

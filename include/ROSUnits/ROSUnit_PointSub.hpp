@@ -11,7 +11,7 @@ class ROSUnit_PointSub : public ROSUnit
 
         ROSUnit_PointSub(std::string, ros::NodeHandle&);
         ~ROSUnit_PointSub();
-        void receive_msg_data(DataMessage* t_msg) {};
+        void receiveMsgData(DataMessage* t_msg) {};
 
     private:
 

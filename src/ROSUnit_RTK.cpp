@@ -22,7 +22,7 @@ void ROSUnit_RTK::callbackRTK1(const sensor_msgs::NavSatFix::ConstPtr & msg){
 
     position_msg.setVector3DMessage(pos_data);
     //TODO fix later
-    //_instance_ptr->emit_message_unicast((DataMessage*) &position_msg, (int)Global2Inertial::receiving_channels::ch_RTK_pos);
+    //_instance_ptr->emitMsgUnicast((DataMessage*) &position_msg, (int)Global2Inertial::receiving_channels::ch_RTK_pos);
 
 }
 
@@ -37,12 +37,12 @@ void ROSUnit_RTK::callbackRTK2(const geometry_msgs::TwistStamped::ConstPtr& msg)
 
     velocity_msg.setVector3DMessage(vel_data);
     //TODO fix later
-    //_instance_ptr->emit_message_unicast_default((DataMessage*) &velocity_msg); 
+    //_instance_ptr->emitMsgUnicastDefault((DataMessage*) &velocity_msg); 
     
     
 }
 
-void ROSUnit_RTK::receive_msg_data(DataMessage* t_msg){
+void ROSUnit_RTK::receiveMsgData(DataMessage* t_msg){
 
 
 }

@@ -38,7 +38,7 @@ private:
     static pthread_mutex_t lock;
 public:
     enum unicast_addresses {broadcast, unicast_ActuationSystem_commands, unicast_ActuationSystem_armed};
-    void receive_msg_data(DataMessage* t_msg);
+    void receiveMsgData(DataMessage* t_msg);
     void command();
     int constrain(float value, int min_value, int max_value);
 

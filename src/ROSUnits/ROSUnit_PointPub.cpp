@@ -10,7 +10,7 @@ ROSUnit_PointPub::~ROSUnit_PointPub()
 
 }
 
-void ROSUnit_PointPub::receive_msg_data(DataMessage* t_msg)
+void ROSUnit_PointPub::receiveMsgData(DataMessage* t_msg)
 {
     //Change the below code to match your received msg
     if(t_msg->getType() == msg_type::VECTOR3D)

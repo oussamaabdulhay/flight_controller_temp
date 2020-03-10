@@ -19,7 +19,7 @@ class ROSUnit_UpdateController :  public ROSUnit{
         ros::ServiceServer _srv_update_controller;
         static bool callbackUpdateController(flight_controller::Update_Controller::Request  &req, 
                                              flight_controller::Update_Controller::Response &res);
-        void receive_msg_data(DataMessage* t_msg);  
+        void receiveMsgData(DataMessage* t_msg);  
 
     public:
         ROSUnit_UpdateController(ros::NodeHandle&);

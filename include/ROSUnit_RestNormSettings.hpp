@@ -13,7 +13,7 @@ class ROSUnit_RestNormSettings :  public ROSUnit{
         ros::ServiceServer _srv_rest_norm_settings;
         static bool callbackSettings(flight_controller::Restricted_Norm_Settings::Request  &req, 
                                      flight_controller::Restricted_Norm_Settings::Response &res);
-        void receive_msg_data(DataMessage* t_msg);  
+        void receiveMsgData(DataMessage* t_msg);  
 
     public:
         

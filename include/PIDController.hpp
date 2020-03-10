@@ -40,7 +40,7 @@ class PIDController : public Controller{
         enum receiving_channels {ch_update, ch_reset};
         void switchIn(DataMessage*);
         DataMessage* switchOut();
-        void receive_msg_data(DataMessage* t_msg); 
+        void receiveMsgData(DataMessage* t_msg); 
         void reset();
         DataMessage* runTask(DataMessage*);
         controller_type getControllerType(){ return _controller_type; }

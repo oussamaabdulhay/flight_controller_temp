@@ -21,7 +21,7 @@ DataMessage* PIDController::switchOut(){
     return (DataMessage*)&m_switchout_msg;
 } 
 
-void PIDController::receive_msg_data(DataMessage* t_msg){
+void PIDController::receiveMsgData(DataMessage* t_msg){
 
 	if(t_msg->getType() == msg_type::UPDATECONTROLLER){
 		ControllerMessage* pid_msg = (ControllerMessage*)t_msg;

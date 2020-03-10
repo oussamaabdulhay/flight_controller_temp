@@ -6,44 +6,44 @@
 #include "MsgEmitter.hpp"
 using namespace std;
 
-void msg_emitter::add_callback_msg_receiver(msg_receiver* _callback_msg_receiver){
-    this->add_callback_msg_receiver(_callback_msg_receiver, DEFAULT_UNICAST);
+void MsgEmitter::addCallbackMsgReceiver(MsgReceiver* _callback_msg_receiver){
+    this->addCallbackMsgReceiver(_callback_msg_receiver, DEFAULT_UNICAST);
 }
 
-void msg_emitter::add_callback_msg_receiver(msg_receiver* _callback_msg_receiver, int associated_publishing_channel){
+void MsgEmitter::addCallbackMsgReceiver(MsgReceiver* _callback_msg_receiver, int associated_publishing_channel){
     _list_of_msg_receivers.push_back(_callback_msg_receiver);
     _list_of_receivers_mask_unicast.push_back(associated_publishing_channel);
 }
 
-void msg_emitter::emit_message_unicast_default(DataMessage* t_msg, int t_channel_id){
-    this->emit_message_unicast(t_msg, DEFAULT_UNICAST, t_channel_id);
+void MsgEmitter::emitMsgUnicastDefault(DataMessage* t_msg, int t_channel_id){
+    this->emitMsgUnicast(t_msg, DEFAULT_UNICAST, t_channel_id);
 }
 
-void msg_emitter::emit_message_unicast_default(DataMessage* t_msg){
-    this->emit_message_unicast(t_msg, DEFAULT_UNICAST);
+void MsgEmitter::emitMsgUnicastDefault(DataMessage* t_msg){
+    this->emitMsgUnicast(t_msg, DEFAULT_UNICAST);
 }
 
-void msg_emitter::emit_message_unicast(DataMessage* t_msg,int t_unicast_mask){
+void MsgEmitter::emitMsgUnicast(DataMessage* t_msg,int t_unicast_mask){
     for (int i = 0; i < _list_of_msg_receivers.size(); ++i){
         if (t_unicast_mask==_list_of_receivers_mask_unicast[i]){
-             _list_of_msg_receivers[i]->receive_msg_data(t_msg);
+             _list_of_msg_receivers[i]->receiveMsgData(t_msg);
         }
     }
 }
-void msg_emitter::emit_message_unicast(DataMessage* t_msg,int t_unicast_mask,int t_channel_id){
+void MsgEmitter::emitMsgUnicast(DataMessage* t_msg,int t_unicast_mask,int t_channel_id){
     for (int i = 0; i < _list_of_msg_receivers.size(); ++i){
         if (t_unicast_mask==_list_of_receivers_mask_unicast[i]){
-             _list_of_msg_receivers[i]->receive_msg_data(t_msg,t_channel_id);
+             _list_of_msg_receivers[i]->receiveMsgData(t_msg,t_channel_id);
         }
     }
 }
-msg_emitter::msg_emitter(){
+MsgEmitter::MsgEmitter(){
 }
 
-void msg_emitter::setEmittingChannel(int t_ch){
+void MsgEmitter::setEmittingChannel(int t_ch){
     this->emitting_channel=t_ch;
 }
 
-int msg_emitter::getEmittingChannel(){
+int MsgEmitter::getEmittingChannel(){
     return emitting_channel;
 }

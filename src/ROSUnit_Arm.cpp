@@ -11,7 +11,7 @@ ROSUnit_Arm::~ROSUnit_Arm() {
 
 }
 
-void ROSUnit_Arm::receive_msg_data(DataMessage* t_msg){
+void ROSUnit_Arm::receiveMsgData(DataMessage* t_msg){
 
 
 }
@@ -22,7 +22,7 @@ bool ROSUnit_Arm::callbackArm(flight_controller::Arm::Request &req, flight_contr
     data = req.armed;
 
     _bool_msg.data = data;
-    _instance_ptr->emit_message_unicast((DataMessage*) &_bool_msg, -1);
+    _instance_ptr->emitMsgUnicast((DataMessage*) &_bool_msg, -1);
     
     return true;
 }

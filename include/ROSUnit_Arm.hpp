@@ -15,7 +15,7 @@ class ROSUnit_Arm :  public ROSUnit{
         static BooleanMsg _bool_msg; 
         ros::ServiceServer _srv_armed;
         static bool callbackArm(flight_controller::Arm::Request  &req, flight_controller::Arm::Response &res);
-        void receive_msg_data(DataMessage* t_msg);  
+        void receiveMsgData(DataMessage* t_msg);  
 
     public:
         ROSUnit_Arm(ros::NodeHandle&);

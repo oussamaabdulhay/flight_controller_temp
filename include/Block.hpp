@@ -4,7 +4,7 @@
 #include "DataMessage.hpp"
 #include "MsgReceiver.hpp"
 
-class Block : public msg_receiver{   //TODO check msg_emitter msg_receiver
+class Block : public MsgReceiver{   //TODO check MsgEmitter MsgReceiver
 
     public:
         
@@ -13,7 +13,7 @@ class Block : public msg_receiver{   //TODO check msg_emitter msg_receiver
         virtual void switchIn(DataMessage*) = 0;
         virtual DataMessage* switchOut() = 0;
         virtual DataMessage* runTask(DataMessage*) = 0; 
-        virtual void receive_msg_data(DataMessage* t_msg) = 0;
+        virtual void receiveMsgData(DataMessage* t_msg) = 0;
 
         Block();
         ~Block();

@@ -23,7 +23,7 @@ DataMessage* Reference::switchOut(){
     return msg;
 }    
 
-void Reference::receive_msg_data(DataMessage* t_msg){
+void Reference::receiveMsgData(DataMessage* t_msg){
 
 
 }

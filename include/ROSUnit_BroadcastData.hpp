@@ -39,8 +39,8 @@ private:
     int _number_of_waypoints = 0;
     int _error_accumulator = 0;
     static ROSUnit_BroadcastData* _instance_ptr;
-    void receive_msg_data(DataMessage* t_msg); 
-    void receive_msg_data(DataMessage* t_msg, int);
+    void receiveMsgData(DataMessage* t_msg); 
+    void receiveMsgData(DataMessage* t_msg, int);
     int _seq_pos = 0, _seq_ori = 0, _seq_xpv = 0, _seq_ypv = 0, _seq_zpv = 0;
     int _seq_rollpv = 0, _seq_pitchpv = 0, _seq_yawpv = 0, _seq_cs = 0, _seq_act = 0;
     int _seq_yawratepv = 0, _seq_info = 0;

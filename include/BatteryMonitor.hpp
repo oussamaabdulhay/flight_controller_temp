@@ -11,7 +11,7 @@
 int const BATTERY_VOLTAGE_PIN = 2;
 float const SCALE = 0.0108; //SCALE and OFFSET were obtained through constant measurements between Navio data and Voltimeter
 float const OFFSET = 0.416;
-class BatteryMonitor : public msg_emitter{
+class BatteryMonitor : public MsgEmitter{
 
 private:
     std::unique_ptr<ADC> adc;

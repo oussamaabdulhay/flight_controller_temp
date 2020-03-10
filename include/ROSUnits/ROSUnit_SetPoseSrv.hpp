@@ -11,7 +11,7 @@ public:
     
     ROSUnit_SetPoseSrv(std::string, ros::NodeHandle&);
     ~ROSUnit_SetPoseSrv();
-    void receive_msg_data(DataMessage* t_msg){};
+    void receiveMsgData(DataMessage* t_msg){};
 
 private:
 

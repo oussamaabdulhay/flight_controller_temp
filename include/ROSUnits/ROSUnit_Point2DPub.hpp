@@ -11,8 +11,8 @@ class ROSUnit_Point2DPub : public ROSUnit
 
         ROSUnit_Point2DPub(std::string, ros::NodeHandle&);
         ~ROSUnit_Point2DPub();
-        //Change the receive_msg_data code to reflect your system
-        void receive_msg_data(DataMessage* t_msg);
+        //Change the receiveMsgData code to reflect your system
+        void receiveMsgData(DataMessage* t_msg);
 
     private:
 

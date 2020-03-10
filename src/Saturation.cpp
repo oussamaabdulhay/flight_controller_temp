@@ -8,7 +8,7 @@ Saturation::~Saturation() {
 
 }
 
-void Saturation::receive_msg_data(DataMessage* t_msg, int t_channel){
+void Saturation::receiveMsgData(DataMessage* t_msg, int t_channel){
 
     if(t_msg->getType() == msg_type::FLOAT){
 
@@ -22,7 +22,7 @@ void Saturation::receive_msg_data(DataMessage* t_msg, int t_channel){
             output.data = -_clip_value;
         }
 
-        this->emit_message_unicast((DataMessage*) &output,
+        this->emitMsgUnicast((DataMessage*) &output,
                                     -1,
                                     ControlSystem::receiving_channels::ch_reference);   
     }

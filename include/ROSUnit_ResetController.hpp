@@ -15,7 +15,7 @@ class ROSUnit_ResetController :  public ROSUnit{
         static IntegerMsg _reset_msg; 
         ros::ServiceServer _srv_reset_controller;
         static bool callbackResetController(flight_controller::Reset_Controller::Request  &req, flight_controller::Reset_Controller::Response &res);
-        void receive_msg_data(DataMessage* t_msg);  
+        void receiveMsgData(DataMessage* t_msg);  
 
     public:
         ROSUnit_ResetController(ros::NodeHandle&);

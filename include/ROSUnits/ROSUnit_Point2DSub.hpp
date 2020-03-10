@@ -11,7 +11,7 @@ class ROSUnit_Point2DSub : public ROSUnit
 
         ROSUnit_Point2DSub(std::string, ros::NodeHandle&);
         ~ROSUnit_Point2DSub();
-        void receive_msg_data(DataMessage* t_msg) {};
+        void receiveMsgData(DataMessage* t_msg) {};
 
     private:
 

@@ -23,7 +23,7 @@ DataMessage* MRFTController::switchOut(){
     return msg;
 } 
 
-void MRFTController::receive_msg_data(DataMessage* t_msg){
+void MRFTController::receiveMsgData(DataMessage* t_msg){
 
 	if(t_msg->getType() == msg_type::UPDATECONTROLLER){
 		ControllerMessage* mrft_msg = (ControllerMessage*)t_msg;

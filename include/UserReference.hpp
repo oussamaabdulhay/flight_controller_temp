@@ -6,14 +6,14 @@
 #include "FlightScenarioMessage.hpp"
 #include "ControlSystem.hpp"
 
-class UserReference : public msg_emitter, public msg_receiver{
+class UserReference : public MsgEmitter, public MsgReceiver{
 
 private:
     UpdatePoseMessage _user_msg;
 
 public:
     enum unicast_addresses {broadcast, x, y, z, yaw};
-    virtual void receive_msg_data(DataMessage*) = 0;
+    virtual void receiveMsgData(DataMessage*) = 0;
 
     UserReference();
     ~UserReference();

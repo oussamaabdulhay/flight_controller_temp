@@ -8,7 +8,7 @@
 #include "FloatMsg.hpp"
 #include "ControlSystem.hpp"
 
-class Transform_InertialToBody : public msg_emitter, public msg_receiver {
+class Transform_InertialToBody : public MsgEmitter, public MsgReceiver {
 
 private:
     static std::atomic<float>  _inertial_command_x;
@@ -22,8 +22,8 @@ private:
 
 public:
 
-    void receive_msg_data(DataMessage*);
-    void receive_msg_data(DataMessage*, int);
+    void receiveMsgData(DataMessage*);
+    void receiveMsgData(DataMessage*, int);
     Transform_InertialToBody(control_system);
     ~Transform_InertialToBody();
 };

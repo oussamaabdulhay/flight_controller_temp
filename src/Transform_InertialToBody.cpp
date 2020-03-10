@@ -12,7 +12,7 @@ Transform_InertialToBody::~Transform_InertialToBody() {
 
 }
 
-void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg){
+void Transform_InertialToBody::receiveMsgData(DataMessage* t_msg){
 
     if(t_msg->getType() == msg_type::FLOAT){
 
@@ -30,7 +30,7 @@ void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg){
             body_command = _rotation_matrix.TransformVector(inertial_command);
 
             output.data = body_command.x;
-            this->emit_message_unicast((DataMessage*) &output,
+            this->emitMsgUnicast((DataMessage*) &output,
                                         -1,
                                         ControlSystem::receiving_channels::ch_reference);
 
@@ -43,14 +43,14 @@ void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg){
             body_command = _rotation_matrix.TransformVector(inertial_command);
 
             output.data = body_command.y;
-            this->emit_message_unicast((DataMessage*) &output,
+            this->emitMsgUnicast((DataMessage*) &output,
                                         -1,
                                         ControlSystem::receiving_channels::ch_reference);
         }   
     }
 }
 
-void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg, int t_channel){ 
+void Transform_InertialToBody::receiveMsgData(DataMessage* t_msg, int t_channel){ 
 
         Vector3DMessage* yaw_msg = (Vector3DMessage*)t_msg;
         Vector3D<float> yawpv = yaw_msg->getData();

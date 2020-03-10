@@ -8,14 +8,14 @@
 #include "common_types.hpp"
 
 const int ROSUnit_capacity=6;
-class ROSUnit : public msg_emitter, public msg_receiver{
+class ROSUnit : public MsgEmitter, public MsgReceiver{
 
     private:
         ros::NodeHandle _main_handler;
 
     public:
         ros::NodeHandle getNodeHandle();
-        virtual void receive_msg_data(DataMessage* t_msg) = 0;
+        virtual void receiveMsgData(DataMessage* t_msg) = 0;
 
         ROSUnit(ros::NodeHandle&);
         ~ROSUnit();

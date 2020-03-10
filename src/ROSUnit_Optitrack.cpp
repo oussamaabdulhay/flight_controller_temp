@@ -29,9 +29,9 @@ void ROSUnit_Optitrack::callbackOptitrack(const geometry_msgs::PoseStamped& msg)
     double t_dt = t_time.toSec();
 
     optitrack_msg.setOptitrackMessage(pos_data, att_data, t_dt);
-    _instance_ptr->emit_message_unicast((DataMessage*) &optitrack_msg, -1);   
+    _instance_ptr->emitMsgUnicast((DataMessage*) &optitrack_msg, -1);   
 }
 
-void ROSUnit_Optitrack::receive_msg_data(DataMessage* t_msg){
+void ROSUnit_Optitrack::receiveMsgData(DataMessage* t_msg){
 
 }

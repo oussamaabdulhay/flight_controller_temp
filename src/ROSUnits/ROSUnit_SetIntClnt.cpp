@@ -10,7 +10,7 @@ ROSUnit_SetIntClnt::~ROSUnit_SetIntClnt()
 
 }
 
-void ROSUnit_SetIntClnt::receive_msg_data(DataMessage* t_msg)
+void ROSUnit_SetIntClnt::receiveMsgData(DataMessage* t_msg)
 {
     //Change the below code to match your received msg
     if(t_msg->getType() == msg_type::INTEGER)

@@ -10,7 +10,7 @@ ROSUnit_SetPoseClnt::~ROSUnit_SetPoseClnt()
 
 }
 
-void ROSUnit_SetPoseClnt::receive_msg_data(DataMessage* t_msg)
+void ROSUnit_SetPoseClnt::receiveMsgData(DataMessage* t_msg)
 {
     //Change the below code to match your received msg
     if(t_msg->getType() == msg_type::POSE)

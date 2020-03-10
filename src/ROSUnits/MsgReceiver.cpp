@@ -5,19 +5,19 @@
 
 #include "MsgReceiver.hpp"
 
-void msg_receiver::assign_message_type_ID(msg_type i){
+void MsgReceiver::assignMsgTypeID(msg_type i){
     this->_msg_type=i;
 }
 
-msg_type msg_receiver::get_message_type_ID(){
+msg_type MsgReceiver::getMsgTypeID(){
     return this->_msg_type;
 }
-msg_receiver::msg_receiver(){
+MsgReceiver::MsgReceiver(){
 }
 
-void msg_receiver::receive_msg_data(DataMessage* t_msg){
+void MsgReceiver::receiveMsgData(DataMessage* t_msg){
 
 }
-void msg_receiver::receive_msg_data(DataMessage* t_msg,int channel_id){
+void MsgReceiver::receiveMsgData(DataMessage* t_msg,int channel_id){
 
 }

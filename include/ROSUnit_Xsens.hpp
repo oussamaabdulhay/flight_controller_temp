@@ -29,7 +29,7 @@ class ROSUnit_Xsens : public ROSUnit{
 
     public:
         enum unicast_addresses {broadcast,unicast_XSens_translation,unicast_XSens_orientation,unicast_XSens_attitude_rate,unicast_XSens_yaw_rate,unicast_XSens_translation_rate};
-        void receive_msg_data(DataMessage*);
+        void receiveMsgData(DataMessage*);
         ROSUnit_Xsens(ros::NodeHandle&);
         ~ROSUnit_Xsens();
 

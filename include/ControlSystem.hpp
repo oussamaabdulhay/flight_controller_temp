@@ -14,7 +14,7 @@
 #include "VectorDoubleMsg.hpp"
 
 class Switcher;
-class ControlSystem : public TimedBlock, public msg_emitter, public msg_receiver{
+class ControlSystem : public TimedBlock, public MsgEmitter, public MsgReceiver{
 
     private:
         Timer timer;
@@ -28,8 +28,8 @@ class ControlSystem : public TimedBlock, public msg_emitter, public msg_receiver
     public:
         enum receiving_channels {ch_broadcast, ch_reference, ch_controller};
         enum unicast_addresses {broadcast, unicast_controller_switcher, unicast_reference_switcher, unicast_control_system};
-        void receive_msg_data(DataMessage* t_msg);
-        void receive_msg_data(DataMessage* t_msg, int t_channel);
+        void receiveMsgData(DataMessage* t_msg);
+        void receiveMsgData(DataMessage* t_msg, int t_channel);
         void getStatus();
         void addBlock(Block* t_block);
         control_system getControlSystemType();

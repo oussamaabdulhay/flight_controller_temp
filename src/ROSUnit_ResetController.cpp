@@ -11,7 +11,7 @@ ROSUnit_ResetController::~ROSUnit_ResetController() {
 
 }
 
-void ROSUnit_ResetController::receive_msg_data(DataMessage* t_msg){
+void ROSUnit_ResetController::receiveMsgData(DataMessage* t_msg){
 
 
 }
@@ -22,7 +22,7 @@ bool ROSUnit_ResetController::callbackResetController(flight_controller::Reset_C
     data = req.id;
 
     _reset_msg.data = data;
-    _instance_ptr->emit_message_unicast((DataMessage*) &_reset_msg, -1);
+    _instance_ptr->emitMsgUnicast((DataMessage*) &_reset_msg, -1);
     
     return true;
 }

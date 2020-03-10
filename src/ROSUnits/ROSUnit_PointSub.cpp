@@ -32,7 +32,7 @@ void ROSUnit_PointSub::callback1(const geometry_msgs::Point::ConstPtr& t_rec)
     t_vec.y = t_rec->y;
     t_vec.z = t_rec->z;
     t_msg.setVector3DMessage(t_vec);
-    m_ptr[0]->emit_message_unicast_default((DataMessage*) &t_msg);
+    m_ptr[0]->emitMsgUnicastDefault((DataMessage*) &t_msg);
 }
 
 void ROSUnit_PointSub::callback2(const geometry_msgs::Point::ConstPtr& t_rec)
@@ -44,7 +44,7 @@ void ROSUnit_PointSub::callback2(const geometry_msgs::Point::ConstPtr& t_rec)
     t_vec.y = t_rec->y;
     t_vec.z = t_rec->z;
     t_msg.setVector3DMessage(t_vec);
-    m_ptr[1]->emit_message_unicast_default((DataMessage*) &t_msg);
+    m_ptr[1]->emitMsgUnicastDefault((DataMessage*) &t_msg);
 }
 
 void ROSUnit_PointSub::callback3(const geometry_msgs::Point::ConstPtr& t_rec)
@@ -56,7 +56,7 @@ void ROSUnit_PointSub::callback3(const geometry_msgs::Point::ConstPtr& t_rec)
     t_vec.y = t_rec->y;
     t_vec.z = t_rec->z;
     t_msg.setVector3DMessage(t_vec);
-    m_ptr[2]->emit_message_unicast_default((DataMessage*) &t_msg);
+    m_ptr[2]->emitMsgUnicastDefault((DataMessage*) &t_msg);
 }
 
 void ROSUnit_PointSub::callback4(const geometry_msgs::Point::ConstPtr& t_rec)
@@ -68,7 +68,7 @@ void ROSUnit_PointSub::callback4(const geometry_msgs::Point::ConstPtr& t_rec)
     t_vec.y = t_rec->y;
     t_vec.z = t_rec->z;
     t_msg.setVector3DMessage(t_vec);
-    m_ptr[3]->emit_message_unicast_default((DataMessage*) &t_msg);
+    m_ptr[3]->emitMsgUnicastDefault((DataMessage*) &t_msg);
 }
 
 void ROSUnit_PointSub::callback5(const geometry_msgs::Point::ConstPtr& t_rec)
@@ -80,5 +80,5 @@ void ROSUnit_PointSub::callback5(const geometry_msgs::Point::ConstPtr& t_rec)
     t_vec.y = t_rec->y;
     t_vec.z = t_rec->z;
     t_msg.setVector3DMessage(t_vec);
-    m_ptr[4]->emit_message_unicast_default((DataMessage*) &t_msg);
+    m_ptr[4]->emitMsgUnicastDefault((DataMessage*) &t_msg);
 }

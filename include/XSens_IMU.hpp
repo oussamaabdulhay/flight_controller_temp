@@ -2,7 +2,7 @@
 #include "Vector3DMessage.hpp"
 #include "MsgEmitter.hpp"
 #include "XSensMessage.hpp"
-class XSens_IMU : public msg_receiver, public msg_emitter{
+class XSens_IMU : public MsgReceiver, public MsgEmitter{
 
 private:
     Vector3D<float> _bodyrate;
@@ -12,7 +12,7 @@ private:
 
 public:
 
-    void receive_msg_data(DataMessage* t_msg);
+    void receiveMsgData(DataMessage* t_msg);
     XSens_IMU();
     ~XSens_IMU();
 };

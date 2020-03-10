@@ -29,7 +29,7 @@ ROSUnit_BroadcastData::~ROSUnit_BroadcastData() {
 }
 
 
-void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
+void ROSUnit_BroadcastData::receiveMsgData(DataMessage* t_msg){
     if(t_msg->getType() == msg_type::FLOAT){
         FloatMsg* voltage_msg = (FloatMsg*)t_msg;
         _voltage = voltage_msg->data;
@@ -49,7 +49,7 @@ void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg){
     }
 }
 
-void ROSUnit_BroadcastData::receive_msg_data(DataMessage* t_msg, int t_channel){
+void ROSUnit_BroadcastData::receiveMsgData(DataMessage* t_msg, int t_channel){
 
     if(t_msg->getType() == msg_type::VECTOR3D){
         Vector3DMessage* vector3d_msg = (Vector3DMessage*)t_msg;

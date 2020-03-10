@@ -11,26 +11,48 @@ Transform_InertialToBody::Transform_InertialToBody(control_system t_control_syst
 Transform_InertialToBody::~Transform_InertialToBody() {
 
 }
-//TODO refactor to remove ifs
+
 void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg){
 
-    if(t_msg->getType() == msg_type::control_system){ // TODO-Chehadeh: emit-message must be here to complete the loop at the rate of X and Y
+    if(t_msg->getType() == msg_type::FLOAT){
 
-        ControlSystemMessage* ctrl_sys_msg = (ControlSystemMessage*)t_msg;
-        if(_source == control_system::x && ctrl_sys_msg->getControlSystemMsgType() == control_system_msg_type::to_system){
-            _inertial_command_x = ctrl_sys_msg->getData();
-        } else if (_source == control_system::y && ctrl_sys_msg->getControlSystemMsgType() == control_system_msg_type::to_system){
-            _inertial_command_y = ctrl_sys_msg->getData(); 
-        }
-        
+        FloatMsg* float_msg = (FloatMsg*)t_msg;
 
+        FloatMsg output;
+        Vector3D<float> body_command;
+        Vector3D<float> inertial_command;
+        if(_source == control_system::x){
+            _inertial_command_x = float_msg->data;
+
+            inertial_command.x=_inertial_command_x;
+            inertial_command.y=_inertial_command_y;
+            inertial_command.z=_inertial_command_z;
+            body_command = _rotation_matrix.TransformVector(inertial_command);
+
+            output.data = _body_command.x;
+            this->emit_message_unicast((DataMessage*) &output,
+                                        -1,
+                                        ControlSystem::receiving_channels::ch_reference);
+
+        } else if (_source == control_system::y){
+            _inertial_command_y = float_msg->data; 
+
+            inertial_command.x=_inertial_command_x;
+            inertial_command.y=_inertial_command_y;
+            inertial_command.z=_inertial_command_z;
+            body_command = _rotation_matrix.TransformVector(inertial_command);
+
+            output.data = _body_command.y;
+            this->emit_message_unicast((DataMessage*) &output,
+                                        -1,
+                                        ControlSystem::receiving_channels::ch_reference);
+        }   
     }
 }
 
-void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg, int t_channel){ //TODO-Chehadeh: Check channel info
+void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg, int t_channel){ 
 
         Vector3DMessage* yaw_msg = (Vector3DMessage*)t_msg;
-
         Vector3D<float> yawpv = yaw_msg->getData();
 
         Vector3D<float> yaw_rotation;
@@ -39,18 +61,4 @@ void Transform_InertialToBody::receive_msg_data(DataMessage* t_msg, int t_channe
         yaw_rotation.z = -yawpv.x;
 
         _rotation_matrix.Update(yaw_rotation);
-        Vector3D<float> _body_command;
-        Vector3D<float> _inertial_command;
-        _inertial_command.x=_inertial_command_x;
-        _inertial_command.y=_inertial_command_y;
-        _inertial_command.z=_inertial_command_z;
-        _body_command = _rotation_matrix.TransformVector(_inertial_command);
-
-        if(_source == control_system::x){
-            m_output_msg.setControlSystemMessage(_source, control_system_msg_type::to_system, _body_command.x);
-            this->emit_message((DataMessage*) &m_output_msg);
-        } else if(_source == control_system::y){
-            m_output_msg.setControlSystemMessage(_source, control_system_msg_type::to_system, _body_command.y);
-            this->emit_message((DataMessage*) &m_output_msg);
-        }
 }

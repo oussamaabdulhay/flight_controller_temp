@@ -8,6 +8,7 @@
 #include "ControlSystemMessage.hpp"
 #include <atomic>
 #include "Vector3DMessage.hpp"
+#include "FloatMsg.hpp"
 class Transform_InertialToBody : public msg_emitter, public msg_receiver {
 
 private:
@@ -24,7 +25,6 @@ public:
 
     void receive_msg_data(DataMessage*);
     void receive_msg_data(DataMessage*, int);
-    //void transform(); // TODO-Chehadeh: this is better removed
     Transform_InertialToBody(control_system);
     ~Transform_InertialToBody();
 };

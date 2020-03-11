@@ -12,9 +12,7 @@ PVConcatenator::~PVConcatenator() {
 }
 
 void PVConcatenator::receiveMsgData(DataMessage* t_msg){
-    #ifdef PVConc_debug
     std::cout << "PVConcatenator::receiveMsgData(DataMessage* t_msg)" << std::endl;
-    #endif
 }
 
 void PVConcatenator::receiveMsgData(DataMessage* t_msg, int t_channel){
@@ -27,14 +25,10 @@ void PVConcatenator::receiveMsgData(DataMessage* t_msg, int t_channel){
         #endif
         Vector3DMessage* v3d_msg = (Vector3DMessage*)t_msg;
         if (t_channel==(int)ch_pv){
-            #ifdef PVConc_debug
-            //std::cout << "t_channel==(int)ch_pv" << std::endl;
-            #endif
+            std::cout << "t_channel==(int)ch_pv" << std::endl;
             if (_selected_concatenation_axes==conc_x_axis){
-                #ifdef PVConc_debug
-                //std::cout << "_selected_concatenation_axes==conc_x_axis " << v3d_msg->getData().x << std::endl;
-                #endif
                 pv=v3d_msg->getData().x;
+                std::cout << "ch_pv pv " << pv << "\n";
             }else if (_selected_concatenation_axes==conc_y_axis){
                 pv=v3d_msg->getData().y;
             }else if (_selected_concatenation_axes==conc_z_axis){
@@ -46,10 +40,9 @@ void PVConcatenator::receiveMsgData(DataMessage* t_msg, int t_channel){
                 pv_vector.z = 0.0; //TODO add pv_dot_dot if needed
                 Vector3DMessage pv_vector_msg;
                 pv_vector_msg.setVector3DMessage(pv_vector);
-                #ifdef PVConc_debug
-                //std::cout << "pv_vector.x " << pv_vector.x << ", pv_dot " << pv_dot << ", pv_dot_dot " << pv_dot_dot << std::endl;
-                #endif
+                std::cout << "pv_vector.x " << pv_vector.x << ", pv_vector.y " << pv_vector.y << ", pv_vector.z " << pv_vector.z << std::endl;
                 this->emitMsgUnicastDefault((DataMessage*) &pv_vector_msg);
+                std::cout << "END OF PVCONCATENATOR" << "\n";
             }
         }
         else if(t_channel==(int)ch_pv_dot){

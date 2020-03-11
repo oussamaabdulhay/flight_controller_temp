@@ -13,6 +13,7 @@ void Saturation::receiveMsgData(DataMessage* t_msg, int t_channel){
     if(t_msg->getType() == msg_type::FLOAT){
 
         FloatMsg* float_msg = (FloatMsg*)t_msg;
+        std::cout << "Saturation float_msg->data " << float_msg->data << "\n";
         FloatMsg output;
         output.data = float_msg->data;
 

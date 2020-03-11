@@ -276,9 +276,9 @@ int main(int argc, char** argv) {
     //***********************SETTING PROVIDERS**********************************
     
     Global2Inertial* myGlobal2Inertial = new Global2Inertial();
-    PVConcatenator* CsX_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_x_axis, act_on::pv_dot);
-    PVConcatenator* CsY_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_y_axis, act_on::pv_dot);
-    PVConcatenator* CsZ_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis, act_on::pv_dot);
+    PVConcatenator* CsX_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_x_axis, act_on::pv);
+    PVConcatenator* CsY_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_y_axis, act_on::pv);
+    PVConcatenator* CsZ_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis, act_on::pv);
     PVConcatenator* CsRoll_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_x_axis, act_on::pv);
     PVConcatenator* CsPitch_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_y_axis, act_on::pv);
     PVConcatenator* CsYaw_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis, act_on::pv);
@@ -445,23 +445,6 @@ int main(int argc, char** argv) {
     YawRate_ControlSystem->addBlock(MRFT_yaw_rate);
     YawRate_ControlSystem->addBlock(PV_Ref_yaw_rate);
 
-    //******************PROVIDERS TO CONTROL SYSTEMS******************************
-
-    CsX_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)X_ControlSystem);
-    CsY_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Y_ControlSystem);
-    CsZ_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
-    CsPitch_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
-    CsRoll_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
-    CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
-    CsYawRate_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
-
-    //******************SETTING TRAJECTORY GENERATION TOOL******************
-
-    myWaypoint->add_x_control_system(X_ControlSystem);
-    myWaypoint->add_y_control_system(Y_ControlSystem);
-    myWaypoint->add_z_control_system(Z_ControlSystem);
-    myWaypoint->add_yaw_control_system(Yaw_ControlSystem);
-
     //*********************SETTING ACTUATION SYSTEMS************************
     
     Actuator* M1 = new ESCMotor(0, PWM_FREQUENCY);
@@ -474,6 +457,44 @@ int main(int argc, char** argv) {
     std::vector<Actuator*> actuators{M1, M2, M3, M4, M5, M6};
 
     ActuationSystem* myActuationSystem = new HexaActuationSystem(actuators);
+
+    //***********************************SETTING CONNECTIONS***********************************
+    //========                                                                     =============
+    //|      |--x--->X_Control_System-->RM_X-->Saturation-->Roll_Control_System--->|           |
+    //| USER |--x--->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System-->| Actuation |
+    //|      |--x--->Z_Control_System--------------------------------------------->|  System   |
+    //|      |--x--->Yaw_Control_System-->Saturation--->YawRate_Control_System---->|           |
+    //========                                                                     =============
+    
+    X_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)transform_X_InertialToBody, (int)ControlSystem::unicast_addresses::unicast_control_system);
+    transform_X_InertialToBody->addCallbackMsgReceiver((MsgReceiver*)X_Saturation);
+    X_Saturation->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
+    Roll_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem);
+    Y_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)transform_Y_InertialToBody, (int)ControlSystem::unicast_addresses::unicast_control_system);
+    transform_Y_InertialToBody->addCallbackMsgReceiver((MsgReceiver*)Y_Saturation);
+    Y_Saturation->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
+    Pitch_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem);
+    Z_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_control_system);
+    Yaw_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)YawRate_Saturation, (int)ControlSystem::unicast_addresses::unicast_control_system);
+    YawRate_Saturation->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
+    YawRate_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_control_system);
+
+    //******************PROVIDERS TO CONTROL SYSTEMS******************************
+
+    CsX_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)X_ControlSystem);
+    // CsY_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Y_ControlSystem);
+    // CsZ_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
+    // CsPitch_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
+    // CsRoll_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
+    // CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
+    // CsYawRate_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
+
+    //******************SETTING TRAJECTORY GENERATION TOOL******************
+
+    myWaypoint->add_x_control_system(X_ControlSystem);
+    myWaypoint->add_y_control_system(Y_ControlSystem);
+    myWaypoint->add_z_control_system(Z_ControlSystem);
+    myWaypoint->add_yaw_control_system(Yaw_ControlSystem);
     
     //***********************SETTING FLIGHT SCENARIO INPUTS****************************
     myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_x);
@@ -643,26 +664,6 @@ int main(int argc, char** argv) {
     ctrl_msg.set_dt(YawRate_ControlSystem->get_dt());
     myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
 
-    //***********************************SETTING CONNECTIONS***********************************
-    //========                                                                     =============
-    //|      |--x--->X_Control_System-->RM_X-->Saturation-->Roll_Control_System--->|           |
-    //| USER |--x--->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System-->| Actuation |
-    //|      |--x--->Z_Control_System--------------------------------------------->|  System   |
-    //|      |--x--->Yaw_Control_System-->Saturation--->YawRate_Control_System---->|           |
-    //========                                                                     =============
-    
-    X_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)transform_X_InertialToBody, (int)ControlSystem::unicast_addresses::unicast_control_system);
-    transform_X_InertialToBody->addCallbackMsgReceiver((MsgReceiver*)X_Saturation);
-    X_Saturation->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
-    Roll_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem);
-    Y_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)transform_Y_InertialToBody, (int)ControlSystem::unicast_addresses::unicast_control_system);
-    transform_Y_InertialToBody->addCallbackMsgReceiver((MsgReceiver*)Y_Saturation);
-    Y_Saturation->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
-    Pitch_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem);
-    Z_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_control_system);
-    Yaw_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)YawRate_Saturation, (int)ControlSystem::unicast_addresses::unicast_control_system);
-    YawRate_Saturation->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
-    YawRate_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_control_system);
     
     while(ros::ok()){
         #ifdef BATTERY_MONITOR

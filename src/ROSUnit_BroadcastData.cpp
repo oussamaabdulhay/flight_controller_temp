@@ -55,7 +55,7 @@ void ROSUnit_BroadcastData::receiveMsgData(DataMessage* t_msg, int t_channel){
         Vector3DMessage* vector3d_msg = (Vector3DMessage*)t_msg;
         if(t_channel == (int)ros_broadcast_channels::x){
             Vector3D<float> xpv = vector3d_msg->getData();
-            std::cout << "ROSUnit_BroadcastData xpv.y " << xpv.y << "\n";
+            std::cout << "ROSUnit_BroadcastData xpv.x " << xpv.x << "\n";
             _position.x = xpv.x;
             x_received = true;
             geometry_msgs::PointStamped msg;

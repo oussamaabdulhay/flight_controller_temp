@@ -20,7 +20,7 @@ private:
 	FloatMsg _command_msg;
     //Chehadeh's code
 	//TODO add to MRFT parameters
-	const uint8_t iterations_lock_count = 10; //COMMIT change from 20 to 5
+	const uint8_t iterations_lock_count = 10; 
 	bool prev_res, first_run = true;
 	float prev_err = 0;
 	/*

@@ -1,6 +1,5 @@
 #pragma once
 #include "ROSUnit.hpp"
-#include "FlightScenarioMessage.hpp"
 #include <geometry_msgs/PoseStamped.h>
 #include "Vector3D.hpp"
 #include "PID_values.hpp"

@@ -1,6 +1,5 @@
 #pragma once
 #include "ROSUnit.hpp"
-#include "FlightScenarioMessage.hpp"
 #include <std_msgs/Bool.h>
 #include "BooleanMsg.hpp"
 #include "Vector3D.hpp"

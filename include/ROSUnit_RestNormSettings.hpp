@@ -1,6 +1,5 @@
 #pragma once
 #include "ROSUnit.hpp"
-#include "FlightScenarioMessage.hpp"
 #include "RestrictedNormRefSettingsMsg.hpp"
 #include <flight_controller/Restricted_Norm_Settings.h>
 #include "Vector3D.hpp"

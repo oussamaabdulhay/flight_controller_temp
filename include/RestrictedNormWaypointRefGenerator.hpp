@@ -3,11 +3,10 @@
 #include "MsgReceiver.hpp"
 #include "Vector3D.hpp"
 #include "RestrictedNormRefSettingsMsg.hpp"
-#include "WaypointMsg.hpp"
 #include "PosesMsg.hpp"
 #include <vector>
 #include "ControlSystem.hpp"
-
+#include "Waypoint.hpp"
 #include "DoubleMsg.hpp"
 
 #undef mutex_safety

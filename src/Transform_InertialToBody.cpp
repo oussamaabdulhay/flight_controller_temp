@@ -38,7 +38,6 @@ void Transform_InertialToBody::receiveMsgData(DataMessage* t_msg, int t_channel)
         Vector3D<float> body_command;
         Vector3D<float> inertial_command;
         if(_source == control_system::x){
-            std::cout << "Transform_InertialToBody float_msg->data " << float_msg->data << "\n";
             _inertial_command_x = float_msg->data;
 
             inertial_command.x=_inertial_command_x;

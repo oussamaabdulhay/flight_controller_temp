@@ -55,7 +55,6 @@ void ROSUnit_BroadcastData::receiveMsgData(DataMessage* t_msg, int t_channel){
         Vector3DMessage* vector3d_msg = (Vector3DMessage*)t_msg;
         if(t_channel == (int)ros_broadcast_channels::x){
             Vector3D<float> xpv = vector3d_msg->getData();
-            std::cout << "ROSUnit_BroadcastData xpv.x " << xpv.x << "\n";
             _position.x = xpv.x;
             x_received = true;
             geometry_msgs::PointStamped msg;
@@ -108,6 +107,7 @@ void ROSUnit_BroadcastData::receiveMsgData(DataMessage* t_msg, int t_channel){
 
         }else if(t_channel == (int)ros_broadcast_channels::yaw_rate){
             Vector3D<float> yawratepv = vector3d_msg->getData();
+            std::cout << "ROSUNIT yawratepv.x " << yawratepv.x << "\n";
             geometry_msgs::PointStamped msg;
             msg.header.seq = ++_seq_yawratepv;
             msg.header.stamp = ros::Time::now();

@@ -25,14 +25,13 @@ void PVConcatenator::receiveMsgData(DataMessage* t_msg, int t_channel){
         #endif
         Vector3DMessage* v3d_msg = (Vector3DMessage*)t_msg;
         if (t_channel==(int)ch_pv){
-            std::cout << "t_channel==(int)ch_pv" << std::endl;
             if (_selected_concatenation_axes==conc_x_axis){
                 pv=v3d_msg->getData().x;
-                std::cout << "ch_pv pv " << pv << "\n";
             }else if (_selected_concatenation_axes==conc_y_axis){
                 pv=v3d_msg->getData().y;
             }else if (_selected_concatenation_axes==conc_z_axis){
                 pv=v3d_msg->getData().z;
+                std::cout << "PVConcatenator pv.z " << pv << "\n";
             }
             if(_act_on == act_on::pv){
                 pv_vector.x = pv;
@@ -40,15 +39,12 @@ void PVConcatenator::receiveMsgData(DataMessage* t_msg, int t_channel){
                 pv_vector.z = 0.0; //TODO add pv_dot_dot if needed
                 Vector3DMessage pv_vector_msg;
                 pv_vector_msg.setVector3DMessage(pv_vector);
-                std::cout << "pv_vector.x " << pv_vector.x << ", pv_vector.y " << pv_vector.y << ", pv_vector.z " << pv_vector.z << std::endl;
                 this->emitMsgUnicastDefault((DataMessage*) &pv_vector_msg);
-                std::cout << "END OF PVCONCATENATOR" << "\n";
             }
         }
         else if(t_channel==(int)ch_pv_dot){
             if (_selected_concatenation_axes==conc_x_axis){
                 pv_dot=v3d_msg->getData().x;
-                std::cout << "ch_pv_dot pv_dot " << pv_dot << "\n";
             }else if (_selected_concatenation_axes==conc_y_axis){
                 pv_dot=v3d_msg->getData().y;
             }else if (_selected_concatenation_axes==conc_z_axis){

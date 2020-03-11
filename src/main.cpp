@@ -292,7 +292,7 @@ int main(int argc, char** argv) {
     velocityFromPosition->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
     
     Differentiator* yawRateFromYaw = new Differentiator(1./OPTITRACK_FREQUENCY);
-    yawRateFromYaw->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
+    yawRateFromYaw->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
     
     myROSOptitrack->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)velocityFromPosition, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
@@ -300,11 +300,11 @@ int main(int argc, char** argv) {
     velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator);
     velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator);
     velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator);
+    yawRateFromYaw->addCallbackMsgReceiver((MsgReceiver*)CsYawRate_PVConcatenator);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsYaw_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_heading);
-    yawRateFromYaw->addCallbackMsgReceiver((MsgReceiver*)CsYawRate_PVConcatenator);
     #endif
 
     #ifdef XSENS_OVER_SERIAL

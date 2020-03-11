@@ -32,36 +32,27 @@ void ControlSystem::receiveMsgData(DataMessage* t_msg, int t_channel){
     if(t_msg->getType() == msg_type::VECTOR3D){
         Vector3DMessage* provider = (Vector3DMessage*)t_msg;
 
-        std::cout << "ControlSystem provider.x " << provider->getData().x << "\n";
         this->emitMsgUnicast((DataMessage*) provider, 
                             ControlSystem::unicast_addresses::unicast_reference_switcher,
                             Switcher::receiving_channels::ch_provider);
-        std::cout << "END OF PROVIDER" << "\n";
     }else if(t_msg->getType() == msg_type::FLOAT){
         FloatMsg* float_msg = (FloatMsg*)t_msg;
 
         if(t_channel == (int)ControlSystem::receiving_channels::ch_reference){
-            std::cout << "ControlSystem ch_reference float_msg->data " << float_msg->data << "\n";
             this->emitMsgUnicast((DataMessage*) float_msg,
                                 ControlSystem::unicast_addresses::unicast_reference_switcher,
                                 Switcher::receiving_channels::ch_reference);
-            std::cout << "ch_reference ROS1" << "\n";
             VectorDoubleMsg reference_ros_msg;
-            std::cout << "ch_reference ROS2" << "\n";
             reference_ros_msg.data[0] = (double)(int)(this->getControlSystemType());
-            std::cout << "ch_reference ROS3" << "\n";
             reference_ros_msg.data[1] = (double)(float_msg->data);
-            std::cout << "ch_reference ROS4" << "\n";
             this->emitMsgUnicast((DataMessage*) &reference_ros_msg,
                                 ControlSystem::unicast_addresses::unicast_reference_switcher,
                                 ROSUnit_BroadcastData::ros_broadcast_channels::references);
 
         }else if(t_channel == (int)ControlSystem::receiving_channels::ch_controller){
-            std::cout << "ControlSystem ch_controller float_msg->data " << float_msg->data << "\n";
             this->emitMsgUnicast((DataMessage*) float_msg,
                                 ControlSystem::unicast_addresses::unicast_control_system,
                                 ControlSystem::receiving_channels::ch_reference);
-            std::cout << "HERE" << "\n";
             VectorDoubleMsg controller_ros_msg;
             controller_ros_msg.data[0] = (double)(int)(this->getControlSystemType());
             controller_ros_msg.data[1] = (double)(float_msg->data);

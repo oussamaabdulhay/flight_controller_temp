@@ -77,18 +77,14 @@ void Switcher::receiveMsgData(DataMessage* t_msg, int t_channel){
        Vector3DMessage* vector3D_msg = (Vector3DMessage*)t_msg;
 
         if(t_channel == receiving_channels::ch_provider){
-            std::cout << "Switcher ch_provider vector3D_msg.x " << vector3D_msg->getData().x << "\n";
             DataMessage* ref_output_msg = _active_block->runTask((DataMessage*) vector3D_msg);
-            std::cout << "Switcher ch_provider ref_output_msg.x " << ((Vector3DMessage*)ref_output_msg)->getData().x << "\n";
             this->emitMsgUnicast((DataMessage*) ref_output_msg,
                                 Switcher::unicast_addresses::unicast_controller_switcher,
                                 Switcher::receiving_channels::ch_error);
 
         }else if(t_channel == receiving_channels::ch_error){ 
             Controller* controller_block = (Controller*)_active_block; 
-            std::cout << "Switcher ch_error vector3D_msg.x " << vector3D_msg->getData().x << "\n";                    
             DataMessage* ctrl_output_msg = _active_block->runTask((DataMessage*) vector3D_msg);
-            std::cout << "Switcher ch_provider ctrl_output_msg.data " << ((FloatMsg*)ctrl_output_msg)->data << "\n";
             this->emitMsgUnicast((DataMessage*) ctrl_output_msg,
                                 Switcher::unicast_addresses::unicast_control_system,
                                 ControlSystem::receiving_channels::ch_controller);
@@ -96,9 +92,7 @@ void Switcher::receiveMsgData(DataMessage* t_msg, int t_channel){
         }
     }else if(t_msg->getType() == msg_type::FLOAT){ //ch_reference, no need for checks because it's the only FLOAT msg.
         FloatMsg* float_msg = (FloatMsg*)t_msg;
-        std::cout << "Switcher ch_reference float_msg->data " << float_msg->data << "\n";
         ((Reference*)_active_block)->setReferenceValue(float_msg->data);
-        std::cout << "REFERENCE SET" << "\n";
     }
 }
 

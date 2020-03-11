@@ -5,7 +5,6 @@
 #include <vector>
 #include "ControlSystemMessage.hpp"
 #include "PID_values.hpp"
-#include "UpdatePoseMessage.hpp"
 #include "TimedBlock.hpp"
 #include "SwitchBlockMsg.hpp"
 #include "Timer.hpp"

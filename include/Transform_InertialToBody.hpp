@@ -15,9 +15,7 @@ private:
     static std::atomic<float>  _inertial_command_y;
     static std::atomic<float>  _inertial_command_z;
     bool _opti_x_received = false, _opti_y_received = false, _current_yaw_received = false;
-    UpdatePoseMessage _body_xy;
     RotationMatrix3by3 _rotation_matrix;
-    ControlSystemMessage m_output_msg;
     control_system _source;
 
 public:

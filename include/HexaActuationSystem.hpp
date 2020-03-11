@@ -1,6 +1,5 @@
 #pragma once
 #include "ActuationSystem.hpp"
-#include "ControlSystemMessage.hpp"
 #include "BooleanMsg.hpp"
 #include <pthread.h>
 #include "ROSUnit_BroadcastData.hpp"

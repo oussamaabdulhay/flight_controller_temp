@@ -32,10 +32,6 @@ enum class reference_type {process_variable_ref, restricted_process_variable_ref
 enum class internal_switcher_type {position_provider, attitude_provider, reference, controller};
 enum class controller_msg_type {data, change_settings, command};
 enum class control_system_msg_type {switch_in_out, add_block, change_PID_settings, to_system, PROVIDER, SETREFERENCE, UPDATECONTROLLER};
-enum class ack_msg_type { raw_packet, payload, nozzle, obstacle, mission,ack,internal_msg_start,internal_ros };
-enum class ros_msg_type {NUMBER_OF_WAYPOINTS, ARMED, POSITION, ORIENTATION, X_PV, Y_PV, Z_PV, ROLL_PV, PITCH_PV, YAW_PV, CONTROLSYSTEM, ACTUATION, YAW_RATE_PV, CONTROLSYSTEMREFERENCE};
 enum class block_frequency {hz100 = 100, hz200 = 200, hhz200 = 201, hz1000 = 1000, hz120 = 120, hz400 = 400};
-enum class msg_type_reference {X, Y, Z, YAW, NULL_TYPE};
-enum class pv_channel {broadcast, position, velocity, angle, angle_rate};
 enum class act_on {pv, pv_dot, pv_dot_dot};
 const float coeff_200Hz_2nd_butter[5] = { -1.97779f, 0.97803f, 6.1006e-05f, 1.2201e-04f, 6.1006e-05f };

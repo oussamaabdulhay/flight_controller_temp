@@ -1,10 +1,7 @@
 #pragma once
 #include "MsgEmitter.hpp"
 #include "MsgReceiver.hpp"
-#include "UpdatePoseMessage.hpp"
-
 #include "cmath"
-#include "ControlSystemMessage.hpp"
 #include "Vector3DMessage.hpp"
 #include "Timer.hpp"
 #include "FloatMsg.hpp"

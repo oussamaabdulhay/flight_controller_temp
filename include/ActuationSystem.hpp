@@ -2,7 +2,6 @@
 
 #include "MsgEmitter.hpp"
 #include "MsgReceiver.hpp"
-#include "ControlSystemMessage.hpp"
 #include "Actuator.hpp"
 #include <vector>
 

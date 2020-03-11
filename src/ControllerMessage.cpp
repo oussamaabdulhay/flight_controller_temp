@@ -46,7 +46,6 @@ void ControllerMessage::setMRFTParam(MRFT_parameters t_param){
 }
 
 void ControllerMessage::set_dt(float t_dt){
-    //TODO check if they can be together
     _mrft_param.dt = t_dt;
     _pid_param.dt = t_dt;
 }

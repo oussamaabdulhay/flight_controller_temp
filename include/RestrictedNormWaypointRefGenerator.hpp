@@ -9,10 +9,6 @@
 #include "Waypoint.hpp"
 #include "DoubleMsg.hpp"
 
-#undef mutex_safety
-#ifdef mutex_safety
-#include <pthread.h>
-#endif
 class RestrictedNormWaypointRefGenerator : public MsgEmitter, public MsgReceiver{
 
     private:
@@ -33,4 +29,5 @@ public:
     void add_z_control_system(ControlSystem*);
     void add_yaw_control_system(ControlSystem*);
     void receiveMsgData(DataMessage* t_msg);
+    void receiveMsgData(DataMessage* t_msg, int t_channel);
 };

@@ -33,19 +33,6 @@ void ROSUnit_BroadcastData::receiveMsgData(DataMessage* t_msg){
     if(t_msg->getType() == msg_type::FLOAT){
         FloatMsg* voltage_msg = (FloatMsg*)t_msg;
         _voltage = voltage_msg->data;
-
-    }else if(t_msg->getType() == msg_type::BOOLEAN){
-        BooleanMsg* armed_msg = (BooleanMsg*)t_msg;
-        _armed = armed_msg->data;
-        flight_controller::Info msg;
-        msg.header.seq = ++_seq_info;
-        msg.header.stamp = ros::Time::now();
-        msg.header.frame_id = "";
-        msg.number_of_waypoints = _number_of_waypoints;
-        msg.armed = _armed;
-        msg.battery_voltage = _voltage;
-        _info_prov_pub.publish(msg);
-
     }
 }
 
@@ -183,6 +170,18 @@ void ROSUnit_BroadcastData::receiveMsgData(DataMessage* t_msg, int t_channel){
             msg.point.z = 0.;
             _error_prov_pub.publish(msg);
         }
+    }else if(t_msg->getType() == msg_type::BOOLEAN){
+        BooleanMsg* armed_msg = (BooleanMsg*)t_msg;
+        _armed = armed_msg->data;
+        flight_controller::Info msg;
+        msg.header.seq = ++_seq_info;
+        msg.header.stamp = ros::Time::now();
+        msg.header.frame_id = "";
+        msg.number_of_waypoints = _number_of_waypoints;
+        msg.armed = _armed;
+        msg.battery_voltage = _voltage;
+        _info_prov_pub.publish(msg);
+
     }
 
     if(x_received && y_received && z_received){

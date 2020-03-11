@@ -35,7 +35,7 @@ private:
          x_received = false, y_received = false, z_received = false,
          armed_received = false;
     bool _armed = false;
-    float _voltage;
+    float _voltage = -1.0;
     int _number_of_waypoints = 0;
     int _error_accumulator = 0;
     static ROSUnit_BroadcastData* _instance_ptr;

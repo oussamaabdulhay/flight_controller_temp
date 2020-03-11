@@ -31,7 +31,11 @@ void RestrictedNormWaypointRefGenerator::receiveMsgData(DataMessage* t_msg){
             Waypoints.clear();
         }
     }
-    else if(t_msg->getType()==msg_type::VECTOR3D){
+}
+
+void RestrictedNormWaypointRefGenerator::receiveMsgData(DataMessage* t_msg, int t_channel){
+
+    if(t_msg->getType()==msg_type::VECTOR3D){
         Vector3DMessage* t_current_pos=(Vector3DMessage*) t_msg;
         Vector3D<double> t_current_pos_vec;
         t_current_pos_vec = t_current_pos->getData();
@@ -55,16 +59,15 @@ void RestrictedNormWaypointRefGenerator::receiveMsgData(DataMessage* t_msg){
                 }
             }
         }
+
         if(old_size != Waypoints.size()){
             IntegerMsg num_waypoints_ros;
             num_waypoints_ros.data = Waypoints.size();
-            this->emitMsgUnicast((DataMessage*) &num_waypoints_ros, 
-                                -1,
-                                ROSUnit_BroadcastData::ros_broadcast_channels::waypoints);
+            this->emitMsgUnicastDefault((DataMessage*) &num_waypoints_ros, 
+                                        ROSUnit_BroadcastData::ros_broadcast_channels::waypoints);
             old_size = Waypoints.size();
         }
     }
-
 }
 
 

@@ -5,7 +5,6 @@
 #include <vector>
 #include "ControlSystemMessage.hpp"
 #include "PID_values.hpp"
-#include "TimedBlock.hpp"
 #include "SwitchBlockMsg.hpp"
 #include "Timer.hpp"
 #include "DoubleMsg.hpp"
@@ -13,7 +12,7 @@
 #include "VectorDoubleMsg.hpp"
 
 class Switcher;
-class ControlSystem : public TimedBlock, public MsgEmitter, public MsgReceiver{
+class ControlSystem : public MsgEmitter, public MsgReceiver{
 
     private:
         Timer timer;

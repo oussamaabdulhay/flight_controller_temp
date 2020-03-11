@@ -1,7 +1,7 @@
 #include "ControlSystem.hpp"
 #include <fstream>
 
-ControlSystem::ControlSystem(control_system t_control_system, block_frequency t_bf) : TimedBlock(t_bf) {
+ControlSystem::ControlSystem(control_system t_control_system, block_frequency t_bf) {
     _control_system = t_control_system;
     
     controllerSwitcher = new Switcher(switcher_type::controller);

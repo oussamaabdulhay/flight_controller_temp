@@ -20,7 +20,6 @@
 #include "ROSUnit_Xsens.hpp"
 #include "XSens_IMU.hpp"
 #include "Transform_InertialToBody.hpp"
-#include "TimedBlock.hpp"
 #include <iostream>
 #include <stdexcept>
 #include <string>

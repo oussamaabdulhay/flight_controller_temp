@@ -28,7 +28,7 @@ private:
     const int _escMax = 2000;
     bool _armed = false;
     float _movements[4]; //[roll, pitch, yaw, throttle]
-    std::vector<double> _commands;
+    std::vector<double> _commands {0,0,0,0,0,0};
     float _geometry[6][4] = {{       0  * -1,   -1 * -1,  1, 1},
                              {       0  * -1,    1 * -1, -1, 1},
                              { 0.866025 * -1,  0.5 * -1,  1, 1},
@@ -38,7 +38,9 @@ private:
     static pthread_mutex_t lock;
 public:
     enum unicast_addresses {broadcast, unicast_ActuationSystem_commands, unicast_ActuationSystem_armed};
+    enum receiving_channels {ch_roll=0, ch_pitch=1, ch_yaw=2, ch_throttle=3};
     void receiveMsgData(DataMessage* t_msg);
+    void receiveMsgData(DataMessage* t_msg, int t_channel);
     void command();
     int constrain(float value, int min_value, int max_value);
 

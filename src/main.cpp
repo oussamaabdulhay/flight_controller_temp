@@ -466,18 +466,23 @@ int main(int argc, char** argv) {
     //|      |--x--->Yaw_Control_System-->Saturation--->YawRate_Control_System---->|           |
     //========                                                                     =============
     
+    Roll_ControlSystem->setEmittingChannel((int)HexaActuationSystem::receiving_channels::ch_roll);
+    Pitch_ControlSystem->setEmittingChannel((int)HexaActuationSystem::receiving_channels::ch_pitch);
+    Z_ControlSystem->setEmittingChannel((int)HexaActuationSystem::receiving_channels::ch_throttle);
+    YawRate_ControlSystem->setEmittingChannel((int)HexaActuationSystem::receiving_channels::ch_yaw);
+
     X_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)transform_X_InertialToBody, (int)ControlSystem::unicast_addresses::unicast_control_system);
     transform_X_InertialToBody->addCallbackMsgReceiver((MsgReceiver*)X_Saturation);
     X_Saturation->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
-    Roll_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem);
+    Roll_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
     Y_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)transform_Y_InertialToBody, (int)ControlSystem::unicast_addresses::unicast_control_system);
     transform_Y_InertialToBody->addCallbackMsgReceiver((MsgReceiver*)Y_Saturation);
     Y_Saturation->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
-    Pitch_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem);
-    Z_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_control_system);
+    Pitch_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
+    Z_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
     Yaw_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)YawRate_Saturation, (int)ControlSystem::unicast_addresses::unicast_control_system);
     YawRate_Saturation->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
-    YawRate_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_control_system);
+    YawRate_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
 
     //******************PROVIDERS TO CONTROL SYSTEMS******************************
 

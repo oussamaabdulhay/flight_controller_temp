@@ -14,7 +14,7 @@ void HexaActuationSystem::command(){
     for(int i = 0; i < 6; i++){
         _commands[i] = 0.0;
     }
-    
+
     //Update pulse values
     for(int i = 0; i < 6; i++){
         for(int j = 0; j < 4; j++){
@@ -33,7 +33,7 @@ void HexaActuationSystem::command(){
             _commands[i] = _escMin;
         }
     }
-    
+
     //Actuate
     for(int i = 0; i < 6; i++){
         _actuators[i]->applyCommand(_commands[i]);
@@ -50,6 +50,7 @@ void HexaActuationSystem::command(){
     this->emitMsgUnicast((DataMessage*) &armed_msg,
                                 HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_armed,
                                 ROSUnit_BroadcastData::ros_broadcast_channels::armed);
+
 }
 
 int HexaActuationSystem::constrain(float value, int min_value, int max_value) {
@@ -64,51 +65,30 @@ int HexaActuationSystem::constrain(float value, int min_value, int max_value) {
 }
 
 void HexaActuationSystem::receiveMsgData(DataMessage* t_msg){
-
-    if(t_msg->getType() == msg_type::control_system){
-        ControlSystemMessage* control_system_msg = (ControlSystemMessage*)t_msg;
-        if(control_system_msg->getControlSystemMsgType() == control_system_msg_type::to_system){
-            
-            if(_armed){
-                switch (control_system_msg->getSource())
-                {
-                case control_system::roll:
-                {
-                    _movements[0] = control_system_msg->getData();
-                    break;
-                }
-                case control_system::pitch:
-                {
-                    _movements[1] = control_system_msg->getData();
-                    this->command();
-                    break;
-                }
-                case control_system::yaw_rate:
-                {
-                    _movements[2] = control_system_msg->getData();
-                    break;
-                }
-                case control_system::z:
-                {
-                    _movements[3] = control_system_msg->getData();
-                    break;
-                }
-                default:
-                    break;
-                }
-            }else{
-                _movements[0] = 0.0;
-                _movements[1] = 0.0;
-                _movements[2] = 0.0;
-                _movements[3] = 0.0;
-                this->command();
-            }
-        }
-          
-    }else if(t_msg->getType() == msg_type::BOOLEAN){
+    if(t_msg->getType() == msg_type::BOOLEAN){
 
         BooleanMsg* bool_msg = (BooleanMsg*)t_msg;
         _armed = bool_msg->data;
 
+    }
+}
+
+void HexaActuationSystem::receiveMsgData(DataMessage* t_msg, int t_channel){
+
+    if(t_msg->getType() == msg_type::FLOAT){
+        FloatMsg* float_msg = (FloatMsg*)t_msg;
+
+        if(_armed){
+            _movements[t_channel] = float_msg->data;
+            if(t_channel == (int)receiving_channels::ch_pitch){ //This sends the commands to the motors on the fastest loop, avoiding thread issues.
+                this->command();
+            }
+        }else{
+            _movements[0] = 0.0;
+            _movements[1] = 0.0;
+            _movements[2] = 0.0;
+            _movements[3] = 0.0;
+            this->command();
+        }     
     }
 }

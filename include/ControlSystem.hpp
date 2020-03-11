@@ -27,7 +27,7 @@ class ControlSystem : public TimedBlock, public MsgEmitter, public MsgReceiver{
 
     public:
         enum receiving_channels {ch_broadcast, ch_reference, ch_controller};
-        enum unicast_addresses {broadcast, unicast_controller_switcher, unicast_reference_switcher, unicast_control_system};
+        enum unicast_addresses {broadcast, unicast_controller_switcher, unicast_reference_switcher, unicast_control_system, unicast_actuation_system};
         void receiveMsgData(DataMessage* t_msg);
         void receiveMsgData(DataMessage* t_msg, int t_channel);
         void getStatus();

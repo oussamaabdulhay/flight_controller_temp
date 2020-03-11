@@ -31,9 +31,13 @@ void MsgEmitter::emitMsgUnicastDefault(DataMessage* t_msg){
 }
 
 void MsgEmitter::emitMsgUnicast(DataMessage* t_msg,int t_unicast_mask){
-    for (int i = 0; i < _list_of_msg_receivers.size(); ++i){
-        if (t_unicast_mask==_list_of_receivers_mask_unicast[i]){
-             _list_of_msg_receivers[i]->receiveMsgData(t_msg);
+    if (this->emitting_channel!=msg_broadcast_channel){
+        this->emitMsgUnicast(t_msg, t_unicast_mask, this->emitting_channel);
+    }else{
+        for (int i = 0; i < _list_of_msg_receivers.size(); ++i){
+            if (t_unicast_mask==_list_of_receivers_mask_unicast[i]){
+                _list_of_msg_receivers[i]->receiveMsgData(t_msg);
+            }
         }
     }
 }

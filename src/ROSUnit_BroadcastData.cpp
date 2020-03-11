@@ -146,7 +146,7 @@ void ROSUnit_BroadcastData::receiveMsgData(DataMessage* t_msg, int t_channel){
         
         if(t_channel == (int)ros_broadcast_channels::actuation){
             _act_outputs = vector_double_msg->data;
-
+            
             std_msgs::Float64MultiArray msg;
             msg.data = _act_outputs;
             _act_prov_pub.publish(msg);

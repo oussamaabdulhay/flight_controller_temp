@@ -482,12 +482,12 @@ int main(int argc, char** argv) {
     //******************PROVIDERS TO CONTROL SYSTEMS******************************
 
     CsX_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)X_ControlSystem);
-    // CsY_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Y_ControlSystem);
-    // CsZ_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
-    // CsPitch_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
-    // CsRoll_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
-    // CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
-    // CsYawRate_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
+    CsY_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Y_ControlSystem);
+    CsZ_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
+    CsPitch_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
+    CsRoll_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
+    CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
+    CsYawRate_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
 
     //******************SETTING TRAJECTORY GENERATION TOOL******************
 

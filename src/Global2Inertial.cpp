@@ -71,9 +71,7 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg)
         results_msg.setVector3DMessage(pos_point);
         Vector3DMessage yaw_msg;
         yaw_msg.setVector3DMessage(att_vec); // - calibrated_reference_inertial_heading;
-        
-        std::cout << "Global2Inertial yaw_msg.getData().z " << yaw_msg.getData().z << "\n";
-  
+          
         this->emitMsgUnicast(&results_msg, 
                             Global2Inertial::unicast_addresses::uni_Optitrack_pos,
                             PVConcatenator::receiving_channels::ch_pv);

@@ -45,8 +45,7 @@ void ControlSystem::receiveMsgData(DataMessage* t_msg, int t_channel){
             VectorDoubleMsg reference_ros_msg;
             reference_ros_msg.data[0] = (double)(int)(this->getControlSystemType());
             reference_ros_msg.data[1] = (double)(float_msg->data);
-            this->emitMsgUnicast((DataMessage*) &reference_ros_msg,
-                                ControlSystem::unicast_addresses::unicast_reference_switcher,
+            this->emitMsgUnicastDefault((DataMessage*) &reference_ros_msg,
                                 ROSUnit_BroadcastData::ros_broadcast_channels::references);
 
         }else if(t_channel == (int)ControlSystem::receiving_channels::ch_controller){
@@ -56,8 +55,7 @@ void ControlSystem::receiveMsgData(DataMessage* t_msg, int t_channel){
             VectorDoubleMsg controller_ros_msg;
             controller_ros_msg.data[0] = (double)(int)(this->getControlSystemType());
             controller_ros_msg.data[1] = (double)(float_msg->data);
-            this->emitMsgUnicast((DataMessage*) &controller_ros_msg,
-                                ControlSystem::unicast_addresses::unicast_control_system,
+            this->emitMsgUnicastDefault((DataMessage*) &controller_ros_msg,
                                 ROSUnit_BroadcastData::ros_broadcast_channels::control_outputs);
         }
 

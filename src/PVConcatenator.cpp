@@ -31,7 +31,6 @@ void PVConcatenator::receiveMsgData(DataMessage* t_msg, int t_channel){
                 pv=v3d_msg->getData().y;
             }else if (_selected_concatenation_axes==conc_z_axis){
                 pv=v3d_msg->getData().z;
-                std::cout << "PVConcatenator pv.z " << pv << "\n";
             }
             if(_act_on == act_on::pv){
                 pv_vector.x = pv;

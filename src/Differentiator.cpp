@@ -21,12 +21,9 @@ void Differentiator::receiveMsgData(DataMessage* t_msg, int t_channel){
         diff_values.y = (vector3d_data->getData().y - _old_vector3d_data.y) / _dt;
         diff_values.z = (vector3d_data->getData().z - _old_vector3d_data.z) / _dt;
 
-        std::cout << "Differentiator diff_values.z " << diff_values.z << "\n";
-
         output_msg.setVector3DMessage(diff_values);
         this->emitMsgUnicastDefault((DataMessage*) &output_msg);
         
         _old_vector3d_data = vector3d_data->getData();
-
     }
 }

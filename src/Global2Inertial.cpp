@@ -5,11 +5,11 @@ Global2Inertial::Global2Inertial(){
     //TODO: Ensure altitude is calibrated
     calib_point1.x = 0.0;
     calib_point1.y = 0.0;
-    calib_point1.z = 0.258;
+    calib_point1.z = 0.0; //No need to correct height here. Flight Scenario is responsible for that.
 
     calib_point2.x = 0.0; //defines x(+) axis
     calib_point2.y = -0.80;
-    calib_point2.z = 0.258;
+    calib_point2.z = 0.0;
 
     calib_point3.x = 24.44814808; //correcting x offset in y
     calib_point3.y = 54.39666318;

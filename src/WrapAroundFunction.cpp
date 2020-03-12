@@ -10,7 +10,7 @@ void WrapAroundFunction::receiveMsgData(DataMessage* rec_msg, int ch){
         Vector3DMessage emit_msg;
         emit_msg.setVector3DMessage(msg_data);
         this->emitMsgUnicastDefault(&emit_msg,
-                            ch);
+                                    ch);
     }
 }
 

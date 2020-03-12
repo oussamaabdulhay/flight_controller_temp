@@ -3,13 +3,13 @@
 
 Global2Inertial::Global2Inertial(){
     //TODO: Ensure altitude is calibrated
-    calib_point1.x = 24.44828723;
-    calib_point1.y = 54.39683993;
-    calib_point1.z = 0.0;
+    calib_point1.x = 0.0;
+    calib_point1.y = 0.0;
+    calib_point1.z = 0.258;
 
-    calib_point2.x = 24.44814808; //defines x(+) axis
-    calib_point2.y = 54.39666318;
-    calib_point2.z = 0.0;
+    calib_point2.x = 0.0; //defines x(+) axis
+    calib_point2.y = -0.80;
+    calib_point2.z = 0.258;
 
     calib_point3.x = 24.44814808; //correcting x offset in y
     calib_point3.y = 54.39666318;
@@ -36,7 +36,7 @@ Global2Inertial::Global2Inertial(){
     //calibrated_reference_inertial_heading=180.*(M_PI/180.);
     calibrated_reference_inertial_heading=-90.*(M_PI/180.);
     Vector3D<double> calib_points_diff = calib_point2 - calib_point1;
-    calibrated_global_to_inertial_angle = atan2(calib_points_diff.x, calib_points_diff.y);
+    calibrated_global_to_inertial_angle = atan2(calib_points_diff.y, calib_points_diff.x);
 
     Vector3D<double> results = changeLLAtoMeters(calib_point1, calib_point3); // Compute homogenueity calibration terms
     Vector3D<double> results_elev=offsetElevation(results,-calib_point1.z);
@@ -67,9 +67,11 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg)
         Quaternion _bodyAtt = opti_msg->getAttitudeHeading();
         Vector3D<double> att_vec = getEulerfromQuaternion(_bodyAtt);
 
+        Vector3D<double> translate_pos = this->translatePoint(pos_point);
+        Vector3D<double> result_pos = this->rotatePoint(translate_pos);
       
         Vector3DMessage results_msg;
-        results_msg.setVector3DMessage(pos_point);
+        results_msg.setVector3DMessage(result_pos);
 
         Vector3DMessage yaw_msg;
         att_vec.z -= calibrated_reference_inertial_heading;

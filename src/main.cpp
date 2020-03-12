@@ -12,7 +12,6 @@
 #include "MRFTController.hpp"
 #include "ROSUnit_Xsens.hpp"
 #include "Transform_InertialToBody.hpp"
-#include "CallbackHandler.hpp"
 #include "RestrictedNormWaypointRefGenerator.hpp"
 #include "ROSUnit_RestNormSettings.hpp"
 #include "Saturation.hpp"
@@ -34,18 +33,17 @@ const int PWM_FREQUENCY = 50;
 const float SATURATION_VALUE_XY = 0.5;
 const float SATURATION_VALUE_YAWRATE = 1.0;
 
-Journaller *gJournal = 0;
 
 int main(int argc, char** argv) {
     
     std::cout << "Hello Flight Controller!" << std::endl;
 
-    //*****************************ROS UNITS*******************************
+    //****************************ROS UNITS*******************************
 
     ros::init(argc, argv, "flight_controller_node");
 
     ros::NodeHandle nh;
-    ros::Rate rate(100);
+    ros::Rate rate(120);
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
     ROSUnit* myROSOptitrack = new ROSUnit_Optitrack(nh);
@@ -155,7 +153,7 @@ int main(int argc, char** argv) {
 
     //***********************SETTING CONTROL SYSTEMS***************************
 
-    ControlSystem* X_ControlSystem = new ControlSystem(control_system::x, block_frequency::hz100);
+    ControlSystem* X_ControlSystem = new ControlSystem(control_system::x, block_frequency::hz120);
     X_ControlSystem->addBlock(PID_x);
     X_ControlSystem->addBlock(MRFT_x);
     X_ControlSystem->addBlock(PV_Ref_x);
@@ -165,7 +163,7 @@ int main(int argc, char** argv) {
     Pitch_ControlSystem->addBlock(MRFT_pitch);
     Pitch_ControlSystem->addBlock(PV_Ref_pitch);
     
-    ControlSystem* Y_ControlSystem = new ControlSystem(control_system::y, block_frequency::hz100);
+    ControlSystem* Y_ControlSystem = new ControlSystem(control_system::y, block_frequency::hz120);
     Y_ControlSystem->addBlock(PID_y);
     Y_ControlSystem->addBlock(MRFT_y);
     Y_ControlSystem->addBlock(PV_Ref_y);
@@ -175,17 +173,17 @@ int main(int argc, char** argv) {
     Roll_ControlSystem->addBlock(MRFT_roll);
     Roll_ControlSystem->addBlock(PV_Ref_roll);
     
-    ControlSystem* Z_ControlSystem = new ControlSystem(control_system::z, block_frequency::hz100);
+    ControlSystem* Z_ControlSystem = new ControlSystem(control_system::z, block_frequency::hz120);
     Z_ControlSystem->addBlock(PID_z);
     Z_ControlSystem->addBlock(MRFT_z);
     Z_ControlSystem->addBlock(PV_Ref_z);
 
-    ControlSystem* Yaw_ControlSystem = new ControlSystem(control_system::yaw, block_frequency::hz100);
+    ControlSystem* Yaw_ControlSystem = new ControlSystem(control_system::yaw, block_frequency::hz120);
     Yaw_ControlSystem->addBlock(PID_yaw);
     Yaw_ControlSystem->addBlock(MRFT_yaw);
     Yaw_ControlSystem->addBlock(PV_Ref_yaw);
 
-    ControlSystem* YawRate_ControlSystem = new ControlSystem(control_system::yaw_rate, block_frequency::hz100);
+    ControlSystem* YawRate_ControlSystem = new ControlSystem(control_system::yaw_rate, block_frequency::hz120);
     YawRate_ControlSystem->addBlock(PID_yaw_rate);
     YawRate_ControlSystem->addBlock(MRFT_yaw_rate);
     YawRate_ControlSystem->addBlock(PV_Ref_yaw_rate);

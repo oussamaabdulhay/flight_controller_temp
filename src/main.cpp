@@ -95,25 +95,28 @@ int main(int argc, char** argv) {
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsYaw_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_heading);
-    #endif
-
     #ifdef XSENS_OVER_ROS
     ROSUnit* myROSUnit_Xsens = new ROSUnit_Xsens(nh);
     myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)CsRoll_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_attitude_rate);
     myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)CsPitch_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_attitude_rate);
-    myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)CsYawRate_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_yaw_rate);
-    myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_orientation);
-    myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_translation);
-    myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_translation_rate);
+    myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)CsRoll_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_orientation);
+    myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)CsPitch_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_orientation);
     #endif
+    #endif
+    
+    //myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)CsYawRate_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_yaw_rate);
+    //myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_orientation);
+    //myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_translation);
+    //myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_translation_rate);
+    
+    //myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
+    //myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
+    //myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
+    //myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)wrap_around_yaw, (int)Global2Inertial::unicast_addresses::uni_XSens_ori);
+    //wrap_around_yaw->addCallbackMsgReceiver((MsgReceiver*)CsYaw_PVConcatenator);
+    //myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsRoll_PVConcatenator,(int)Global2Inertial::unicast_addresses::uni_XSens_ori);
+    //myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsPitch_PVConcatenator,(int)Global2Inertial::unicast_addresses::uni_XSens_ori);
 
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)wrap_around_yaw, (int)Global2Inertial::unicast_addresses::uni_XSens_ori);
-    wrap_around_yaw->addCallbackMsgReceiver((MsgReceiver*)CsYaw_PVConcatenator);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsRoll_PVConcatenator,(int)Global2Inertial::unicast_addresses::uni_XSens_ori); //TODO bad grouping with ifdef
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsPitch_PVConcatenator,(int)Global2Inertial::unicast_addresses::uni_XSens_ori);
 
     //**************************SETTING BLOCKS**********************************
 

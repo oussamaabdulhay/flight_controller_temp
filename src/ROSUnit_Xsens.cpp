@@ -24,9 +24,9 @@ void ROSUnit_Xsens::callbackXsensBodyRate(const geometry_msgs::Vector3Stamped& m
     angular_vel.z = msg_bodyrate.vector.z;
 
     pv_dot_msg.setVector3DMessage(angular_vel);
-	//std::cout << "angular_vel.x " << angular_vel.x << " angular_vel.y " << angular_vel.y << " angular_vel.z " << angular_vel.z << std::endl;
+
 	_instance_ptr->emitMsgUnicast((DataMessage*) &pv_dot_msg,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_attitude_rate, (int)PVConcatenator::receiving_channels::ch_pv_dot);
-	_instance_ptr->emitMsgUnicast((DataMessage*) &pv_dot_msg,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_yaw_rate, (int)PVConcatenator::receiving_channels::ch_pv);
+	//_instance_ptr->emitMsgUnicast((DataMessage*) &pv_dot_msg,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_yaw_rate, (int)PVConcatenator::receiving_channels::ch_pv);
 			
 }
 
@@ -71,10 +71,9 @@ void ROSUnit_Xsens::callbackXsensAttitude( const geometry_msgs::QuaternionStampe
     orientation_euler.y = _euler.x; //Arranging the frames to match with the drone's
     orientation_euler.z = _euler.z;
 
-	//std::cout << "orientation_euler.x " << orientation_euler.x << " orientation_euler.y " << orientation_euler.y << " orientation_euler.z " << orientation_euler.z << std::endl;
 
     pv_msg.setVector3DMessage(orientation_euler);
-	_instance_ptr->emitMsgUnicast((DataMessage*) &pv_msg,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_orientation, (int)Global2Inertial::receiving_channels::ch_XSens_ori);
+	_instance_ptr->emitMsgUnicast((DataMessage*) &pv_msg,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_orientation, (int)PVConcatenator::receiving_channels::ch_pv);
 		
 }
 void ROSUnit_Xsens::callbackXsensVelocity(const geometry_msgs::TwistStamped& msg_velocity){
@@ -85,7 +84,7 @@ void ROSUnit_Xsens::callbackXsensVelocity(const geometry_msgs::TwistStamped& msg
     velocity.y = msg_velocity.twist.linear.y;
     velocity.z = msg_velocity.twist.linear.z;
 	velocity_msg.setVector3DMessage(velocity);
-	//std::cout << "velocity.x " << velocity.x << " velocity.y " << velocity.y << " velocity.z " << velocity.z << std::endl;
+
 
 	_instance_ptr->emitMsgUnicast(&velocity_msg,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_translation_rate,(int)Global2Inertial::receiving_channels::ch_XSens_vel);
 		

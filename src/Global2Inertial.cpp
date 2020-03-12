@@ -112,12 +112,9 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg)
 void Global2Inertial::receiveMsgData(DataMessage* t_msg,int ch){
     if (t_msg->getType()==msg_type::VECTOR3D){
         if (ch==Global2Inertial::receiving_channels::ch_RTK_pos){
-            //std::cout << "RTK RAW results.x=" << ((Vector3DMessage*)t_msg)->getData().x << " results.y=" << ((Vector3DMessage*)t_msg)->getData().y << " results.z=" << ((Vector3DMessage*)t_msg)->getData().z << std::endl;
             Vector3D<double> results = changeLLAtoMeters(calib_point1, ((Vector3DMessage*)t_msg)->getData()); //TODO uncoment
             Vector3D<double> results_elev=offsetElevation(results,-calib_point1.z);
-            //std::cout << "RTK BEFORE results.x=" << results.x << " results.y=" << results.y << " results.z=" << results.z << std::endl;
             Vector3D<double> results_rot=rotatePoint(results_elev);
-            //std::cout << "RTK AFTER  results.x=" << results_rot.x << " results.y=" << results_rot.y << " results.z=" << results_rot.z << std::endl;  
             Vector3DMessage res_msg;
             res_msg.setVector3DMessage(results_rot);
             #ifndef DEBUG_HR_LR_DECOUPLED
@@ -128,11 +125,8 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg,int ch){
             #endif
         }
         else if (ch==Global2Inertial::receiving_channels::ch_XSens_pos){
-            //std::cout << "RAW.x=" << ((Vector3DMessage*)t_msg)->getData().x << " RAW.y=" << ((Vector3DMessage*)t_msg)->getData().y << " RAW.z=" << ((Vector3DMessage*)t_msg)->getData().z << std::endl;
             Vector3D<double> results = changeLLAtoMeters(calib_point1,((Vector3DMessage*)t_msg)->getData());
-            //std::cout << "BEFORE results.x=" << results.x << " results.y=" << results.y << " results.z=" << results.z << std::endl;
             Vector3D<double> results_rot=rotatePoint(results);
-            //std::cout << "AFTER  results.x=" << results_rot.x << " results.y=" << results_rot.y << " results.z=" << results_rot.z << std::endl;  
             Vector3DMessage res_msg;
             res_msg.setVector3DMessage(results_rot);
             #ifdef RTK
@@ -149,9 +143,8 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg,int ch){
         }
         else if (ch==Global2Inertial::receiving_channels::ch_XSens_ori){
             Vector3D<double> results = ((Vector3DMessage*)t_msg)->getData();
-		//std::cout << "raw results.z " << results.z << "\n";
             results.z = results.z - calibrated_reference_inertial_heading - calibrated_global_to_inertial_angle;
-            //std::cout << "results.z " << results.z << ", "<<calibrated_reference_inertial_heading<<","<<calibrated_global_to_inertial_angle<<"\n";
+
             Vector3DMessage res_msg;
             res_msg.setVector3DMessage(results);
             emitMsgUnicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_ori,(int)PVConcatenator::receiving_channels::ch_pv);

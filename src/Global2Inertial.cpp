@@ -33,7 +33,8 @@ Global2Inertial::Global2Inertial(){
     // calib_point2.x=0;
     // calib_point2.y=0;
     // calib_point2.z=0;
-    calibrated_reference_inertial_heading=180.*(M_PI/180.);
+    //calibrated_reference_inertial_heading=180.*(M_PI/180.);
+    calibrated_reference_inertial_heading=-90.*(M_PI/180.);
     Vector3D<double> calib_points_diff = calib_point2 - calib_point1;
     calibrated_global_to_inertial_angle = atan2(calib_points_diff.x, calib_points_diff.y);
 
@@ -69,8 +70,10 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg)
       
         Vector3DMessage results_msg;
         results_msg.setVector3DMessage(pos_point);
+
         Vector3DMessage yaw_msg;
-        yaw_msg.setVector3DMessage(att_vec); // - calibrated_reference_inertial_heading;
+        att_vec.z -= calibrated_reference_inertial_heading;
+        yaw_msg.setVector3DMessage(att_vec);
           
         this->emitMsgUnicast(&results_msg, 
                             Global2Inertial::unicast_addresses::uni_Optitrack_pos,

@@ -31,7 +31,8 @@
 const int OPTITRACK_FREQUENCY = 120;
 const int PWM_FREQUENCY = 50;
 const float SATURATION_VALUE_XY = 0.5;
-const float SATURATION_VALUE_YAWRATE = 1.0;
+const float SATURATION_VALUE_YAW = 1.0;
+const float SATURATION_VALUE_YAWRATE = 0.3;
 
 
 int main(int argc, char** argv) {
@@ -149,7 +150,9 @@ int main(int argc, char** argv) {
 
     Saturation* X_Saturation = new Saturation(SATURATION_VALUE_XY);
     Saturation* Y_Saturation = new Saturation(SATURATION_VALUE_XY);
+    Saturation* Yaw_Saturation = new Saturation(SATURATION_VALUE_YAW);
     Saturation* YawRate_Saturation = new Saturation(SATURATION_VALUE_YAWRATE);
+
 
     //***********************SETTING CONTROL SYSTEMS***************************
 
@@ -202,12 +205,12 @@ int main(int argc, char** argv) {
     ActuationSystem* myActuationSystem = new HexaActuationSystem(actuators);
 
     //***********************************SETTING CONNECTIONS***********************************
-    //========                                                                     =============
-    //|      |--x--->X_Control_System-->RM_X-->Saturation-->Roll_Control_System--->|           |
-    //| USER |--x--->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System-->| Actuation |
-    //|      |--x--->Z_Control_System--------------------------------------------->|  System   |
-    //|      |--x--->Yaw_Control_System-->Saturation--->YawRate_Control_System---->|           |
-    //========                                                                     =============
+    //========                                                                                =============
+    //|      |--x--->X_Control_System-->RM_X-->Saturation-->Roll_Control_System-------------->|           |
+    //| USER |--x--->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System------------->| Actuation |
+    //|      |--x--->Z_Control_System-------------------------------------------------------->|  System   |
+    //|      |--x--->Yaw_Control_System-->Saturation--->YawRate_Control_System-->Saturation-->|           |
+    //========                                                                                =============
     
     Roll_ControlSystem->setEmittingChannel((int)HexaActuationSystem::receiving_channels::ch_roll);
     Pitch_ControlSystem->setEmittingChannel((int)HexaActuationSystem::receiving_channels::ch_pitch);
@@ -223,9 +226,14 @@ int main(int argc, char** argv) {
     Y_Saturation->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
     Pitch_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
     Z_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
-    Yaw_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)YawRate_Saturation, (int)ControlSystem::unicast_addresses::unicast_control_system);
-    YawRate_Saturation->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
-    YawRate_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
+    Yaw_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)Yaw_Saturation, (int)ControlSystem::unicast_addresses::unicast_control_system);
+    Yaw_Saturation->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
+    YawRate_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)YawRate_Saturation, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
+    YawRate_Saturation->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem);
+
+    //The saturation for YawRate was added because of the spikes that happen on the differentiation of Yaw when it jumps from
+    //PI/2 to -PI/2. The value of 0.3 was based on the observation of the YawRate outputs on an actual flight.
+    //Considering that the output on a normal flight never exceeded 0.25, the value 0.3 was chosen.
 
     //******************PROVIDERS TO CONTROL SYSTEMS******************************
 

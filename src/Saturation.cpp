@@ -24,6 +24,6 @@ void Saturation::receiveMsgData(DataMessage* t_msg, int t_channel){
 
         this->emitMsgUnicast((DataMessage*) &output,
                                     -1,
-                                    ControlSystem::receiving_channels::ch_reference);   
+                                    t_channel);   
     }
 }

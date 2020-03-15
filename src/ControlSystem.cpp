@@ -43,7 +43,7 @@ void ControlSystem::receiveMsgData(DataMessage* t_msg, int t_channel){
                                 ControlSystem::unicast_addresses::unicast_reference_switcher,
                                 Switcher::receiving_channels::ch_reference);
 
-            VectorDoubleMsg reference_ros_msg;
+            reference_ros_msg.data = {0, 0};
             reference_ros_msg.data[0] = (double)(int)(this->getControlSystemType());
             reference_ros_msg.data[1] = (double)(float_msg->data);
             this->emitMsgUnicastDefault((DataMessage*) &reference_ros_msg,
@@ -56,7 +56,7 @@ void ControlSystem::receiveMsgData(DataMessage* t_msg, int t_channel){
             this->emitMsgUnicast((DataMessage*) float_msg,
                                 ControlSystem::unicast_addresses::unicast_actuation_system);
 
-            VectorDoubleMsg controller_ros_msg;
+            controller_ros_msg.data = {0, 0};
             controller_ros_msg.data[0] = (double)(int)(this->getControlSystemType());
             controller_ros_msg.data[1] = (double)(float_msg->data);
             this->emitMsgUnicastDefault((DataMessage*) &controller_ros_msg,

@@ -5,6 +5,9 @@
 PVConcatenator::PVConcatenator(concatenation_axes t_selected_concatenation_axes, act_on t_act_on) {
     _selected_concatenation_axes = t_selected_concatenation_axes;
     _act_on = t_act_on;
+    pv = 0.0;
+    pv_dot = 0.0;
+    pv_dot_dot = 0.0;
 }
 
 PVConcatenator::~PVConcatenator() {
@@ -35,7 +38,7 @@ void PVConcatenator::receiveMsgData(DataMessage* t_msg, int t_channel){
             if(_act_on == act_on::pv){
                 pv_vector.x = pv;
                 pv_vector.y = pv_dot;
-                pv_vector.z = 0.0; //TODO add pv_dot_dot if needed
+                pv_vector.z = pv_dot_dot;
                 Vector3DMessage pv_vector_msg;
                 pv_vector_msg.setVector3DMessage(pv_vector);
                 this->emitMsgUnicastDefault((DataMessage*) &pv_vector_msg);
@@ -52,7 +55,7 @@ void PVConcatenator::receiveMsgData(DataMessage* t_msg, int t_channel){
             if(_act_on == act_on::pv_dot){
                 pv_vector.x = pv;
                 pv_vector.y = pv_dot;
-                pv_vector.z = 0.0; //TODO add pv_dot_dot if needed
+                pv_vector.z = pv_dot_dot;
                 Vector3DMessage pv_vector_msg;
                 pv_vector_msg.setVector3DMessage(pv_vector);
                 this->emitMsgUnicastDefault((DataMessage*) &pv_vector_msg);

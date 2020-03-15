@@ -19,6 +19,8 @@ class ControlSystem : public MsgEmitter, public MsgReceiver{
         control_system _control_system;
         Switcher* controllerSwitcher;
         Switcher* referenceSwitcher;
+        VectorDoubleMsg reference_ros_msg;
+        VectorDoubleMsg controller_ros_msg;
         std::vector<Switcher*> _switchers;
         block_frequency _frequency;
         float _dt;

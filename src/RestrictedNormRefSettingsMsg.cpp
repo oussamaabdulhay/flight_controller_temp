@@ -14,6 +14,3 @@
     void RestrictedNormRefSettingsMsg::setMaxNorm(float t_max_norm){
         max_norm=t_max_norm;
     }
-    DataMessage* RestrictedNormRefSettingsMsg::Clone(){ 
-        return new RestrictedNormRefSettingsMsg(*this); 
-    }

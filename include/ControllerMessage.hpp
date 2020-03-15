@@ -20,7 +20,6 @@ public:
     void setPIDParam(PID_parameters);
     void set_dt(float);
     void setMRFTParam(MRFT_parameters);
-    DataMessage* Clone(){ return new ControllerMessage(*this); }
     MRFT_parameters getMRFTParam(){ return _mrft_param; }
     PID_parameters getPIDParam(){ return _pid_param; }
     block_id getID() { return _id; };

@@ -14,7 +14,6 @@ private:
 public:
     msg_type getType();
     const int getSize();
-    DataMessage* Clone(){ return new XSensMessage(*this); }
     Vector3D<float> getAngularVelocity();
     Vector3D<float> getOrientationEuler();
     Quaternion getOrientation();

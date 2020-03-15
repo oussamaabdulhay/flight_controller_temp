@@ -35,7 +35,7 @@ const float SATURATION_VALUE_YAWRATE = 1.0;
 
 
 int main(int argc, char** argv) {
-    
+    //TODO remove SwitchOut Message
     std::cout << "Hello Flight Controller!" << std::endl;
 
     //****************************ROS UNITS*******************************

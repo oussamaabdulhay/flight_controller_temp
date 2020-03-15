@@ -11,7 +11,6 @@ public:
 
     msg_type getType();
     const int getSize();
-    DataMessage* Clone(){ return new SwitchBlockMsg(*this); }
     void setSwitchBlockMsg(int, int);
     int getBlockToSwitchIn();
     int getBlockToSwitchOut();

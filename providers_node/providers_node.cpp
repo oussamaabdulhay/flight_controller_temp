@@ -8,6 +8,7 @@
 #include "WrapAroundFunction.hpp"
 #include "ROSUnit_Optitrack.hpp"
 #include "ROSUnit_Xsens.hpp"
+#include "Timer.hpp"
 
 const int OPTITRACK_FREQUENCY = 120;
 
@@ -16,40 +17,40 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "providers_node");
 
     ros::NodeHandle nh;
-    ros::Rate rate(120);
+    //ros::Rate rate(120);
+    
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
-    ROSUnit* myROSOptitrack = new ROSUnit_Optitrack(nh);
-    ROSUnit* myROSUnit_Xsens = new ROSUnit_Xsens(nh);
     ROSUnit* ROSUnit_set_height_offset = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,ROSUnit_msg_type::ROSUnit_Float,"set_height_offset");
 
 
-    ROSUnit* rosunit_x_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
+    ROSUnit* rosunit_x_provider_pub = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "/providers/x");
-    ROSUnit* rosunit_y_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
+    ROSUnit* rosunit_y_provider_pub = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "/providers/y");
-    ROSUnit* rosunit_z_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
+    ROSUnit* rosunit_z_provider_pub = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "/providers/z");
-    ROSUnit* rosunit_roll_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
+    ROSUnit* rosunit_roll_provider_pub = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "/providers/roll");
-    ROSUnit* rosunit_pitch_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
+    ROSUnit* rosunit_pitch_provider_pub = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "/providers/pitch");
-    ROSUnit* rosunit_yaw_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
+    ROSUnit* rosunit_yaw_provider_pub = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "/providers/yaw");
-    ROSUnit* rosunit_yaw_rate_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
+    ROSUnit* rosunit_yaw_rate_provider_pub = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "/providers/yaw_rate");
 
-    //*****************************LOGGER**********************************
-    Logger::assignLogger(new StdLogger());
+   
     //***********************ADDING SENSORS********************************
-    
+    ROSUnit* myROSOptitrack = new ROSUnit_Optitrack(nh);
+    ROSUnit* myROSUnit_Xsens = new ROSUnit_Xsens(nh);
+
     //***********************SETTING PROVIDERS**********************************
     
     Global2Inertial* myGlobal2Inertial = new Global2Inertial();
@@ -94,21 +95,21 @@ int main(int argc, char **argv){
     
     //******************PROVIDERS TO CONTROL SYSTEMS******************************
 
-    // TODO Change to the ROSUnits
-    // CsX_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)X_ControlSystem);
-    // CsY_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Y_ControlSystem);
-    // CsZ_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
-    // CsPitch_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
-    // CsRoll_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
-    // CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
-    // CsYawRate_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
+    CsX_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)rosunit_x_provider_pub);
+    CsY_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)rosunit_y_provider_pub);
+    CsZ_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)rosunit_z_provider_pub);
+    CsPitch_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)rosunit_pitch_provider_pub);
+    CsRoll_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)rosunit_roll_provider_pub);
+    CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)rosunit_yaw_provider_pub);
+    CsYawRate_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)rosunit_yaw_rate_provider_pub);
 
-
-
+    Timer tempo;
     while(ros::ok()){
+        //tempo.tick();
         ros::spinOnce();
-        std::cout << "providers_node" << std::endl;
-        rate.sleep();
+        //std::cout  << "Prov: " << tempo.tockMicroSeconds() << "\n";
+        
+        //rate.sleep();
     }
 
     return 0;

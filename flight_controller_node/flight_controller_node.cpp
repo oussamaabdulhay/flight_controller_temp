@@ -39,12 +39,15 @@ int main(int argc, char** argv) {
     //TODO remove SwitchOut Message
     std::cout << "Hello Flight Controller!" << std::endl;
 
+    //*****************************LOGGER********************************** 
+    Logger::assignLogger(new StdLogger());
+    
     //****************************ROS UNITS*******************************
 
     ros::init(argc, argv, "flight_controller_node");
 
     ros::NodeHandle nh;
-    ros::Rate rate(120);
+    //ros::Rate rate(120);
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
     
@@ -196,7 +199,33 @@ int main(int argc, char** argv) {
     //PI/2 to -PI/2. The value of 0.3 was based on the observation of the YawRate outputs on an actual flight.
     //Considering that the output on a normal flight never exceeded 0.25, the value 0.3 was chosen.
 
-    
+    //******************PROVIDERS TO CONTROL SYSTEMS******************************
+
+    //TODO remove this later, after everything is working 
+    rosunit_x_provider->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::x);
+    rosunit_y_provider->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::y);
+    rosunit_z_provider->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::z);
+    rosunit_roll_provider->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::roll);  
+    rosunit_pitch_provider->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::pitch);
+    rosunit_yaw_provider->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw);
+    rosunit_yaw_rate_provider->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw_rate);
+
+    rosunit_x_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    rosunit_y_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    rosunit_roll_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    rosunit_pitch_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    rosunit_yaw_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    rosunit_yaw_rate_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+
+    rosunit_x_provider->addCallbackMsgReceiver((MsgReceiver*)X_ControlSystem);
+    rosunit_y_provider->addCallbackMsgReceiver((MsgReceiver*)Y_ControlSystem);
+    rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
+    rosunit_pitch_provider->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
+    rosunit_roll_provider->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
+    rosunit_yaw_provider->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
+    rosunit_yaw_rate_provider->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
+
     //***********************SETTING FLIGHT SCENARIO INPUTS****************************
     myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_x);
     myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_y);
@@ -242,7 +271,6 @@ int main(int argc, char** argv) {
     ROSUnit_uav_control_set_path->addCallbackMsgReceiver((MsgReceiver*)myWaypoint);
     myROSRestNormSettings->addCallbackMsgReceiver((MsgReceiver*)myWaypoint);
 
-    
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************
 
     myActuationSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData, (int)HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_commands);
@@ -263,12 +291,10 @@ int main(int argc, char** argv) {
     error_emitter.addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     //***********************INERTIAL TO BODY PROVIDER*****************************
  
-    //TODO fix this
-    //CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)transform_X_InertialToBody);
-    //CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)transform_Y_InertialToBody);
+    rosunit_yaw_provider->addCallbackMsgReceiver((MsgReceiver*)transform_X_InertialToBody);
+    rosunit_yaw_provider->addCallbackMsgReceiver((MsgReceiver*)transform_Y_InertialToBody);
 
     //***********************SETTING PID INITIAL VALUES*****************************
-
     ControllerMessage ctrl_msg;
     PID_parameters pid_para_init;
 
@@ -346,13 +372,15 @@ int main(int argc, char** argv) {
     ctrl_msg.set_dt(YawRate_ControlSystem->get_dt());
     myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
 
-    
+    Timer tempo;
     while(ros::ok()){
+        //tempo.tick();
+        ros::spinOnce();
+        //std::cout  << "FC: " << tempo.tockMicroSeconds() << "\n";
         #ifdef BATTERY_MONITOR
         myBatteryMonitor->getVoltageReading();
         #endif
-        ros::spinOnce();
-        rate.sleep();
+        //rate.sleep();
     }
 
     return 0;

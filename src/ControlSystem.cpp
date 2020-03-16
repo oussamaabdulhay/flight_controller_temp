@@ -31,7 +31,6 @@ void ControlSystem::receiveMsgData(DataMessage* t_msg, int t_channel){
    
     if(t_msg->getType() == msg_type::VECTOR3D){
         Vector3DMessage* provider = (Vector3DMessage*)t_msg;
-
         this->emitMsgUnicast((DataMessage*) provider, 
                             ControlSystem::unicast_addresses::unicast_reference_switcher,
                             Switcher::receiving_channels::ch_provider);

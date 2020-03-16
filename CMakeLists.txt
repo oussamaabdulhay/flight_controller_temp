@@ -52,8 +52,10 @@ include_directories(
 FILE(GLOB SOURCE_FILES *.hpp *.cpp *.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Navio2_cpp/*.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/ROSUnits/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ROSUnits/*.cpp
         )
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+add_executable(${PROJECT_NAME} flight_controller_node/flight_controller_node.cpp ${SOURCE_FILES})
+add_executable(providers_node providers_node/providers_node.cpp ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
+target_link_libraries(providers_node ${catkin_LIBRARIES})

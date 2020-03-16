@@ -26,4 +26,6 @@ class ROSUnit_PointSub : public ROSUnit
         static void callback3(const geometry_msgs::Point::ConstPtr&);
         static void callback4(const geometry_msgs::Point::ConstPtr&);
         static void callback5(const geometry_msgs::Point::ConstPtr&);
+        static void callback6(const geometry_msgs::Point::ConstPtr&);
+        static void callback7(const geometry_msgs::Point::ConstPtr&);
 };

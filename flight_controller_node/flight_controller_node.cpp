@@ -56,7 +56,29 @@ int main(int argc, char** argv) {
     ROSUnit* myROSRestNormSettings = new ROSUnit_RestNormSettings(nh);
     ROSUnit* ROSUnit_uav_control_set_path = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,ROSUnit_msg_type::ROSUnit_Poses,"uav_control/set_path");
     ROSUnit* ROSUnit_set_height_offset = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,ROSUnit_msg_type::ROSUnit_Float,"set_height_offset");
-    ROSUnit* myROSRTK = new ROSUnit_RTK(nh);
+
+    ROSUnit* rosunit_x_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "/providers/x");
+    ROSUnit* rosunit_y_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "/providers/y");
+    ROSUnit* rosunit_z_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "/providers/z");
+    ROSUnit* rosunit_roll_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "/providers/roll");
+    ROSUnit* rosunit_pitch_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "/providers/pitch");
+    ROSUnit* rosunit_yaw_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "/providers/yaw");
+    ROSUnit* rosunit_yaw_rate_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "/providers/yaw_rate");
+                                                                         
 
     //*****************************LOGGER**********************************
     Logger::assignLogger(new StdLogger());

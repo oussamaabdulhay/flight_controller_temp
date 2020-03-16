@@ -28,7 +28,7 @@
 #define OPTITRACK
 #undef BATTERY_MONITOR
 
-const int OPTITRACK_FREQUENCY = 120;
+
 const int PWM_FREQUENCY = 50;
 const float SATURATION_VALUE_XY = 0.5;
 const float SATURATION_VALUE_YAW = 1.0;
@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
     ros::Rate rate(120);
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
-    ROSUnit* myROSOptitrack = new ROSUnit_Optitrack(nh);
+    
     ROSUnit* myROSArm = new ROSUnit_Arm(nh);
     ROSUnit* myROSUpdateController = new ROSUnit_UpdateController(nh);
     ROSUnit* myROSResetController = new ROSUnit_ResetController(nh);
@@ -55,8 +55,7 @@ int main(int argc, char** argv) {
     ROSUnit* myROSSwitchBlock = new ROSUnit_SwitchBlock(nh);
     ROSUnit* myROSRestNormSettings = new ROSUnit_RestNormSettings(nh);
     ROSUnit* ROSUnit_uav_control_set_path = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,ROSUnit_msg_type::ROSUnit_Poses,"uav_control/set_path");
-    ROSUnit* ROSUnit_set_height_offset = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,ROSUnit_msg_type::ROSUnit_Float,"set_height_offset");
-
+    
     ROSUnit* rosunit_x_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "/providers/x");
@@ -78,67 +77,7 @@ int main(int argc, char** argv) {
     ROSUnit* rosunit_yaw_rate_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "/providers/yaw_rate");
-                                                                         
-
-    //*****************************LOGGER**********************************
-    Logger::assignLogger(new StdLogger());
-    //***********************ADDING SENSORS********************************
-    
-    //***********************SETTING PROVIDERS**********************************
-    
-    Global2Inertial* myGlobal2Inertial = new Global2Inertial();
-    PVConcatenator* CsX_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_x_axis, act_on::pv);
-    PVConcatenator* CsY_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_y_axis, act_on::pv);
-    PVConcatenator* CsZ_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis, act_on::pv);
-    PVConcatenator* CsRoll_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_x_axis, act_on::pv);
-    PVConcatenator* CsPitch_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_y_axis, act_on::pv);
-    PVConcatenator* CsYaw_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis, act_on::pv);
-    PVConcatenator* CsYawRate_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis, act_on::pv);
-
-    WrapAroundFunction* wrap_around_yaw = new WrapAroundFunction();
-    wrap_around_yaw->assignParametersRange(-M_PI, M_PI);
-    
-    #ifdef OPTITRACK
-    Differentiator* velocityFromPosition = new Differentiator(1./OPTITRACK_FREQUENCY);
-    velocityFromPosition->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv_dot);
-    
-    Differentiator* yawRateFromYaw = new Differentiator(1./OPTITRACK_FREQUENCY);
-    yawRateFromYaw->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
-    
-    myROSOptitrack->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)velocityFromPosition, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)yawRateFromYaw, (int)Global2Inertial::unicast_addresses::uni_Optitrack_heading);
-    velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator);
-    velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator);
-    velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator);
-    yawRateFromYaw->addCallbackMsgReceiver((MsgReceiver*)CsYawRate_PVConcatenator);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)wrap_around_yaw, (int)Global2Inertial::unicast_addresses::uni_Optitrack_heading);
-    wrap_around_yaw->addCallbackMsgReceiver((MsgReceiver*)CsYaw_PVConcatenator);
-    #ifdef XSENS_OVER_ROS
-    ROSUnit* myROSUnit_Xsens = new ROSUnit_Xsens(nh);
-    myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)CsRoll_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_attitude_rate);
-    myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)CsPitch_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_attitude_rate);
-    myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)CsRoll_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_orientation);
-    myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)CsPitch_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_orientation);
-    #endif
-    #endif
-    
-    //myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)CsYawRate_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_yaw_rate);
-    //myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_orientation);
-    //myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_translation);
-    //myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_translation_rate);
-    
-    //myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
-    //myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
-    //myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_XSens_vel);
-    //myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)wrap_around_yaw, (int)Global2Inertial::unicast_addresses::uni_XSens_ori);
-    //wrap_around_yaw->addCallbackMsgReceiver((MsgReceiver*)CsYaw_PVConcatenator);
-    //myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsRoll_PVConcatenator,(int)Global2Inertial::unicast_addresses::uni_XSens_ori);
-    //myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsPitch_PVConcatenator,(int)Global2Inertial::unicast_addresses::uni_XSens_ori);
-
+                                                                
 
     //**************************SETTING BLOCKS**********************************
 
@@ -257,22 +196,6 @@ int main(int argc, char** argv) {
     //PI/2 to -PI/2. The value of 0.3 was based on the observation of the YawRate outputs on an actual flight.
     //Considering that the output on a normal flight never exceeded 0.25, the value 0.3 was chosen.
 
-    //******************PROVIDERS TO CONTROL SYSTEMS******************************
-
-    CsX_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)X_ControlSystem);
-    CsY_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Y_ControlSystem);
-    CsZ_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
-    CsPitch_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
-    CsRoll_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
-    CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
-    CsYawRate_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
-
-    //******************SETTING TRAJECTORY GENERATION TOOL******************
-
-    myWaypoint->add_x_control_system(X_ControlSystem);
-    myWaypoint->add_y_control_system(Y_ControlSystem);
-    myWaypoint->add_z_control_system(Z_ControlSystem);
-    myWaypoint->add_yaw_control_system(Yaw_ControlSystem);
     
     //***********************SETTING FLIGHT SCENARIO INPUTS****************************
     myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_x);
@@ -316,30 +239,11 @@ int main(int argc, char** argv) {
     myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
 
     myROSArm->addCallbackMsgReceiver((MsgReceiver*) myActuationSystem);
-    #ifdef OPTITRACK
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)myWaypoint, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos); 
-    #endif
     ROSUnit_uav_control_set_path->addCallbackMsgReceiver((MsgReceiver*)myWaypoint);
     myROSRestNormSettings->addCallbackMsgReceiver((MsgReceiver*)myWaypoint);
 
-    ROSUnit_set_height_offset->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial);
     
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************
-    CsX_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::x);
-    CsY_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::y);
-    CsZ_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::z);
-    CsRoll_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::roll);  
-    CsPitch_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::pitch);
-    CsYaw_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw);
-    CsYawRate_PVConcatenator->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw_rate);
-
-    CsX_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-    CsY_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-    CsZ_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-    CsRoll_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-    CsPitch_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-    CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-    CsYawRate_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
 
     myActuationSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData, (int)HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_commands);
     myActuationSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData, (int)HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_armed);
@@ -359,8 +263,9 @@ int main(int argc, char** argv) {
     error_emitter.addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     //***********************INERTIAL TO BODY PROVIDER*****************************
  
-    CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)transform_X_InertialToBody);
-    CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)transform_Y_InertialToBody);
+    //TODO fix this
+    //CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)transform_X_InertialToBody);
+    //CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)transform_Y_InertialToBody);
 
     //***********************SETTING PID INITIAL VALUES*****************************
 

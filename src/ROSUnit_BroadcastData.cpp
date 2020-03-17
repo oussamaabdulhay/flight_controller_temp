@@ -3,20 +3,20 @@ ROSUnit_BroadcastData* ROSUnit_BroadcastData::_instance_ptr = NULL;
 
 ROSUnit_BroadcastData::ROSUnit_BroadcastData(ros::NodeHandle& t_main_handler) : ROSUnit(t_main_handler){
 
-    _pos_prov_pub = t_main_handler.advertise<geometry_msgs::Point>("uav_control/uav_position", 1);
-    _ori_prov_pub = t_main_handler.advertise<geometry_msgs::Point>("uav_control/uav_orientation", 1);
-    _xpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("x_provider", 1);
-    _ypv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("y_provider", 1);
-    _zpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("z_provider", 1);
-    _rollpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("roll_provider", 1);
-    _pitchpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("pitch_provider", 1);
-    _yawpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("yaw_provider", 1);
-    _yawratepv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("yaw_rate_provider", 1);
-    _cs_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("control_system_output", 1);
-    _csr_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("control_system_reference", 1);
-    _act_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("actuation_output", 1);
-    _info_prov_pub = t_main_handler.advertise<flight_controller::Info>("info", 1);
-    _error_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("error", 1);
+    _pos_prov_pub = t_main_handler.advertise<geometry_msgs::Point>("uav_control/uav_position", 2);
+    _ori_prov_pub = t_main_handler.advertise<geometry_msgs::Point>("uav_control/uav_orientation", 2);
+    _xpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("x_provider", 2);
+    _ypv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("y_provider", 2);
+    _zpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("z_provider", 2);
+    _rollpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("roll_provider", 2);
+    _pitchpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("pitch_provider", 2);
+    _yawpv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("yaw_provider", 2);
+    _yawratepv_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("yaw_rate_provider", 2);
+    _cs_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("control_system_output", 2);
+    _csr_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("control_system_reference", 2);
+    _act_prov_pub = t_main_handler.advertise<std_msgs::Float64MultiArray>("actuation_output", 2);
+    _info_prov_pub = t_main_handler.advertise<flight_controller::Info>("info", 2);
+    _error_prov_pub = t_main_handler.advertise<geometry_msgs::PointStamped>("error", 2);
 
     _att.x = 0;
     _head = 0;

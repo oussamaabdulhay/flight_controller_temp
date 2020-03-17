@@ -210,14 +210,6 @@ int main(int argc, char** argv) {
     rosunit_yaw_provider->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw);
     rosunit_yaw_rate_provider->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::yaw_rate);
 
-    rosunit_x_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-    rosunit_y_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-    rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-    rosunit_roll_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-    rosunit_pitch_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-    rosunit_yaw_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-    rosunit_yaw_rate_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-
     rosunit_x_provider->addCallbackMsgReceiver((MsgReceiver*)X_ControlSystem);
     rosunit_y_provider->addCallbackMsgReceiver((MsgReceiver*)Y_ControlSystem);
     rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
@@ -225,6 +217,14 @@ int main(int argc, char** argv) {
     rosunit_roll_provider->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
     rosunit_yaw_provider->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
     rosunit_yaw_rate_provider->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
+
+    rosunit_x_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    rosunit_y_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    rosunit_roll_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    rosunit_pitch_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    rosunit_yaw_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    rosunit_yaw_rate_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
 
     //***********************SETTING FLIGHT SCENARIO INPUTS****************************
     myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_x);

@@ -78,7 +78,18 @@ int main(int argc, char** argv) {
     ROSUnit* rosunit_yaw_rate_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "/providers/yaw_rate");
-                                                                
+    ROSUnit* rosunit_waypoint_x = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Float,
+                                                                    "waypoint_reference/x");
+    ROSUnit* rosunit_waypoint_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Float,
+                                                                    "waypoint_reference/y");
+    ROSUnit* rosunit_waypoint_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Float,
+                                                                    "waypoint_reference/z");
+    ROSUnit* rosunit_waypoint_yaw = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Float,
+                                                                    "waypoint_reference/yaw");                                                            
 
     //**************************SETTING BLOCKS**********************************
 
@@ -107,8 +118,6 @@ int main(int argc, char** argv) {
 
     Transform_InertialToBody* transform_X_InertialToBody = new Transform_InertialToBody(control_system::x);
     Transform_InertialToBody* transform_Y_InertialToBody = new Transform_InertialToBody(control_system::y);
-
-    
 
     Saturation* X_Saturation = new Saturation(SATURATION_VALUE_XY);
     Saturation* Y_Saturation = new Saturation(SATURATION_VALUE_XY);
@@ -168,26 +177,37 @@ int main(int argc, char** argv) {
 
     //***********************************SETTING CONNECTIONS***********************************
     //========                                                                                =============
-    //|      |--x--->X_Control_System-->RM_X-->Saturation-->Roll_Control_System-------------->|           |
-    //| USER |--x--->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System------------->| Actuation |
-    //|      |--x--->Z_Control_System-------------------------------------------------------->|  System   |
-    //|      |--x--->Yaw_Control_System-->Saturation--->YawRate_Control_System-->Saturation-->|           |
+    //|      |----->X_Control_System-->RM_X-->Saturation-->Roll_Control_System-------------->|           |
+    //| USER |----->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System------------->| Actuation |
+    //|      |----->Z_Control_System-------------------------------------------------------->|  System   |
+    //|      |----->Yaw_Control_System-->Saturation--->YawRate_Control_System-->Saturation-->|           |
     //========                                                                                =============
     
+    rosunit_waypoint_x->setEmittingChannel((int)ControlSystem::receiving_channels::ch_reference);
+    rosunit_waypoint_y->setEmittingChannel((int)ControlSystem::receiving_channels::ch_reference);
+    rosunit_waypoint_z->setEmittingChannel((int)ControlSystem::receiving_channels::ch_reference);
+    rosunit_waypoint_yaw->setEmittingChannel((int)ControlSystem::receiving_channels::ch_reference);
     Roll_ControlSystem->setEmittingChannel((int)HexaActuationSystem::receiving_channels::ch_roll);
     Pitch_ControlSystem->setEmittingChannel((int)HexaActuationSystem::receiving_channels::ch_pitch);
     Z_ControlSystem->setEmittingChannel((int)HexaActuationSystem::receiving_channels::ch_throttle);
     YawRate_ControlSystem->setEmittingChannel((int)HexaActuationSystem::receiving_channels::ch_yaw);
 
+    rosunit_waypoint_x->addCallbackMsgReceiver((MsgReceiver*)X_ControlSystem);
     X_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)transform_X_InertialToBody, (int)ControlSystem::unicast_addresses::unicast_control_system);
     transform_X_InertialToBody->addCallbackMsgReceiver((MsgReceiver*)X_Saturation);
     X_Saturation->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
     Roll_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
+    
+    rosunit_waypoint_y->addCallbackMsgReceiver((MsgReceiver*)Y_ControlSystem);
     Y_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)transform_Y_InertialToBody, (int)ControlSystem::unicast_addresses::unicast_control_system);
     transform_Y_InertialToBody->addCallbackMsgReceiver((MsgReceiver*)Y_Saturation);
     Y_Saturation->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
     Pitch_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
+    
+    rosunit_waypoint_z->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
     Z_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
+    
+    rosunit_waypoint_yaw->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
     Yaw_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)Yaw_Saturation, (int)ControlSystem::unicast_addresses::unicast_control_system);
     Yaw_Saturation->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
     YawRate_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)YawRate_Saturation, (int)ControlSystem::unicast_addresses::unicast_actuation_system);

@@ -12,25 +12,42 @@ int main(int argc, char **argv){
     ros::NodeHandle nh;
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
-    ROSUnit* myROSRestNormSettings = new ROSUnit_RestNormSettings(nh);
-    ROSUnit* ROSUnit_uav_control_set_path = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
+    ROSUnit* rosunit_restricted_norm_settings = new ROSUnit_RestNormSettings(nh);
+    ROSUnit* rosunit_uav_control_set_path = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
                                                                                 ROSUnit_msg_type::ROSUnit_Poses,
                                                                                 "uav_control/set_path");
+    ROSUnit* rosunit_position = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "global2inertial/position");
+    ROSUnit* rosunit_waypoint_counter = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
+                                                                    ROSUnit_msg_type::ROSUnit_Int,
+                                                                    "waypoint_reference/counter");
+    ROSUnit* rosunit_waypoint_x = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
+                                                                    ROSUnit_msg_type::ROSUnit_Float,
+                                                                    "waypoint_reference/x");
+    ROSUnit* rosunit_waypoint_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
+                                                                    ROSUnit_msg_type::ROSUnit_Float,
+                                                                    "waypoint_reference/y");
+    ROSUnit* rosunit_waypoint_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
+                                                                    ROSUnit_msg_type::ROSUnit_Float,
+                                                                    "waypoint_reference/z");
+    ROSUnit* rosunit_waypoint_yaw = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
+                                                                    ROSUnit_msg_type::ROSUnit_Float,
+                                                                    "waypoint_reference/yaw");
 
+    RestrictedNormWaypointRefGenerator* waypoint_generator = new RestrictedNormWaypointRefGenerator();
 
-    RestrictedNormWaypointRefGenerator* myWaypoint = new RestrictedNormWaypointRefGenerator();
-
-    //myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)myWaypoint, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos); 
-    ROSUnit_uav_control_set_path->addCallbackMsgReceiver((MsgReceiver*)myWaypoint);
-    myROSRestNormSettings->addCallbackMsgReceiver((MsgReceiver*)myWaypoint);
-    //myWaypoint->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    rosunit_position->addCallbackMsgReceiver((MsgReceiver*)waypoint_generator); 
+    rosunit_uav_control_set_path->addCallbackMsgReceiver((MsgReceiver*)waypoint_generator);
+    rosunit_restricted_norm_settings->addCallbackMsgReceiver((MsgReceiver*)waypoint_generator);
+    waypoint_generator->addCallbackMsgReceiver((MsgReceiver*)rosunit_waypoint_counter);
 
     //******************SETTING TRAJECTORY GENERATION TOOL******************
 
-    // myWaypoint->add_x_control_system(X_ControlSystem);
-    // myWaypoint->add_y_control_system(Y_ControlSystem);
-    // myWaypoint->add_z_control_system(Z_ControlSystem);
-    // myWaypoint->add_yaw_control_system(Yaw_ControlSystem);
+    waypoint_generator->addCallbackMsgReceiver((MsgReceiver*)rosunit_waypoint_x, (int)RestrictedNormWaypointRefGenerator::unicast_addresses::x);
+    waypoint_generator->addCallbackMsgReceiver((MsgReceiver*)rosunit_waypoint_y, (int)RestrictedNormWaypointRefGenerator::unicast_addresses::x);
+    waypoint_generator->addCallbackMsgReceiver((MsgReceiver*)rosunit_waypoint_z, (int)RestrictedNormWaypointRefGenerator::unicast_addresses::x);
+    waypoint_generator->addCallbackMsgReceiver((MsgReceiver*)rosunit_waypoint_yaw, (int)RestrictedNormWaypointRefGenerator::unicast_addresses::x);
 
     while(ros::ok()){
         ros::spinOnce();

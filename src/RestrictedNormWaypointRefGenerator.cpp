@@ -75,34 +75,17 @@ void RestrictedNormWaypointRefGenerator::updateControlSystemsReferences(Vector3D
     
     FloatMsg x_cont_ref;
     x_cont_ref.data = t_pos_ref.x;
-    //std::cout << "Setting X Reference: " << t_pos_ref.x << std::endl;
-    ((MsgReceiver*)x_control_system)->receiveMsgData(&x_cont_ref, (int)ControlSystem::receiving_channels::ch_reference);
+    this->emitMsgUnicast(&x_cont_ref, RestrictedNormWaypointRefGenerator::unicast_addresses::x);
 
     FloatMsg y_cont_ref;
     y_cont_ref.data = t_pos_ref.y;
-    //std::cout << "Setting Y Reference: " << t_pos_ref.y << std::endl;
-    ((MsgReceiver*)y_control_system)->receiveMsgData(&y_cont_ref, (int)ControlSystem::receiving_channels::ch_reference);
+    this->emitMsgUnicast(&y_cont_ref, RestrictedNormWaypointRefGenerator::unicast_addresses::y);
 
     FloatMsg z_cont_ref;
     z_cont_ref.data = t_pos_ref.z;
-    //std::cout << "Setting Z Reference: " << t_pos_ref.z << std::endl;
-    ((MsgReceiver*)z_control_system)->receiveMsgData(&z_cont_ref, (int)ControlSystem::receiving_channels::ch_reference);
+    this->emitMsgUnicast(&z_cont_ref, RestrictedNormWaypointRefGenerator::unicast_addresses::z);
 
     FloatMsg yaw_cont_ref;
     yaw_cont_ref.data = t_yaw;
-    //std::cout << "Setting Yaw Reference: " << t_yaw << std::endl;
-    ((MsgReceiver*)yaw_control_system)->receiveMsgData(&yaw_cont_ref, (int)ControlSystem::receiving_channels::ch_reference);
-}
-
-void RestrictedNormWaypointRefGenerator::add_x_control_system(ControlSystem* t_sys){
-    x_control_system=t_sys;
-}
-void RestrictedNormWaypointRefGenerator::add_y_control_system(ControlSystem* t_sys){
-    y_control_system=t_sys;
-}
-void RestrictedNormWaypointRefGenerator::add_z_control_system(ControlSystem* t_sys){
-    z_control_system=t_sys;
-}
-void RestrictedNormWaypointRefGenerator::add_yaw_control_system(ControlSystem* t_sys){
-    yaw_control_system=t_sys;
+    this->emitMsgUnicast(&yaw_cont_ref, RestrictedNormWaypointRefGenerator::unicast_addresses::yaw);
 }

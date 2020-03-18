@@ -57,5 +57,7 @@ FILE(GLOB SOURCE_FILES *.hpp *.cpp *.h
 
 add_executable(${PROJECT_NAME} flight_controller_node/flight_controller_node.cpp ${SOURCE_FILES})
 add_executable(providers_node providers_node/providers_node.cpp ${SOURCE_FILES})
+add_executable(waypoint_reference_node waypoint_reference_node/waypoint_reference_node.cpp ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 target_link_libraries(providers_node ${catkin_LIBRARIES})
+target_link_libraries(waypoint_reference_node ${catkin_LIBRARIES})

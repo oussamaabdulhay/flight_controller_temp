@@ -56,8 +56,6 @@ int main(int argc, char** argv) {
     ROSUnit* myROSResetController = new ROSUnit_ResetController(nh);
     ROSUnit* myROSBroadcastData = new ROSUnit_BroadcastData(nh);
     ROSUnit* myROSSwitchBlock = new ROSUnit_SwitchBlock(nh);
-    ROSUnit* myROSRestNormSettings = new ROSUnit_RestNormSettings(nh);
-    ROSUnit* ROSUnit_uav_control_set_path = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,ROSUnit_msg_type::ROSUnit_Poses,"uav_control/set_path");
     
     ROSUnit* rosunit_x_provider = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
@@ -110,7 +108,7 @@ int main(int argc, char** argv) {
     Transform_InertialToBody* transform_X_InertialToBody = new Transform_InertialToBody(control_system::x);
     Transform_InertialToBody* transform_Y_InertialToBody = new Transform_InertialToBody(control_system::y);
 
-    RestrictedNormWaypointRefGenerator* myWaypoint = new RestrictedNormWaypointRefGenerator();
+    
 
     Saturation* X_Saturation = new Saturation(SATURATION_VALUE_XY);
     Saturation* Y_Saturation = new Saturation(SATURATION_VALUE_XY);
@@ -201,7 +199,7 @@ int main(int argc, char** argv) {
 
     //******************PROVIDERS TO CONTROL SYSTEMS******************************
 
-    //TODO remove this later, after everything is working 
+    //TODO remove this later, after everything is working, don't forget to change te receiving function
     rosunit_x_provider->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::x);
     rosunit_y_provider->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::y);
     rosunit_z_provider->setEmittingChannel((int)ROSUnit_BroadcastData::ros_broadcast_channels::z);
@@ -218,6 +216,7 @@ int main(int argc, char** argv) {
     rosunit_yaw_provider->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
     rosunit_yaw_rate_provider->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
 
+    //TODO remove this later, after everything is working 
     rosunit_x_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     rosunit_y_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
@@ -268,9 +267,7 @@ int main(int argc, char** argv) {
     myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
 
     myROSArm->addCallbackMsgReceiver((MsgReceiver*) myActuationSystem);
-    ROSUnit_uav_control_set_path->addCallbackMsgReceiver((MsgReceiver*)myWaypoint);
-    myROSRestNormSettings->addCallbackMsgReceiver((MsgReceiver*)myWaypoint);
-
+    
     //********************SETTING FLIGHT SCENARIO OUTPUTS***************************
 
     myActuationSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData, (int)HexaActuationSystem::unicast_addresses::unicast_ActuationSystem_commands);
@@ -283,7 +280,7 @@ int main(int argc, char** argv) {
     Pitch_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     Yaw_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     YawRate_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-    myWaypoint->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    
     #ifdef BATTERY_MONITOR
     myBatteryMonitor->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     #endif

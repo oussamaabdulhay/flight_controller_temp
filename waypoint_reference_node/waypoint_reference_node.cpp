@@ -7,7 +7,7 @@
 
 int main(int argc, char **argv){
 
-    ros::init(argc, argv, "providers_node");
+    ros::init(argc, argv, "waypoint_reference_node");
 
     ros::NodeHandle nh;
     ROSUnit_Factory ROSUnit_Factory_main{nh};
@@ -20,7 +20,7 @@ int main(int argc, char **argv){
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "global2inertial/position");
     ROSUnit* rosunit_waypoint_counter = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
-                                                                    ROSUnit_msg_type::ROSUnit_Int,
+                                                                    ROSUnit_msg_type::ROSUnit_Float,
                                                                     "waypoint_reference/counter");
     ROSUnit* rosunit_waypoint_x = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
                                                                     ROSUnit_msg_type::ROSUnit_Float,

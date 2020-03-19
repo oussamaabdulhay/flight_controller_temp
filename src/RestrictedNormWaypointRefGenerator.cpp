@@ -35,11 +35,8 @@ void RestrictedNormWaypointRefGenerator::receiveMsgData(DataMessage* t_msg){
             Waypoints.clear();
         }
     }
-}
-
-void RestrictedNormWaypointRefGenerator::receiveMsgData(DataMessage* t_msg, int t_channel){
-
-    if(t_msg->getType()==msg_type::VECTOR3D){
+    else if(t_msg->getType()==msg_type::VECTOR3D)
+    {
         Vector3DMessage* t_current_pos=(Vector3DMessage*) t_msg;
         Vector3D<double> t_current_pos_vec;
         t_current_pos_vec = t_current_pos->getData();
@@ -64,6 +61,11 @@ void RestrictedNormWaypointRefGenerator::receiveMsgData(DataMessage* t_msg, int 
             }
         }
     }
+}
+
+void RestrictedNormWaypointRefGenerator::receiveMsgData(DataMessage* t_msg, int t_channel){
+
+    
 }
 
 

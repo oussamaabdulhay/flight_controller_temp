@@ -105,6 +105,7 @@ int main(int argc, char **argv){
     CsYawRate_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)rosunit_yaw_rate_provider_pub);
 
     Timer tempo;
+    std::cout  << "###### PROVIDERS NODE ######" "\n";
     while(ros::ok()){
         //tempo.tick();
         ros::spinOnce();

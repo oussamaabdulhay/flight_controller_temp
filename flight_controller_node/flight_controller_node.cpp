@@ -132,7 +132,7 @@ int main(int argc, char** argv) {
     X_ControlSystem->addBlock(MRFT_x);
     X_ControlSystem->addBlock(PV_Ref_x);
 
-    ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, block_frequency::hz100);
+    ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, block_frequency::hz200);
     Pitch_ControlSystem->addBlock(PID_pitch);
     Pitch_ControlSystem->addBlock(MRFT_pitch);
     Pitch_ControlSystem->addBlock(PV_Ref_pitch);
@@ -142,7 +142,7 @@ int main(int argc, char** argv) {
     Y_ControlSystem->addBlock(MRFT_y);
     Y_ControlSystem->addBlock(PV_Ref_y);
 
-    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, block_frequency::hz100);
+    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, block_frequency::hz200);
     Roll_ControlSystem->addBlock(PID_roll);
     Roll_ControlSystem->addBlock(MRFT_roll);
     Roll_ControlSystem->addBlock(PV_Ref_roll);

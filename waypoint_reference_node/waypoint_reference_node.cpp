@@ -49,6 +49,8 @@ int main(int argc, char **argv){
     waypoint_generator->addCallbackMsgReceiver((MsgReceiver*)rosunit_waypoint_z, (int)RestrictedNormWaypointRefGenerator::unicast_addresses::z);
     waypoint_generator->addCallbackMsgReceiver((MsgReceiver*)rosunit_waypoint_yaw, (int)RestrictedNormWaypointRefGenerator::unicast_addresses::yaw);
 
+    std::cout  << "###### WAYPOINT REFERENCE NODE ######" "\n";
+
     while(ros::ok()){
         ros::spinOnce();
     }

@@ -33,6 +33,8 @@ int main(int argc, char **argv){
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)rosunit_g2i_orientation, (int)Global2Inertial::unicast_addresses::uni_Optitrack_heading);
     rosunit_set_height_offset->addCallbackMsgReceiver((MsgReceiver*)rosunit_g2i_position);
 
+    std::cout  << "###### GLOBAL2INERTIAL NODE ######" "\n";
+
     while(ros::ok()){
         ros::spinOnce();
     }

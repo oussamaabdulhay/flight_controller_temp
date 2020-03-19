@@ -176,12 +176,12 @@ int main(int argc, char** argv) {
     ActuationSystem* myActuationSystem = new HexaActuationSystem(actuators);
 
     //***********************************SETTING CONNECTIONS***********************************
-    //========                                                                                =============
-    //|      |----->X_Control_System-->RM_X-->Saturation-->Roll_Control_System-------------->|           |
-    //| USER |----->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System------------->| Actuation |
-    //|      |----->Z_Control_System-------------------------------------------------------->|  System   |
-    //|      |----->Yaw_Control_System-->Saturation--->YawRate_Control_System-->Saturation-->|           |
-    //========                                                                                =============
+    //========                                                                    =============
+    //|      |----->X_Control_System-->RM_X-->Saturation-->Roll_Control_System--->|           |
+    //| USER |----->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System-->| Actuation |
+    //|      |----->Z_Control_System--------------------------------------------->|  System   |
+    //|      |----->Yaw_Control_System-->Saturation--->YawRate_Control_System---->|           |
+    //========                                                                    =============
     
     rosunit_waypoint_x->setEmittingChannel((int)ControlSystem::receiving_channels::ch_reference);
     rosunit_waypoint_y->setEmittingChannel((int)ControlSystem::receiving_channels::ch_reference);
@@ -210,12 +210,7 @@ int main(int argc, char** argv) {
     rosunit_waypoint_yaw->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
     Yaw_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)Yaw_Saturation, (int)ControlSystem::unicast_addresses::unicast_control_system);
     Yaw_Saturation->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
-    YawRate_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)YawRate_Saturation, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
-    YawRate_Saturation->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem);
-
-    //The saturation for YawRate was added because of the spikes that happen on the differentiation of Yaw when it jumps from
-    //PI/2 to -PI/2. The value of 0.3 was based on the observation of the YawRate outputs on an actual flight.
-    //Considering that the output on a normal flight never exceeded 0.25, the value 0.3 was chosen.
+    YawRate_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
 
     //******************PROVIDERS TO CONTROL SYSTEMS******************************
 

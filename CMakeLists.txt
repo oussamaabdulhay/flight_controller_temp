@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   message_generation
+  common_srv
 )
 
 add_message_files(
@@ -37,7 +38,7 @@ generate_messages(
 
 catkin_package(
   INCLUDE_DIRS include
-  CATKIN_DEPENDS roscpp std_msgs message_runtime
+  CATKIN_DEPENDS roscpp std_msgs message_runtime common_srv
 )
 
 include_directories(
@@ -47,7 +48,6 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/include/Navio2/Common
   ${catkin_INCLUDE_DIRS}
 )
-
 
 FILE(GLOB SOURCE_FILES *.hpp *.cpp *.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
@@ -64,3 +64,7 @@ target_link_libraries(providers_node ${catkin_LIBRARIES})
 target_link_libraries(waypoint_reference_node ${catkin_LIBRARIES})
 target_link_libraries(global2inertial_node ${catkin_LIBRARIES})
 
+add_dependencies(flight_controller flight_controller_generate_messages_cpp)
+add_dependencies(providers_node flight_controller_generate_messages_cpp)
+add_dependencies(waypoint_reference_node flight_controller_generate_messages_cpp)
+add_dependencies(global2inertial_node flight_controller_generate_messages_cpp)

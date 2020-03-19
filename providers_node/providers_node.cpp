@@ -21,9 +21,6 @@ int main(int argc, char **argv){
     
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
-    ROSUnit* ROSUnit_set_height_offset = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,ROSUnit_msg_type::ROSUnit_Float,"set_height_offset");
-
-
     ROSUnit* rosunit_x_provider_pub = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "/providers/x");
@@ -45,15 +42,18 @@ int main(int argc, char **argv){
     ROSUnit* rosunit_yaw_rate_provider_pub = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "/providers/yaw_rate");
-
+    ROSUnit* rosunit_g2i_position = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "global2inertial/position");
+    ROSUnit* rosunit_g2i_orientation = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "global2inertial/orientation");
    
     //***********************ADDING SENSORS********************************
-    ROSUnit* myROSOptitrack = new ROSUnit_Optitrack(nh);
     ROSUnit* myROSUnit_Xsens = new ROSUnit_Xsens(nh);
 
     //***********************SETTING PROVIDERS**********************************
     
-    Global2Inertial* myGlobal2Inertial = new Global2Inertial();
     PVConcatenator* CsX_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_x_axis, act_on::pv);
     PVConcatenator* CsY_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_y_axis, act_on::pv);
     PVConcatenator* CsZ_PVConcatenator = new PVConcatenator(PVConcatenator::concatenation_axes::conc_z_axis, act_on::pv);
@@ -71,17 +71,19 @@ int main(int argc, char **argv){
     Differentiator* yawRateFromYaw = new Differentiator(1./OPTITRACK_FREQUENCY);
     yawRateFromYaw->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
     
-    myROSOptitrack->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)velocityFromPosition, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)yawRateFromYaw, (int)Global2Inertial::unicast_addresses::uni_Optitrack_heading);
+    rosunit_g2i_position->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
+    rosunit_g2i_orientation->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
+
+    rosunit_g2i_position->addCallbackMsgReceiver((MsgReceiver*)velocityFromPosition);
+    rosunit_g2i_orientation->addCallbackMsgReceiver((MsgReceiver*)yawRateFromYaw);
     velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator);
     velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator);
     velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator);
     yawRateFromYaw->addCallbackMsgReceiver((MsgReceiver*)CsYawRate_PVConcatenator);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
-    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)wrap_around_yaw, (int)Global2Inertial::unicast_addresses::uni_Optitrack_heading);
+    rosunit_g2i_position->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator);
+    rosunit_g2i_position->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator);
+    rosunit_g2i_position->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator);
+    rosunit_g2i_orientation->addCallbackMsgReceiver((MsgReceiver*)wrap_around_yaw);
     wrap_around_yaw->addCallbackMsgReceiver((MsgReceiver*)CsYaw_PVConcatenator);
     
     myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)CsRoll_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_attitude_rate);
@@ -90,8 +92,7 @@ int main(int argc, char **argv){
     myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)CsPitch_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_orientation);
 
     //TODO after adding G2I
-    //myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)myWaypoint, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos); 
-    //ROSUnit_set_height_offset->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial);
+    //
     
     //******************PROVIDERS TO CONTROL SYSTEMS******************************
 

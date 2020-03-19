@@ -78,11 +78,9 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg)
         yaw_msg.setVector3DMessage(att_vec);
           
         this->emitMsgUnicast(&results_msg, 
-                            Global2Inertial::unicast_addresses::uni_Optitrack_pos,
-                            PVConcatenator::receiving_channels::ch_pv);
+                            Global2Inertial::unicast_addresses::uni_Optitrack_pos);
         this->emitMsgUnicast(&yaw_msg,
-                            Global2Inertial::unicast_addresses::uni_Optitrack_heading,
-                            PVConcatenator::receiving_channels::ch_pv);
+                            Global2Inertial::unicast_addresses::uni_Optitrack_heading);
     
     }
     else if (t_msg->getType()==msg_type::rtkposition){

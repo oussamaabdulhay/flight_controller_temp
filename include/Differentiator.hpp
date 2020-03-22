@@ -14,6 +14,7 @@ private:
     Vector3D<float> _old_vector3d_data;
     Timer timer;
     float _dt;
+    Vector3D<float> diff_values;
     
 public:
     

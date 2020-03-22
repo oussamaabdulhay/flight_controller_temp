@@ -17,10 +17,6 @@ void RestrictedNormWaypointRefGenerator::receiveMsgData(DataMessage* t_msg){
             std::cout << "waypoint Z : " << t_waypoint.position.z << std::endl;
             std::cout << "waypoint Yaw : " << t_waypoint.yaw << std::endl;
             Waypoints.push_back(t_waypoint);
-
-            FloatMsg num_waypoints;
-            num_waypoints.data = Waypoints.size();
-            this->emitMsgUnicastDefault((DataMessage*) &num_waypoints);
         }
     }
     else if(t_msg->getType()==msg_type::RESTNORMREF_SETTINGS)
@@ -60,6 +56,10 @@ void RestrictedNormWaypointRefGenerator::receiveMsgData(DataMessage* t_msg){
                 }
             }
         }
+
+        FloatMsg num_waypoints;
+        num_waypoints.data = Waypoints.size();
+        this->emitMsgUnicastDefault((DataMessage*) &num_waypoints);
     }
 }
 

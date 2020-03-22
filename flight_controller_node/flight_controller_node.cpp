@@ -388,6 +388,7 @@ int main(int argc, char** argv) {
     while(ros::ok()){
         //tempo.tick();
         ros::spinOnce();
+        usleep( 10 );
         //std::cout  << "FC: " << tempo.tockMicroSeconds() << "\n";
         #ifdef BATTERY_MONITOR
         myBatteryMonitor->getVoltageReading();

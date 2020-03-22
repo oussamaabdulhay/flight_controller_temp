@@ -37,6 +37,7 @@ int main(int argc, char **argv){
 
     while(ros::ok()){
         ros::spinOnce();
+        usleep( 10 );
     }
 
     return 0;

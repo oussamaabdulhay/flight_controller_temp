@@ -110,7 +110,7 @@ int main(int argc, char **argv){
         //tempo.tick();
         ros::spinOnce();
         //std::cout  << "Prov: " << tempo.tockMicroSeconds() << "\n";
-        
+        usleep( 10 );
         //rate.sleep();
     }
 

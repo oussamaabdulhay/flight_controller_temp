@@ -83,29 +83,6 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg)
                             Global2Inertial::unicast_addresses::uni_Optitrack_heading);
     
     }
-    else if (t_msg->getType()==msg_type::rtkposition){
-        #ifdef planC_dual_RTK
-        RTKMessagePosition* rtk_msg = ((RTKMessagePosition*)t_msg);
-        #error planC_dual_RTK is not implemented yet
-        //TODO: PlanC is not implemented
-        #elif defined(planB_single_RTK)
-        RTKMessagePosition* rtk_msg = ((RTKMessagePosition*)t_msg);
-        if (rtk_msg->id==1){
-            RotationMatrix3by3 antenna_body_aligner;
-            antenna_body_aligner.Update(last_known_orientation);
-            Vector3D<double> rotated_antenna_position=antenna_body_aligner.TransformVector(antenna_pose);
-            Vector3D<double> t_global_antenna_position=rtk_msg->position;
-            Vector3D<double> t_global_drone_position=t_global_antenna_position-rotated_antenna_position;
-            Vector3D<float> t_inertial_drone_position = transformPoint(t_global_drone_position);
-            PoseStampedMsg results_msg;
-            results_msg.pose.x = t_inertial_drone_position.x;
-            results_msg.pose.y = t_inertial_drone_position.y;
-            results_msg.pose.z = t_inertial_drone_position.z;
-            this->emitMsgUnicastDefault((DataMessage*)&results_msg);
-        }
-        #endif
-        
-    }
     else if (t_msg->getType()==msg_type::FLOAT){
         calib_point1.z = ((FloatMsg*)t_msg)->data;
         std::cout << "NEW HEIGHT OFFSET = " << calib_point1.z << std::endl;

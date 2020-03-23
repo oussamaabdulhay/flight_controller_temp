@@ -8,7 +8,7 @@
 int main(int argc, char **argv){
 
     ros::init(argc, argv, "waypoint_reference_node");
-
+    ros::Rate rate(200);
     ros::NodeHandle nh;
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
@@ -51,9 +51,17 @@ int main(int argc, char **argv){
 
     std::cout  << "###### WAYPOINT REFERENCE NODE ######" "\n";
 
+    Timer tempo;
     while(ros::ok()){
+        tempo.tick();
+
         ros::spinOnce();
-        usleep( 10 );
+        rate.sleep();
+
+        int gone = tempo.tockMicroSeconds();
+        if(gone > 5000) {
+            std::cout  << "WP over 5000us: " << gone << "\n";
+        }
     }
 
     return 0;

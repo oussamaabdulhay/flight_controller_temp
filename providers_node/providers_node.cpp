@@ -17,7 +17,7 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "providers_node");
 
     ros::NodeHandle nh;
-    //ros::Rate rate(120);
+    ros::Rate rate(200);
     
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
@@ -104,14 +104,19 @@ int main(int argc, char **argv){
     CsYaw_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)rosunit_yaw_provider_pub);
     CsYawRate_PVConcatenator->addCallbackMsgReceiver((MsgReceiver*)rosunit_yaw_rate_provider_pub);
 
-    Timer tempo;
     std::cout  << "###### PROVIDERS NODE ######" "\n";
+    
+    Timer tempo;
     while(ros::ok()){
-        //tempo.tick();
+        tempo.tick();
+
         ros::spinOnce();
-        //std::cout  << "Prov: " << tempo.tockMicroSeconds() << "\n";
-        usleep( 10 );
-        //rate.sleep();
+        rate.sleep();
+
+        int gone = tempo.tockMicroSeconds();
+        if(gone > 5000) {
+            std::cout  << "PROV over 5000us: " << gone << "\n";
+        }
     }
 
     return 0;

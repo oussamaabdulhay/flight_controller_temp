@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "flight_controller_node");
 
     ros::NodeHandle nh;
-    //ros::Rate rate(120);
+    ros::Rate rate(200);
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
     
@@ -231,7 +231,7 @@ int main(int argc, char** argv) {
     rosunit_yaw_provider->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
     rosunit_yaw_rate_provider->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
 
-    //TODO remove this later, after everything is working 
+    //This is only needed for the /uav_control/uav_position. Refactor.
     rosunit_x_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     rosunit_y_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
@@ -386,14 +386,15 @@ int main(int argc, char** argv) {
 
     Timer tempo;
     while(ros::ok()){
-        //tempo.tick();
+        tempo.tick();
+
         ros::spinOnce();
-        usleep( 10 );
-        //std::cout  << "FC: " << tempo.tockMicroSeconds() << "\n";
-        #ifdef BATTERY_MONITOR
-        myBatteryMonitor->getVoltageReading();
-        #endif
-        //rate.sleep();
+        rate.sleep();
+
+        int gone = tempo.tockMicroSeconds();
+        if(gone > 5000) {
+            std::cout  << "FC over 5000us: " << gone << "\n";
+        }
     }
 
     return 0;

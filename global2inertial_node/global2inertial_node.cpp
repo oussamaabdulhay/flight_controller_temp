@@ -12,6 +12,7 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "global2inertial_node");
 
     ros::NodeHandle nh;
+    ros::Rate rate(200);
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
     ROSUnit* myROSOptitrack = new ROSUnit_Optitrack(nh);
@@ -35,9 +36,17 @@ int main(int argc, char **argv){
 
     std::cout  << "###### GLOBAL2INERTIAL NODE ######" "\n";
 
+    Timer tempo;
     while(ros::ok()){
+        tempo.tick();
+
         ros::spinOnce();
-        usleep( 10 );
+        rate.sleep();
+
+        int gone = tempo.tockMicroSeconds();
+        if(gone > 5000) {
+            std::cout  << "G2I over 5000us: " << gone << "\n";
+        }
     }
 
     return 0;

@@ -2,7 +2,7 @@
 
 ROSUnit_FloatPub::ROSUnit_FloatPub(std::string t_name, ros::NodeHandle& t_main_handler) : ROSUnit(t_main_handler)
 {
-    m_pub = t_main_handler.advertise<std_msgs::Float32>(t_name, 2, true);
+    m_pub = t_main_handler.advertise<std_msgs::Float32>(t_name, 10, true);
 }
 
 ROSUnit_FloatPub::~ROSUnit_FloatPub()

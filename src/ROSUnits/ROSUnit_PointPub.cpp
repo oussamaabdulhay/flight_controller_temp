@@ -2,7 +2,7 @@
 
 ROSUnit_PointPub::ROSUnit_PointPub(std::string t_name, ros::NodeHandle& t_main_handler) : ROSUnit(t_main_handler)
 {
-    m_pub = t_main_handler.advertise<geometry_msgs::Point>(t_name, 2, true);
+    m_pub = t_main_handler.advertise<geometry_msgs::Point>(t_name, 10, true);
 }
 
 ROSUnit_PointPub::~ROSUnit_PointPub()

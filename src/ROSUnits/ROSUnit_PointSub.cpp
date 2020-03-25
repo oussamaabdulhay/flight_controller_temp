@@ -15,7 +15,7 @@ void(*ROSUnit_PointSub::callbackFunctionPointer[ROSUnit_capacity])(const geometr
 
 ROSUnit_PointSub::ROSUnit_PointSub(std::string t_name, ros::NodeHandle& t_main_handler) : ROSUnit(t_main_handler)
 {
-    m_sub = t_main_handler.subscribe(t_name, 2, ROSUnit_PointSub::callbackFunctionPointer[internal_counter]);
+    m_sub = t_main_handler.subscribe(t_name, 10, ROSUnit_PointSub::callbackFunctionPointer[internal_counter]);
     m_ptr[internal_counter] = this;
     internal_counter++;
 }

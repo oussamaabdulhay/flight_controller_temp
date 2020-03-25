@@ -4,10 +4,10 @@ ROSUnit_Xsens* ROSUnit_Xsens::_instance_ptr = NULL;
 Timer ROSUnit_Xsens::t_pedro;
 
 ROSUnit_Xsens::ROSUnit_Xsens(ros::NodeHandle& t_main_handler) : ROSUnit(t_main_handler){
-    _sub_attitude = t_main_handler.subscribe("filter/quaternion", 10, callbackXsensAttitude);
-    _sub_body_rate = t_main_handler.subscribe("imu/angular_velocity", 10, callbackXsensBodyRate);
+    _sub_attitude = t_main_handler.subscribe("filter/quaternion", 2, callbackXsensAttitude);
+    _sub_body_rate = t_main_handler.subscribe("imu/angular_velocity", 2, callbackXsensBodyRate);
     //_sub_position = t_main_handler.subscribe("filter/positionlla", 1, callbackXsensPosition);
-    _sub_velocity = t_main_handler.subscribe("filter/twist", 10, callbackXsensVelocity);
+    _sub_velocity = t_main_handler.subscribe("filter/twist", 2, callbackXsensVelocity);
     _instance_ptr = this;
 }
 

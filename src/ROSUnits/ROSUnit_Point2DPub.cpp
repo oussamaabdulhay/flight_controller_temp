@@ -2,7 +2,7 @@
 
 ROSUnit_Point2DPub::ROSUnit_Point2DPub(std::string t_name, ros::NodeHandle& t_main_handler) : ROSUnit(t_main_handler)
 {
-    m_pub = t_main_handler.advertise<common_srv::Point2D>(t_name, 10, true);
+    m_pub = t_main_handler.advertise<common_srv::Point2D>(t_name, 2, true);
 }
 
 ROSUnit_Point2DPub::~ROSUnit_Point2DPub()

@@ -13,7 +13,7 @@ void(*ROSUnit_Point2DSub::callbackFunctionPointer[ROSUnit_capacity])(const commo
 
 ROSUnit_Point2DSub::ROSUnit_Point2DSub(std::string t_name, ros::NodeHandle& t_main_handler) : ROSUnit(t_main_handler)
 {
-    m_sub = t_main_handler.subscribe(t_name, 10, ROSUnit_Point2DSub::callbackFunctionPointer[internal_counter]);
+    m_sub = t_main_handler.subscribe(t_name, 2, ROSUnit_Point2DSub::callbackFunctionPointer[internal_counter]);
     m_ptr[internal_counter] = this;
     internal_counter++;
 }

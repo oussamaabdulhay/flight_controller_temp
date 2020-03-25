@@ -23,6 +23,8 @@
 #include "Differentiator.hpp"
 #include "PVConcatenator.hpp"
 #include "WrapAroundFunction.hpp"
+#include <pthread.h>
+#include <sched.h>
 
 #define XSENS_OVER_ROS
 #define OPTITRACK
@@ -34,6 +36,7 @@ const float SATURATION_VALUE_XY = 0.5;
 const float SATURATION_VALUE_YAW = 1.0;
 const float SATURATION_VALUE_YAWRATE = 0.3;
 
+void set_realtime_priority();
 
 int main(int argc, char** argv) {
     //TODO remove SwitchOut Message
@@ -47,7 +50,7 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "flight_controller_node");
 
     ros::NodeHandle nh;
-    ros::Rate rate(200);
+    ros::Rate rate(400);
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
     
@@ -132,7 +135,7 @@ int main(int argc, char** argv) {
     X_ControlSystem->addBlock(MRFT_x);
     X_ControlSystem->addBlock(PV_Ref_x);
 
-    ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, block_frequency::hz200);
+    ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, block_frequency::hz400);
     Pitch_ControlSystem->addBlock(PID_pitch);
     Pitch_ControlSystem->addBlock(MRFT_pitch);
     Pitch_ControlSystem->addBlock(PV_Ref_pitch);
@@ -142,7 +145,7 @@ int main(int argc, char** argv) {
     Y_ControlSystem->addBlock(MRFT_y);
     Y_ControlSystem->addBlock(PV_Ref_y);
 
-    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, block_frequency::hz200);
+    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, block_frequency::hz400);
     Roll_ControlSystem->addBlock(PID_roll);
     Roll_ControlSystem->addBlock(MRFT_roll);
     Roll_ControlSystem->addBlock(PV_Ref_roll);
@@ -384,19 +387,57 @@ int main(int argc, char** argv) {
     ctrl_msg.set_dt(YawRate_ControlSystem->get_dt());
     myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
 
+    set_realtime_priority();
+
     Timer tempo;
     while(ros::ok()){
-        tempo.tick();
+        //tempo.tick();
 
         ros::spinOnce();
         rate.sleep();
 
-        int gone = tempo.tockMicroSeconds();
-        if(gone > 5000) {
-            std::cout  << "FC over 5000us: " << gone << "\n";
-        }
+        // int gone = tempo.tockMicroSeconds();
+        // if(gone > 5000) {
+        //     std::cout  << "FC over 5000us: " << gone << "\n";
+        // }
     }
 
     return 0;
+
+}
+
+void set_realtime_priority(){
+    int ret;
+
+    pthread_t this_thread = pthread_self();
+
+    struct sched_param params;
+
+    params.__sched_priority = sched_get_priority_max(SCHED_FIFO);
+
+    std::cout << "Trying to set thread realtime prio = " << params.__sched_priority << std::endl;
+
+    ret = pthread_setschedparam(this_thread, SCHED_FIFO, &params);
+
+    if (ret != 0){
+        std::cout << "Unsuccessful in setting thread realtime prio" << std::endl;
+        return;
+    }
+
+    int policy = 0;
+
+    ret = pthread_getschedparam(this_thread, &policy, &params);
+    if (ret != 0){
+        std::cout << "Couldn't retrieve reeal-time scheduling parameters" << std::endl;
+        return;
+    }
+
+    if (policy != SCHED_FIFO){
+        std::cout << "Scheduling is NOT SCHED_FIFO!" << std::endl;
+    } else {
+        std::cout << "SCHED_FIFO OK" << std::endl;
+    }
+
+    std::cout << "Thread priority is " << params.__sched_priority << std::endl;
 
 }

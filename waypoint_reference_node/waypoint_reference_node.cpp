@@ -8,8 +8,9 @@
 int main(int argc, char **argv){
 
     ros::init(argc, argv, "waypoint_reference_node");
-    ros::Rate rate(200);
+   
     ros::NodeHandle nh;
+    ros::Rate rate(120);
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
     ROSUnit* rosunit_restricted_norm_settings = new ROSUnit_RestNormSettings(nh);
@@ -53,15 +54,15 @@ int main(int argc, char **argv){
 
     Timer tempo;
     while(ros::ok()){
-        tempo.tick();
+        //tempo.tick();
 
         ros::spinOnce();
         rate.sleep();
 
-        int gone = tempo.tockMicroSeconds();
-        if(gone > 5000) {
-            std::cout  << "WP over 5000us: " << gone << "\n";
-        }
+        // int gone = tempo.tockMicroSeconds();
+        // if(gone > 5000) {
+        //     std::cout  << "WP over 5000us: " << gone << "\n";
+        // }
     }
 
     return 0;

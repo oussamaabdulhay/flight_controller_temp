@@ -53,16 +53,18 @@ int main(int argc, char **argv){
     std::cout  << "###### WAYPOINT REFERENCE NODE ######" "\n";
 
     Timer tempo;
+    int i = 0;
     while(ros::ok()){
-        //tempo.tick();
+        tempo.tick();
 
         ros::spinOnce();
         rate.sleep();
 
-        // int gone = tempo.tockMicroSeconds();
-        // if(gone > 5000) {
-        //     std::cout  << "WP over 5000us: " << gone << "\n";
-        // }
+        int gone = tempo.tockMicroSeconds();
+        if(gone > 9090) {
+            std::cout  << i << " WP: " << gone << "\n";
+        }
+        i++;
     }
 
     return 0;

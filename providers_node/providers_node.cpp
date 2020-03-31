@@ -107,16 +107,18 @@ int main(int argc, char **argv){
     std::cout  << "###### PROVIDERS NODE ######" "\n";
     
     Timer tempo;
+    int i = 0;
     while(ros::ok()){
-        //tempo.tick();
+        tempo.tick();
 
         ros::spinOnce();
         rate.sleep();
 
-        // int gone = tempo.tockMicroSeconds();
-        // if(gone > 5000) {
-        //     std::cout  << "PROV over 5000us: " << gone << "\n";
-        // }
+        int gone = tempo.tockMicroSeconds();
+        if(gone > 2564) {
+             std::cout  << i << " PROV: " << gone << "\n";
+        }
+        i++;
     }
 
     return 0;

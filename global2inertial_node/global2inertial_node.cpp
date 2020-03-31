@@ -37,16 +37,18 @@ int main(int argc, char **argv){
     std::cout  << "###### GLOBAL2INERTIAL NODE ######" "\n";
 
     Timer tempo;
+    int i = 0;
     while(ros::ok()){
-        //tempo.tick();
+        tempo.tick();
 
         ros::spinOnce();
         rate.sleep();
 
-        // int gone = tempo.tockMicroSeconds();
-        // if(gone > 5000) {
-        //     std::cout  << "G2I over 5000us: " << gone << "\n";
-        // }
+        int gone = tempo.tockMicroSeconds();
+        if(gone > 9090) {
+            std::cout  << i <<  " G2I: " << gone << "\n";
+        }
+        i++;
     }
 
     return 0;

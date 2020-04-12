@@ -45,6 +45,20 @@ void ControllerMessage::setMRFTParam(MRFT_parameters t_param){
     
 }
 
+void ControllerMessage::setSMParam(SM_parameters t_param){
+
+    _sm_param.h1 = t_param.h1;
+    _sm_param.h2 = t_param.h2;
+    _sm_param.alpha1 = t_param.alpha1;
+    _sm_param.alpha2 = t_param.alpha2;
+    _sm_param.id = t_param.id;
+    if(t_param.id!=block_id::NULL_ID){
+        _id = t_param.id;
+    }
+    
+}
+
+
 void ControllerMessage::set_dt(float t_dt){
     _mrft_param.dt = t_dt;
     _pid_param.dt = t_dt;

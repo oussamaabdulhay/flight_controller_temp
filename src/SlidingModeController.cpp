@@ -77,19 +77,21 @@ DataMessage* SlidingModeController::runTask(DataMessage* t_msg){
 }
 
 float SlidingModeController::sliding_mode_algorithm(float t_error){
-	double command;
+	double command = 0;
 
     if(-t_error > _h1){
 		command = -_alpha1;
-	}else if(t_error < -_h1){
+	}else if(-t_error < -_h1){
 		command = _alpha1;
 	}
 
 	if(-t_error > _h2){
 		command = -_alpha2;
-	}else if(t_error < -_h2){
+	}else if(-t_error < -_h2){
 		command = _alpha2;
 	}
+
+	//std::cout << "Error: " << t_error << " Command: " << command << std::endl;
 
 	return command;
 

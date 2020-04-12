@@ -148,7 +148,7 @@ int main(int argc, char** argv) {
     ControlSystem* Y_ControlSystem = new ControlSystem(control_system::y, block_frequency::hz120);
     Y_ControlSystem->addBlock(PID_y);
     Y_ControlSystem->addBlock(MRFT_y);
-    X_ControlSystem->addBlock(SM_y);
+    Y_ControlSystem->addBlock(SM_y);
     Y_ControlSystem->addBlock(PV_Ref_y);
 
     ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, block_frequency::hz400);

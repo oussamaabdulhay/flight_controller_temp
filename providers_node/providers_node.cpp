@@ -114,11 +114,11 @@ int main(int argc, char **argv){
         ros::spinOnce();
         rate.sleep();
 
-        int gone = tempo.tockMicroSeconds();
-        if(gone > 2564) {
-             std::cout  << i << " PROV: " << gone << "\n";
-        }
-        i++;
+        // int gone = tempo.tockMicroSeconds();
+        // if(gone > 2564) {
+            //  std::cout  << i << " PROV: " << gone << "\n";
+        // }
+        // i++;
     }
 
     return 0;

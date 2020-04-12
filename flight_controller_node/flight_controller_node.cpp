@@ -25,6 +25,7 @@
 #include "WrapAroundFunction.hpp"
 #include <pthread.h>
 #include <sched.h>
+#include "SlidingModeController.hpp"
 
 #define XSENS_OVER_ROS
 #define OPTITRACK
@@ -119,6 +120,9 @@ int main(int argc, char** argv) {
     Block* MRFT_yaw = new MRFTController(block_id::MRFT_YAW);
     Block* MRFT_yaw_rate = new MRFTController(block_id::MRFT_YAW_RATE);
 
+    Block* SM_x = new SlidingModeController(block_id::SM_X);
+    Block* SM_y = new SlidingModeController(block_id::SM_Y);
+
     Transform_InertialToBody* transform_X_InertialToBody = new Transform_InertialToBody(control_system::x);
     Transform_InertialToBody* transform_Y_InertialToBody = new Transform_InertialToBody(control_system::y);
 
@@ -133,6 +137,7 @@ int main(int argc, char** argv) {
     ControlSystem* X_ControlSystem = new ControlSystem(control_system::x, block_frequency::hz120);
     X_ControlSystem->addBlock(PID_x);
     X_ControlSystem->addBlock(MRFT_x);
+    X_ControlSystem->addBlock(SM_x);
     X_ControlSystem->addBlock(PV_Ref_x);
 
     ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, block_frequency::hz400);
@@ -143,6 +148,7 @@ int main(int argc, char** argv) {
     ControlSystem* Y_ControlSystem = new ControlSystem(control_system::y, block_frequency::hz120);
     Y_ControlSystem->addBlock(PID_y);
     Y_ControlSystem->addBlock(MRFT_y);
+    X_ControlSystem->addBlock(SM_y);
     Y_ControlSystem->addBlock(PV_Ref_y);
 
     ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, block_frequency::hz400);
@@ -259,6 +265,9 @@ int main(int argc, char** argv) {
     myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_pitch);
     myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_yaw);
     myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_yaw_rate);
+
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)SM_x);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)SM_y);
 
     myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_x);
     myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_y);
@@ -386,6 +395,21 @@ int main(int argc, char** argv) {
     ctrl_msg.setMRFTParam(mrft_para_init);
     ctrl_msg.set_dt(YawRate_ControlSystem->get_dt());
     myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
+
+    //***********************SETTING SM INITIAL VALUES*****************************
+
+    SM_parameters sm_para_init;
+
+    sm_para_init.id = block_id::SM_X;
+    ctrl_msg.setSMParam(sm_para_init);
+    ctrl_msg.set_dt(X_ControlSystem->get_dt());
+    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
+
+    sm_para_init.id = block_id::SM_Y;
+    ctrl_msg.setSMParam(sm_para_init);
+    ctrl_msg.set_dt(Y_ControlSystem->get_dt());
+    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
+
 
     set_realtime_priority();
 

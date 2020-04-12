@@ -30,6 +30,6 @@ public:
     block_id getID(){ return _id; }
     float sliding_mode_algorithm(float);
 
-    SlidingModeController(block_id t_id, double t_alpha1, double t_alpha2, double t_h1, double t_h2);
+    SlidingModeController(block_id t_id);
     ~SlidingModeController();
 };

@@ -1,18 +1,8 @@
 #include "SlidingModeController.hpp"
 
-SlidingModeController::SlidingModeController(block_id t_id, double t_alpha1, double t_alpha2, double t_h1, double t_h2) {  
+SlidingModeController::SlidingModeController(block_id t_id) {  
     _controller_type = controller_type::sliding_mode;
 	_id = t_id;
-    _alpha1 = t_alpha1;
-	_alpha2 = t_alpha2;
-	_h1 = t_h1;
-	_h2 = t_h2;
-
-	Logger::getAssignedLogger()->log("SLIDING_MODE SETTINGS: ID_%.0f", static_cast<int>(_id), LoggerLevel::Info);
-	Logger::getAssignedLogger()->log("Alpha1: %.2f", _alpha1, LoggerLevel::Info);
-	Logger::getAssignedLogger()->log("Alpha2: %.2f", _alpha2, LoggerLevel::Info);
-	Logger::getAssignedLogger()->log("H1: %.2f", _h1, LoggerLevel::Info);
-	Logger::getAssignedLogger()->log("H2: %.2f", _h2, LoggerLevel::Info);
 
 }
 
@@ -87,11 +77,20 @@ DataMessage* SlidingModeController::runTask(DataMessage* t_msg){
 }
 
 float SlidingModeController::sliding_mode_algorithm(float t_error){
+	double command;
 
-    if(t_error > _alpha1){
-
+    if(-t_error > _h1){
+		command = -_alpha1;
+	}else if(t_error < -_h1){
+		command = _alpha1;
 	}
 
-	return 0.0;
+	if(-t_error > _h2){
+		command = -_alpha2;
+	}else if(t_error < -_h2){
+		command = _alpha2;
+	}
+
+	return command;
 
 }

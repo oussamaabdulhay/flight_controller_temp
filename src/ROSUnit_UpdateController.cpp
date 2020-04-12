@@ -39,8 +39,16 @@ bool ROSUnit_UpdateController::callbackUpdateController(flight_controller::Updat
     mrft_data.bias = req.controller_parameters.mrft_bias;
     mrft_data.id = _id;
 
+    SM_parameters sm_data;
+    sm_data.alpha1 = req.controller_parameters.sm_alpha1;
+    sm_data.alpha2 = req.controller_parameters.sm_alpha2;
+    sm_data.h1 = req.controller_parameters.sm_h1;
+    sm_data.h2 = req.controller_parameters.sm_h2;
+    sm_data.id = _id;
+    
     _update_controller_msg.setPIDParam(pid_data);
     _update_controller_msg.setMRFTParam(mrft_data);
+    _update_controller_msg.setSMParam(sm_data);
     _instance_ptr->emitMsgUnicastDefault((DataMessage*) &_update_controller_msg);
     
     return true;

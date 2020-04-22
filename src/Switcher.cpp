@@ -63,16 +63,14 @@ void Switcher::receiveMsgData(DataMessage* t_msg, int t_channel){
         ((Reference*)_active_block)->setReferenceValue(float_msg->data);
     
     }else if(t_msg->getType() == msg_type::SWITCHBLOCK){
-        
+
        SwitchBlockMsg* switch_msg = (SwitchBlockMsg*)t_msg;
        block_id block_in_id = static_cast<block_id>(switch_msg->getBlockToSwitchIn());
        block_id block_out_id = static_cast<block_id>(switch_msg->getBlockToSwitchOut());
        Block* block_in=nullptr;
        Block* block_out=nullptr;
-       std::cout << "Switcher SWITCHBLOCK" << std::endl;
        for (_it = _blocks.begin(); _it != _blocks.end(); ++_it){
            block_id this_id = (*_it)->getID();
-           std::cout << "this_id - " << (int)this_id << std::endl;
            if(this_id == block_in_id || this_id == block_out_id){
                if(this_id == block_in_id){
                    block_in = *_it;

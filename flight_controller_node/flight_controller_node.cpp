@@ -414,6 +414,9 @@ int main(int argc, char** argv) {
     ctrl_msg.set_dt(Y_ControlSystem->get_dt());
     myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
 
+    //***********************SETTING PID+MRFT BLOCK*******************************
+
+    rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)PIDplusMRFT_z);
 
     set_realtime_priority();
 

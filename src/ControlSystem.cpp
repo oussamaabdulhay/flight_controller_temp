@@ -22,8 +22,6 @@ ControlSystem::~ControlSystem() {
 
 void ControlSystem::receiveMsgData(DataMessage* t_msg){
     if(t_msg->getType() == msg_type::SWITCHBLOCK){
-        std::cout << "ControlSystem SWITCHBLOCK" << std::endl;
-
         this->emitMsgUnicast((DataMessage*) t_msg, ControlSystem::unicast_addresses::unicast_controller_switcher);
         this->emitMsgUnicast((DataMessage*) t_msg, ControlSystem::unicast_addresses::unicast_reference_switcher);
     }

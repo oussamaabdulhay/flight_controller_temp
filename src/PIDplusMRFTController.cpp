@@ -26,24 +26,29 @@ DataMessage* PIDplusMRFTController::runTask(DataMessage* t_msg){
     FloatMsg* mrft_output_msg = (FloatMsg*)(_mrft_controller->runTask(t_msg));
     
     if(_current_pv >= z_max || _current_pv_dot >= z_dot_max){
-        FloatMsg* pid_output_msg = (FloatMsg*)(_pid_controller->runTask(t_msg));
-        _command_msg.data = pid_output_msg->data + mrft_output_msg->data;
+        std::cout << mrft_output_msg->data << std::endl;
+        _command_msg.data = _last_PID + mrft_output_msg->data;
     }else{
-        _command_msg.data = mrft_output_msg->data;
+        FloatMsg* pid_output_msg = (FloatMsg*)(_pid_controller->runTask(t_msg));
+        _last_PID = pid_output_msg->data;
+        _command_msg.data = _last_PID + mrft_output_msg->data;
     }
 
 	return (DataMessage*) &_command_msg;
-
 }
 
 void PIDplusMRFTController::receiveMsgData(DataMessage* t_msg){
     
+    _pid_controller->receiveMsgData(t_msg);
+    _mrft_controller->receiveMsgData(t_msg);
+    
+}
+
+void PIDplusMRFTController::receiveMsgData(DataMessage* t_msg, int t_channel){
+    // std::cout << "_current_pv " << _current_pv<<std::endl;
     if(t_msg->getType() == msg_type::VECTOR3D){
         Vector3DMessage* provider = (Vector3DMessage*)t_msg;
         _current_pv = provider->getData().x;
         _current_pv_dot = provider->getData().y;
-    }else{
-        _pid_controller->receiveMsgData(t_msg);
-        _mrft_controller->receiveMsgData(t_msg);
     }
 }

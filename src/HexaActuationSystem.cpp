@@ -88,7 +88,7 @@ void HexaActuationSystem::receiveMsgData(DataMessage* t_msg, int t_channel){
             _movements[1] = 0.0;
             _movements[2] = 0.0;
             _movements[3] = 0.0;
-            //this->command();
+            this->command();
         }     
     }
 }

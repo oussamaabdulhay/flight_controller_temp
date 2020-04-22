@@ -46,6 +46,8 @@ void Switcher::receiveMsgData(DataMessage* t_msg){
         Block* block_in=nullptr;
         Block* block_out=nullptr;
 
+        std::cout << "Switcher SWITCHBLOCK" << std::endl;
+
         for (_it = _blocks.begin(); _it != _blocks.end(); ++_it){
 
             block_id this_id = (*_it)->getID();

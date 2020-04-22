@@ -26,6 +26,7 @@
 #include <pthread.h>
 #include <sched.h>
 #include "SlidingModeController.hpp"
+#include "PIDplusMRFTController.hpp"
 
 #define XSENS_OVER_ROS
 #define OPTITRACK
@@ -123,6 +124,8 @@ int main(int argc, char** argv) {
     Block* SM_x = new SlidingModeController(block_id::SM_X);
     Block* SM_y = new SlidingModeController(block_id::SM_Y);
 
+    Block* PIDplusMRFT_z = new PIDplusMRFTController(block_id::PID_MRFT_Z, (PIDController*)PID_z, (MRFTController*)MRFT_z);
+
     Transform_InertialToBody* transform_X_InertialToBody = new Transform_InertialToBody(control_system::x);
     Transform_InertialToBody* transform_Y_InertialToBody = new Transform_InertialToBody(control_system::y);
 
@@ -159,6 +162,7 @@ int main(int argc, char** argv) {
     ControlSystem* Z_ControlSystem = new ControlSystem(control_system::z, block_frequency::hz120);
     Z_ControlSystem->addBlock(PID_z);
     Z_ControlSystem->addBlock(MRFT_z);
+    Z_ControlSystem->addBlock(PIDplusMRFT_z);
     Z_ControlSystem->addBlock(PV_Ref_z);
 
     ControlSystem* Yaw_ControlSystem = new ControlSystem(control_system::yaw, block_frequency::hz120);

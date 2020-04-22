@@ -7,6 +7,7 @@
             },
             "includePath": [
                 "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/ROSUnits/**",
+                "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/**",
                 "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/**",
                 "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ROSUnits/**"
             ],

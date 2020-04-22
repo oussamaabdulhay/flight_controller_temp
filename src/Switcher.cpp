@@ -24,7 +24,7 @@ Block* Switcher::getActiveBlock(){
 void Switcher::receiveMsgData(DataMessage* t_msg){
     
     if(t_msg->getType() == msg_type::control_system){
-
+        
         ControlSystemMessage* control_system_msg = (ControlSystemMessage*)t_msg;
         Block* block_to_add = control_system_msg->getBlockToAdd(); 
         
@@ -35,40 +35,6 @@ void Switcher::receiveMsgData(DataMessage* t_msg){
                 _active_block = block_to_add;
             }
             this->addBlock(block_to_add);
-        }
-
-    }else if(t_msg->getType() == msg_type::SWITCHBLOCK){
-        SwitchBlockMsg* switch_msg = (SwitchBlockMsg*)t_msg;
-
-        block_id block_in_id = static_cast<block_id>(switch_msg->getBlockToSwitchIn());
-        block_id block_out_id = static_cast<block_id>(switch_msg->getBlockToSwitchOut());
-
-        Block* block_in=nullptr;
-        Block* block_out=nullptr;
-
-        std::cout << "Switcher SWITCHBLOCK" << std::endl;
-
-        for (_it = _blocks.begin(); _it != _blocks.end(); ++_it){
-
-            block_id this_id = (*_it)->getID();
-
-            if(this_id == block_in_id || this_id == block_out_id){
-
-                if(this_id == block_in_id){
-                    block_in = *_it;
-                }else if(this_id == block_out_id){
-                    block_out = *_it;
-                }
-            }
-        }
-
-        if(block_in && block_out){
-
-            block_in->switchIn(block_out->switchOut());
-            _active_block = block_in;
-
-        }else{
-            //TODO make logger
         }
     }
 }
@@ -95,7 +61,33 @@ void Switcher::receiveMsgData(DataMessage* t_msg, int t_channel){
     }else if(t_msg->getType() == msg_type::FLOAT){ //ch_reference, no need for checks because it's the only FLOAT msg.
         FloatMsg* float_msg = (FloatMsg*)t_msg;
         ((Reference*)_active_block)->setReferenceValue(float_msg->data);
-    }
+    
+    }else if(t_msg->getType() == msg_type::SWITCHBLOCK){
+        
+       SwitchBlockMsg* switch_msg = (SwitchBlockMsg*)t_msg;
+       block_id block_in_id = static_cast<block_id>(switch_msg->getBlockToSwitchIn());
+       block_id block_out_id = static_cast<block_id>(switch_msg->getBlockToSwitchOut());
+       Block* block_in=nullptr;
+       Block* block_out=nullptr;
+       std::cout << "Switcher SWITCHBLOCK" << std::endl;
+       for (_it = _blocks.begin(); _it != _blocks.end(); ++_it){
+           block_id this_id = (*_it)->getID();
+           std::cout << "this_id - " << (int)this_id << std::endl;
+           if(this_id == block_in_id || this_id == block_out_id){
+               if(this_id == block_in_id){
+                   block_in = *_it;
+               }else if(this_id == block_out_id){
+                   block_out = *_it;
+               }
+           }
+       }
+       if(block_in && block_out){
+           block_in->switchIn(block_out->switchOut());
+           _active_block = block_in;
+       }else{
+           //TODO make logger
+       }
+   }
 }
 
 

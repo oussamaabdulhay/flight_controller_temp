@@ -26,10 +26,6 @@ void ControllerMessage::setPIDParam(PID_parameters t_param){
     _pid_param.anti_windup = t_param.anti_windup;
     _pid_param.en_pv_derivation = t_param.en_pv_derivation;
     _pid_param.id = t_param.id; //TODO check if this is needed
-    if(t_param.id!=block_id::NULL_ID){
-        _id = t_param.id;
-    }
-    
     
 }
 
@@ -39,10 +35,7 @@ void ControllerMessage::setMRFTParam(MRFT_parameters t_param){
     _mrft_param.relay_amp = t_param.relay_amp;
     _mrft_param.bias = t_param.bias;
     _mrft_param.id = t_param.id;
-    if(t_param.id!=block_id::NULL_ID){
-        _id = t_param.id;
-    }
-    
+
 }
 
 void ControllerMessage::setSMParam(SM_parameters t_param){
@@ -52,9 +45,6 @@ void ControllerMessage::setSMParam(SM_parameters t_param){
     _sm_param.alpha1 = t_param.alpha1;
     _sm_param.alpha2 = t_param.alpha2;
     _sm_param.id = t_param.id;
-    if(t_param.id!=block_id::NULL_ID){
-        _id = t_param.id;
-    }
     
 }
 

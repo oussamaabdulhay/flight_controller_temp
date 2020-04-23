@@ -27,10 +27,10 @@ void MRFTController::receiveMsgData(DataMessage* t_msg){
 
 	if(t_msg->getType() == msg_type::UPDATECONTROLLER){
 		ControllerMessage* mrft_msg = (ControllerMessage*)t_msg;
-		MRFT_parameters _params = mrft_msg->getMRFTParam();
+		MRFT_parameters params = mrft_msg->getMRFTParam();
 
-		if(mrft_msg->getID() == this->_id){		
-			this->initialize(&_params);	
+		if(params.id == this->_id){		
+			this->initialize(&params);	
 		}
 		
 	}else if(t_msg->getType() == msg_type::INTEGER){

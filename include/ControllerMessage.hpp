@@ -9,7 +9,6 @@ class ControllerMessage : public DataMessage{
 
 private:
     msg_type _type;
-    block_id _id;
     PID_parameters _pid_param;
     MRFT_parameters _mrft_param;
     SM_parameters _sm_param;
@@ -26,7 +25,6 @@ public:
     MRFT_parameters getMRFTParam(){ return _mrft_param; }
     PID_parameters getPIDParam(){ return _pid_param; }
     SM_parameters getSMParam(){ return _sm_param; }
-    block_id getID() { return _id; };
 
     ControllerMessage();
     ~ControllerMessage();

@@ -26,8 +26,8 @@ DataMessage* PIDplusMRFTController::runTask(DataMessage* t_msg){
     FloatMsg* mrft_output_msg = (FloatMsg*)(_mrft_controller->runTask(t_msg));
     
     if(_current_pv >= z_max || _current_pv_dot >= z_dot_max){
-        std::cout << mrft_output_msg->data << std::endl;
         _command_msg.data = _last_PID + mrft_output_msg->data;
+        
     }else{
         FloatMsg* pid_output_msg = (FloatMsg*)(_pid_controller->runTask(t_msg));
         _last_PID = pid_output_msg->data;

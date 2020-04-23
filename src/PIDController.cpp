@@ -26,9 +26,8 @@ void PIDController::receiveMsgData(DataMessage* t_msg){
 	if(t_msg->getType() == msg_type::UPDATECONTROLLER){
 		ControllerMessage* pid_msg = (ControllerMessage*)t_msg;
 		PID_parameters params = pid_msg->getPIDParam();
-		
-		if(pid_msg->getID() == this->_id){		
-			this->initialize(&params);	
+		if(params.id == this->_id){		
+			this->update_params(&params);	
 		}
 		
 	}else if(t_msg->getType() == msg_type::INTEGER){
@@ -60,8 +59,46 @@ void PIDController::reset(){
 	accum_I = 0;
 }
 
+void PIDController::update_params(PID_parameters* para){
+    
+	PID_parameters tmp_parameters;
+	tmp_parameters = *para; 
+
+	if(tmp_parameters.kp >= 0.0){
+		_parameters.kp = tmp_parameters.kp;
+	}
+	if(tmp_parameters.ki >= 0.0){
+		_parameters.ki = tmp_parameters.ki;
+	}
+	if(tmp_parameters.kd >= 0.0){
+		_parameters.kd = tmp_parameters.kd;
+	}
+	if(tmp_parameters.kdd >= 0.0){
+		_parameters.kdd = tmp_parameters.kdd;
+	}
+	if(tmp_parameters.en_pv_derivation >= 0.0){
+		_parameters.en_pv_derivation = tmp_parameters.en_pv_derivation;
+	}
+	if(tmp_parameters.anti_windup >= 0.0){
+		_parameters.anti_windup = tmp_parameters.anti_windup;
+	}
+
+
+	set_internal_sw(_parameters);
+	
+	Logger::getAssignedLogger()->log("PID SETTINGS: ID_%.0f", static_cast<int>(_parameters.id), LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Kp Term: %.3f", _parameters.kp, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Ki Term: %.3f", _parameters.ki, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Kd Term: %.3f", _parameters.kd, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Kdd Term: %.3f", _parameters.kdd, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Anti Windup Term: %.3f", _parameters.anti_windup, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("en_pv_derivation Term: %.0f", static_cast<int>(_parameters.en_pv_derivation), LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("dt: %.6f", _dt, LoggerLevel::Info);
+}
+
+
 // Start of Chehadeh's Code
-void PIDController::set_internal_sw(PID_parameters pid_para_x){ //This checks input parameters. If Kd or Ki<0 it means we do not use them
+void PIDController::set_internal_sw(PID_parameters pid_para_x){ //This checks input _parameters. If Kd or Ki<0 it means we do not use them
 	i_term = !(pid_para_x.ki <= 0);
 	d_term = !(pid_para_x.kd <= 0);
 	dd_term= !(pid_para_x.kdd <= 0);
@@ -72,23 +109,23 @@ void PIDController::set_internal_sw(PID_parameters pid_para_x){ //This checks in
 	}
 }
 
-void PIDController::initialize(void* para){ //Refer to example 1 on how to initialize
+void PIDController::initialize(PID_parameters para){ //Refer to example 1 on how to initialize
 	
-	parameters = *((PID_parameters*)para); //TODO: Revise parameters scope
-	set_internal_sw(parameters);
+	_parameters = para; //TODO: Revise _parameters scope
+	set_internal_sw(_parameters);
 	accum_u = 0; //This is important as it resets NaN condition
 	accum_I = 0;
 	prev_err = 0;
 	prev2_err = 0;
 	prev_pv_rate = 0;
 	
-	Logger::getAssignedLogger()->log("PID SETTINGS: ID_%.0f", static_cast<int>(parameters.id), LoggerLevel::Info);
-	Logger::getAssignedLogger()->log("Kp Term: %.3f", parameters.kp, LoggerLevel::Info);
-	Logger::getAssignedLogger()->log("Ki Term: %.3f", parameters.ki, LoggerLevel::Info);
-	Logger::getAssignedLogger()->log("Kd Term: %.3f", parameters.kd, LoggerLevel::Info);
-	Logger::getAssignedLogger()->log("Kdd Term: %.3f", parameters.kdd, LoggerLevel::Info);
-	Logger::getAssignedLogger()->log("Anti Windup Term: %.3f", parameters.anti_windup, LoggerLevel::Info);
-	Logger::getAssignedLogger()->log("en_pv_derivation Term: %.0f", static_cast<int>(parameters.en_pv_derivation), LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("PID SETTINGS: ID_%.0f", static_cast<int>(_parameters.id), LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Kp Term: %.3f", _parameters.kp, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Ki Term: %.3f", _parameters.ki, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Kd Term: %.3f", _parameters.kd, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Kdd Term: %.3f", _parameters.kdd, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("Anti Windup Term: %.3f", _parameters.anti_windup, LoggerLevel::Info);
+	Logger::getAssignedLogger()->log("en_pv_derivation Term: %.0f", static_cast<int>(_parameters.en_pv_derivation), LoggerLevel::Info);
 	Logger::getAssignedLogger()->log("dt: %.6f", _dt, LoggerLevel::Info);
 
 }
@@ -96,41 +133,41 @@ void PIDController::initialize(void* para){ //Refer to example 1 on how to initi
 float PIDController::pid_direct(float err, float pv_first, float pv_second) { //Arbitrary large default value for pv_rate
 	float u = 0;
 	// ************************** P-term ***************************
-	u = err *parameters.kp;
+	u = err *_parameters.kp;
 	// ************************** I-term ***************************
 	if (i_term)//&& os::is_flying) 
 	{
 		if (en_anti_windup) { //$$$$$$$$$$$$$$$$$$$$ TODO: Optimize! $$$$$$$$$$$$$$$$$$$$$
-			if (fabs(accum_I) < parameters.anti_windup) {
-				accum_I += parameters.ki*err*_dt;
+			if (fabs(accum_I) < _parameters.anti_windup) {
+				accum_I += _parameters.ki*err*_dt;
 			}
 			else {
-				//float buff_I = accum_I + parameters.ki*err*_dt;
-				//if (abs(buff_I) < parameters.anti_windup) {
+				//float buff_I = accum_I + _parameters.ki*err*_dt;
+				//if (abs(buff_I) < _parameters.anti_windup) {
 				//	accum_I = buff_I;
 				//}
 				if (((accum_I > 0) && (err < 0))||((accum_I < 0) && (err > 0))) {
-					accum_I += parameters.ki*err*_dt;
+					accum_I += _parameters.ki*err*_dt;
 				}
 			}
 		}
 		else {
-			accum_I += parameters.ki*err*_dt;
+			accum_I += _parameters.ki*err*_dt;
 		}
 	}
 	u += accum_I;
 	// ************************** D-term ***************************
 	if (d_term) {
 		if (en_pv_derivation) {
-			u += parameters.kd*(pv_first);
+			u += _parameters.kd*(pv_first);
 		}
 		else {
-			u += parameters.kd*(err - prev_err) / _dt;
+			u += _parameters.kd*(err - prev_err) / _dt;
 		}
 	}
 	// ************************* DD-term ***************************
 	if (dd_term) {
-		u+= parameters.kdd*(-pv_second);
+		u+= _parameters.kdd*(-pv_second);
 	}
 	prev_err = err;
 	return u;
@@ -140,25 +177,25 @@ float PIDController::pid_inc(float err, float pv_first,float pv_second) { //Arbi
 	static int ctr = 0;
 	ctr++;
 	// ************************** P-term ***************************
-	accum_u += (err - prev_err)*parameters.kp;
+	accum_u += (err - prev_err)*_parameters.kp;
 	// ************************** I-term ***************************
 	if (i_term)//&& os::is_flying) 
 	{
 		if (en_anti_windup) { //$$$$$$$$$$$$$$$$$$$$ TODO: Optimize! $$$$$$$$$$$$$$$$$$$$$
-			if (fabs(accum_u)<parameters.anti_windup)
-				accum_u += parameters.ki*err*_dt;//os::get_dt()
+			if (fabs(accum_u)<_parameters.anti_windup)
+				accum_u += _parameters.ki*err*_dt;//os::get_dt()
 		}
 		else {
-			accum_u += parameters.ki*err*_dt;
+			accum_u += _parameters.ki*err*_dt;
 		}
 	}
 	// ************************** D-term ***************************
 	if (d_term) {
 		if (en_pv_derivation) {
-			accum_u += parameters.kd*(-pv_first + prev_pv_rate);
+			accum_u += _parameters.kd*(-pv_first + prev_pv_rate);
 		}
 		else {
-			accum_u += parameters.kd*(-err + 2 * prev_err - prev2_err) / _dt;
+			accum_u += _parameters.kd*(-err + 2 * prev_err - prev2_err) / _dt;
 		}
 	}
 	prev_pv_rate = pv_first;

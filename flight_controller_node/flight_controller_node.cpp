@@ -254,24 +254,24 @@ int main(int argc, char** argv) {
     rosunit_yaw_rate_provider->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
 
     //***********************SETTING FLIGHT SCENARIO INPUTS****************************
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_x);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_y);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_z);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_roll);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_pitch);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_yaw);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_yaw_rate);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_x, (int)ROSUnit_UpdateController::unicast_addresses::pid);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_y, (int)ROSUnit_UpdateController::unicast_addresses::pid);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_z, (int)ROSUnit_UpdateController::unicast_addresses::pid);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_roll, (int)ROSUnit_UpdateController::unicast_addresses::pid);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_pitch, (int)ROSUnit_UpdateController::unicast_addresses::pid);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_yaw, (int)ROSUnit_UpdateController::unicast_addresses::pid);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)PID_yaw_rate, (int)ROSUnit_UpdateController::unicast_addresses::pid);
 
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_x);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_y);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_z);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_roll);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_pitch);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_yaw);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_yaw_rate);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_x, (int)ROSUnit_UpdateController::unicast_addresses::mrft);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_y, (int)ROSUnit_UpdateController::unicast_addresses::mrft);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_z, (int)ROSUnit_UpdateController::unicast_addresses::mrft);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_roll, (int)ROSUnit_UpdateController::unicast_addresses::mrft);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_pitch, (int)ROSUnit_UpdateController::unicast_addresses::mrft);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_yaw, (int)ROSUnit_UpdateController::unicast_addresses::mrft);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)MRFT_yaw_rate, (int)ROSUnit_UpdateController::unicast_addresses::mrft);
 
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)SM_x);
-    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)SM_y);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)SM_x, (int)ROSUnit_UpdateController::unicast_addresses::sm);
+    myROSUpdateController->addCallbackMsgReceiver((MsgReceiver*)SM_y, (int)ROSUnit_UpdateController::unicast_addresses::sm);
 
     myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_x);
     myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_y);
@@ -329,38 +329,38 @@ int main(int argc, char** argv) {
     pid_para_init.id = block_id::PID_X;
     ctrl_msg.setPIDParam(pid_para_init);
     ctrl_msg.set_dt(X_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
+    ((PIDController*)PID_x)->initialize(ctrl_msg.getPIDParam());
 
     pid_para_init.id = block_id::PID_Y;
     ctrl_msg.setPIDParam(pid_para_init);
     ctrl_msg.set_dt(Y_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
+    ((PIDController*)PID_y)->initialize(ctrl_msg.getPIDParam());
 
     pid_para_init.id = block_id::PID_Z;
     ctrl_msg.setPIDParam(pid_para_init);
     ctrl_msg.set_dt(Z_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
-
+    ((PIDController*)PID_z)->initialize(ctrl_msg.getPIDParam());
+    
     pid_para_init.id = block_id::PID_ROLL;
     ctrl_msg.setPIDParam(pid_para_init);
     ctrl_msg.set_dt(Roll_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
+    ((PIDController*)PID_roll)->initialize(ctrl_msg.getPIDParam());
 
     pid_para_init.id = block_id::PID_PITCH;
     ctrl_msg.setPIDParam(pid_para_init);
     ctrl_msg.set_dt(Pitch_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
-
+    ((PIDController*)PID_pitch)->initialize(ctrl_msg.getPIDParam());
+    
     pid_para_init.id = block_id::PID_YAW;
     ctrl_msg.setPIDParam(pid_para_init);
     ctrl_msg.set_dt(Yaw_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
-
+    ((PIDController*)PID_yaw)->initialize(ctrl_msg.getPIDParam());
+    
     pid_para_init.id = block_id::PID_YAW_RATE;
     ctrl_msg.setPIDParam(pid_para_init);
     ctrl_msg.set_dt(YawRate_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
-
+    ((PIDController*)PID_yaw_rate)->initialize(ctrl_msg.getPIDParam());
+    
     //***********************SETTING MRFT INITIAL VALUES*****************************
 
     MRFT_parameters mrft_para_init;
@@ -368,37 +368,37 @@ int main(int argc, char** argv) {
     mrft_para_init.id = block_id::MRFT_X;
     ctrl_msg.setMRFTParam(mrft_para_init);
     ctrl_msg.set_dt(X_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emitMsgUnicast((DataMessage*) &ctrl_msg, (int)ROSUnit_UpdateController::unicast_addresses::mrft);
 
     mrft_para_init.id = block_id::MRFT_Y;
     ctrl_msg.setMRFTParam(mrft_para_init);
     ctrl_msg.set_dt(Y_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emitMsgUnicast((DataMessage*) &ctrl_msg, (int)ROSUnit_UpdateController::unicast_addresses::mrft);
 
     mrft_para_init.id = block_id::MRFT_Z;
     ctrl_msg.setMRFTParam(mrft_para_init);
     ctrl_msg.set_dt(Z_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emitMsgUnicast((DataMessage*) &ctrl_msg, (int)ROSUnit_UpdateController::unicast_addresses::mrft);
 
     mrft_para_init.id = block_id::MRFT_ROLL;
     ctrl_msg.setMRFTParam(mrft_para_init);
     ctrl_msg.set_dt(Roll_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emitMsgUnicast((DataMessage*) &ctrl_msg, (int)ROSUnit_UpdateController::unicast_addresses::mrft);
 
     mrft_para_init.id = block_id::MRFT_PITCH;
     ctrl_msg.setMRFTParam(mrft_para_init);
     ctrl_msg.set_dt(Pitch_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emitMsgUnicast((DataMessage*) &ctrl_msg, (int)ROSUnit_UpdateController::unicast_addresses::mrft);
 
     mrft_para_init.id = block_id::MRFT_YAW;
     ctrl_msg.setMRFTParam(mrft_para_init);
     ctrl_msg.set_dt(Yaw_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emitMsgUnicast((DataMessage*) &ctrl_msg, (int)ROSUnit_UpdateController::unicast_addresses::mrft);
 
     mrft_para_init.id = block_id::MRFT_YAW_RATE;
     ctrl_msg.setMRFTParam(mrft_para_init);
     ctrl_msg.set_dt(YawRate_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emitMsgUnicast((DataMessage*) &ctrl_msg, (int)ROSUnit_UpdateController::unicast_addresses::mrft);
 
     //***********************SETTING SM INITIAL VALUES*****************************
 
@@ -407,12 +407,12 @@ int main(int argc, char** argv) {
     sm_para_init.id = block_id::SM_X;
     ctrl_msg.setSMParam(sm_para_init);
     ctrl_msg.set_dt(X_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emitMsgUnicast((DataMessage*) &ctrl_msg, (int)ROSUnit_UpdateController::unicast_addresses::sm);
 
     sm_para_init.id = block_id::SM_Y;
     ctrl_msg.setSMParam(sm_para_init);
     ctrl_msg.set_dt(Y_ControlSystem->get_dt());
-    myROSUpdateController->emitMsgUnicastDefault((DataMessage*) &ctrl_msg);
+    myROSUpdateController->emitMsgUnicast((DataMessage*) &ctrl_msg, (int)ROSUnit_UpdateController::unicast_addresses::sm);
 
     //***********************SETTING PID+MRFT BLOCK*******************************
 

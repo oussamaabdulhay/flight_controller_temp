@@ -12,7 +12,9 @@ find_package(catkin REQUIRED COMPONENTS
 
 add_message_files(
   FILES
-  Controller_param.msg
+  PID_param.msg
+  MRFT_param.msg
+  SM_param.msg
   Waypoint.msg
   Info.msg
 )
@@ -20,7 +22,9 @@ add_message_files(
 add_service_files(
   FILES
   Arm.srv
-  Update_Controller.srv
+  Update_Controller_PID.srv
+  Update_Controller_MRFT.srv
+  Update_Controller_SM.srv
   Reset_Controller.srv
   Update_Pose_Reference.srv
   Update_X_Reference.srv

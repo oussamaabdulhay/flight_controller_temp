@@ -24,10 +24,10 @@ void SlidingModeController::receiveMsgData(DataMessage* t_msg){
 
 	if(t_msg->getType() == msg_type::UPDATECONTROLLER){
 		ControllerMessage* sm_msg = (ControllerMessage*)t_msg;
-		SM_parameters _params = sm_msg->getSMParam();
+		SM_parameters params = sm_msg->getSMParam();
 
-		if(sm_msg->getID() == this->_id){		
-			this->initialize(&_params);	
+		if(params.id == this->_id){		
+			this->initialize(&params);	
 		}
 
 	}else if(t_msg->getType() == msg_type::INTEGER){

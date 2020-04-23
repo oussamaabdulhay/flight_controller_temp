@@ -22,7 +22,7 @@ class PIDController : public Controller{
         ButterFilter_2nd_200Hz _filter;
         float _filter_y;
         //Chehadeh's code
-        PID_parameters parameters;
+        PID_parameters _parameters;
         bool i_term, d_term, dd_term; //Comparing against booleans is faster
         float _dt;
 	    bool en_pv_derivation = true, en_anti_windup = false;
@@ -32,11 +32,12 @@ class PIDController : public Controller{
     public:
         //Chehadeh's code
         float prev_err = 0, prev2_err = 0, prev_pv_rate = 0, accum_u = 0, accum_I = 0;
-        void initialize(void*);
+        void initialize(PID_parameters);
         float pid_inc(float err, float pv_first, float pv_second=-1);
         float pid_direct(float err, float pv_first, float pv_second=-1);
         void set_I_term(float);
         //---------------
+        void update_params(PID_parameters*);
         enum receiving_channels {ch_update, ch_reset};
         void switchIn(DataMessage*);
         DataMessage* switchOut();

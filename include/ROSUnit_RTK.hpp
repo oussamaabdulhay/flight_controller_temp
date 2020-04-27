@@ -2,10 +2,10 @@
 #include "ros/ros.h"
 #include <sensor_msgs/NavSatFix.h>
 #include <geometry_msgs/TwistStamped.h>
-#include "ROSUnit.hpp"
-#include "Vector3D.hpp"
+#include "common_srv/ROSUnit.hpp"
+#include "common_srv/Vector3D.hpp"
 #include "common_types.hpp"
-#include "Vector3DMessage.hpp"
+#include "common_srv/Vector3DMessage.hpp"
 #include "Global2Inertial.hpp"
 
 class ROSUnit_RTK : public ROSUnit{

@@ -1,7 +1,8 @@
 #pragma once
-#include "MsgEmitter.hpp"
-#include "MsgReceiver.hpp"
-#include "Vector3DMessage.hpp"
+#include "common_srv/MsgEmitter.hpp"
+#include "common_srv/MsgReceiver.hpp"
+#include "common_srv/Vector3DMessage.hpp"
+#include "common_types.hpp"
 #include <atomic>
 
 class PVConcatenator : public MsgEmitter, public MsgReceiver{

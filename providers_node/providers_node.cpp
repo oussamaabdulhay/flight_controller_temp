@@ -1,6 +1,6 @@
 #include "ros/ros.h"
 #include <iostream>
-#include "ROSUnit_Factory.hpp"
+#include "common_srv/ROSUnit_Factory.hpp"
 #include "std_logger.hpp"
 #include "Global2Inertial.hpp"
 #include "PVConcatenator.hpp"
@@ -8,7 +8,7 @@
 #include "WrapAroundFunction.hpp"
 #include "ROSUnit_Optitrack.hpp"
 #include "ROSUnit_Xsens.hpp"
-#include "Timer.hpp"
+#include "common_srv/Timer.hpp"
 
 const int OPTITRACK_FREQUENCY = 120;
 

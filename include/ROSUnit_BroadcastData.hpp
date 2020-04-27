@@ -1,16 +1,16 @@
 #pragma once
-#include "ROSUnit.hpp"
+#include "common_srv/ROSUnit.hpp"
 
 #include <geometry_msgs/PointStamped.h>
 #include <geometry_msgs/Point.h>
 #include <std_msgs/Float64MultiArray.h>
 #include <flight_controller/Info.h>
 #include <vector>
-#include "Vector3DMessage.hpp"
-#include "FloatMsg.hpp"
-#include "IntegerMsg.hpp"
-#include "BooleanMsg.hpp"
-#include "VectorDoubleMsg.hpp"
+#include "common_srv/Vector3DMessage.hpp"
+#include "common_srv/FloatMsg.hpp"
+#include "common_srv/IntegerMsg.hpp"
+#include "common_srv/BooleanMsg.hpp"
+#include "common_srv/VectorDoubleMsg.hpp"
 
 //TODO refactor all msgs
 

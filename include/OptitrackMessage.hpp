@@ -1,6 +1,6 @@
 #pragma once
-#include "DataMessage.hpp"
-#include "Vector3D.hpp"
+#include "common_srv/DataMessage.hpp"
+#include "common_srv/Vector3D.hpp"
 #include "Quaternion.hpp"
 
 class OptitrackMessage : public DataMessage{

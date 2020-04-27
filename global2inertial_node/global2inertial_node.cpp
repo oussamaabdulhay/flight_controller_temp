@@ -1,6 +1,6 @@
 #include "ros/ros.h"
 #include <iostream>
-#include "ROSUnit_Factory.hpp"
+#include "common_srv/ROSUnit_Factory.hpp"
 #include "std_logger.hpp"
 #include "RestrictedNormWaypointRefGenerator.hpp"
 #include "ROSUnit_RestNormSettings.hpp"

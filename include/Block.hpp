@@ -1,8 +1,8 @@
 #pragma once
 #include "common_types.hpp"
 #include <iostream>
-#include "DataMessage.hpp"
-#include "MsgReceiver.hpp"
+#include "common_srv/DataMessage.hpp"
+#include "common_srv/MsgReceiver.hpp"
 
 class Block : public MsgReceiver{   //TODO check MsgEmitter MsgReceiver
 

@@ -1,15 +1,15 @@
 #pragma once
 #include "Switcher.hpp"
-#include "MsgEmitter.hpp"
-#include "MsgReceiver.hpp"
+#include "common_srv/MsgEmitter.hpp"
+#include "common_srv/MsgReceiver.hpp"
 #include <vector>
 #include "ControlSystemMessage.hpp"
 #include "PID_values.hpp"
 #include "SwitchBlockMsg.hpp"
-#include "Timer.hpp"
-#include "DoubleMsg.hpp"
+#include "common_srv/Timer.hpp"
+#include "common_srv/PosesMsg.hpp"
 #include "ROSUnit_BroadcastData.hpp"
-#include "VectorDoubleMsg.hpp"
+#include "common_srv/VectorDoubleMsg.hpp"
 
 class Switcher;
 class ControlSystem : public MsgEmitter, public MsgReceiver{

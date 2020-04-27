@@ -1,7 +1,9 @@
 #pragma once
-#include "Vector3DMessage.hpp"
-#include "MsgEmitter.hpp"
+#include "common_srv/Vector3DMessage.hpp"
+#include "common_srv/MsgEmitter.hpp"
 #include "XSensMessage.hpp"
+#include "common_types.hpp"
+
 class XSens_IMU : public MsgReceiver, public MsgEmitter{
 
 private:

@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "Vector3D.hpp"
+#include "common_srv/Vector3D.hpp"
 
 enum sens_type {ACCELEROMETER = 0, GYROSCOPE = 1, MAGNETOMETER = 2};
 enum setting_type {FSR = 0, SENS = 1, SAMPLERATE = 2, LPF = 3};

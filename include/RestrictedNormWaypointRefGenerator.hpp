@@ -1,13 +1,13 @@
 #pragma once
-#include "MsgEmitter.hpp"
-#include "MsgReceiver.hpp"
-#include "Vector3D.hpp"
+#include "common_srv/MsgEmitter.hpp"
+#include "common_srv/MsgReceiver.hpp"
+#include "common_srv/Vector3D.hpp"
 #include "RestrictedNormRefSettingsMsg.hpp"
-#include "PosesMsg.hpp"
+#include "common_srv/PosesMsg.hpp"
 #include <vector>
 #include "ControlSystem.hpp"
 #include "Waypoint.hpp"
-#include "DoubleMsg.hpp"
+#include "common_srv/PosesMsg.hpp"
 
 class RestrictedNormWaypointRefGenerator : public MsgEmitter, public MsgReceiver{
 

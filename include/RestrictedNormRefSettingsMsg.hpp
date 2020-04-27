@@ -1,5 +1,5 @@
 #pragma once
-#include "DataMessage.hpp"
+#include "common_srv/DataMessage.hpp"
 class RestrictedNormRefSettingsMsg : public DataMessage {
 
 private:

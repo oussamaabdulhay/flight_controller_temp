@@ -2,8 +2,8 @@
 #include "Controller.hpp"
 #include "PIDController.hpp"
 #include "MRFTController.hpp"
-#include "Vector3DMessage.hpp"
-#include "FloatMsg.hpp"
+#include "common_srv/Vector3DMessage.hpp"
+#include "common_srv/FloatMsg.hpp"
 
 class PIDplusMRFTController : public Controller{
 

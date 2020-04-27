@@ -1,9 +1,9 @@
 #pragma once
 #include "ActuationSystem.hpp"
-#include "BooleanMsg.hpp"
+#include "common_srv/BooleanMsg.hpp"
 #include <pthread.h>
 #include "ROSUnit_BroadcastData.hpp"
-#include "VectorDoubleMsg.hpp"
+#include "common_srv/VectorDoubleMsg.hpp"
 #include <vector>
 
 // GEOMETRY

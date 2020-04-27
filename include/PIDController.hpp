@@ -3,14 +3,14 @@
 #include <math.h>
 #include "ControllerMessage.hpp"
 #include "PID_values.hpp"
-#include "FloatMsg.hpp"
+#include "common_srv/FloatMsg.hpp"
 #include "Controller.hpp"
-#include "Vector3DMessage.hpp"
-#include "FloatMsg.hpp"
+#include "common_srv/Vector3DMessage.hpp"
+#include "common_srv/FloatMsg.hpp"
 #include "ButterFilter_2nd_200Hz.hpp"
 #include "SwitchOutMsg.hpp"
 #include "logger.hpp"
-#include "IntegerMsg.hpp"
+#include "common_srv/IntegerMsg.hpp"
 
 class PIDController : public Controller{
 

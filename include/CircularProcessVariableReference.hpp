@@ -1,8 +1,8 @@
 #pragma once
 #include "Reference.hpp"
-#include "FloatMsg.hpp"
-#include "Vector3D.hpp"
-#include "Vector3DMessage.hpp"
+#include "common_srv/FloatMsg.hpp"
+#include "common_srv/Vector3D.hpp"
+#include "common_srv/Vector3DMessage.hpp"
 #include <atomic>
 
 class CircularProcessVariableReference : public Reference{

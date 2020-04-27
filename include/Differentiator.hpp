@@ -1,10 +1,10 @@
 #pragma once
-#include "MsgEmitter.hpp"
-#include "MsgReceiver.hpp"
+#include "common_srv/MsgEmitter.hpp"
+#include "common_srv/MsgReceiver.hpp"
 #include "cmath"
-#include "Vector3DMessage.hpp"
-#include "Timer.hpp"
-#include "FloatMsg.hpp"
+#include "common_srv/Vector3DMessage.hpp"
+#include "common_srv/Timer.hpp"
+#include "common_srv/FloatMsg.hpp"
 #include "PVConcatenator.hpp"
 
 class Differentiator : public MsgEmitter, public MsgReceiver {

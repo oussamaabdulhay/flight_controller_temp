@@ -4,13 +4,13 @@
 #include <geometry_msgs/QuaternionStamped.h>
 #include <geometry_msgs/TwistStamped.h>
 #include <sensor_msgs/Imu.h>
-#include "ROSUnit.hpp"
-#include "Vector3D.hpp"
+#include "common_srv/ROSUnit.hpp"
+#include "common_srv/Vector3D.hpp"
 #include "Quaternion.hpp"
-#include "Vector3DMessage.hpp"
+#include "common_srv/Vector3DMessage.hpp"
 #include "PVConcatenator.hpp"
 #include "Global2Inertial.hpp"
-#include "Timer.hpp"
+#include "common_srv/Timer.hpp"
 
 class ROSUnit_Xsens : public ROSUnit{
 

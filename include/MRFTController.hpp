@@ -1,14 +1,14 @@
 #pragma once
 #include <math.h>
 #include "ControllerMessage.hpp"
-#include "FloatMsg.hpp"
+#include "common_srv/FloatMsg.hpp"
 #include "MRFT_values.hpp"
 #include "Controller.hpp"
-#include "Timer.hpp"
-#include "Vector3DMessage.hpp"
+#include "common_srv/Timer.hpp"
+#include "common_srv/Vector3DMessage.hpp"
 #include "SwitchOutMsg.hpp"
 #include "logger.hpp"
-#include "IntegerMsg.hpp"
+#include "common_srv/IntegerMsg.hpp"
 
 class MRFTController : public Controller{
 

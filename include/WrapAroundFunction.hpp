@@ -1,8 +1,8 @@
 #pragma once
-#include "MsgEmitter.hpp"
-#include "MsgReceiver.hpp"
-#include "Vector3D.hpp"
-#include "Vector3DMessage.hpp"
+#include "common_srv/MsgEmitter.hpp"
+#include "common_srv/MsgReceiver.hpp"
+#include "common_srv/Vector3D.hpp"
+#include "common_srv/Vector3DMessage.hpp"
 
 class WrapAroundFunction : public MsgEmitter, public MsgReceiver
 {

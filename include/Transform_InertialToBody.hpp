@@ -1,11 +1,11 @@
 #pragma once
-#include "MsgEmitter.hpp"
-#include "MsgReceiver.hpp"
+#include "common_srv/MsgEmitter.hpp"
+#include "common_srv/MsgReceiver.hpp"
 #include "cmath"
 #include "RotationMatrix3by3.hpp"
 #include <atomic>
-#include "Vector3DMessage.hpp"
-#include "FloatMsg.hpp"
+#include "common_srv/Vector3DMessage.hpp"
+#include "common_srv/FloatMsg.hpp"
 #include "ControlSystem.hpp"
 
 class Transform_InertialToBody : public MsgEmitter, public MsgReceiver {

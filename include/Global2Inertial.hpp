@@ -4,13 +4,13 @@
 // Revision Note: Moved from Outdoor Navigation to UAV Control
 #pragma once
 
-#include "MsgEmitter.hpp"
-#include "MsgReceiver.hpp"
-#include "Vector3D.hpp"
+#include "common_srv/MsgEmitter.hpp"
+#include "common_srv/MsgReceiver.hpp"
+#include "common_srv/Vector3D.hpp"
 #include "RotationMatrix3by3.hpp"
 #include <math.h>
-#include "FloatMsg.hpp"
-#include "Vector3DMessage.hpp"
+#include "common_srv/FloatMsg.hpp"
+#include "common_srv/Vector3DMessage.hpp"
 #include "PVConcatenator.hpp"
 #include "OptitrackMessage.hpp"
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "MsgEmitter.hpp"
-#include "MsgReceiver.hpp"
+#include "common_srv/MsgEmitter.hpp"
+#include "common_srv/MsgReceiver.hpp"
 #include "Actuator.hpp"
 #include <vector>
 

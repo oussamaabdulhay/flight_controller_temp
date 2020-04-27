@@ -1,8 +1,8 @@
 #pragma once
-#include "MsgEmitter.hpp"
-#include "MsgReceiver.hpp"
+#include "common_srv/MsgEmitter.hpp"
+#include "common_srv/MsgReceiver.hpp"
 #include "cmath"
-#include "FloatMsg.hpp"
+#include "common_srv/FloatMsg.hpp"
 #include "ControlSystem.hpp"
 
 class Saturation : public MsgEmitter, public MsgReceiver {

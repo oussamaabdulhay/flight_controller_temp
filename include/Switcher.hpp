@@ -1,9 +1,9 @@
 #pragma once
 #include "Block.hpp"
 #include <list>
-#include "MsgReceiver.hpp"
-#include "MsgEmitter.hpp"
-#include "Vector3DMessage.hpp"
+#include "common_srv/MsgReceiver.hpp"
+#include "common_srv/MsgEmitter.hpp"
+#include "common_srv/Vector3DMessage.hpp"
 #include "PIDController.hpp"
 #include "ProcessVariableReference.hpp"
 #include <algorithm>

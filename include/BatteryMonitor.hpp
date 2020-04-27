@@ -4,8 +4,8 @@
 #include <Common/Util.h>
 #include <Navio2/ADC_Navio2.h>
 #include <memory>
-#include "MsgEmitter.hpp"
-#include "FloatMsg.hpp"
+#include "common_srv/MsgEmitter.hpp"
+#include "common_srv/FloatMsg.hpp"
 
 #define READ_FAILED -1
 int const BATTERY_VOLTAGE_PIN = 2;

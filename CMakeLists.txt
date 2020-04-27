@@ -48,7 +48,6 @@ catkin_package(
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/include
   ${CMAKE_CURRENT_SOURCE_DIR}/include/Navio2
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/ROSUnits
   ${CMAKE_CURRENT_SOURCE_DIR}/include/Navio2/Common
   ${catkin_INCLUDE_DIRS}
 )
@@ -56,7 +55,6 @@ include_directories(
 FILE(GLOB SOURCE_FILES *.hpp *.cpp *.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Navio2_cpp/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ROSUnits/*.cpp
         )
 
 add_executable(${PROJECT_NAME} flight_controller_node/flight_controller_node.cpp ${SOURCE_FILES})

@@ -1,7 +1,7 @@
 #pragma once
 #include "Block.hpp"
 #include "ControllerMessage.hpp"
-#include "FloatMsg.hpp"
+#include "common_srv/FloatMsg.hpp"
 #include "common_types.hpp"
 
 class Controller : public Block{

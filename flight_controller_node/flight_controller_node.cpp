@@ -17,7 +17,7 @@
 #include "Saturation.hpp"
 #include "CircularProcessVariableReference.hpp"
 #include "Global2Inertial.hpp"
-#include "ROSUnit_Factory.hpp"
+#include "common_srv/ROSUnit_Factory.hpp"
 #include "BatteryMonitor.hpp"
 #include "ROSUnit_RTK.hpp"
 #include "Differentiator.hpp"

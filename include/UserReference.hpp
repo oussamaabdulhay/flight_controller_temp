@@ -1,7 +1,7 @@
 #pragma once
 #include "common_types.hpp"
-#include "MsgEmitter.hpp"
-#include "MsgReceiver.hpp"
+#include "common_srv/MsgEmitter.hpp"
+#include "common_srv/MsgReceiver.hpp"
 #include "ControlSystem.hpp"
 
 class UserReference : public MsgEmitter, public MsgReceiver{

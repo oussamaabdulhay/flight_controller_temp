@@ -1,5 +1,5 @@
 #pragma once
-#include "DataMessage.hpp"
+#include "common_srv/DataMessage.hpp"
 #include "Block.hpp"
 
 class ControlSystemMessage : public DataMessage{

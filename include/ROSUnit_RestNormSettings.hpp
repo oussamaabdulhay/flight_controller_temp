@@ -1,8 +1,8 @@
 #pragma once
-#include "ROSUnit.hpp"
+#include "common_srv/ROSUnit.hpp"
 #include "RestrictedNormRefSettingsMsg.hpp"
 #include <flight_controller/Restricted_Norm_Settings.h>
-#include "Vector3D.hpp"
+#include "common_srv/Vector3D.hpp"
 
 class ROSUnit_RestNormSettings :  public ROSUnit{
 

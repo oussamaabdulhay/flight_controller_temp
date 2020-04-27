@@ -1,12 +1,12 @@
 #pragma once
 #include <math.h>
-#include "FloatMsg.hpp"
+#include "common_srv/FloatMsg.hpp"
 #include "Controller.hpp"
-#include "Timer.hpp"
-#include "Vector3DMessage.hpp"
+#include "common_srv/Timer.hpp"
+#include "common_srv/Vector3DMessage.hpp"
 #include "SwitchOutMsg.hpp"
 #include "logger.hpp"
-#include "IntegerMsg.hpp"
+#include "common_srv/IntegerMsg.hpp"
 #include "SM_values.hpp"
 
 class SlidingModeController : public Controller{

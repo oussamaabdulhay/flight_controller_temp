@@ -1,9 +1,9 @@
 #pragma once
-#include "ROSUnit.hpp"
+#include "common_srv/ROSUnit.hpp"
 #include <std_msgs/Bool.h>
-#include "BooleanMsg.hpp"
-#include "Vector3D.hpp"
-#include "BooleanMsg.hpp"
+#include "common_srv/BooleanMsg.hpp"
+#include "common_srv/Vector3D.hpp"
+#include "common_srv/BooleanMsg.hpp"
 #include <flight_controller/Arm.h>
 
 class ROSUnit_Arm :  public ROSUnit{

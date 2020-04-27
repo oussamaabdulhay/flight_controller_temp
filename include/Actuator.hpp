@@ -1,8 +1,8 @@
 #pragma once
 
-#include "DataMessage.hpp"
-#include "MsgEmitter.hpp"
-#include "MsgReceiver.hpp"
+#include "common_srv/DataMessage.hpp"
+#include "common_srv/MsgEmitter.hpp"
+#include "common_srv/MsgReceiver.hpp"
 
 
 class  Actuator {

@@ -10,6 +10,7 @@
 #include "RotationMatrix3by3.hpp"
 #include <math.h>
 #include "common_srv/FloatMsg.hpp"
+#include "common_srv/IntegerMsg.hpp"
 #include "common_srv/Vector3DMessage.hpp"
 #include "PVConcatenator.hpp"
 #include "OptitrackMessage.hpp"
@@ -23,6 +24,8 @@ private:
     double calibrated_global_to_inertial_angle;
     double calibrated_reference_inertial_heading;//TODO: This needs to be moved to XSens node
     double x_off_calib_slope,y_scale_coeff;
+    int _camera_enabled = 0;
+    double _camera_z, _camera_bias;
 
     Vector3D<double> antenna_pose;
     Vector3D<double> last_known_orientation;
@@ -35,7 +38,7 @@ private:
     Vector3D<double> correctNonHomogeneousSpace(Vector3D<double> t_uncorr_pt);
 public:
 enum unicast_addresses {broadcast,uni_RTK_pos_pv,uni_RTK_pos_wp,uni_XSens_pos,uni_Optitrack_pos,uni_Optitrack_heading,uni_XSens_vel,uni_XSens_ori};
-enum receiving_channels {ch_broadcast,ch_RTK_pos,ch_XSens_pos,ch_Optitrack_pos,ch_XSens_vel, ch_XSens_ori};
+enum receiving_channels {ch_broadcast,ch_RTK_pos,ch_XSens_pos,ch_Optitrack_pos,ch_XSens_vel, ch_XSens_ori, ch_Camera};
     Global2Inertial();
     void receiveMsgData(DataMessage* t_msg);
     void receiveMsgData(DataMessage* t_msg,int ch);

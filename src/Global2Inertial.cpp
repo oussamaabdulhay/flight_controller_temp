@@ -72,6 +72,12 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg)
         Vector3D<double> translate_pos = this->translatePoint(pos_point);
         Vector3D<double> result_pos = this->rotatePoint(translate_pos);
       
+        if (_camera_enabled > 0){
+            result_pos.z = _camera_z + _camera_bias;
+        } else {
+            _camera_bias = result_pos.z;
+        }
+
         Vector3DMessage results_msg;
         results_msg.setVector3DMessage(result_pos);
 
@@ -134,6 +140,15 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg,int ch){
             emitMsgUnicast(&res_msg,Global2Inertial::unicast_addresses::uni_XSens_ori,(int)PVConcatenator::receiving_channels::ch_pv);
         }
     }
+    else if(t_msg->getType()==msg_type::FLOAT){
+        FloatMsg* float_msg = (FloatMsg*)t_msg;
+        _camera_z = float_msg->data;
+    }
+    else if(t_msg->getType()==msg_type::INTEGER){
+        IntegerMsg* int_msg = (IntegerMsg*)t_msg;
+        _camera_enabled = int_msg->data;   
+    }
+
 }
 
 Vector3D<double> Global2Inertial::translatePoint(Vector3D<double> t_input_point){

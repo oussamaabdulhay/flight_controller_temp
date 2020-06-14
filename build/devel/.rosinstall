@@ -1,2 +1,2 @@
 - setup-file:
-    local-name: /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/devel/setup.sh
+    local-name: /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/setup.sh

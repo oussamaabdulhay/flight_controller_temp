@@ -1,4 +1,4 @@
-# Install script for directory: /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system
+# Install script for directory: /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -32,7 +32,12 @@ if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
   set(CMAKE_INSTALL_SO_NO_EXE "1")
 endif()
 
-if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+# Is this installation the result of a crosscompile?
+if(NOT DEFINED CMAKE_CROSSCOMPILING)
+  set(CMAKE_CROSSCOMPILING "FALSE")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   
       if (NOT EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}")
         file(MAKE_DIRECTORY "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}")
@@ -42,7 +47,7 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
       endif()
 endif()
 
-if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
    "/usr/local/_setup_util.py")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
@@ -51,10 +56,10 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/usr/local" TYPE PROGRAM FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/catkin_generated/installspace/_setup_util.py")
+file(INSTALL DESTINATION "/usr/local" TYPE PROGRAM FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/catkin_generated/installspace/_setup_util.py")
 endif()
 
-if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
    "/usr/local/env.sh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
@@ -63,10 +68,10 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/usr/local" TYPE PROGRAM FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/catkin_generated/installspace/env.sh")
+file(INSTALL DESTINATION "/usr/local" TYPE PROGRAM FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/catkin_generated/installspace/env.sh")
 endif()
 
-if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
    "/usr/local/setup.bash;/usr/local/local_setup.bash")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
@@ -76,12 +81,12 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
 file(INSTALL DESTINATION "/usr/local" TYPE FILE FILES
-    "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/catkin_generated/installspace/setup.bash"
-    "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/catkin_generated/installspace/local_setup.bash"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/catkin_generated/installspace/setup.bash"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/catkin_generated/installspace/local_setup.bash"
     )
 endif()
 
-if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
    "/usr/local/setup.sh;/usr/local/local_setup.sh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
@@ -91,12 +96,12 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
 file(INSTALL DESTINATION "/usr/local" TYPE FILE FILES
-    "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/catkin_generated/installspace/setup.sh"
-    "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/catkin_generated/installspace/local_setup.sh"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/catkin_generated/installspace/setup.sh"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/catkin_generated/installspace/local_setup.sh"
     )
 endif()
 
-if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
    "/usr/local/setup.zsh;/usr/local/local_setup.zsh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
@@ -106,12 +111,12 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
 file(INSTALL DESTINATION "/usr/local" TYPE FILE FILES
-    "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/catkin_generated/installspace/setup.zsh"
-    "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/catkin_generated/installspace/local_setup.zsh"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/catkin_generated/installspace/setup.zsh"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/catkin_generated/installspace/local_setup.zsh"
     )
 endif()
 
-if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
    "/usr/local/.rosinstall")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
@@ -120,27 +125,86 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/usr/local" TYPE FILE FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/catkin_generated/installspace/.rosinstall")
+file(INSTALL DESTINATION "/usr/local" TYPE FILE FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/catkin_generated/installspace/.rosinstall")
 endif()
 
-if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/catkin_generated/installspace/positioning_system.pc")
-endif()
-
-if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/positioning_system/cmake" TYPE FILE FILES
-    "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/catkin_generated/installspace/positioning_systemConfig.cmake"
-    "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/catkin_generated/installspace/positioning_systemConfig-version.cmake"
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/flight_controller/msg" TYPE FILE FILES
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/msg/PID_param.msg"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/msg/MRFT_param.msg"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/msg/SM_param.msg"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/msg/Waypoint.msg"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/msg/Info.msg"
     )
 endif()
 
-if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/positioning_system" TYPE FILE FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/package.xml")
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/flight_controller/srv" TYPE FILE FILES
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/srv/Arm.srv"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/srv/Update_Controller_PID.srv"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/srv/Update_Controller_MRFT.srv"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/srv/Update_Controller_SM.srv"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/srv/Reset_Controller.srv"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/srv/Update_Pose_Reference.srv"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/srv/Update_X_Reference.srv"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/srv/Update_Y_Reference.srv"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/srv/Update_Z_Reference.srv"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/srv/Update_Yaw_Reference.srv"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/srv/SwitchBlock.srv"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/srv/Restricted_Norm_Settings.srv"
+    )
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/flight_controller/cmake" TYPE FILE FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/catkin_generated/installspace/flight_controller-msg-paths.cmake")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include/flight_controller")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/share/roseus/ros/flight_controller")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/share/common-lisp/ros/flight_controller")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/share/gennodejs/ros/flight_controller")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  execute_process(COMMAND "/usr/bin/python2" -m compileall "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/lib/python2.7/dist-packages/flight_controller")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python2.7/dist-packages" TYPE DIRECTORY FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/lib/python2.7/dist-packages/flight_controller")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/catkin_generated/installspace/flight_controller.pc")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/flight_controller/cmake" TYPE FILE FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/catkin_generated/installspace/flight_controller-msg-extras.cmake")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/flight_controller/cmake" TYPE FILE FILES
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/catkin_generated/installspace/flight_controllerConfig.cmake"
+    "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/catkin_generated/installspace/flight_controllerConfig-version.cmake"
+    )
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/flight_controller" TYPE FILE FILES "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/package.xml")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/gtest/cmake_install.cmake")
+  include("/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/gtest/cmake_install.cmake")
 
 endif()
 
@@ -152,5 +216,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -1,0 +1,8 @@
+prefix=/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel
+
+Name: flight_controller
+Description: Description of flight_controller
+Version: 0.0.0
+Cflags: -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include
+Libs: -L${prefix}/lib 
+Requires: roscpp std_msgs message_runtime common_srv

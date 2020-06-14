@@ -9,14 +9,18 @@
                 "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/ROSUnits/**",
                 "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/**",
                 "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/**",
-                "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ROSUnits/**"
+                "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ROSUnits/**",
+                "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/global2inertial_node/**",
+                "/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/src/**",
+                "/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include/**"
             ],
             "name": "ROS",
             "intelliSenseMode": "gcc-x64",
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c11",
             "cppStandard": "c++17",
-            "compileCommands": "${workspaceFolder}/build/compile_commands.json"
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
     "version": 4

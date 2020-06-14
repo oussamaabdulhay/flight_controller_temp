@@ -1,16 +1,24 @@
 Determining if the pthread_create exist failed with the following output:
-Change Dir: /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/CMakeFiles/CMakeTmp
+Change Dir: /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/ninja" "cmTC_fbef4"
-[1/2] Building C object CMakeFiles/cmTC_fbef4.dir/CheckSymbolExists.c.o
-[2/2] Linking C executable cmTC_fbef4
-FAILED: : && /usr/bin/gcc-7     CMakeFiles/cmTC_fbef4.dir/CheckSymbolExists.c.o  -o cmTC_fbef4  -rdynamic && :
-CMakeFiles/cmTC_fbef4.dir/CheckSymbolExists.c.o: In function `main':
-CheckSymbolExists.c:(.text+0x16): undefined reference to `pthread_create'
+Run Build Command:"/usr/bin/make" "cmTC_fc0be/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fc0be.dir/build.make CMakeFiles/cmTC_fc0be.dir/build
+make[1]: Entering directory '/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_fc0be.dir/CheckSymbolExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7    -o CMakeFiles/cmTC_fc0be.dir/CheckSymbolExists.c.o   -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_fc0be
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fc0be.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7      -rdynamic CMakeFiles/cmTC_fc0be.dir/CheckSymbolExists.c.o  -o cmTC_fc0be 
+CMakeFiles/cmTC_fc0be.dir/CheckSymbolExists.c.o: In function `main':
+CheckSymbolExists.c:(.text+0x1b): undefined reference to `pthread_create'
 collect2: error: ld returned 1 exit status
-ninja: build stopped: subcommand failed.
+CMakeFiles/cmTC_fc0be.dir/build.make:97: recipe for target 'cmTC_fc0be' failed
+make[1]: *** [cmTC_fc0be] Error 1
+make[1]: Leaving directory '/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_fc0be/fast' failed
+make: *** [cmTC_fc0be/fast] Error 2
 
-File /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+File /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
 #include <pthread.h>
 
@@ -26,14 +34,22 @@ int main(int argc, char** argv)
 }
 
 Determining if the function pthread_create exists in the pthreads failed with the following output:
-Change Dir: /home/pedrohrpbs/catkin_ws_NAVIO/src/positioning_system/build/CMakeFiles/CMakeTmp
+Change Dir: /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/ninja" "cmTC_0f3de"
-[1/2] Building C object CMakeFiles/cmTC_0f3de.dir/CheckFunctionExists.c.o
-[2/2] Linking C executable cmTC_0f3de
-FAILED: : && /usr/bin/gcc-7  -DCHECK_FUNCTION_EXISTS=pthread_create   CMakeFiles/cmTC_0f3de.dir/CheckFunctionExists.c.o  -o cmTC_0f3de  -rdynamic -lpthreads && :
+Run Build Command:"/usr/bin/make" "cmTC_87ebb/fast"
+/usr/bin/make -f CMakeFiles/cmTC_87ebb.dir/build.make CMakeFiles/cmTC_87ebb.dir/build
+make[1]: Entering directory '/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_87ebb.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_87ebb.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_87ebb
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_87ebb.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_87ebb.dir/CheckFunctionExists.c.o  -o cmTC_87ebb -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-ninja: build stopped: subcommand failed.
+CMakeFiles/cmTC_87ebb.dir/build.make:97: recipe for target 'cmTC_87ebb' failed
+make[1]: *** [cmTC_87ebb] Error 1
+make[1]: Leaving directory '/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_87ebb/fast' failed
+make: *** [cmTC_87ebb/fast] Error 2
 
 

@@ -1,0 +1,2 @@
+set(flight_controller_MESSAGE_FILES "msg/PID_param.msg;msg/MRFT_param.msg;msg/SM_param.msg;msg/Waypoint.msg;msg/Info.msg")
+set(flight_controller_SERVICE_FILES "srv/Arm.srv;srv/Update_Controller_PID.srv;srv/Update_Controller_MRFT.srv;srv/Update_Controller_SM.srv;srv/Reset_Controller.srv;srv/Update_Pose_Reference.srv;srv/Update_X_Reference.srv;srv/Update_Y_Reference.srv;srv/Update_Z_Reference.srv;srv/Update_Yaw_Reference.srv;srv/SwitchBlock.srv;srv/Restricted_Norm_Settings.srv")

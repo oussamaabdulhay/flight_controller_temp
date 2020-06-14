@@ -64,9 +64,11 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg)
         
         OptitrackMessage* opti_msg = ((OptitrackMessage*)t_msg);
         Vector3D<double> pos_point = opti_msg->getPosition();
+        //TODO add an if here, that change the pos_point.z when the camera is on
+        //TODO when the camera starts publishing, changes a boolean for _camera_on
+        //TODO agree on the frame of reference of the camera, if it needs to pass through the same calbration as the optitrack or not
         Quaternion _bodyAtt = opti_msg->getAttitudeHeading();
         Vector3D<double> att_vec = getEulerfromQuaternion(_bodyAtt);
-
         Vector3D<double> translate_pos = this->translatePoint(pos_point);
         Vector3D<double> result_pos = this->rotatePoint(translate_pos);
       
@@ -87,6 +89,8 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg)
         calib_point1.z = ((FloatMsg*)t_msg)->data;
         std::cout << "NEW HEIGHT OFFSET = " << calib_point1.z << std::endl;
     }
+    //TODO add an else if for the camera message, it should update a private variable, and this private variable should be passed to the controller from the Optitrack message
+    //doing so we don't mess with the frequencies.
 }
 
 void Global2Inertial::receiveMsgData(DataMessage* t_msg,int ch){

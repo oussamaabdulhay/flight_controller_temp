@@ -16,6 +16,7 @@ int main(int argc, char **argv){
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
     ROSUnit* myROSOptitrack = new ROSUnit_Optitrack(nh);
+    //TODO add a ROSUnit for the camera, and connect it with the myGlobal2Inertial as well
     ROSUnit* rosunit_g2i_position = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "global2inertial/position");

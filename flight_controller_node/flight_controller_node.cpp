@@ -3,6 +3,7 @@
 #include "ROSUnit_Optitrack.hpp"
 #include "std_logger.hpp"
 #include "HexaActuationSystem.hpp"
+#include "QuadActuationSystem.hpp"
 #include "ESCMotor.hpp"
 #include "ROSUnit_Arm.hpp"
 #include "ROSUnit_UpdateController.hpp"
@@ -186,7 +187,9 @@ int main(int argc, char** argv) {
 
     std::vector<Actuator*> actuators{M1, M2, M3, M4, M5, M6};
 
-    ActuationSystem* myActuationSystem = new HexaActuationSystem(actuators);
+    // ActuationSystem* myActuationSystem = new HexaActuationSystem(actuators);
+    ActuationSystem* myActuationSystem = new QuadActuationSystem(actuators);
+
 
     //***********************************SETTING CONNECTIONS***********************************
     //========                                                                    =============

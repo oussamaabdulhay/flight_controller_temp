@@ -7,16 +7,18 @@
 #include <vector>
 
 // GEOMETRY
-//      CW(3) (5)CCW                y
+//      CW(3) (5)CCW                x
 //          \ /                     ↑
 // CCW(2) -- X -- (1)CW             |
-//          / \                     +----→ x
+//          / \              y <----+ 
 //      CW(6) (4)CCW               z up
 //
 // For Positive Roll, all motors with negative X should be increased
 // For Positive Pitch, all motors with negative Y should be increased
 // For Positive Yaw, all motors with CW should be increased
 // Mx = [x, y, direction, thottle]
+// POSITIVE PITCH result in moving in the direction of POSITIVE Y
+// POSITIVE ROLL result in moving in the direction of POSITIVE X
 
 class HexaActuationSystem : public ActuationSystem {
 

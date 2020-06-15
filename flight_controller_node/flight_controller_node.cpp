@@ -1,3 +1,6 @@
+//Flight Controller V2.0.0
+//15 June 2020
+//Pedro Henrique Silva
 #include <iostream>
 #include <vector>
 #include "ROSUnit_Optitrack.hpp"

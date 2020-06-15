@@ -19,6 +19,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/providers_node.dir/src/PIDplusMRFTController.cpp.o"
   "CMakeFiles/providers_node.dir/src/PVConcatenator.cpp.o"
   "CMakeFiles/providers_node.dir/src/ProcessVariableReference.cpp.o"
+  "CMakeFiles/providers_node.dir/src/QuadActuationSystem.cpp.o"
   "CMakeFiles/providers_node.dir/src/ROSUnit_Arm.cpp.o"
   "CMakeFiles/providers_node.dir/src/ROSUnit_BroadcastData.cpp.o"
   "CMakeFiles/providers_node.dir/src/ROSUnit_Optitrack.cpp.o"

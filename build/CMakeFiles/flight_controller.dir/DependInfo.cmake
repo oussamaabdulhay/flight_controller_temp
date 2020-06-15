@@ -37,6 +37,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/PIDplusMRFTController.cpp" "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/flight_controller.dir/src/PIDplusMRFTController.cpp.o"
   "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/PVConcatenator.cpp" "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/flight_controller.dir/src/PVConcatenator.cpp.o"
   "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ProcessVariableReference.cpp" "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/flight_controller.dir/src/ProcessVariableReference.cpp.o"
+  "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/QuadActuationSystem.cpp" "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/flight_controller.dir/src/QuadActuationSystem.cpp.o"
   "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ROSUnit_Arm.cpp" "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/flight_controller.dir/src/ROSUnit_Arm.cpp.o"
   "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ROSUnit_BroadcastData.cpp" "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/flight_controller.dir/src/ROSUnit_BroadcastData.cpp.o"
   "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ROSUnit_Optitrack.cpp" "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/flight_controller.dir/src/ROSUnit_Optitrack.cpp.o"

@@ -2193,6 +2193,42 @@ src/ProcessVariableReference.cpp.s:
 	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/ProcessVariableReference.cpp.s
 .PHONY : src/ProcessVariableReference.cpp.s
 
+src/QuadActuationSystem.o: src/QuadActuationSystem.cpp.o
+
+.PHONY : src/QuadActuationSystem.o
+
+# target to build an object file
+src/QuadActuationSystem.cpp.o:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/QuadActuationSystem.cpp.o
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/QuadActuationSystem.cpp.o
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/QuadActuationSystem.cpp.o
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/QuadActuationSystem.cpp.o
+.PHONY : src/QuadActuationSystem.cpp.o
+
+src/QuadActuationSystem.i: src/QuadActuationSystem.cpp.i
+
+.PHONY : src/QuadActuationSystem.i
+
+# target to preprocess a source file
+src/QuadActuationSystem.cpp.i:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/QuadActuationSystem.cpp.i
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/QuadActuationSystem.cpp.i
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/QuadActuationSystem.cpp.i
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/QuadActuationSystem.cpp.i
+.PHONY : src/QuadActuationSystem.cpp.i
+
+src/QuadActuationSystem.s: src/QuadActuationSystem.cpp.s
+
+.PHONY : src/QuadActuationSystem.s
+
+# target to generate assembly for a file
+src/QuadActuationSystem.cpp.s:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/QuadActuationSystem.cpp.s
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/QuadActuationSystem.cpp.s
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/QuadActuationSystem.cpp.s
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/QuadActuationSystem.cpp.s
+.PHONY : src/QuadActuationSystem.cpp.s
+
 src/ROSUnit_Arm.o: src/ROSUnit_Arm.cpp.o
 
 .PHONY : src/ROSUnit_Arm.o
@@ -3299,6 +3335,9 @@ help:
 	@echo "... src/ProcessVariableReference.o"
 	@echo "... src/ProcessVariableReference.i"
 	@echo "... src/ProcessVariableReference.s"
+	@echo "... src/QuadActuationSystem.o"
+	@echo "... src/QuadActuationSystem.i"
+	@echo "... src/QuadActuationSystem.s"
 	@echo "... src/ROSUnit_Arm.o"
 	@echo "... src/ROSUnit_Arm.i"
 	@echo "... src/ROSUnit_Arm.s"

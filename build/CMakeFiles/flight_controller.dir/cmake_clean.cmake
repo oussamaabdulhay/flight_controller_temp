@@ -19,6 +19,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/flight_controller.dir/src/PIDplusMRFTController.cpp.o"
   "CMakeFiles/flight_controller.dir/src/PVConcatenator.cpp.o"
   "CMakeFiles/flight_controller.dir/src/ProcessVariableReference.cpp.o"
+  "CMakeFiles/flight_controller.dir/src/QuadActuationSystem.cpp.o"
   "CMakeFiles/flight_controller.dir/src/ROSUnit_Arm.cpp.o"
   "CMakeFiles/flight_controller.dir/src/ROSUnit_BroadcastData.cpp.o"
   "CMakeFiles/flight_controller.dir/src/ROSUnit_Optitrack.cpp.o"

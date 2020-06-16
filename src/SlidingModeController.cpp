@@ -16,8 +16,10 @@ void SlidingModeController::switchIn(DataMessage* t_msg){
 
 DataMessage* SlidingModeController::switchOut(){
 	Logger::getAssignedLogger()->log("SWITCH OUT SLIDING_MODE CONTROLLER", LoggerLevel::Warning);
-    DataMessage* msg;
-    return msg;
+    
+	_switchout_msg.setSwitchOutMsg(0.0);
+
+    return (DataMessage*)&_switchout_msg;
 } 
 
 void SlidingModeController::receiveMsgData(DataMessage* t_msg){

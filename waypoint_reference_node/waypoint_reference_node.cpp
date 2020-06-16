@@ -61,7 +61,7 @@ int main(int argc, char **argv){
         rate.sleep();
 
         int gone = tempo.tockMicroSeconds();
-        if(gone > 9090) {
+        if(gone > 10000) {
             std::cout  << i << " WP: " << gone << "\n";
         }
         i++;

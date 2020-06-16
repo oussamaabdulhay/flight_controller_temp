@@ -1,5 +1,5 @@
-//Flight Controller V2.0.0
-//15 June 2020
+//Flight Controller V2.0.1
+//16 June 2020
 //Pedro Henrique Silva
 #include <iostream>
 #include <vector>
@@ -190,8 +190,8 @@ int main(int argc, char** argv) {
 
     std::vector<Actuator*> actuators{M1, M2, M3, M4, M5, M6};
 
-    // ActuationSystem* myActuationSystem = new HexaActuationSystem(actuators);
-    ActuationSystem* myActuationSystem = new QuadActuationSystem(actuators);
+    ActuationSystem* myActuationSystem = new HexaActuationSystem(actuators);
+    // ActuationSystem* myActuationSystem = new QuadActuationSystem(actuators);
 
 
     //***********************************SETTING CONNECTIONS***********************************

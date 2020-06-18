@@ -18,7 +18,7 @@ int main(int argc, char **argv){
     ROSUnit* myROSOptitrack = new ROSUnit_Optitrack(nh);
     ROSUnit* myCameraPosition =  ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
                                                                     ROSUnit_msg_type::ROSUnit_Float,
-                                                                    "chatter_float");
+                                                                    "camera_provider");
     ROSUnit* rosunit_camera_enable = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
                                                                             ROSUnit_msg_type::ROSUnit_Int,
                                                                             "set_camera_status");

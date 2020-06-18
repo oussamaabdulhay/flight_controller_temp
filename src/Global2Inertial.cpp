@@ -1,3 +1,7 @@
+//GLOBAL2INERTIAL V1.0.1
+// 18 June 2020
+// Pedro Henrique Silva
+
 #include "Global2Inertial.hpp"
 #define DEBUG_HR_LR_DECOUPLED
 
@@ -73,9 +77,7 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg)
         Vector3D<double> result_pos = this->rotatePoint(translate_pos);
       
         if (_camera_enabled > 0){
-            result_pos.z = _camera_z + _camera_bias;
-        } else {
-            _camera_bias = result_pos.z;
+            result_pos.z = _camera_z;
         }
 
         Vector3DMessage results_msg;

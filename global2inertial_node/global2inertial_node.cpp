@@ -1,3 +1,7 @@
+//GLOBAL2INERTIAL_NODE V1.0.2
+// 18 June 2020
+// Pedro Henrique Silva
+
 #include "ros/ros.h"
 #include <iostream>
 #include "common_srv/ROSUnit_Factory.hpp"
@@ -22,9 +26,18 @@ int main(int argc, char **argv){
     ROSUnit* rosunit_camera_enable = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Server,
                                                                             ROSUnit_msg_type::ROSUnit_Int,
                                                                             "set_camera_status");
+    ROSUnit* rosunit_g2i_x = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "global2inertial/x");
+    ROSUnit* rosunit_g2i_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "global2inertial/y");
+    ROSUnit* rosunit_g2i_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "global2inertial/z");     
     ROSUnit* rosunit_g2i_position = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
-                                                                    "global2inertial/position");
+                                                                    "global2inertial/position");                                                                                                                           
     ROSUnit* rosunit_g2i_orientation = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "global2inertial/orientation");                                                                
@@ -40,6 +53,9 @@ int main(int argc, char **argv){
     myCameraPosition->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial);
     rosunit_camera_enable->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial);
     myROSOptitrack->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial);
+    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)rosunit_g2i_x, (int)Global2Inertial::unicast_addresses::uni_Optitrack_x);
+    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)rosunit_g2i_y, (int)Global2Inertial::unicast_addresses::uni_Optitrack_y);
+    myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)rosunit_g2i_z, (int)Global2Inertial::unicast_addresses::uni_Optitrack_z);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)rosunit_g2i_position, (int)Global2Inertial::unicast_addresses::uni_Optitrack_pos);
     myGlobal2Inertial->addCallbackMsgReceiver((MsgReceiver*)rosunit_g2i_orientation, (int)Global2Inertial::unicast_addresses::uni_Optitrack_heading);
     rosunit_set_height_offset->addCallbackMsgReceiver((MsgReceiver*)myGlobal2Inertial);

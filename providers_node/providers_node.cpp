@@ -1,3 +1,7 @@
+//PROVIDERS_NODE V1.0.2
+// 18 June 2020
+// Pedro Henrique Silva
+
 #include "ros/ros.h"
 #include <iostream>
 #include "common_srv/ROSUnit_Factory.hpp"
@@ -42,6 +46,15 @@ int main(int argc, char **argv){
     ROSUnit* rosunit_yaw_rate_provider_pub = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Publisher, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "/providers/yaw_rate");
+    ROSUnit* rosunit_g2i_x = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "global2inertial/x");
+    ROSUnit* rosunit_g2i_y = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "global2inertial/y");
+    ROSUnit* rosunit_g2i_z = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
+                                                                    ROSUnit_msg_type::ROSUnit_Point,
+                                                                    "global2inertial/z");                                                                     
     ROSUnit* rosunit_g2i_position = ROSUnit_Factory_main.CreateROSUnit(ROSUnit_tx_rx_type::Subscriber, 
                                                                     ROSUnit_msg_type::ROSUnit_Point,
                                                                     "global2inertial/position");
@@ -72,6 +85,10 @@ int main(int argc, char **argv){
     yawRateFromYaw->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
     
     rosunit_g2i_position->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
+    rosunit_g2i_x->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
+    rosunit_g2i_y->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
+    rosunit_g2i_z->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
+
     rosunit_g2i_orientation->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
 
     rosunit_g2i_position->addCallbackMsgReceiver((MsgReceiver*)velocityFromPosition);
@@ -80,9 +97,9 @@ int main(int argc, char **argv){
     velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator);
     velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator);
     yawRateFromYaw->addCallbackMsgReceiver((MsgReceiver*)CsYawRate_PVConcatenator);
-    rosunit_g2i_position->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator);
-    rosunit_g2i_position->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator);
-    rosunit_g2i_position->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator);
+    rosunit_g2i_x->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator);
+    rosunit_g2i_y->addCallbackMsgReceiver((MsgReceiver*)CsY_PVConcatenator);
+    rosunit_g2i_z->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator);
     rosunit_g2i_orientation->addCallbackMsgReceiver((MsgReceiver*)wrap_around_yaw);
     wrap_around_yaw->addCallbackMsgReceiver((MsgReceiver*)CsYaw_PVConcatenator);
     

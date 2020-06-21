@@ -2,6 +2,10 @@
 // Author: Mohamad Chehadeh
 // Date: 26 Jan 2020
 // Revision Note: Moved from Outdoor Navigation to UAV Control
+
+//GLOBAL2INERTIAL V1.0.2
+// 18 June 2020
+// Pedro Henrique Silva
 #pragma once
 
 #include "common_srv/MsgEmitter.hpp"
@@ -37,7 +41,7 @@ private:
     Vector3D<double> offsetElevation(Vector3D<double>,double);
     Vector3D<double> correctNonHomogeneousSpace(Vector3D<double> t_uncorr_pt);
 public:
-enum unicast_addresses {broadcast,uni_RTK_pos_pv,uni_RTK_pos_wp,uni_XSens_pos,uni_Optitrack_pos,uni_Optitrack_heading,uni_XSens_vel,uni_XSens_ori};
+enum unicast_addresses {broadcast,uni_RTK_pos_pv,uni_RTK_pos_wp,uni_XSens_pos,uni_Optitrack_pos,uni_Optitrack_x, uni_Optitrack_y, uni_Optitrack_z,uni_Optitrack_heading,uni_XSens_vel,uni_XSens_ori};
 enum receiving_channels {ch_broadcast,ch_RTK_pos,ch_XSens_pos,ch_Optitrack_pos,ch_XSens_vel, ch_XSens_ori, ch_Camera};
     Global2Inertial();
     void receiveMsgData(DataMessage* t_msg);

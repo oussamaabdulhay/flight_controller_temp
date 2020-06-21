@@ -1,4 +1,4 @@
-//GLOBAL2INERTIAL V1.0.1
+//GLOBAL2INERTIAL V1.0.2
 // 18 June 2020
 // Pedro Henrique Silva
 
@@ -75,10 +75,27 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg)
         Vector3D<double> att_vec = getEulerfromQuaternion(_bodyAtt);
         Vector3D<double> translate_pos = this->translatePoint(pos_point);
         Vector3D<double> result_pos = this->rotatePoint(translate_pos);
-      
-        if (_camera_enabled > 0){
-            result_pos.z = _camera_z;
-        }
+
+        Vector3DMessage x_msg;
+        Vector3D<double> x_msg_data;
+        x_msg_data.x = result_pos.x;
+        x_msg_data.y = 0.0;
+        x_msg_data.z = 0.0;
+        x_msg.setVector3DMessage(x_msg_data);
+
+        Vector3DMessage y_msg;
+        Vector3D<double> y_msg_data;
+        y_msg_data.x = 0.0;
+        y_msg_data.y = result_pos.y;
+        y_msg_data.z = 0.0;
+        y_msg.setVector3DMessage(y_msg_data);
+
+        Vector3DMessage z_msg;
+        Vector3D<double> z_msg_data;
+        z_msg_data.x = 0.0;
+        z_msg_data.y = 0.0;
+        z_msg_data.z = result_pos.z;
+        z_msg.setVector3DMessage(z_msg_data);
 
         Vector3DMessage results_msg;
         results_msg.setVector3DMessage(result_pos);
@@ -87,6 +104,14 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg)
         att_vec.z -= calibrated_reference_inertial_heading;
         yaw_msg.setVector3DMessage(att_vec);
           
+        this->emitMsgUnicast(&x_msg, 
+                            Global2Inertial::unicast_addresses::uni_Optitrack_x);
+        this->emitMsgUnicast(&y_msg, 
+                            Global2Inertial::unicast_addresses::uni_Optitrack_y);
+        if(_camera_enabled <= 0){
+            this->emitMsgUnicast(&z_msg, 
+                            Global2Inertial::unicast_addresses::uni_Optitrack_z);
+        }
         this->emitMsgUnicast(&results_msg, 
                             Global2Inertial::unicast_addresses::uni_Optitrack_pos);
         this->emitMsgUnicast(&yaw_msg,
@@ -143,8 +168,18 @@ void Global2Inertial::receiveMsgData(DataMessage* t_msg,int ch){
         }
     }
     else if(t_msg->getType()==msg_type::FLOAT){
-        FloatMsg* float_msg = (FloatMsg*)t_msg;
-        _camera_z = float_msg->data;
+        if(_camera_enabled > 0){
+            FloatMsg* float_msg = (FloatMsg*)t_msg;
+            _camera_z = float_msg->data;
+            Vector3DMessage z_msg;
+            Vector3D<double> z_msg_data;
+            z_msg_data.x = 0.0;
+            z_msg_data.y = 0.0;
+            z_msg_data.z = _camera_z;
+            z_msg.setVector3DMessage(z_msg_data);
+            this->emitMsgUnicast(&z_msg, 
+                                Global2Inertial::unicast_addresses::uni_Optitrack_z);
+        }
     }
     else if(t_msg->getType()==msg_type::INTEGER){
         IntegerMsg* int_msg = (IntegerMsg*)t_msg;

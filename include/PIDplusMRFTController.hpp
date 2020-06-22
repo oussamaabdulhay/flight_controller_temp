@@ -11,7 +11,7 @@ private:
     PIDController* _pid_controller;
     MRFTController* _mrft_controller;
     float _current_pv, _current_pv_dot;
-    float z_max = 0.88, z_dot_max = 0.6;
+    float z_max = 1.65, z_dot_max = 0.6;
     FloatMsg _command_msg;
     controller_type _controller_type;
     block_id _id;

@@ -18,32 +18,23 @@ private:
     controller_type _controller_type;
 	float _dt;
 	FloatMsg _command_msg;
-    //Chehadeh's code
-	//TODO add to MRFT parameters
-	const uint8_t iterations_lock_count = 10; 
-	bool prev_res, first_run = true;
-	float prev_err = 0;
-	/*
-	last_switch: to detect the previous switch state; 
-	period_switch: detect two switchings, i.e. one period
-	*/
-	uint32_t last_peak_micros;
-	bool mem1=false,mem2 = 0;
-	uint8_t iteration_number;
-	float realy_output;
-	float minpeak_out = 0;
-	float maxpeak_out = 0;
-	float maxpeak(bool, float);
-	float minpeak(bool, float);
-	bool algorithm(float, bool&, MRFT_bag&);
-    //---------------
+	const int no_switch_delay_in_ms = 100;
+	const int num_of_peak_conf_samples = 1;
+   	// NEW ALGO
+	bool first_run = true;
+	float last_output;
+	float e_max;
+	float e_min;
+	float has_reached_min;
+	float has_reached_max;
+	float peak_conf_counter;
+	//
 public:
-    //Chehadeh's code
     MRFT_parameters parameters;
 	void initialize(MRFT_parameters*);
-	float mrft_with_antilock(float, bool&, MRFT_bag&);
-	MRFT_bag _mrft_period;
-    //---------------
+    	//---------------
+	float mrft_anti_false_switching(float err, float beta, float h);
+	//---------------
 	void switchIn(DataMessage*);
     DataMessage* switchOut();
 	void receiveMsgData(DataMessage* t_msg); 

@@ -47,11 +47,12 @@ void MRFTController::receiveMsgData(DataMessage* t_msg){
 
 void MRFTController::reset(){
 	first_run = true;
-	prev_err = 0;
-	mem1 = false;
-	mem2 = 0;
-	minpeak_out = 0;
-	maxpeak_out = 0;
+	last_output = 0;
+	e_max = 0;
+	e_min = 0;
+	has_reached_min = 0;
+	has_reached_max = 0;
+	peak_conf_counter = 0;
 }
 
 DataMessage* MRFTController::runTask(DataMessage* t_msg){
@@ -64,113 +65,14 @@ DataMessage* MRFTController::runTask(DataMessage* t_msg){
 	// data.y is PV_First
 	// data.z is PV_Second
 
-    float command;
-	bool mrft_bag_ready=false;
-	
-	command = mrft_with_antilock(data.x, mrft_bag_ready, _mrft_period);
-	
-	if (mrft_bag_ready){
-		//local_comm.send_packet((void*)&mrft_period, sizeof(mrft_bag), local_comm.mrft_bag);
-		//TODO add a Warning
-	}
-	
+    float command;	
+	command = mrft_anti_false_switching(data.x, parameters.beta, parameters.relay_amp)+parameters.bias;
+
     _command_msg.data = command;
 
 	return (DataMessage*) &_command_msg;
 }
 
-// Start of Chehadeh's Code
-float MRFTController::maxpeak(bool cntrl, float in){
-	if (cntrl == 1){
-		if (in>0)
-		{
-			maxpeak_out = in;
-		}
-		else
-		{
-			maxpeak_out = 0;
-		}
-	}
-	else
-	{
-		if (in>maxpeak_out){
-			maxpeak_out = in;
-		}
-	}
-	return maxpeak_out;
-
-}
-
-float MRFTController::minpeak(bool cntrl, float in){
-	if (cntrl == 1){
-		if (in <= 0)
-		{
-			minpeak_out = in;
-		}
-		else
-		{
-			minpeak_out = 0;
-		}
-	}
-	else
-	{
-		if (in<minpeak_out){
-			minpeak_out = in;
-		}
-	}
-	return minpeak_out;
-}
-
-bool MRFTController::algorithm(float err, bool& mrft_bag_ready_para, MRFT_bag& mrft_period){
-	float buff1, outmin, outmax, outswitch;
-	bool op1, op2;
-	if (mrft_bag_ready_para){
-		mrft_bag_ready_para = false;
-	}
-	buff1 = ((-err) - (prev_err)) / _dt;//TODO: use Gyro
-	prev_err = -err;
-	if (buff1 >= 0)
-	{
-		op1 = true;
-	}
-	else
-	{
-		op1 = false;
-	}
-	op2 = ((!op1) && (mem1 ^ op1));
-	outmax = maxpeak(op2, err);
-	op2 = ((op1) && (mem1 ^ op1));
-	outmin = minpeak(op2, err);
-	if (op1 == true){
-		outswitch = outmax;
-	}
-	else{
-		outswitch = outmin;
-	}
-	buff1 = outswitch*parameters.beta + err;
-	if (buff1 >= 0){
-		op2 = true;
-	}
-	else{
-		op2 = false;
-	}
-	if (mem2 != op2){
-		if (op2)
-		{
-			mrft_period.amplitude = mrft_period.amplitude - outmin;
-			mrft_period.duration = _timer.tockMicroSeconds();
-			mrft_bag_ready_para = true;
-			_timer.tick();
-		}
-		else
-		{
-			mrft_period.amplitude = outmax;
-		}
-	}
-	mem1 = op1;
-	mem2 = op2;
-	return op2;
-}
 
 void MRFTController::initialize(MRFT_parameters* para){
 	
@@ -190,47 +92,114 @@ void MRFTController::initialize(MRFT_parameters* para){
 
 }
 
-float MRFTController::mrft_with_antilock(float err, bool& mrft_bag_ready_para, MRFT_bag& mrft_period){
-	bool mrft_res;
-	mrft_res = algorithm(err, mrft_bag_ready_para, mrft_period);
-	if (first_run){
-		if (mrft_res)
-		{ 
-			realy_output = parameters.relay_amp; 
-		}
-		else
-		{ 
-			realy_output = -parameters.relay_amp; 
-		}
-		iteration_number = iterations_lock_count;
-		prev_res = mrft_res;
-		first_run = false;
-		return (realy_output);
-	}
-	if (mrft_res){
-		if ((prev_res == !mrft_res) && (iteration_number == 0)) {
-			prev_res = mrft_res;
-			realy_output = parameters.relay_amp;
-			iteration_number = iterations_lock_count;
-		}
-		/*if (angle_pitch>max_angle_pitch[cycle]){
-		max_angle_pitch[cycle] = angle_pitch;
-		}*/
+float MRFTController::mrft_anti_false_switching(float err, float beta, float h){
+	// MRFT algorithm with false switching prevention mechanism
+	// June 2020
+	// Coded By M. Chehadeh, Khalifa University
+	// Translated to C++ By Pedro Silva, Khalifa University
 
+	// mode_of_operation=0 take last e_max or e_min
+	// mode_of_operation=1 take current e_max or e_min and mirror it
+	int mode_of_operation = 1;
+	
+
+	float output=0;
+	float e_max_o=0;
+	float e_min_o=0;
+	float sw_max_o=0;
+	float sw_min_o=0;
+
+	if(first_run){
+		first_run = false;
+		_timer.tick();
+		peak_conf_counter=0;
+		e_max=0;
+		e_min=0;
+		if(err>0){
+			has_reached_max=true;
+			has_reached_min=false;
+			last_output=h;
+		}else{
+			has_reached_max=false;
+			has_reached_min=true;
+			last_output=-h;
+		}			
+		output = last_output;
+		return output;
+	}		 
+
+	output = last_output;
+
+	if (_timer.tockMilliSeconds() <= no_switch_delay_in_ms){
+		e_min_o = e_min;
+		e_max_o = e_max;
+		return output;
 	}
-	else
-	{
-		if ((prev_res == !mrft_res) && (iteration_number == 0)){
-			prev_res = mrft_res;
-			realy_output = -parameters.relay_amp;
-			iteration_number = iterations_lock_count;
+		
+	if (last_output<0){
+
+		if (err<e_min){
+			e_min=err;
+			peak_conf_counter=0;
+		}else{
+			peak_conf_counter=peak_conf_counter+1;
+			if (peak_conf_counter>=num_of_peak_conf_samples){
+				has_reached_min=true;
+				peak_conf_counter=0;
+			}
+			e_max=err;
 		}
-		/*if (angle_pitch<min_angle_pitch[cycle]){
-		min_angle_pitch[cycle] = angle_pitch;
-		}*/
+		float sw_min;
+		if (mode_of_operation==0){
+			sw_min = ((e_max-e_min)/2)+e_min+beta*((e_max-e_min)/2);
+		}else if (mode_of_operation==1){
+			float e_max_star=-e_min;
+			sw_min = ((e_max_star-e_min)/2)+e_min+beta*((e_max_star-e_min)/2);
+		}
+		sw_min_o = sw_min;
+		if (has_reached_min){
+			if (err>sw_min){
+				output=h;
+				_timer.tick();
+				has_reached_min=false;
+			}else{
+				output=last_output;
+			}
+		}
+	}else{
+		if (err>e_max){
+			e_max=err;
+			peak_conf_counter=0;
+		}else{
+			peak_conf_counter=peak_conf_counter+1;
+			if (peak_conf_counter>=num_of_peak_conf_samples){
+				has_reached_max=true;
+				peak_conf_counter=0;
+			}
+			e_min=err;
+		}
+		float sw_max;
+		if (mode_of_operation==0){
+			sw_max=e_max-((e_max-e_min)/2)-(beta*((e_max-e_min)/2));
+		}else if (mode_of_operation==1){
+			float e_min_star=-e_max;
+			sw_max=e_max-((e_max-e_min_star)/2)-(beta*((e_max-e_min_star)/2));
+		}    
+		sw_max_o=sw_max;
+		if (has_reached_max){
+			if (err<sw_max){
+				output=-h;
+				_timer.tick();
+				has_reached_max=false;
+			}else{
+				output=last_output;
+			}
+		}
 	}
-	if (iteration_number > 0){ 
-		iteration_number--; 
-	}
-	return (realy_output+parameters.bias);
-}
+
+	e_min_o=e_min;
+	e_max_o=e_max;
+	last_output=output;
+
+	return output;
+}	

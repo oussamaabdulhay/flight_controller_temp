@@ -58,13 +58,14 @@ int main(int argc, char **argv){
         tempo.tick();
 
         ros::spinOnce();
-        rate.sleep();
 
         int gone = tempo.tockMicroSeconds();
-        if(gone > 10000) {
+        if(gone > 8333) {
             std::cout  << i << " WP: " << gone << "\n";
         }
         i++;
+        rate.sleep();
+
     }
 
     return 0;

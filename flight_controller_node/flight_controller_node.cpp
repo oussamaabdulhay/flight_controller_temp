@@ -428,15 +428,16 @@ int main(int argc, char** argv) {
 
     Timer tempo;
     while(ros::ok()){
-        //tempo.tick();
+        tempo.tick();
 
         ros::spinOnce();
+
+        int gone = tempo.tockMicroSeconds();
+        if(gone > 2500) {
+            std::cout  << "FC over 2500: " << gone << "\n";
+        }
         rate.sleep();
 
-        // int gone = tempo.tockMicroSeconds();
-        // if(gone > 5000) {
-        //     std::cout  << "FC over 5000us: " << gone << "\n";
-        // }
     }
 
     return 0;

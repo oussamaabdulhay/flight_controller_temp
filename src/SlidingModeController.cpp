@@ -93,7 +93,9 @@ float SlidingModeController::sliding_mode_algorithm(float t_error){
 		command = _alpha2;
 	}
 
-	//std::cout << "Error: " << t_error << " Command: " << command << std::endl;
+	// std::cout << "H1: " << _h1 << " H2: " << _h2 << "ALPHA1: " << _alpha1 << "ALPHA2: " << _alpha2 << std::endl;
+
+	// std::cout << "Error: " << t_error << " Command: " << command << std::endl;
 
 	return command;
 

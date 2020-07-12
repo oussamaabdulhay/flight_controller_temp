@@ -25,13 +25,17 @@ DataMessage* PIDplusMRFTController::runTask(DataMessage* t_msg){
 
     FloatMsg* mrft_output_msg = (FloatMsg*)(_mrft_controller->runTask(t_msg));
     
-    if(_current_pv >= z_max || _current_pv_dot >= z_dot_max){
+    if(!_PID_enabled || _current_pv >= z_max || _current_pv_dot >= z_dot_max){
         _command_msg.data = _last_PID + mrft_output_msg->data;
         
-    }else{
+    }else if(_PID_enabled){
         FloatMsg* pid_output_msg = (FloatMsg*)(_pid_controller->runTask(t_msg));
         _last_PID = pid_output_msg->data;
         _command_msg.data = _last_PID + mrft_output_msg->data;
+    }
+
+    if(_current_pv >= 1.0){ //TODO this hsouldnt be hard coded
+        _PID_enabled = false;
     }
 
 	return (DataMessage*) &_command_msg;

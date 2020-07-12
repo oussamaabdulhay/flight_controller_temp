@@ -15,7 +15,7 @@ void PIDController::switchIn(DataMessage* data){
 
 DataMessage* PIDController::switchOut(){
 
-    m_switchout_msg.setSwitchOutMsg(_filter_y);
+    m_switchout_msg.setSwitchOutMsg(0.0);
 	Logger::getAssignedLogger()->log("SWITCH OUT PID CONTROLLER",LoggerLevel::Warning);
 
     return (DataMessage*)&m_switchout_msg;
@@ -47,7 +47,7 @@ DataMessage* PIDController::runTask(DataMessage* t_msg){
 
     Vector3D<float> data = controller_msg->getData();
 	float command = pid_direct(data.x, data.y, data.z);
-	_filter_y = _filter.perform(command);
+	// _filter_y = _filter.perform(command);
 
 	_command_msg.data = command;
 

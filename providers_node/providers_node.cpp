@@ -17,7 +17,7 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "providers_node");
 
     ros::NodeHandle nh;
-    ros::Rate rate(400);
+    ros::Rate rate(200);
     
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
@@ -114,7 +114,7 @@ int main(int argc, char **argv){
         ros::spinOnce();
 
         int gone = tempo.tockMicroSeconds();
-        if(gone > 2500) {
+        if(gone > 5000) {
              std::cout  << i << " PROV: " << gone << "\n";
         }
         i++;

@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "flight_controller_node");
 
     ros::NodeHandle nh;
-    ros::Rate rate(400);
+    ros::Rate rate(200);
     ROSUnit_Factory ROSUnit_Factory_main{nh};
 
     
@@ -147,7 +147,7 @@ int main(int argc, char** argv) {
     X_ControlSystem->addBlock(SM_x);
     X_ControlSystem->addBlock(PV_Ref_x);
 
-    ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, block_frequency::hz400);
+    ControlSystem* Pitch_ControlSystem = new ControlSystem(control_system::pitch, block_frequency::hz200);
     Pitch_ControlSystem->addBlock(PID_pitch);
     Pitch_ControlSystem->addBlock(MRFT_pitch);
     Pitch_ControlSystem->addBlock(PV_Ref_pitch);
@@ -158,7 +158,7 @@ int main(int argc, char** argv) {
     Y_ControlSystem->addBlock(SM_y);
     Y_ControlSystem->addBlock(PV_Ref_y);
 
-    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, block_frequency::hz400);
+    ControlSystem* Roll_ControlSystem = new ControlSystem(control_system::roll, block_frequency::hz200);
     Roll_ControlSystem->addBlock(PID_roll);
     Roll_ControlSystem->addBlock(MRFT_roll);
     Roll_ControlSystem->addBlock(PV_Ref_roll);
@@ -433,8 +433,8 @@ int main(int argc, char** argv) {
         ros::spinOnce();
 
         int gone = tempo.tockMicroSeconds();
-        if(gone > 2500) {
-            std::cout  << "FC over 2500: " << gone << "\n";
+        if(gone > 5000) {
+            std::cout  << "FC over 5000: " << gone << "\n";
         }
         rate.sleep();
 

@@ -11,6 +11,7 @@
 #include "PVConcatenator.hpp"
 #include "Global2Inertial.hpp"
 #include "common_srv/Timer.hpp"
+#include "ButterFilter_Xsens.hpp"
 
 class ROSUnit_Xsens : public ROSUnit{
 
@@ -24,7 +25,10 @@ class ROSUnit_Xsens : public ROSUnit{
         static void callbackXsensAttitude(const geometry_msgs::QuaternionStamped& msg_attitude);
         static void callbackXsensVelocity(const geometry_msgs::TwistStamped& msg_velocity);
         static void callbackXsensBodyRate(const geometry_msgs::Vector3Stamped& msg_bodyrate);
-        
+        static ButterFilter_Xsens filter_gyro_x;
+        static ButterFilter_Xsens filter_gyro_y;
+        static ButterFilter_Xsens filter_gyro_z;
+
         static Timer t_pedro;
 
     public:

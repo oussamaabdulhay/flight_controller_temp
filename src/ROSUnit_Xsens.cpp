@@ -2,9 +2,9 @@
 #include <iostream>
 ROSUnit_Xsens* ROSUnit_Xsens::_instance_ptr = NULL;
 Timer ROSUnit_Xsens::t_pedro;
-// ButterFilter_Xsens ROSUnit_Xsens::filter_gyro_x;
-// ButterFilter_Xsens ROSUnit_Xsens::filter_gyro_y;
-// ButterFilter_Xsens ROSUnit_Xsens::filter_gyro_z;
+ButterFilter_Xsens ROSUnit_Xsens::filter_gyro_x;
+ButterFilter_Xsens ROSUnit_Xsens::filter_gyro_y;
+ButterFilter_Xsens ROSUnit_Xsens::filter_gyro_z;
 
 ROSUnit_Xsens::ROSUnit_Xsens(ros::NodeHandle& t_main_handler) : ROSUnit(t_main_handler){
     _sub_attitude = t_main_handler.subscribe("filter/quaternion", 2, callbackXsensAttitude);
@@ -27,9 +27,9 @@ void ROSUnit_Xsens::callbackXsensBodyRate(const geometry_msgs::Vector3Stamped& m
     angular_vel.z = msg_bodyrate.vector.z;
 
     //FILTERING
-    // angular_vel.x = filter_gyro_x.perform(angular_vel.x);
-    // angular_vel.y = filter_gyro_y.perform(angular_vel.y);
-    // angular_vel.z = filter_gyro_z.perform(angular_vel.z);
+    angular_vel.x = filter_gyro_x.perform(angular_vel.x);
+    angular_vel.y = filter_gyro_y.perform(angular_vel.y);
+    angular_vel.z = filter_gyro_z.perform(angular_vel.z);
 
     pv_dot_msg.setVector3DMessage(angular_vel);
 

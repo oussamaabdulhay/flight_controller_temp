@@ -80,7 +80,9 @@ void ROSUnit_BroadcastData::receiveMsgData(DataMessage* t_msg, int t_channel){
 
             std_msgs::Float64MultiArray msg;
             msg.data = _cs_references;
-            _csr_prov_pub.publish(msg);
+            if(i == 4){
+                _csr_prov_pub.publish(msg);
+            }
 
         }else if(t_channel == (int)ros_broadcast_channels::control_outputs){
             int i = (int)(vector_double_msg->data[0]);
@@ -88,7 +90,9 @@ void ROSUnit_BroadcastData::receiveMsgData(DataMessage* t_msg, int t_channel){
 
             std_msgs::Float64MultiArray msg;
             msg.data = _cs_outputs;
-            _cs_prov_pub.publish(msg);
+            if(i == 4){
+                _cs_prov_pub.publish(msg);
+            }
         }
     }else if(t_msg->getType() == msg_type::INTEGER){
         IntegerMsg* integer_msg = (IntegerMsg*)t_msg;

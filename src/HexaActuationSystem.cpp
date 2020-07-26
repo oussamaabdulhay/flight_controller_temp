@@ -18,20 +18,42 @@ void HexaActuationSystem::command(){
     //Update pulse values
     for(int i = 0; i < 6; i++){
         for(int j = 0; j < 4; j++){
-            _commands[i] += _geometry[i][j] * _movements[j];
+            _commands[i] += _geometry[i][j] * _u[j];
         }
     }
 
-    //_movements (PID outputs) should be between 0 and 1. Thus, we have to adjust for the range 1150 to 2000 on _commands.
+    //_u (PID outputs) should be between 0 and 1. Thus, we have to adjust for the range 1150 to 2000 on _commands.
     //Normalize and Constrain
 
     for(int i = 0; i < 6; i++){
+        _commands[i] = (_commands[i] * (_escMax-_escMin_armed)) + _escMin_armed;
+    }
+
+    // ANTI-MIN SATURATION
+    float min_command = _commands[0];
+
+    for(int i = 1; i < 6; i++){
+        if(_commands[i] < min_command){
+            min_command = _commands[i];
+        }
+    }
+
+    float bias = 0;
+
+    if(min_command < _escMin_armed){
+        bias = _escMin_armed - min_command;
+        
+        for(int i = 0; i < 6; i++){
+            _commands[i] = _commands[i] + bias;
+        }
+    }
+    //
+    for(int i = 0; i < 6; i++){
         if(_armed){
-            _commands[i] = (_commands[i] * (_escMax-_escMin_armed)) + _escMin_armed;
             _commands[i] = this->constrain(_commands[i], _escMin_armed, _escMax);
         }else{
             _commands[i] = _escMin;
-        }
+        }  
     }
 
     //Actuate
@@ -79,15 +101,15 @@ void HexaActuationSystem::receiveMsgData(DataMessage* t_msg, int t_channel){
         FloatMsg* float_msg = (FloatMsg*)t_msg;
 
         if(_armed){
-            _movements[t_channel] = float_msg->data;
+            _u[t_channel] = float_msg->data;
             if(t_channel == (int)receiving_channels::ch_pitch){ //This sends the commands to the motors on the fastest loop, avoiding thread issues.
                 this->command();
             }
         }else{
-            _movements[0] = 0.0;
-            _movements[1] = 0.0;
-            _movements[2] = 0.0;
-            _movements[3] = 0.0;
+            _u[0] = 0.0;
+            _u[1] = 0.0;
+            _u[2] = 0.0;
+            _u[3] = 0.0;
             this->command();
         }     
     }

@@ -19,7 +19,7 @@ void QuadActuationSystem::command(){
     //Update pulse values
     for(int i = 0; i < NUM_MOTORS; i++){
         for(int j = 0; j < 4; j++){
-            _commands[i] += _geometry[i][j] * _movements[j];
+            _commands[i] += _geometry[i][j] * _u[j];
         }
     }
 
@@ -81,15 +81,15 @@ void QuadActuationSystem::receiveMsgData(DataMessage* t_msg, int t_channel){
         FloatMsg* float_msg = (FloatMsg*)t_msg;
 
         if(_armed){
-            _movements[t_channel] = float_msg->data;
+            _u[t_channel] = float_msg->data;
             if(t_channel == (int)receiving_channels::ch_pitch){ //This sends the commands to the motors on the fastest loop, avoiding thread issues.
                 this->command();
             }
         }else{
-            _movements[0] = 0.0;
-            _movements[1] = 0.0;
-            _movements[2] = 0.0;
-            _movements[3] = 0.0;
+            _u[0] = 0.0;
+            _u[1] = 0.0;
+            _u[2] = 0.0;
+            _u[3] = 0.0;
             this->command();
         }     
     }

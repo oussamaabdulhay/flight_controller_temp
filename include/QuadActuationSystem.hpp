@@ -30,7 +30,7 @@ private:
     const int _escMin_armed = 1150;
     const int _escMax = 2000;
     bool _armed = false;
-    float _movements[4]; //[roll, pitch, yaw, throttle]
+    float _u[4]; //[roll, pitch, yaw, throttle]
     std::vector<double> _commands {0,0,0,0,0,0}; //Here we keep commands as size 6 just to make the code generic for both configurations.
     float _geometry[4][4] = {{-0.707107, -0.707107,  1, 1},
                              { 0.707107,  0.707107,  1, 1},

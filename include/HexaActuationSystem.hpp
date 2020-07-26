@@ -28,7 +28,7 @@ private:
     const int _escMin_armed = 1150;
     const int _escMax = 2000;
     bool _armed = false;
-    float _movements[4]; //[roll, pitch, yaw, throttle]
+    float _u[4]; //[roll, pitch, yaw, throttle]
     std::vector<double> _commands {0,0,0,0,0,0};
     float _geometry[6][4] = {{       0  * -1,   -1 * -1,  1, 1},
                              {       0  * -1,    1 * -1, -1, 1},

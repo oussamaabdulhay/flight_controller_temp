@@ -25,7 +25,7 @@ class HexaActuationSystem : public ActuationSystem {
 private:    
     std::vector<Actuator*> _actuators;
     const int _escMin = 1000;
-    const int _escMin_armed = 1150;
+    const int _escMin_armed = 1165;
     const int _escMax = 2000;
     bool _armed = false;
     float _u[4]; //[roll, pitch, yaw, throttle]

@@ -1,17 +1,23 @@
 #include "ROSUnit_Xsens.hpp"
 #include <iostream>
+#include <fstream>
 ROSUnit_Xsens* ROSUnit_Xsens::_instance_ptr = NULL;
 Timer ROSUnit_Xsens::t_pedro;
 ButterFilter_Xsens ROSUnit_Xsens::filter_gyro_x;
 ButterFilter_Xsens ROSUnit_Xsens::filter_gyro_y;
 ButterFilter_Xsens ROSUnit_Xsens::filter_gyro_z;
+// std::ofstream write_data("/home/pi/gyro_data.txt"); 
+// ros::WallTime start_, end_;
 
 ROSUnit_Xsens::ROSUnit_Xsens(ros::NodeHandle& t_main_handler) : ROSUnit(t_main_handler){
-    _sub_attitude = t_main_handler.subscribe("filter/quaternion", 2, callbackXsensAttitude);
-    _sub_body_rate = t_main_handler.subscribe("imu/angular_velocity", 2, callbackXsensBodyRate);
-    //_sub_position = t_main_handler.subscribe("filter/positionlla", 1, callbackXsensPosition);
-    _sub_velocity = t_main_handler.subscribe("filter/twist", 2, callbackXsensVelocity);
+    _sub_attitude = t_main_handler.subscribe("filter/quaternion", 2, callbackXsensAttitude, ros::TransportHints().tcpNoDelay());
+    _sub_body_rate = t_main_handler.subscribe("imu/angular_velocity", 2, callbackXsensBodyRate, ros::TransportHints().tcpNoDelay());
+    _sub_acceleration = t_main_handler.subscribe("filter/free_acceleration", 2, callbackXsensFreeAcceleration, ros::TransportHints().tcpNoDelay());
+    // _sub_velocity = t_main_handler.subscribe("filter/twist", 2, callbackXsensVelocity);
     _instance_ptr = this;
+    // write_data << "GyroX, GyroY, GyroZ, F_GyroX, F_GyroY, F_GyroZ, ROS_time, PI_time \n";
+    // t_pedro.tick();
+    // start_ = ros::WallTime::now();
 }
 
 ROSUnit_Xsens::~ROSUnit_Xsens() {
@@ -25,11 +31,18 @@ void ROSUnit_Xsens::callbackXsensBodyRate(const geometry_msgs::Vector3Stamped& m
     angular_vel.x = -1 * msg_bodyrate.vector.y;
     angular_vel.y = msg_bodyrate.vector.x;
     angular_vel.z = msg_bodyrate.vector.z;
-
+    
+    // write_data << angular_vel.x << ", " << angular_vel.y << ", " << angular_vel.z << ", ";
+    
     //FILTERING
+    // Vector3D<double> filter_vel;
     angular_vel.x = filter_gyro_x.perform(angular_vel.x);
     angular_vel.y = filter_gyro_y.perform(angular_vel.y);
     angular_vel.z = filter_gyro_z.perform(angular_vel.z);
+    // end_ = ros::WallTime::now();
+
+    // write_data << filter_vel.x << ", " << filter_vel.y << ", " << filter_vel.z << ", " << (end_ - start_).toNSec() * 1e-6 << ", " << t_pedro.tockMicroSeconds() << "\n";
+
 
     pv_dot_msg.setVector3DMessage(angular_vel);
 
@@ -39,8 +52,24 @@ void ROSUnit_Xsens::callbackXsensBodyRate(const geometry_msgs::Vector3Stamped& m
 }
 
 
-void ROSUnit_Xsens::callbackXsensPosition(const geometry_msgs::Vector3Stamped& msg_position){
-    
+void ROSUnit_Xsens::callbackXsensFreeAcceleration(const geometry_msgs::Vector3Stamped& msg_free_acceleration){
+
+    Vector3DMessage pv_dot_dot_msg;
+    Vector3D<double> free_acceleration;
+    free_acceleration.x = -1 * msg_free_acceleration.vector.y;
+    free_acceleration.y = msg_free_acceleration.vector.x;
+    free_acceleration.z = msg_free_acceleration.vector.z;
+
+    //FILTERING
+    // Vector3D<double> filter_vel;
+    // free_acceleration.x = filter_gyro_x.perform(free_acceleration.x);
+    // free_acceleration.y = filter_gyro_y.perform(free_acceleration.y);
+    // free_acceleration.z = filter_gyro_z.perform(free_acceleration.z);
+    // end_ = ros::WallTime::now();
+
+    pv_dot_dot_msg.setVector3DMessage(free_acceleration);
+
+	_instance_ptr->emitMsgUnicast((DataMessage*) &pv_dot_dot_msg,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_acceleration, (int)PVConcatenator::receiving_channels::ch_pv_dot_dot);
    
 }
 

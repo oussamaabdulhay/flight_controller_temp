@@ -19,6 +19,8 @@ private:
 	FloatMsg _command_msg;
     double _alpha1, _alpha2, _h1, _h2;
     SwitchOutMsg _switchout_msg;
+	double _command = 0;
+
 
 public:
 	void switchIn(DataMessage*);

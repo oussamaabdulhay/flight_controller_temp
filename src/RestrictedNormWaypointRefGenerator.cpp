@@ -40,19 +40,38 @@ void RestrictedNormWaypointRefGenerator::receiveMsgData(DataMessage* t_msg){
         if (Waypoints.size()>0 && enabled){
             Vector3D<double> diff_pos_waypoint=Waypoints[0].position-t_current_pos_vec;
             double t_dist= Vector3D<double>::getL2Norm(diff_pos_waypoint);
-            if (t_dist>=max_norm){
-                Vector3D<double> restricted_ref;
-                restricted_ref=t_current_pos_vec+(diff_pos_waypoint/t_dist)*max_norm;
-                updateControlSystemsReferences(restricted_ref,Waypoints[0].yaw);
+            double dist_x = Waypoints[0].position.x - t_current_pos_vec.x;
+            double dist_y = Waypoints[0].position.y - t_current_pos_vec.y;
+            double dist_z = Waypoints[0].position.z - t_current_pos_vec.z;
+            Vector3D<double> restricted_ref;
+            restricted_ref.x = Waypoints[0].position.x;
+            restricted_ref.y = Waypoints[0].position.y;
+            restricted_ref.z = Waypoints[0].position.z;
+            bool move_x=false, move_y=false, move_z=false;
+            if (abs(dist_x)>=max_norm){
+                restricted_ref.x=t_current_pos_vec.x + (dist_x/abs(dist_x))*max_norm;
+                move_x = true;
             }
-            else
-            {
+            if (abs(dist_y)>=max_norm){
+                restricted_ref.y=t_current_pos_vec.y + (dist_y/abs(dist_y))*max_norm;
+                move_y = true;
+            }
+            if (abs(dist_z)>=max_norm){
+                restricted_ref.z=t_current_pos_vec.z + (dist_z/abs(dist_z))*max_norm;
+                move_z = true;
+            }
+            
+            if(move_x || move_y || move_z){
+                updateControlSystemsReferences(restricted_ref,Waypoints[0].yaw);
+            }else{
                 if (Waypoints.size()==1){
                     updateControlSystemsReferences(Waypoints[0].position,Waypoints[0].yaw);
                     Waypoints.clear();
                 }else{
-                    auto firstWaypoint=Waypoints.begin();
-                    Waypoints.erase(firstWaypoint);
+                    if(t_dist <= 0.071){
+                        auto firstWaypoint=Waypoints.begin();
+                        Waypoints.erase(firstWaypoint);
+                    }
                 }
             }
         }

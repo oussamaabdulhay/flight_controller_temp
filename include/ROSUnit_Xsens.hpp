@@ -18,10 +18,10 @@ class ROSUnit_Xsens : public ROSUnit{
     private:
         static ROSUnit_Xsens* _instance_ptr;
         ros::Subscriber _sub_attitude;
-        ros::Subscriber _sub_position;
+        ros::Subscriber _sub_acceleration;
         ros::Subscriber _sub_velocity;
         ros::Subscriber _sub_body_rate;
-        static void callbackXsensPosition(const geometry_msgs::Vector3Stamped& msg_position);
+        static void callbackXsensFreeAcceleration(const geometry_msgs::Vector3Stamped& msg_free_acceleration);
         static void callbackXsensAttitude(const geometry_msgs::QuaternionStamped& msg_attitude);
         static void callbackXsensVelocity(const geometry_msgs::TwistStamped& msg_velocity);
         static void callbackXsensBodyRate(const geometry_msgs::Vector3Stamped& msg_bodyrate);
@@ -32,7 +32,7 @@ class ROSUnit_Xsens : public ROSUnit{
         static Timer t_pedro;
 
     public:
-        enum unicast_addresses {broadcast,unicast_XSens_translation,unicast_XSens_orientation,unicast_XSens_attitude_rate,unicast_XSens_yaw_rate,unicast_XSens_translation_rate};
+        enum unicast_addresses {broadcast,unicast_XSens_translation,unicast_XSens_orientation,unicast_XSens_attitude_rate,unicast_XSens_yaw_rate,unicast_XSens_translation_rate, unicast_XSens_acceleration};
         void receiveMsgData(DataMessage*);
         ROSUnit_Xsens(ros::NodeHandle&);
         ~ROSUnit_Xsens();

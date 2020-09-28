@@ -18,8 +18,8 @@ private:
     controller_type _controller_type;
 	float _dt;
 	FloatMsg _command_msg;
-	const int no_switch_delay_in_ms = 100;
-	const int num_of_peak_conf_samples = 1;
+	const int no_switch_delay_in_ms = 20;
+	const int num_of_peak_conf_samples = 5;
    	// NEW ALGO
 	bool first_run = true;
 	float last_output;

@@ -12,7 +12,7 @@ MRFTController::~MRFTController() {
 void MRFTController::switchIn(DataMessage* t_msg){
     if(t_msg->getType() == msg_type::SWITCHOUT){
 		SwitchOutMsg* switch_out_msg = (SwitchOutMsg*)t_msg;
-		parameters.bias = switch_out_msg->getSwitchOutMsg();
+		// parameters.bias = switch_out_msg->getSwitchOutMsg();
 	}
 	Logger::getAssignedLogger()->log("SWITCH IN MRFT CONTROLLER - Bias: %f", parameters.bias, LoggerLevel::Warning);
 }

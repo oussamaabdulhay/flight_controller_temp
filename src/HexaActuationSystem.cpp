@@ -29,7 +29,6 @@ void HexaActuationSystem::command(){
         _commands[i] = (_commands[i] * (_escMax-_escMin_armed)) + _escMin_armed;
     }
 
-    // ANTI-MIN SATURATION
     float min_command = _commands[0];
 
     for(int i = 1; i < 6; i++){
@@ -47,7 +46,7 @@ void HexaActuationSystem::command(){
             _commands[i] = _commands[i] + bias;
         }
     }
-    //
+
     for(int i = 0; i < 6; i++){
         if(_armed){
             _commands[i] = this->constrain(_commands[i], _escMin_armed, _escMax);

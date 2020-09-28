@@ -37,8 +37,9 @@
 #undef BATTERY_MONITOR
 
 
-const int PWM_FREQUENCY = 50;
-const float SATURATION_VALUE_XY = 0.5;
+const int PWM_FREQUENCY = 200;
+const float SATURATION_VALUE_XY = 0.2617; //TODO trajectory following 0.5 before
+const float SATURATION_VALUE_Z = 0.25; //TODO trajectory following
 const float SATURATION_VALUE_YAW = 1.0;
 const float SATURATION_VALUE_YAWRATE = 0.3;
 
@@ -135,6 +136,7 @@ int main(int argc, char** argv) {
 
     Saturation* X_Saturation = new Saturation(SATURATION_VALUE_XY);
     Saturation* Y_Saturation = new Saturation(SATURATION_VALUE_XY);
+    Saturation* Z_Saturation = new Saturation(SATURATION_VALUE_Z);
     Saturation* Yaw_Saturation = new Saturation(SATURATION_VALUE_YAW);
     Saturation* YawRate_Saturation = new Saturation(SATURATION_VALUE_YAWRATE);
 
@@ -195,12 +197,12 @@ int main(int argc, char** argv) {
 
 
     //***********************************SETTING CONNECTIONS***********************************
-    //========                                                                    =============
-    //|      |----->X_Control_System-->RM_X-->Saturation-->Roll_Control_System--->|           |
-    //| USER |----->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System-->| Actuation |
-    //|      |----->Z_Control_System--------------------------------------------->|  System   |
-    //|      |----->Yaw_Control_System-->Saturation--->YawRate_Control_System---->|           |
-    //========                                                                    =============
+    //========                                                                             =============
+    //|      |-------------->X_Control_System-->RM_X-->Saturation-->Roll_Control_System--->|           |
+    //| USER |-------------->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System-->| Actuation |
+    //|      |->Saturation-->Z_Control_System--------------------------------------------->|  System   |
+    //|      |-------------->Yaw_Control_System-->Saturation--->YawRate_Control_System---->|           |
+    //========                                                                             =============
     
     rosunit_waypoint_x->setEmittingChannel((int)ControlSystem::receiving_channels::ch_reference);
     rosunit_waypoint_y->setEmittingChannel((int)ControlSystem::receiving_channels::ch_reference);
@@ -223,6 +225,8 @@ int main(int argc, char** argv) {
     Y_Saturation->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
     Pitch_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
     
+    // rosunit_waypoint_z->addCallbackMsgReceiver((MsgReceiver*)Z_Saturation);
+    // Z_Saturation->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
     rosunit_waypoint_z->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
     Z_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
     

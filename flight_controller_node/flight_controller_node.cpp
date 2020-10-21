@@ -33,6 +33,9 @@
 #include "PIDplusMRFTController.hpp"
 #include "Switch.hpp"
 #include "Sum.hpp"
+#include "Mux3D.hpp"
+#include "Demux3D.hpp"
+#include "InvertedSwitch.hpp"
 
 #define XSENS_OVER_ROS
 #define OPTITRACK
@@ -41,7 +44,6 @@
 
 const int PWM_FREQUENCY = 200;
 const float SATURATION_VALUE_XY = 0.2617; //TODO trajectory following 0.5 before
-const float SATURATION_VALUE_Z = 0.25; //TODO trajectory following
 const float SATURATION_VALUE_YAW = 1.0;
 const float SATURATION_VALUE_YAWRATE = 0.3;
 
@@ -138,7 +140,6 @@ int main(int argc, char** argv) {
 
     Saturation* X_Saturation = new Saturation(SATURATION_VALUE_XY);
     Saturation* Y_Saturation = new Saturation(SATURATION_VALUE_XY);
-    Saturation* Z_Saturation = new Saturation(SATURATION_VALUE_Z);
     Saturation* Yaw_Saturation = new Saturation(SATURATION_VALUE_YAW);
     Saturation* YawRate_Saturation = new Saturation(SATURATION_VALUE_YAWRATE);
 
@@ -430,18 +431,26 @@ int main(int argc, char** argv) {
 
     // REFACTORING //
 
-    Switch* new_switch = new Switch(std::greater_equal<double>(), 2.0);
-    Sum* new_sum_add = new Sum(std::plus<float>());
-    Sum* new_sum_sub = new Sum(std::minus<float>());
+    InvertedSwitch* PID_switch = new InvertedSwitch(std::greater_equal<float>(), 10.0);
+    Switch* PID_MRFT_switch = new Switch(std::greater_equal<float>(), 10.05);
+    Sum* sum_PID_MRFT = new Sum(std::plus<float>());
+    Sum* sum_ref = new Sum(std::minus<float>());
+    Sum* sum_ref_dot = new Sum(std::minus<float>());
+    Sum* sum_ref_dot_dot = new Sum(std::minus<float>());
+    Demux3D* prov_demux = new Demux3D();
+    Mux3D* error_mux = new Mux3D();
 
-    new_switch->triggerCallback(3.0);
-    new_switch->triggerCallback(1.0);
-    new_switch->triggerCallback(2.0);
-
-    rosunit_waypoint_z->addCallbackMsgReceiver((MsgReceiver*)new_sum_sub->getPorts()[(int)Sum::ports_id::IP_0_DATA]);
-    rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)new_sum_sub->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
-
-    Z_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
+    rosunit_waypoint_z->addCallbackMsgReceiver((MsgReceiver*)sum_ref->getPorts()[(int)Sum::ports_id::IP_0_DATA]);
+    rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)prov_demux);
+    prov_demux->getPorts()[1]->addCallbackMsgReceiver((MsgReceiver*)sum_ref->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
+    prov_demux->getPorts()[2]->addCallbackMsgReceiver((MsgReceiver*)sum_ref_dot->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
+    prov_demux->getPorts()[3]->addCallbackMsgReceiver((MsgReceiver*)sum_ref_dot_dot->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
+    sum_ref->getPorts()[2]->addCallbackMsgReceiver((MsgReceiver*)error_mux->getPorts()[0]);
+    sum_ref_dot->getPorts()[2]->addCallbackMsgReceiver((MsgReceiver*)error_mux->getPorts()[1]);
+    sum_ref_dot_dot->getPorts()[2]->addCallbackMsgReceiver((MsgReceiver*)error_mux->getPorts()[2]);
+    error_mux->getPorts()[3]->addCallbackMsgReceiver((MsgReceiver*)((PIDController*)PID_z)->getPorts()[0]);
+    ((PIDController*)PID_z)->getPorts()[1]->addCallbackMsgReceiver((MsgReceiver*)PID_switch->getPorts()[0]);
+    PID_switch->getPorts()[3]->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
 
     set_realtime_priority();
 

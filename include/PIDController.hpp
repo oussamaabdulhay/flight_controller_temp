@@ -11,6 +11,8 @@
 #include "SwitchOutMsg.hpp"
 #include "logger.hpp"
 #include "common_srv/IntegerMsg.hpp"
+#include "InputPort.hpp"
+#include "OutputPort.hpp"
 
 class PIDController : public Controller{
 
@@ -21,6 +23,9 @@ class PIDController : public Controller{
         FloatMsg _command_msg;
         ButterFilter_2nd_200Hz _filter;
         float _filter_y;
+        Port* _input_port;
+        Port* _output_port;
+        std::vector<Port*> _ports;
         //Chehadeh's code
         PID_parameters _parameters;
         bool i_term, d_term, dd_term; //Comparing against booleans is faster
@@ -30,6 +35,9 @@ class PIDController : public Controller{
         //---------------
         
     public:
+        enum ports_id {IP_0_DATA, OP_0_DATA};
+        void process(DataMessage* t_msg, Port* t_port);
+        std::vector<Port*> getPorts();
         //Chehadeh's code
         float prev_err = 0, prev2_err = 0, prev_pv_rate = 0, accum_u = 0, accum_I = 0;
         void initialize(PID_parameters);

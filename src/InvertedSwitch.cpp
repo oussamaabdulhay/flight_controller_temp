@@ -20,21 +20,23 @@ InvertedSwitch::~InvertedSwitch() {
 void InvertedSwitch::triggerCallback(float t_current_value){
 
     if (this->_operation(t_current_value, _trigger_value)){
-        _active_input_port = _output_port_1;
+        _active_input_port = _input_port_1;
     }else{
-        _active_input_port = _output_port_0;
+        _active_input_port = _input_port_0;
     }
 }
 
 DataMessage* InvertedSwitch::runTask(DataMessage* t_msg){
-    _active_input_port->receiveMsgData(t_msg);
+
+    _output_port->receiveMsgData(t_msg);
+
+    std::cout << ((FloatMsg*)t_msg)->data << std::endl;
     return t_msg;
 }
 
 void InvertedSwitch::process(DataMessage* t_msg, Port* t_port) {
     
     if(t_port->getID() == _active_input_port->getID()){
-        std::cout << "I'm a InvertedSwitch" << std::endl;
         this->runTask(t_msg);
 
     }else if(t_port->getID() == ports_id::IP_1_TRIGGER){

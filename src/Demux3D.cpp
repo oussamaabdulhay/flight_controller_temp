@@ -40,6 +40,6 @@ void Demux3D::process(DataMessage* t_msg, Port* t_port) {
     }
 }
 
-std::vector<Port*> Demux3D::getPorts(){
+std::vector<Port*> Demux3D::getPorts(){ //TODO move to Block
     return _ports;
 }

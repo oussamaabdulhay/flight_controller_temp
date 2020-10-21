@@ -3,6 +3,10 @@
 PIDController::PIDController(block_id t_id){
     _controller_type = controller_type::pid;
 	_id = t_id;
+	_input_port = new InputPort(ports_id::IP_0_DATA, this);
+	_output_port = new OutputPort(ports_id::OP_0_DATA, this);
+    _ports = {_input_port, _output_port};
+
 }
 
 PIDController::~PIDController() {
@@ -20,6 +24,16 @@ DataMessage* PIDController::switchOut(){
 
     return (DataMessage*)&m_switchout_msg;
 } 
+
+void PIDController::process(DataMessage* t_msg, Port* t_port) {
+    if(t_port->getID() == ports_id::IP_0_DATA){
+        this->runTask(t_msg);
+    }
+}
+
+std::vector<Port*> PIDController::getPorts(){
+    return _ports;
+}
 
 void PIDController::receiveMsgData(DataMessage* t_msg){
 
@@ -50,6 +64,8 @@ DataMessage* PIDController::runTask(DataMessage* t_msg){
 	// _filter_y = _filter.perform(command);
 
 	_command_msg.data = command;
+
+    this->_output_port->receiveMsgData(&_command_msg);
 
 	return (DataMessage*) &_command_msg;
 }

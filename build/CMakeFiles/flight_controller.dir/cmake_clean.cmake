@@ -16,6 +16,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/flight_controller.dir/src/Global2Inertial.cpp.o"
   "CMakeFiles/flight_controller.dir/src/HexaActuationSystem.cpp.o"
   "CMakeFiles/flight_controller.dir/src/InputPort.cpp.o"
+  "CMakeFiles/flight_controller.dir/src/InvertedSwitch.cpp.o"
   "CMakeFiles/flight_controller.dir/src/MRFTController.cpp.o"
   "CMakeFiles/flight_controller.dir/src/Matrix3by3.cpp.o"
   "CMakeFiles/flight_controller.dir/src/Mux3D.cpp.o"

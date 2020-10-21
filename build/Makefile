@@ -1617,6 +1617,42 @@ src/InputPort.cpp.s:
 	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/InputPort.cpp.s
 .PHONY : src/InputPort.cpp.s
 
+src/InvertedSwitch.o: src/InvertedSwitch.cpp.o
+
+.PHONY : src/InvertedSwitch.o
+
+# target to build an object file
+src/InvertedSwitch.cpp.o:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/InvertedSwitch.cpp.o
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/InvertedSwitch.cpp.o
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/InvertedSwitch.cpp.o
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/InvertedSwitch.cpp.o
+.PHONY : src/InvertedSwitch.cpp.o
+
+src/InvertedSwitch.i: src/InvertedSwitch.cpp.i
+
+.PHONY : src/InvertedSwitch.i
+
+# target to preprocess a source file
+src/InvertedSwitch.cpp.i:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/InvertedSwitch.cpp.i
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/InvertedSwitch.cpp.i
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/InvertedSwitch.cpp.i
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/InvertedSwitch.cpp.i
+.PHONY : src/InvertedSwitch.cpp.i
+
+src/InvertedSwitch.s: src/InvertedSwitch.cpp.s
+
+.PHONY : src/InvertedSwitch.s
+
+# target to generate assembly for a file
+src/InvertedSwitch.cpp.s:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/InvertedSwitch.cpp.s
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/InvertedSwitch.cpp.s
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/InvertedSwitch.cpp.s
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/InvertedSwitch.cpp.s
+.PHONY : src/InvertedSwitch.cpp.s
+
 src/MRFTController.o: src/MRFTController.cpp.o
 
 .PHONY : src/MRFTController.o
@@ -3611,6 +3647,9 @@ help:
 	@echo "... src/InputPort.o"
 	@echo "... src/InputPort.i"
 	@echo "... src/InputPort.s"
+	@echo "... src/InvertedSwitch.o"
+	@echo "... src/InvertedSwitch.i"
+	@echo "... src/InvertedSwitch.s"
 	@echo "... src/MRFTController.o"
 	@echo "... src/MRFTController.i"
 	@echo "... src/MRFTController.s"

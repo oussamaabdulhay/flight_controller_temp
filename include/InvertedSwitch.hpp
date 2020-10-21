@@ -1,0 +1,38 @@
+#pragma once
+#include <string.h>
+#include <iostream>
+#include <functional>
+#include <InputPort.hpp>
+#include <OutputPort.hpp>
+#include <Block.hpp>
+#include "common_srv/Vector3DMessage.hpp"
+
+class InvertedSwitch : public Block{
+
+private:
+    std::function<bool(float,float)> _operation;
+    float _trigger_value;
+    Port* _input_port_0;
+    Port* _input_port_1;
+    Port* _trigger_port;
+    Port* _output_port;
+    Port* _active_input_port;
+    std::vector<Port*> _ports;
+
+
+public:
+    enum ports_id {IP_0_DATA, IP_1_TRIGGER, IP_2_DATA, OP_0_DATA};
+    void triggerCallback(float t_current_value);
+    DataMessage* runTask(DataMessage*);
+    void process(DataMessage* t_msg, Port* t_port);
+    InvertedSwitch(std::function<bool(float,float)> t_operation, float t_trigger_value);
+    std::vector<Port*> getPorts();
+    ~InvertedSwitch();
+
+    //TODO Refactor below
+    block_id getID() {}
+    block_type getType() {}
+    void switchIn(DataMessage*) {}
+    DataMessage* switchOut() {}
+    void receiveMsgData(DataMessage* t_msg) {}
+};

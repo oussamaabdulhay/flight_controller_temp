@@ -16,6 +16,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/global2inertial_node.dir/src/Global2Inertial.cpp.o"
   "CMakeFiles/global2inertial_node.dir/src/HexaActuationSystem.cpp.o"
   "CMakeFiles/global2inertial_node.dir/src/InputPort.cpp.o"
+  "CMakeFiles/global2inertial_node.dir/src/InvertedSwitch.cpp.o"
   "CMakeFiles/global2inertial_node.dir/src/MRFTController.cpp.o"
   "CMakeFiles/global2inertial_node.dir/src/Matrix3by3.cpp.o"
   "CMakeFiles/global2inertial_node.dir/src/Mux3D.cpp.o"

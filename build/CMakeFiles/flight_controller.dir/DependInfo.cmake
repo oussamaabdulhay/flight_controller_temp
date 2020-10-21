@@ -21,6 +21,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Global2Inertial.cpp" "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/flight_controller.dir/src/Global2Inertial.cpp.o"
   "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/HexaActuationSystem.cpp" "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/flight_controller.dir/src/HexaActuationSystem.cpp.o"
   "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/InputPort.cpp" "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/flight_controller.dir/src/InputPort.cpp.o"
+  "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/InvertedSwitch.cpp" "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/flight_controller.dir/src/InvertedSwitch.cpp.o"
   "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/MRFTController.cpp" "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/flight_controller.dir/src/MRFTController.cpp.o"
   "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Matrix3by3.cpp" "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/flight_controller.dir/src/Matrix3by3.cpp.o"
   "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Mux3D.cpp" "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/CMakeFiles/flight_controller.dir/src/Mux3D.cpp.o"

@@ -24,9 +24,6 @@ void Switch::triggerCallback(float t_current_value){
     }else{
         _active_output_port = _output_port_0;
     }
-    FloatMsg* eu = new FloatMsg();
-    this->_input_port->receiveMsgData(eu);
-
 }
 
 DataMessage* Switch::runTask(DataMessage* t_msg){

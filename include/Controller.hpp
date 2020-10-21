@@ -18,6 +18,7 @@ public:
     virtual controller_type getControllerType() = 0;
     virtual DataMessage* runTask(DataMessage*) = 0;
     virtual void receiveMsgData(DataMessage* t_msg) = 0;
+    void process(DataMessage* t_msg, Port* t_port) {}
     
     Controller();
     ~Controller();

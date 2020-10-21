@@ -16,6 +16,7 @@ class Reference : public Block {
         virtual DataMessage* runTask(DataMessage*) = 0;
         virtual reference_type getReferenceType() = 0;
         virtual void setReferenceValue(float) = 0;
+        void process(DataMessage* t_msg, Port* t_port) {}
 
         Reference();
         ~Reference();

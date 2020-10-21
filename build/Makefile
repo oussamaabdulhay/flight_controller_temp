@@ -2229,6 +2229,42 @@ src/PVConcatenator.cpp.s:
 	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/PVConcatenator.cpp.s
 .PHONY : src/PVConcatenator.cpp.s
 
+src/Port.o: src/Port.cpp.o
+
+.PHONY : src/Port.o
+
+# target to build an object file
+src/Port.cpp.o:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Port.cpp.o
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Port.cpp.o
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Port.cpp.o
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Port.cpp.o
+.PHONY : src/Port.cpp.o
+
+src/Port.i: src/Port.cpp.i
+
+.PHONY : src/Port.i
+
+# target to preprocess a source file
+src/Port.cpp.i:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Port.cpp.i
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Port.cpp.i
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Port.cpp.i
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Port.cpp.i
+.PHONY : src/Port.cpp.i
+
+src/Port.s: src/Port.cpp.s
+
+.PHONY : src/Port.s
+
+# target to generate assembly for a file
+src/Port.cpp.s:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Port.cpp.s
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Port.cpp.s
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Port.cpp.s
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Port.cpp.s
+.PHONY : src/Port.cpp.s
+
 src/ProcessVariableReference.o: src/ProcessVariableReference.cpp.o
 
 .PHONY : src/ProcessVariableReference.o
@@ -2841,6 +2877,42 @@ src/SlidingModeController.cpp.s:
 	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/SlidingModeController.cpp.s
 .PHONY : src/SlidingModeController.cpp.s
 
+src/Switch.o: src/Switch.cpp.o
+
+.PHONY : src/Switch.o
+
+# target to build an object file
+src/Switch.cpp.o:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Switch.cpp.o
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Switch.cpp.o
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Switch.cpp.o
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Switch.cpp.o
+.PHONY : src/Switch.cpp.o
+
+src/Switch.i: src/Switch.cpp.i
+
+.PHONY : src/Switch.i
+
+# target to preprocess a source file
+src/Switch.cpp.i:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Switch.cpp.i
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Switch.cpp.i
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Switch.cpp.i
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Switch.cpp.i
+.PHONY : src/Switch.cpp.i
+
+src/Switch.s: src/Switch.cpp.s
+
+.PHONY : src/Switch.s
+
+# target to generate assembly for a file
+src/Switch.cpp.s:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Switch.cpp.s
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Switch.cpp.s
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Switch.cpp.s
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Switch.cpp.s
+.PHONY : src/Switch.cpp.s
+
 src/SwitchBlockMsg.o: src/SwitchBlockMsg.cpp.o
 
 .PHONY : src/SwitchBlockMsg.o
@@ -3410,6 +3482,9 @@ help:
 	@echo "... src/PVConcatenator.o"
 	@echo "... src/PVConcatenator.i"
 	@echo "... src/PVConcatenator.s"
+	@echo "... src/Port.o"
+	@echo "... src/Port.i"
+	@echo "... src/Port.s"
 	@echo "... src/ProcessVariableReference.o"
 	@echo "... src/ProcessVariableReference.i"
 	@echo "... src/ProcessVariableReference.s"
@@ -3461,6 +3536,9 @@ help:
 	@echo "... src/SlidingModeController.o"
 	@echo "... src/SlidingModeController.i"
 	@echo "... src/SlidingModeController.s"
+	@echo "... src/Switch.o"
+	@echo "... src/Switch.i"
+	@echo "... src/Switch.s"
 	@echo "... src/SwitchBlockMsg.o"
 	@echo "... src/SwitchBlockMsg.i"
 	@echo "... src/SwitchBlockMsg.s"

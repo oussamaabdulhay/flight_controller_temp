@@ -1,4 +1,6 @@
 #pragma once
+class Block;
+#include "Port.hpp"
 #include "common_types.hpp"
 #include <iostream>
 #include "common_srv/DataMessage.hpp"
@@ -14,7 +16,7 @@ class Block : public MsgReceiver{   //TODO check MsgEmitter MsgReceiver
         virtual DataMessage* switchOut() = 0;
         virtual DataMessage* runTask(DataMessage*) = 0; 
         virtual void receiveMsgData(DataMessage* t_msg) = 0;
-
+        virtual void process(DataMessage* t_msg, Port* t_port) = 0;
         Block();
         ~Block();
 };

@@ -69,6 +69,7 @@
         "mutex": "cpp",
         "condition_variable": "cpp",
         "*.ipp": "cpp",
-        "future": "cpp"
+        "future": "cpp",
+        "*.txx": "cpp"
     }
 }

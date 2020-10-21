@@ -16,16 +16,15 @@ reference_type CircularProcessVariableReference::getReferenceType(){
 }
 
 DataMessage* CircularProcessVariableReference::runTask(DataMessage* t_msg){
-    // std::cout << " My current Reference Variable Value: " << _reference_value << std::endl;
 
     Vector3DMessage* pos_msg = (Vector3DMessage*)t_msg;
-    // std::cout << "Data received (Process Variable): " << pos_msg->getData().x << std::endl;
     Vector3D<float> error;
     
     float pv = pos_msg->getData().x;
 
+    //Adjust the reference to be between +PI and -PI
     if(fabs(_reference_value - pv) > M_PI){
-        float a = fabs(-pv + _reference_value);
+        float a = fabs(_reference_value - pv);
         float b = 2 * M_PI - a;
         float sign_a;
         if(pv-_reference_value > 0){

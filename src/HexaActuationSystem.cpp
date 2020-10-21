@@ -11,6 +11,7 @@ HexaActuationSystem::~HexaActuationSystem() {
 
 void HexaActuationSystem::command(){
 
+    //TODO split into more methods
     for(int i = 0; i < 6; i++){
         _commands[i] = 0.0;
     }
@@ -22,13 +23,14 @@ void HexaActuationSystem::command(){
         }
     }
 
-    //_u (PID outputs) should be between 0 and 1. Thus, we have to adjust for the range 1150 to 2000 on _commands.
+    //_u (PID outputs) should be between 0 and 1. Thus, we have to adjust for the range _escMin_armed to _escMax on _commands.
     //Normalize and Constrain
 
     for(int i = 0; i < 6; i++){
         _commands[i] = (_commands[i] * (_escMax-_escMin_armed)) + _escMin_armed;
     }
 
+    //Get minimum command
     float min_command = _commands[0];
 
     for(int i = 1; i < 6; i++){
@@ -39,6 +41,7 @@ void HexaActuationSystem::command(){
 
     float bias = 0;
 
+    //Anti saturation
     if(min_command < _escMin_armed){
         bias = _escMin_armed - min_command;
         

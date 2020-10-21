@@ -31,6 +31,7 @@
 #include <sched.h>
 #include "SlidingModeController.hpp"
 #include "PIDplusMRFTController.hpp"
+#include "Switch.hpp"
 
 #define XSENS_OVER_ROS
 #define OPTITRACK
@@ -427,6 +428,16 @@ int main(int argc, char** argv) {
     //***********************SETTING PID+MRFT BLOCK*******************************
 
     rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)PIDplusMRFT_z);
+
+    // REFACTORING //
+
+    Switch* new_switch = new Switch(std::greater_equal<double>(), 2.0);
+    new_switch->triggerCallback(3.0);
+    new_switch->triggerCallback(1.0);
+    new_switch->triggerCallback(2.0);
+    // new_switch->process();
+    //
+
 
     set_realtime_priority();
 

@@ -7,14 +7,13 @@ class Port;
 class Port : public MsgReceiver, public MsgEmitter{
 
 private:
-    DataMessage* _data;
     int _id;
     Block* _block;
 
 public:
     
-    void receiveMsgData(DataMessage* t_msg);
-    void receiveMsgData(DataMessage* t_msg, int channel_id);
+    virtual void receiveMsgData(DataMessage* t_msg) = 0;
+    virtual void receiveMsgData(DataMessage* t_msg, int channel_id) = 0;
     int getID();
     Port(int t_id, Block* t_block);
     ~Port();

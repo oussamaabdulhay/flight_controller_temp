@@ -1401,6 +1401,42 @@ src/ControllerMessage.cpp.s:
 	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/ControllerMessage.cpp.s
 .PHONY : src/ControllerMessage.cpp.s
 
+src/Demux3D.o: src/Demux3D.cpp.o
+
+.PHONY : src/Demux3D.o
+
+# target to build an object file
+src/Demux3D.cpp.o:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Demux3D.cpp.o
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Demux3D.cpp.o
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Demux3D.cpp.o
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Demux3D.cpp.o
+.PHONY : src/Demux3D.cpp.o
+
+src/Demux3D.i: src/Demux3D.cpp.i
+
+.PHONY : src/Demux3D.i
+
+# target to preprocess a source file
+src/Demux3D.cpp.i:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Demux3D.cpp.i
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Demux3D.cpp.i
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Demux3D.cpp.i
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Demux3D.cpp.i
+.PHONY : src/Demux3D.cpp.i
+
+src/Demux3D.s: src/Demux3D.cpp.s
+
+.PHONY : src/Demux3D.s
+
+# target to generate assembly for a file
+src/Demux3D.cpp.s:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Demux3D.cpp.s
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Demux3D.cpp.s
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Demux3D.cpp.s
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Demux3D.cpp.s
+.PHONY : src/Demux3D.cpp.s
+
 src/Differentiator.o: src/Differentiator.cpp.o
 
 .PHONY : src/Differentiator.o
@@ -1545,6 +1581,42 @@ src/HexaActuationSystem.cpp.s:
 	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/HexaActuationSystem.cpp.s
 .PHONY : src/HexaActuationSystem.cpp.s
 
+src/InputPort.o: src/InputPort.cpp.o
+
+.PHONY : src/InputPort.o
+
+# target to build an object file
+src/InputPort.cpp.o:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/InputPort.cpp.o
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/InputPort.cpp.o
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/InputPort.cpp.o
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/InputPort.cpp.o
+.PHONY : src/InputPort.cpp.o
+
+src/InputPort.i: src/InputPort.cpp.i
+
+.PHONY : src/InputPort.i
+
+# target to preprocess a source file
+src/InputPort.cpp.i:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/InputPort.cpp.i
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/InputPort.cpp.i
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/InputPort.cpp.i
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/InputPort.cpp.i
+.PHONY : src/InputPort.cpp.i
+
+src/InputPort.s: src/InputPort.cpp.s
+
+.PHONY : src/InputPort.s
+
+# target to generate assembly for a file
+src/InputPort.cpp.s:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/InputPort.cpp.s
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/InputPort.cpp.s
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/InputPort.cpp.s
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/InputPort.cpp.s
+.PHONY : src/InputPort.cpp.s
+
 src/MRFTController.o: src/MRFTController.cpp.o
 
 .PHONY : src/MRFTController.o
@@ -1616,6 +1688,42 @@ src/Matrix3by3.cpp.s:
 	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Matrix3by3.cpp.s
 	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Matrix3by3.cpp.s
 .PHONY : src/Matrix3by3.cpp.s
+
+src/Mux3D.o: src/Mux3D.cpp.o
+
+.PHONY : src/Mux3D.o
+
+# target to build an object file
+src/Mux3D.cpp.o:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Mux3D.cpp.o
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Mux3D.cpp.o
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Mux3D.cpp.o
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Mux3D.cpp.o
+.PHONY : src/Mux3D.cpp.o
+
+src/Mux3D.i: src/Mux3D.cpp.i
+
+.PHONY : src/Mux3D.i
+
+# target to preprocess a source file
+src/Mux3D.cpp.i:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Mux3D.cpp.i
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Mux3D.cpp.i
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Mux3D.cpp.i
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Mux3D.cpp.i
+.PHONY : src/Mux3D.cpp.i
+
+src/Mux3D.s: src/Mux3D.cpp.s
+
+.PHONY : src/Mux3D.s
+
+# target to generate assembly for a file
+src/Mux3D.cpp.s:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Mux3D.cpp.s
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Mux3D.cpp.s
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Mux3D.cpp.s
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Mux3D.cpp.s
+.PHONY : src/Mux3D.cpp.s
 
 src/Navio2_cpp/ADC_Navio2.o: src/Navio2_cpp/ADC_Navio2.cpp.o
 
@@ -2120,6 +2228,42 @@ src/OptitrackMessage.cpp.s:
 	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/OptitrackMessage.cpp.s
 	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/OptitrackMessage.cpp.s
 .PHONY : src/OptitrackMessage.cpp.s
+
+src/OutputPort.o: src/OutputPort.cpp.o
+
+.PHONY : src/OutputPort.o
+
+# target to build an object file
+src/OutputPort.cpp.o:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/OutputPort.cpp.o
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/OutputPort.cpp.o
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/OutputPort.cpp.o
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/OutputPort.cpp.o
+.PHONY : src/OutputPort.cpp.o
+
+src/OutputPort.i: src/OutputPort.cpp.i
+
+.PHONY : src/OutputPort.i
+
+# target to preprocess a source file
+src/OutputPort.cpp.i:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/OutputPort.cpp.i
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/OutputPort.cpp.i
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/OutputPort.cpp.i
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/OutputPort.cpp.i
+.PHONY : src/OutputPort.cpp.i
+
+src/OutputPort.s: src/OutputPort.cpp.s
+
+.PHONY : src/OutputPort.s
+
+# target to generate assembly for a file
+src/OutputPort.cpp.s:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/OutputPort.cpp.s
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/OutputPort.cpp.s
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/OutputPort.cpp.s
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/OutputPort.cpp.s
+.PHONY : src/OutputPort.cpp.s
 
 src/PIDController.o: src/PIDController.cpp.o
 
@@ -2877,6 +3021,42 @@ src/SlidingModeController.cpp.s:
 	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/SlidingModeController.cpp.s
 .PHONY : src/SlidingModeController.cpp.s
 
+src/Sum.o: src/Sum.cpp.o
+
+.PHONY : src/Sum.o
+
+# target to build an object file
+src/Sum.cpp.o:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Sum.cpp.o
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Sum.cpp.o
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Sum.cpp.o
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Sum.cpp.o
+.PHONY : src/Sum.cpp.o
+
+src/Sum.i: src/Sum.cpp.i
+
+.PHONY : src/Sum.i
+
+# target to preprocess a source file
+src/Sum.cpp.i:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Sum.cpp.i
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Sum.cpp.i
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Sum.cpp.i
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Sum.cpp.i
+.PHONY : src/Sum.cpp.i
+
+src/Sum.s: src/Sum.cpp.s
+
+.PHONY : src/Sum.s
+
+# target to generate assembly for a file
+src/Sum.cpp.s:
+	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Sum.cpp.s
+	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Sum.cpp.s
+	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Sum.cpp.s
+	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Sum.cpp.s
+.PHONY : src/Sum.cpp.s
+
 src/Switch.o: src/Switch.cpp.o
 
 .PHONY : src/Switch.o
@@ -3413,6 +3593,9 @@ help:
 	@echo "... src/ControllerMessage.o"
 	@echo "... src/ControllerMessage.i"
 	@echo "... src/ControllerMessage.s"
+	@echo "... src/Demux3D.o"
+	@echo "... src/Demux3D.i"
+	@echo "... src/Demux3D.s"
 	@echo "... src/Differentiator.o"
 	@echo "... src/Differentiator.i"
 	@echo "... src/Differentiator.s"
@@ -3425,12 +3608,18 @@ help:
 	@echo "... src/HexaActuationSystem.o"
 	@echo "... src/HexaActuationSystem.i"
 	@echo "... src/HexaActuationSystem.s"
+	@echo "... src/InputPort.o"
+	@echo "... src/InputPort.i"
+	@echo "... src/InputPort.s"
 	@echo "... src/MRFTController.o"
 	@echo "... src/MRFTController.i"
 	@echo "... src/MRFTController.s"
 	@echo "... src/Matrix3by3.o"
 	@echo "... src/Matrix3by3.i"
 	@echo "... src/Matrix3by3.s"
+	@echo "... src/Mux3D.o"
+	@echo "... src/Mux3D.i"
+	@echo "... src/Mux3D.s"
 	@echo "... src/Navio2_cpp/ADC_Navio2.o"
 	@echo "... src/Navio2_cpp/ADC_Navio2.i"
 	@echo "... src/Navio2_cpp/ADC_Navio2.s"
@@ -3473,6 +3662,9 @@ help:
 	@echo "... src/OptitrackMessage.o"
 	@echo "... src/OptitrackMessage.i"
 	@echo "... src/OptitrackMessage.s"
+	@echo "... src/OutputPort.o"
+	@echo "... src/OutputPort.i"
+	@echo "... src/OutputPort.s"
 	@echo "... src/PIDController.o"
 	@echo "... src/PIDController.i"
 	@echo "... src/PIDController.s"
@@ -3536,6 +3728,9 @@ help:
 	@echo "... src/SlidingModeController.o"
 	@echo "... src/SlidingModeController.i"
 	@echo "... src/SlidingModeController.s"
+	@echo "... src/Sum.o"
+	@echo "... src/Sum.i"
+	@echo "... src/Sum.s"
 	@echo "... src/Switch.o"
 	@echo "... src/Switch.i"
 	@echo "... src/Switch.s"

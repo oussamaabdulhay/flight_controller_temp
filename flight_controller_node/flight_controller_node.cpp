@@ -32,6 +32,7 @@
 #include "SlidingModeController.hpp"
 #include "PIDplusMRFTController.hpp"
 #include "Switch.hpp"
+#include "Sum.hpp"
 
 #define XSENS_OVER_ROS
 #define OPTITRACK
@@ -226,8 +227,6 @@ int main(int argc, char** argv) {
     Y_Saturation->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
     Pitch_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
     
-    // rosunit_waypoint_z->addCallbackMsgReceiver((MsgReceiver*)Z_Saturation);
-    // Z_Saturation->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
     rosunit_waypoint_z->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
     Z_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
     
@@ -432,12 +431,17 @@ int main(int argc, char** argv) {
     // REFACTORING //
 
     Switch* new_switch = new Switch(std::greater_equal<double>(), 2.0);
+    Sum* new_sum_add = new Sum(std::plus<float>());
+    Sum* new_sum_sub = new Sum(std::minus<float>());
+
     new_switch->triggerCallback(3.0);
     new_switch->triggerCallback(1.0);
     new_switch->triggerCallback(2.0);
-    // new_switch->process();
-    //
 
+    rosunit_waypoint_z->addCallbackMsgReceiver((MsgReceiver*)new_sum_sub->getPorts()[(int)Sum::ports_id::IP_0_DATA]);
+    rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)new_sum_sub->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
+
+    Z_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
 
     set_realtime_priority();
 

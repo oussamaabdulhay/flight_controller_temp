@@ -1,14 +1,14 @@
 #include "Switch.hpp"
 #include "common_srv/FloatMsg.hpp"
 
-Switch::Switch(std::function<bool(double,double)> t_operation, double t_trigger_value) {
+Switch::Switch(std::function<bool(float,float)> t_operation, float t_trigger_value) {
     this->_operation = t_operation;
     this->_trigger_value = t_trigger_value;
 
-    this->_input_port = new Port(ports_id::IP_0_DATA, this);
-    this->_trigger_port = new Port(ports_id::IP_1_TRIGGER, this);
-    this->_output_port_0 = new Port(ports_id::OP_1_DATA, this);
-    this->_output_port_1 = new Port(ports_id::OP_2_DATA, this);
+    this->_input_port = new InputPort(ports_id::IP_0_DATA, this);
+    this->_trigger_port = new InputPort(ports_id::IP_1_TRIGGER, this);
+    this->_output_port_0 = new OutputPort(ports_id::OP_0_DATA, this);
+    this->_output_port_1 = new OutputPort(ports_id::OP_1_DATA, this);
     this->_active_output_port = _output_port_0;
     _ports = {_input_port, _trigger_port, _output_port_0, _output_port_1};
 }

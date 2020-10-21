@@ -6,28 +6,25 @@
 #include <OutputPort.hpp>
 #include <Block.hpp>
 #include "common_srv/Vector3DMessage.hpp"
+#include "common_srv/FloatMsg.hpp"
 
-class Switch : public Block{
+class Demux3D : public Block{
 
 private:
-    std::function<bool(float,float)> _operation;
-    float _trigger_value;
     Port* _input_port;
-    Port* _trigger_port;
     Port* _output_port_0;
     Port* _output_port_1;
-    Port* _active_output_port;
+    Port* _output_port_2;
     std::vector<Port*> _ports;
-
+    Vector3D<float> _ip;
 
 public:
-    enum ports_id {IP_0_DATA, IP_1_TRIGGER, OP_0_DATA, OP_1_DATA};
-    void triggerCallback(float t_current_value);
+    enum ports_id {IP_0_DATA, OP_0_DATA, OP_1_DATA, OP_2_DATA};
     DataMessage* runTask(DataMessage*);
     void process(DataMessage* t_msg, Port* t_port);
-    Switch(std::function<bool(float,float)> t_operation, float t_trigger_value);
+    Demux3D();
+    ~Demux3D();
     std::vector<Port*> getPorts();
-    ~Switch();
 
     //TODO Refactor below
     block_id getID() {}

@@ -3,10 +3,27 @@ pthread_mutex_t HexaActuationSystem::lock;
 
 HexaActuationSystem::HexaActuationSystem(std::vector<Actuator*> t_actuators) : ActuationSystem(t_actuators){
     _actuators = t_actuators;
+    _input_port_0 = new InputPort(ports_id::IP_0_DATA_ROLL, this);
+	_input_port_1 = new InputPort(ports_id::IP_1_DATA_PITCH, this);
+	_input_port_2 = new InputPort(ports_id::IP_2_DATA_YAW, this);
+	_input_port_3 = new InputPort(ports_id::IP_3_DATA_Z, this);
+	_output_port = new OutputPort(ports_id::OP_0_DATA, this);
+    _ports = {_input_port_0, _input_port_1, _input_port_2, _input_port_3, _output_port};
 }
 
 HexaActuationSystem::~HexaActuationSystem() {
 
+}
+
+void HexaActuationSystem::process(DataMessage* t_msg, Port* t_port) {
+    if(t_port->getID() == ports_id::IP_3_DATA_Z){
+        FloatMsg* float_msg = (FloatMsg*)t_msg;
+        _u[3] = float_msg->data;
+    } 
+}
+
+std::vector<Port*> HexaActuationSystem::getPorts(){
+    return _ports;
 }
 
 void HexaActuationSystem::command(){

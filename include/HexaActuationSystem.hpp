@@ -5,6 +5,8 @@
 #include "ROSUnit_BroadcastData.hpp"
 #include "common_srv/VectorDoubleMsg.hpp"
 #include <vector>
+#include "InputPort.hpp"
+#include "OutputPort.hpp"
 
 // GEOMETRY
 //      CW(3) (5)CCW                x
@@ -37,7 +39,18 @@ private:
                              { 0.866025 * -1, -0.5 * -1, -1, 1},
                              {-0.866025 * -1,  0.5 * -1,  1, 1}};
     static pthread_mutex_t lock;
+
+    Port* _input_port_0;
+    Port* _input_port_1;
+    Port* _input_port_2;
+    Port* _input_port_3;
+    Port* _output_port;
+    std::vector<Port*> _ports;
+
 public:
+    enum ports_id {IP_0_DATA_ROLL, IP_1_DATA_PITCH, IP_2_DATA_YAW, IP_3_DATA_Z, OP_0_DATA};
+    void process(DataMessage* t_msg, Port* t_port);
+    std::vector<Port*> getPorts();
     enum unicast_addresses {broadcast, unicast_ActuationSystem_commands, unicast_ActuationSystem_armed};
     enum receiving_channels {ch_roll=0, ch_pitch=1, ch_yaw=2, ch_throttle=3};
     void receiveMsgData(DataMessage* t_msg);

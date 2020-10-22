@@ -22,9 +22,9 @@ public:
     enum ports_id {IP_0_DATA, IP_1_DATA, IP_2_DATA, OP_0_DATA};
     DataMessage* runTask(DataMessage*);
     void process(DataMessage* t_msg, Port* t_port);
+    std::vector<Port*> getPorts();
     Mux3D();
     ~Mux3D();
-    std::vector<Port*> getPorts();
 
     //TODO Refactor below
     block_id getID() {}

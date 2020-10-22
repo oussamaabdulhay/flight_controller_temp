@@ -92,6 +92,8 @@ DataMessage* MRFTController::runTask(DataMessage* t_msg){
 
     _command_msg.data = command;
 
+    this->_output_port->receiveMsgData(&_command_msg);
+
 	return (DataMessage*) &_command_msg;
 }
 

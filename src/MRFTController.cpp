@@ -3,6 +3,10 @@
 MRFTController::MRFTController(block_id t_id) {  
     _controller_type = controller_type::mrft;
 	_id = t_id;
+	_input_port_0 = new InputPort(ports_id::IP_0_DATA, this);
+	_input_port_1 = new InputPort(ports_id::IP_1_UPDATE, this);
+	_output_port = new OutputPort(ports_id::OP_0_DATA, this);
+    _ports = {_input_port_0, _input_port_1, _output_port};
 }
 
 MRFTController::~MRFTController() {
@@ -22,6 +26,24 @@ DataMessage* MRFTController::switchOut(){
     DataMessage* msg;
     return msg;
 } 
+
+void MRFTController::process(DataMessage* t_msg, Port* t_port) {
+    if(t_port->getID() == ports_id::IP_0_DATA){
+        this->runTask(t_msg);
+    } else if(t_port->getID() == ports_id::IP_1_UPDATE){
+        ControllerMessage* mrft_msg = (ControllerMessage*)t_msg;
+		MRFT_parameters params = mrft_msg->getMRFTParam();
+
+		if(params.id == this->_id){		
+			this->initialize(&params);	
+		}
+    }
+}
+
+std::vector<Port*> MRFTController::getPorts(){
+    return _ports;
+}
+
 
 void MRFTController::receiveMsgData(DataMessage* t_msg){
 

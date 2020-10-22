@@ -40,14 +40,7 @@ void InvertedSwitch::process(DataMessage* t_msg, Port* t_port) {
         this->runTask(t_msg);
 
     }else if(t_port->getID() == ports_id::IP_1_TRIGGER){
-        float data = 0.0;
-
-        if(t_msg->getType() == msg_type::VECTOR3D){
-            Vector3DMessage* vector_3D_msg = (Vector3DMessage*)t_msg;
-            data = vector_3D_msg->getData().x; //TODO check if Z comes from a Vector3D
-        }
-
-        this->triggerCallback(data) ;
+        this->triggerCallback(((FloatMsg*)t_msg)->data);
     }
 }
 

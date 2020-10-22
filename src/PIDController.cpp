@@ -3,9 +3,10 @@
 PIDController::PIDController(block_id t_id){
     _controller_type = controller_type::pid;
 	_id = t_id;
-	_input_port = new InputPort(ports_id::IP_0_DATA, this);
+	_input_port_0 = new InputPort(ports_id::IP_0_DATA, this);
+	_input_port_1 = new InputPort(ports_id::IP_1_UPDATE, this);
 	_output_port = new OutputPort(ports_id::OP_0_DATA, this);
-    _ports = {_input_port, _output_port};
+    _ports = {_input_port_0, _input_port_1, _output_port};
 
 }
 
@@ -28,6 +29,12 @@ DataMessage* PIDController::switchOut(){
 void PIDController::process(DataMessage* t_msg, Port* t_port) {
     if(t_port->getID() == ports_id::IP_0_DATA){
         this->runTask(t_msg);
+    } else if(t_port->getID() == ports_id::IP_1_UPDATE){
+        ControllerMessage* pid_msg = (ControllerMessage*)t_msg;
+		PID_parameters params = pid_msg->getPIDParam();
+		if(params.id == this->_id){		
+			this->update_params(&params);	
+		}
     }
 }
 
@@ -98,7 +105,6 @@ void PIDController::update_params(PID_parameters* para){
 	if(tmp_parameters.anti_windup >= 0.0){
 		_parameters.anti_windup = tmp_parameters.anti_windup;
 	}
-
 
 	set_internal_sw(_parameters);
 	

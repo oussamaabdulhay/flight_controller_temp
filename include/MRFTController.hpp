@@ -9,6 +9,8 @@
 #include "SwitchOutMsg.hpp"
 #include "logger.hpp"
 #include "common_srv/IntegerMsg.hpp"
+#include "InputPort.hpp"
+#include "OutputPort.hpp"
 
 class MRFTController : public Controller{
 
@@ -20,6 +22,10 @@ private:
 	FloatMsg _command_msg;
 	const int no_switch_delay_in_ms = 20;
 	const int num_of_peak_conf_samples = 5;
+	Port* _input_port_0;
+	Port* _input_port_1;
+	Port* _output_port;
+	std::vector<Port*> _ports;
    	// NEW ALGO
 	bool first_run = true;
 	float last_output;
@@ -30,6 +36,9 @@ private:
 	float peak_conf_counter;
 	//
 public:
+	enum ports_id {IP_0_DATA, IP_1_UPDATE, OP_0_DATA};
+	void process(DataMessage* t_msg, Port* t_port);
+	std::vector<Port*> getPorts();
     MRFT_parameters parameters;
 	void initialize(MRFT_parameters*);
     	//---------------

@@ -244,7 +244,7 @@ int main(int argc, char** argv) {
     Demux3D* prov_demux = new Demux3D();
     Mux3D* error_mux = new Mux3D();
 
-    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)ID_switch->getPorts()[1]);
+    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)ID_switch->getPorts()[InvertedSwitch::ports_id::IP_1_TRIGGER]);
 
     rosunit_waypoint_z->addCallbackMsgReceiver((MsgReceiver*)sum_ref->getPorts()[(int)Sum::ports_id::IP_0_DATA]);
     rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)prov_demux->getPorts()[(int)Demux3D::ports_id::IP_0_DATA]);

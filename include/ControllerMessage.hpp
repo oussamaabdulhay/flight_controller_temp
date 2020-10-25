@@ -4,6 +4,7 @@
 #include "PID_values.hpp"
 #include "MRFT_values.hpp"
 #include "SM_values.hpp"
+#include "common_types.hpp"
 
 class ControllerMessage : public DataMessage{
 

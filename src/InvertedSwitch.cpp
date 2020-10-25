@@ -10,6 +10,7 @@ InvertedSwitch::InvertedSwitch(std::function<bool(float,float)> t_operation, flo
     this->_input_port_1 = new InputPort(ports_id::IP_2_DATA, this);
     this->_output_port = new OutputPort(ports_id::OP_0_DATA, this);
     this->_active_input_port = _input_port_0;
+
     _ports = {_input_port_0, _trigger_port, _input_port_1, _output_port};
 }
 
@@ -18,7 +19,6 @@ InvertedSwitch::~InvertedSwitch() {
 }
 
 void InvertedSwitch::triggerCallback(float t_current_value){
-
     if (this->_operation(t_current_value, _trigger_value)){
         _active_input_port = _input_port_1;
     }else{
@@ -29,8 +29,6 @@ void InvertedSwitch::triggerCallback(float t_current_value){
 DataMessage* InvertedSwitch::runTask(DataMessage* t_msg){
 
     _output_port->receiveMsgData(t_msg);
-
-    std::cout << ((FloatMsg*)t_msg)->data << std::endl;
     return t_msg;
 }
 

@@ -34,7 +34,6 @@ DataMessage* Switch::runTask(DataMessage* t_msg){
 void Switch::process(DataMessage* t_msg, Port* t_port) {
     
     if(t_port->getID() == ports_id::IP_0_DATA){
-        std::cout << "I'm a Switch" << std::endl;
         this->runTask(t_msg);
 
     }else if(t_port->getID() == ports_id::IP_1_TRIGGER){

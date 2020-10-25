@@ -4,7 +4,7 @@
 #include <functional>
 #include <InputPort.hpp>
 #include <OutputPort.hpp>
-#include <Block.hpp>
+#include "common_srv/Block.hpp"
 #include "common_srv/Vector3DMessage.hpp"
 
 class Switch : public Block{

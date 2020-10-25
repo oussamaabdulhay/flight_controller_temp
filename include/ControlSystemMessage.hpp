@@ -1,6 +1,7 @@
 #pragma once
 #include "common_srv/DataMessage.hpp"
-#include "Block.hpp"
+#include "common_srv/Block.hpp"
+#include "common_types.hpp"
 
 class ControlSystemMessage : public DataMessage{
 

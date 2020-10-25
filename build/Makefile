@@ -1077,42 +1077,6 @@ src/BatteryMonitor.cpp.s:
 	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/BatteryMonitor.cpp.s
 .PHONY : src/BatteryMonitor.cpp.s
 
-src/Block.o: src/Block.cpp.o
-
-.PHONY : src/Block.o
-
-# target to build an object file
-src/Block.cpp.o:
-	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Block.cpp.o
-	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Block.cpp.o
-	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Block.cpp.o
-	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Block.cpp.o
-.PHONY : src/Block.cpp.o
-
-src/Block.i: src/Block.cpp.i
-
-.PHONY : src/Block.i
-
-# target to preprocess a source file
-src/Block.cpp.i:
-	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Block.cpp.i
-	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Block.cpp.i
-	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Block.cpp.i
-	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Block.cpp.i
-.PHONY : src/Block.cpp.i
-
-src/Block.s: src/Block.cpp.s
-
-.PHONY : src/Block.s
-
-# target to generate assembly for a file
-src/Block.cpp.s:
-	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Block.cpp.s
-	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Block.cpp.s
-	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Block.cpp.s
-	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Block.cpp.s
-.PHONY : src/Block.cpp.s
-
 src/ButterFilter_120hz.o: src/ButterFilter_120hz.cpp.o
 
 .PHONY : src/ButterFilter_120hz.o
@@ -2409,42 +2373,6 @@ src/PVConcatenator.cpp.s:
 	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/PVConcatenator.cpp.s
 .PHONY : src/PVConcatenator.cpp.s
 
-src/Port.o: src/Port.cpp.o
-
-.PHONY : src/Port.o
-
-# target to build an object file
-src/Port.cpp.o:
-	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Port.cpp.o
-	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Port.cpp.o
-	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Port.cpp.o
-	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Port.cpp.o
-.PHONY : src/Port.cpp.o
-
-src/Port.i: src/Port.cpp.i
-
-.PHONY : src/Port.i
-
-# target to preprocess a source file
-src/Port.cpp.i:
-	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Port.cpp.i
-	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Port.cpp.i
-	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Port.cpp.i
-	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Port.cpp.i
-.PHONY : src/Port.cpp.i
-
-src/Port.s: src/Port.cpp.s
-
-.PHONY : src/Port.s
-
-# target to generate assembly for a file
-src/Port.cpp.s:
-	$(MAKE) -f CMakeFiles/global2inertial_node.dir/build.make CMakeFiles/global2inertial_node.dir/src/Port.cpp.s
-	$(MAKE) -f CMakeFiles/flight_controller.dir/build.make CMakeFiles/flight_controller.dir/src/Port.cpp.s
-	$(MAKE) -f CMakeFiles/waypoint_reference_node.dir/build.make CMakeFiles/waypoint_reference_node.dir/src/Port.cpp.s
-	$(MAKE) -f CMakeFiles/providers_node.dir/build.make CMakeFiles/providers_node.dir/src/Port.cpp.s
-.PHONY : src/Port.cpp.s
-
 src/ProcessVariableReference.o: src/ProcessVariableReference.cpp.o
 
 .PHONY : src/ProcessVariableReference.o
@@ -3602,9 +3530,6 @@ help:
 	@echo "... src/BatteryMonitor.o"
 	@echo "... src/BatteryMonitor.i"
 	@echo "... src/BatteryMonitor.s"
-	@echo "... src/Block.o"
-	@echo "... src/Block.i"
-	@echo "... src/Block.s"
 	@echo "... src/ButterFilter_120hz.o"
 	@echo "... src/ButterFilter_120hz.i"
 	@echo "... src/ButterFilter_120hz.s"
@@ -3713,9 +3638,6 @@ help:
 	@echo "... src/PVConcatenator.o"
 	@echo "... src/PVConcatenator.i"
 	@echo "... src/PVConcatenator.s"
-	@echo "... src/Port.o"
-	@echo "... src/Port.i"
-	@echo "... src/Port.s"
 	@echo "... src/ProcessVariableReference.o"
 	@echo "... src/ProcessVariableReference.i"
 	@echo "... src/ProcessVariableReference.s"

@@ -1,7 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/providers_node.dir/providers_node/providers_node.cpp.o"
   "CMakeFiles/providers_node.dir/src/BatteryMonitor.cpp.o"
-  "CMakeFiles/providers_node.dir/src/Block.cpp.o"
   "CMakeFiles/providers_node.dir/src/ButterFilter_120hz.cpp.o"
   "CMakeFiles/providers_node.dir/src/ButterFilter_2nd_200Hz.cpp.o"
   "CMakeFiles/providers_node.dir/src/ButterFilter_Xsens.cpp.o"
@@ -25,7 +24,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/providers_node.dir/src/PIDController.cpp.o"
   "CMakeFiles/providers_node.dir/src/PIDplusMRFTController.cpp.o"
   "CMakeFiles/providers_node.dir/src/PVConcatenator.cpp.o"
-  "CMakeFiles/providers_node.dir/src/Port.cpp.o"
   "CMakeFiles/providers_node.dir/src/ProcessVariableReference.cpp.o"
   "CMakeFiles/providers_node.dir/src/QuadActuationSystem.cpp.o"
   "CMakeFiles/providers_node.dir/src/ROSUnit_Arm.cpp.o"

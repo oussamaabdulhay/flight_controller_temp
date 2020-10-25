@@ -70,6 +70,7 @@
         "condition_variable": "cpp",
         "*.ipp": "cpp",
         "future": "cpp",
-        "*.txx": "cpp"
+        "*.txx": "cpp",
+        "forward_list": "cpp"
     }
 }

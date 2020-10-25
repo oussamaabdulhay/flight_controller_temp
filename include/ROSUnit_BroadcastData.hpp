@@ -10,6 +10,7 @@
 #include "common_srv/IntegerMsg.hpp"
 #include "common_srv/BooleanMsg.hpp"
 #include "common_srv/VectorDoubleMsg.hpp"
+#include <InputPort.hpp>
 
 //TODO refactor all msgs
 
@@ -49,9 +50,18 @@ private:
     Vector3D<double> _position;
     Vector3D<double> _att;
     double _head;
+    Port* _input_port_0;
+    std::vector<Port*> _ports;
 
 public:
+
+    enum ports_id {IP_0_DATA};
+    void process(DataMessage* t_msg, Port* t_port);
+    std::vector<Port*> getPorts();
+
     enum ros_broadcast_channels {broadcast, x, y, z, roll, pitch, yaw, yaw_rate, actuation, armed, control_outputs, references, waypoints, error};
     ROSUnit_BroadcastData(ros::NodeHandle&);
     ~ROSUnit_BroadcastData();
+
+    
 };

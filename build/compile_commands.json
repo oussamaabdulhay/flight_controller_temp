@@ -11,11 +11,6 @@
 },
 {
   "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
-  "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/global2inertial_node.dir/src/Block.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Block.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Block.cpp"
-},
-{
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
   "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/global2inertial_node.dir/src/ButterFilter_120hz.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ButterFilter_120hz.cpp",
   "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ButterFilter_120hz.cpp"
 },
@@ -128,11 +123,6 @@
   "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
   "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/global2inertial_node.dir/src/PVConcatenator.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/PVConcatenator.cpp",
   "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/PVConcatenator.cpp"
-},
-{
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
-  "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/global2inertial_node.dir/src/Port.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Port.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Port.cpp"
 },
 {
   "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
@@ -356,11 +346,6 @@
 },
 {
   "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
-  "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/Block.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Block.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Block.cpp"
-},
-{
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
   "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/ButterFilter_120hz.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ButterFilter_120hz.cpp",
   "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ButterFilter_120hz.cpp"
 },
@@ -473,11 +458,6 @@
   "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
   "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/PVConcatenator.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/PVConcatenator.cpp",
   "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/PVConcatenator.cpp"
-},
-{
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
-  "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/flight_controller.dir/src/Port.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Port.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Port.cpp"
 },
 {
   "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
@@ -701,11 +681,6 @@
 },
 {
   "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
-  "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/waypoint_reference_node.dir/src/Block.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Block.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Block.cpp"
-},
-{
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
   "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/waypoint_reference_node.dir/src/ButterFilter_120hz.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ButterFilter_120hz.cpp",
   "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ButterFilter_120hz.cpp"
 },
@@ -818,11 +793,6 @@
   "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
   "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/waypoint_reference_node.dir/src/PVConcatenator.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/PVConcatenator.cpp",
   "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/PVConcatenator.cpp"
-},
-{
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
-  "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/waypoint_reference_node.dir/src/Port.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Port.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Port.cpp"
 },
 {
   "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
@@ -1046,11 +1016,6 @@
 },
 {
   "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
-  "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/providers_node.dir/src/Block.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Block.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Block.cpp"
-},
-{
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
   "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/providers_node.dir/src/ButterFilter_120hz.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ButterFilter_120hz.cpp",
   "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/ButterFilter_120hz.cpp"
 },
@@ -1163,11 +1128,6 @@
   "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
   "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/providers_node.dir/src/PVConcatenator.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/PVConcatenator.cpp",
   "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/PVConcatenator.cpp"
-},
-{
-  "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",
-  "command": "/usr/bin/x86_64-linux-gnu-g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"flight_controller\\\" -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2 -I/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/include/Navio2/Common -I/home/pedrohrpbs/catkin_ws_NAVIO/devel/include -I/home/pedrohrpbs/catkin_ws_NAVIO/src/common_srv/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/providers_node.dir/src/Port.cpp.o -c /home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Port.cpp",
-  "file": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/src/Port.cpp"
 },
 {
   "directory": "/home/pedrohrpbs/catkin_ws_NAVIO/src/flight_controller/build",

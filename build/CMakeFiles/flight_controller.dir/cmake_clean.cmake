@@ -1,7 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/flight_controller.dir/flight_controller_node/flight_controller_node.cpp.o"
   "CMakeFiles/flight_controller.dir/src/BatteryMonitor.cpp.o"
-  "CMakeFiles/flight_controller.dir/src/Block.cpp.o"
   "CMakeFiles/flight_controller.dir/src/ButterFilter_120hz.cpp.o"
   "CMakeFiles/flight_controller.dir/src/ButterFilter_2nd_200Hz.cpp.o"
   "CMakeFiles/flight_controller.dir/src/ButterFilter_Xsens.cpp.o"
@@ -25,7 +24,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/flight_controller.dir/src/PIDController.cpp.o"
   "CMakeFiles/flight_controller.dir/src/PIDplusMRFTController.cpp.o"
   "CMakeFiles/flight_controller.dir/src/PVConcatenator.cpp.o"
-  "CMakeFiles/flight_controller.dir/src/Port.cpp.o"
   "CMakeFiles/flight_controller.dir/src/ProcessVariableReference.cpp.o"
   "CMakeFiles/flight_controller.dir/src/QuadActuationSystem.cpp.o"
   "CMakeFiles/flight_controller.dir/src/ROSUnit_Arm.cpp.o"

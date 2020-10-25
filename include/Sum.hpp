@@ -4,7 +4,7 @@
 #include <functional>
 #include <InputPort.hpp>
 #include <OutputPort.hpp>
-#include <Block.hpp>
+#include "common_srv/Block.hpp"
 #include "common_srv/FloatMsg.hpp"
 #include "common_srv/Vector3DMessage.hpp"
 
@@ -18,7 +18,6 @@ private:
     Port* _output_port;
     std::vector<Port*> _ports;
     float _v1=0.0, _v2=0.0;
-    float _v2_dot = 0.0;
 
 public:
     enum ports_id {IP_0_DATA, IP_1_DATA, OP_0_DATA};

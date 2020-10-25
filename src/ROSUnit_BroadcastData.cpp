@@ -15,10 +15,26 @@ ROSUnit_BroadcastData::ROSUnit_BroadcastData(ros::NodeHandle& t_main_handler) : 
     _head = 0;
 
     _instance_ptr = this;
+
+    this->_input_port_0 = new InputPort(ports_id::IP_0_DATA, this);
+    _ports = {_input_port_0};
 }
 
 ROSUnit_BroadcastData::~ROSUnit_BroadcastData() {
 
+}
+
+void ROSUnit_BroadcastData::process(DataMessage* t_msg, Port* t_port) {
+    
+    if(t_port->getID() == ports_id::IP_0_DATA){
+        FloatMsg* float_msg = (FloatMsg*)t_msg;
+        _cs_outputs[2] = (double)float_msg->data;
+    }
+}
+
+
+std::vector<Port*> ROSUnit_BroadcastData::getPorts(){ //TODO move to Block
+    return _ports;
 }
 
 

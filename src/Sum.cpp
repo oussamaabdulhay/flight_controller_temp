@@ -3,7 +3,8 @@
 
 Sum::Sum(std::function<float(float,float)> t_operation) {
     this->_operation = t_operation;
-
+    this->_v1=0.0;
+    this->_v2=0.0;
     this->_input_port_0 = new InputPort(ports_id::IP_0_DATA, this);
     this->_input_port_1 = new InputPort(ports_id::IP_1_DATA, this);
     this->_output_port = new OutputPort(ports_id::OP_0_DATA, this);
@@ -24,7 +25,6 @@ DataMessage* Sum::runTask(DataMessage* t_msg){
 }
 
 void Sum::process(DataMessage* t_msg, Port* t_port) {
-    
     if(t_port->getID() == ports_id::IP_0_DATA){
         FloatMsg* float_msg = (FloatMsg*)t_msg;
         float data = float_msg->data;
@@ -37,6 +37,7 @@ void Sum::process(DataMessage* t_msg, Port* t_port) {
 
         _v2 = data;
         this->runTask(t_msg);
+
     }
 }
 

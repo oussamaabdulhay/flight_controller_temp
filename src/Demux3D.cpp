@@ -32,7 +32,6 @@ DataMessage* Demux3D::runTask(DataMessage* t_msg){
 }
 
 void Demux3D::process(DataMessage* t_msg, Port* t_port) {
-    
     if(t_port->getID() == ports_id::IP_0_DATA){
         Vector3DMessage* v3d_msg = (Vector3DMessage*)t_msg;
         _ip = v3d_msg->getData();

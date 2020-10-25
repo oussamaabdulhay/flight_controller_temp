@@ -1,6 +1,6 @@
 #pragma once
 #include "common_types.hpp"
-#include "Block.hpp"
+#include "common_srv/Block.hpp"
 
 class Reference : public Block {
 

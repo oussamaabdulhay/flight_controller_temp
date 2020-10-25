@@ -169,11 +169,11 @@ int main(int argc, char** argv) {
     Roll_ControlSystem->addBlock(MRFT_roll);
     Roll_ControlSystem->addBlock(PV_Ref_roll);
     
-    ControlSystem* Z_ControlSystem = new ControlSystem(control_system::z, block_frequency::hz120);
-    Z_ControlSystem->addBlock(PID_z);
-    Z_ControlSystem->addBlock(MRFT_z);
-    Z_ControlSystem->addBlock(PIDplusMRFT_z);
-    Z_ControlSystem->addBlock(PV_Ref_z);
+    // ControlSystem* Z_ControlSystem = new ControlSystem(control_system::z, block_frequency::hz120);
+    // Z_ControlSystem->addBlock(PID_z);
+    // Z_ControlSystem->addBlock(MRFT_z);
+    // Z_ControlSystem->addBlock(PIDplusMRFT_z);
+    // Z_ControlSystem->addBlock(PV_Ref_z);
 
     ControlSystem* Yaw_ControlSystem = new ControlSystem(control_system::yaw, block_frequency::hz120);
     Yaw_ControlSystem->addBlock(PID_yaw);
@@ -210,11 +210,11 @@ int main(int argc, char** argv) {
     
     rosunit_waypoint_x->setEmittingChannel((int)ControlSystem::receiving_channels::ch_reference);
     rosunit_waypoint_y->setEmittingChannel((int)ControlSystem::receiving_channels::ch_reference);
-    rosunit_waypoint_z->setEmittingChannel((int)ControlSystem::receiving_channels::ch_reference);
+    // rosunit_waypoint_z->setEmittingChannel((int)ControlSystem::receiving_channels::ch_reference);
     rosunit_waypoint_yaw->setEmittingChannel((int)ControlSystem::receiving_channels::ch_reference);
     Roll_ControlSystem->setEmittingChannel((int)HexaActuationSystem::receiving_channels::ch_roll);
     Pitch_ControlSystem->setEmittingChannel((int)HexaActuationSystem::receiving_channels::ch_pitch);
-    Z_ControlSystem->setEmittingChannel((int)HexaActuationSystem::receiving_channels::ch_throttle);
+    // Z_ControlSystem->setEmittingChannel((int)HexaActuationSystem::receiving_channels::ch_throttle);
     YawRate_ControlSystem->setEmittingChannel((int)HexaActuationSystem::receiving_channels::ch_yaw);
 
     rosunit_waypoint_x->addCallbackMsgReceiver((MsgReceiver*)X_ControlSystem);
@@ -232,6 +232,43 @@ int main(int argc, char** argv) {
     // rosunit_waypoint_z->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
     // Z_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myActuationSystem, (int)ControlSystem::unicast_addresses::unicast_actuation_system);
     
+    //*******************************************************************************************************************
+    // REFACTORING //
+
+    InvertedSwitch* ID_switch = new InvertedSwitch(std::equal_to<float>(), 2.0);
+    Switch* PID_MRFT_switch = new Switch(std::greater_equal<float>(), 0.05);
+    Sum* sum_PID_MRFT = new Sum(std::plus<float>());
+    Sum* sum_ref = new Sum(std::minus<float>());
+    Sum* sum_ref_dot = new Sum(std::minus<float>());
+    Sum* sum_ref_dot_dot = new Sum(std::minus<float>());
+    Demux3D* prov_demux = new Demux3D();
+    Mux3D* error_mux = new Mux3D();
+
+    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)ID_switch->getPorts()[1]);
+
+    rosunit_waypoint_z->addCallbackMsgReceiver((MsgReceiver*)sum_ref->getPorts()[(int)Sum::ports_id::IP_0_DATA]);
+    rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)prov_demux->getPorts()[(int)Demux3D::ports_id::IP_0_DATA]);
+    prov_demux->getPorts()[(int)Demux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_ref->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
+    prov_demux->getPorts()[(int)Demux3D::ports_id::OP_1_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_ref_dot->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
+    prov_demux->getPorts()[(int)Demux3D::ports_id::OP_2_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_ref_dot_dot->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
+    sum_ref->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)error_mux->getPorts()[(int)Mux3D::ports_id::IP_0_DATA]);
+    sum_ref_dot->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)error_mux->getPorts()[(int)Mux3D::ports_id::IP_1_DATA]);
+    sum_ref_dot_dot->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)error_mux->getPorts()[(int)Mux3D::ports_id::IP_2_DATA]);
+    error_mux->getPorts()[(int)Mux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((PIDController*)PID_z)->getPorts()[(int)PIDController::ports_id::IP_0_DATA]);
+    error_mux->getPorts()[(int)Mux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((PIDController*)PID_z_identification)->getPorts()[(int)PIDController::ports_id::IP_0_DATA]);
+    error_mux->getPorts()[(int)Mux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((MRFTController*)MRFT_z)->getPorts()[(int)MRFTController::ports_id::IP_0_DATA]);
+    ((PIDController*)PID_z)->getPorts()[(int)PIDController::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)ID_switch->getPorts()[(int)InvertedSwitch::ports_id::IP_2_DATA]);
+    ((PIDController*)PID_z_identification)->getPorts()[(int)PIDController::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)PID_MRFT_switch->getPorts()[(int)Switch::ports_id::IP_0_DATA]);
+    prov_demux->getPorts()[(int)Demux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)PID_MRFT_switch->getPorts()[(int)Switch::ports_id::IP_1_TRIGGER]);
+    PID_MRFT_switch->getPorts()[(int)Switch::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_PID_MRFT->getPorts()[(int)Sum::ports_id::IP_0_DATA]);
+    ((MRFTController*)MRFT_z)->getPorts()[(int)MRFTController::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_PID_MRFT->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
+    sum_PID_MRFT->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)ID_switch->getPorts()[(int)InvertedSwitch::ports_id::IP_0_DATA]);
+    ID_switch->getPorts()[(int)InvertedSwitch::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((HexaActuationSystem*)myActuationSystem)->getPorts()[(int)HexaActuationSystem::ports_id::IP_3_DATA_Z]);
+    ID_switch->getPorts()[(int)InvertedSwitch::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((ROSUnit_BroadcastData*)myROSBroadcastData)->getPorts()[(int)ROSUnit_BroadcastData::ports_id::IP_0_DATA]);
+    
+    
+    //*******************************************************************************************************************
+
     rosunit_waypoint_yaw->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
     Yaw_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)Yaw_Saturation, (int)ControlSystem::unicast_addresses::unicast_control_system);
     Yaw_Saturation->addCallbackMsgReceiver((MsgReceiver*)YawRate_ControlSystem);
@@ -250,7 +287,7 @@ int main(int argc, char** argv) {
 
     rosunit_x_provider->addCallbackMsgReceiver((MsgReceiver*)X_ControlSystem);
     rosunit_y_provider->addCallbackMsgReceiver((MsgReceiver*)Y_ControlSystem);
-    rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
+    // rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
     rosunit_pitch_provider->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
     rosunit_roll_provider->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
     rosunit_yaw_provider->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
@@ -305,7 +342,7 @@ int main(int argc, char** argv) {
 
     myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)X_ControlSystem);
     myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Y_ControlSystem);
-    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
+    // myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Z_ControlSystem);
     myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Roll_ControlSystem);
     myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Pitch_ControlSystem);
     myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)Yaw_ControlSystem);
@@ -320,7 +357,7 @@ int main(int argc, char** argv) {
 
     X_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     Y_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
-    Z_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
+    // Z_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     Roll_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     Pitch_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
     Yaw_ControlSystem->addCallbackMsgReceiver((MsgReceiver*)myROSBroadcastData);
@@ -352,7 +389,7 @@ int main(int argc, char** argv) {
 
     pid_para_init.id = block_id::PID_Z;
     ctrl_msg.setPIDParam(pid_para_init);
-    ctrl_msg.set_dt(Z_ControlSystem->get_dt());
+    ctrl_msg.set_dt(1/120);
     ((PIDController*)PID_z)->initialize(ctrl_msg.getPIDParam());
 
     pid_para_init.id = block_id::PID_Z_ID;
@@ -395,7 +432,7 @@ int main(int argc, char** argv) {
 
     mrft_para_init.id = block_id::MRFT_Z;
     ctrl_msg.setMRFTParam(mrft_para_init);
-    ctrl_msg.set_dt(Z_ControlSystem->get_dt());
+    ctrl_msg.set_dt(1/120);
     myROSUpdateController->emitMsgUnicast((DataMessage*) &ctrl_msg, (int)ROSUnit_UpdateController::unicast_addresses::mrft);
 
     mrft_para_init.id = block_id::MRFT_ROLL;
@@ -436,38 +473,6 @@ int main(int argc, char** argv) {
 
     rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)PIDplusMRFT_z);
 
-    // REFACTORING //
-
-    InvertedSwitch* ID_switch = new InvertedSwitch(std::greater_equal<float>(), 0.0);
-    Switch* PID_MRFT_switch = new Switch(std::greater_equal<float>(), 10.05);
-    Sum* sum_PID_MRFT = new Sum(std::plus<float>());
-    Sum* sum_ref = new Sum(std::minus<float>());
-    Sum* sum_ref_dot = new Sum(std::minus<float>());
-    Sum* sum_ref_dot_dot = new Sum(std::minus<float>());
-    Demux3D* prov_demux = new Demux3D();
-    Mux3D* error_mux = new Mux3D();
-
-    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)ID_switch->getPorts()[1]);
-
-    rosunit_waypoint_z->addCallbackMsgReceiver((MsgReceiver*)sum_ref->getPorts()[(int)Sum::ports_id::IP_0_DATA]);
-    rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)prov_demux);
-    prov_demux->getPorts()[(int)Demux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_ref->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
-    prov_demux->getPorts()[(int)Demux3D::ports_id::OP_1_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_ref_dot->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
-    prov_demux->getPorts()[(int)Demux3D::ports_id::OP_2_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_ref_dot_dot->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
-    sum_ref->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)error_mux->getPorts()[(int)Mux3D::ports_id::IP_0_DATA]);
-    sum_ref_dot->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)error_mux->getPorts()[(int)Mux3D::ports_id::IP_1_DATA]);
-    sum_ref_dot_dot->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)error_mux->getPorts()[(int)Mux3D::ports_id::IP_2_DATA]);
-    error_mux->getPorts()[(int)Mux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((PIDController*)PID_z)->getPorts()[(int)PIDController::ports_id::IP_0_DATA]);
-    error_mux->getPorts()[(int)Mux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((PIDController*)PID_z_identification)->getPorts()[(int)PIDController::ports_id::IP_0_DATA]);
-    error_mux->getPorts()[(int)Mux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((MRFTController*)MRFT_z)->getPorts()[(int)MRFTController::ports_id::IP_0_DATA]);
-    ((PIDController*)PID_z)->getPorts()[(int)PIDController::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)ID_switch->getPorts()[(int)InvertedSwitch::ports_id::IP_2_DATA]);
-    ((PIDController*)PID_z_identification)->getPorts()[(int)PIDController::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)PID_MRFT_switch->getPorts()[(int)Switch::ports_id::IP_0_DATA]);
-    prov_demux->getPorts()[(int)Demux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)PID_MRFT_switch->getPorts()[(int)Switch::ports_id::IP_1_TRIGGER]);
-    PID_MRFT_switch->getPorts()[(int)Switch::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_PID_MRFT->getPorts()[(int)Sum::ports_id::IP_0_DATA]);
-    ((MRFTController*)MRFT_z)->getPorts()[(int)MRFTController::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_PID_MRFT->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
-    sum_PID_MRFT->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)ID_switch->getPorts()[(int)InvertedSwitch::ports_id::IP_0_DATA]);
-    ID_switch->getPorts()[(int)InvertedSwitch::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)(HexaActuationSystem*)myActuationSystem->getPorts()[(int)HexaActuationSystem::ports_id::IP_3_DATA_Z]);
-    
     set_realtime_priority();
 
     Timer tempo;

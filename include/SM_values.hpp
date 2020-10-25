@@ -1,6 +1,6 @@
 #pragma once
 #include <stdint.h>
-#include "common_types.hpp"
+#include "common_srv/common_types.hpp"
 
 class SM_parameters{
 

@@ -5,7 +5,7 @@ InvertedSwitch::InvertedSwitch(std::function<bool(float,float)> t_operation, flo
     this->_operation = t_operation;
     this->_trigger_value = t_trigger_value;
 
-    this->_input_port_0 = new InputPort(ports_id::IP_0_DATA, this);
+    this->_input_port_0 = new InputPort(ports_id::IP_0_DATA_DEFAULT, this);
     this->_trigger_port = new InputPort(ports_id::IP_1_TRIGGER, this);
     this->_input_port_1 = new InputPort(ports_id::IP_2_DATA, this);
     this->_output_port = new OutputPort(ports_id::OP_0_DATA, this);

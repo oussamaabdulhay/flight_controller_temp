@@ -260,9 +260,9 @@ int main(int argc, char** argv) {
     ((PIDController*)PID_z)->getPorts()[(int)PIDController::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)ID_switch->getPorts()[(int)InvertedSwitch::ports_id::IP_2_DATA]);
     ((PIDController*)PID_z_identification)->getPorts()[(int)PIDController::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)PID_MRFT_switch->getPorts()[(int)Switch::ports_id::IP_0_DATA]);
     prov_demux->getPorts()[(int)Demux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)PID_MRFT_switch->getPorts()[(int)Switch::ports_id::IP_1_TRIGGER]);
-    PID_MRFT_switch->getPorts()[(int)Switch::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_PID_MRFT->getPorts()[(int)Sum::ports_id::IP_0_DATA]);
+    PID_MRFT_switch->getPorts()[(int)Switch::ports_id::OP_0_DATA_DEFAULT]->addCallbackMsgReceiver((MsgReceiver*)sum_PID_MRFT->getPorts()[(int)Sum::ports_id::IP_0_DATA]);
     ((MRFTController*)MRFT_z)->getPorts()[(int)MRFTController::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_PID_MRFT->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
-    sum_PID_MRFT->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)ID_switch->getPorts()[(int)InvertedSwitch::ports_id::IP_0_DATA]);
+    sum_PID_MRFT->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)ID_switch->getPorts()[(int)InvertedSwitch::ports_id::IP_0_DATA_DEFAULT]);
     ID_switch->getPorts()[(int)InvertedSwitch::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((HexaActuationSystem*)myActuationSystem)->getPorts()[(int)HexaActuationSystem::ports_id::IP_3_DATA_Z]);
     ID_switch->getPorts()[(int)InvertedSwitch::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((ROSUnit_BroadcastData*)myROSBroadcastData)->getPorts()[(int)ROSUnit_BroadcastData::ports_id::IP_0_DATA]);
     

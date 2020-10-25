@@ -21,7 +21,7 @@ private:
 
 
 public:
-    enum ports_id {IP_0_DATA, IP_1_TRIGGER, OP_0_DATA, OP_1_DATA};
+    enum ports_id {IP_0_DATA, IP_1_TRIGGER, OP_0_DATA_DEFAULT, OP_1_DATA};
     void triggerCallback(float t_current_value);
     DataMessage* runTask(DataMessage*);
     void process(DataMessage* t_msg, Port* t_port);

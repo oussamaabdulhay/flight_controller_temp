@@ -39,10 +39,11 @@ void Switch::process(DataMessage* t_msg, Port* t_port) {
     }else if(t_port->getID() == ports_id::IP_1_TRIGGER){
         float data = 0.0;
 
-        if(t_msg->getType() == msg_type::VECTOR3D){
-            Vector3DMessage* vector_3D_msg = (Vector3DMessage*)t_msg;
-            data = vector_3D_msg->getData().x; //TODO check if Z comes from a Vector3D
-        }
+        FloatMsg* float_msg = (FloatMsg*)t_msg;
+        data = float_msg->data;
+
+        // std::cout << data << std::endl;
+        // std::cout << _active_output_port->getID() << std::endl;
 
         this->triggerCallback(data) ;
     }

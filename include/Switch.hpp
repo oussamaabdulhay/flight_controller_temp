@@ -5,7 +5,7 @@
 #include <InputPort.hpp>
 #include <OutputPort.hpp>
 #include "common_srv/Block.hpp"
-#include "common_srv/Vector3DMessage.hpp"
+#include "common_srv/FloatMsg.hpp"
 
 class Switch : public Block{
 

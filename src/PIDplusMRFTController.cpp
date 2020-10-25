@@ -25,7 +25,7 @@ DataMessage* PIDplusMRFTController::runTask(DataMessage* t_msg){
 
     FloatMsg* mrft_output_msg = (FloatMsg*)(_mrft_controller->runTask(t_msg));
 
-    if(!_PID_enabled || (_current_pv >= z_min && _current_pv_dot_dot >= z_acc_max)){
+    if(!_PID_enabled || _current_pv >= z_min){
         _command_msg.data = _last_PID + mrft_output_msg->data;
         _PID_enabled = false;
         

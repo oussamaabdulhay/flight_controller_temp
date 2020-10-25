@@ -44,7 +44,7 @@
 
 const int PWM_FREQUENCY = 200;
 const float SATURATION_VALUE_XY = 0.2617; //TODO trajectory following 0.5 before
-const float SATURATION_VALUE_YAW = 1.0;
+const float SATURATION_VALUE_YAW = 0.2617;
 const float SATURATION_VALUE_YAWRATE = 0.3;
 
 void set_realtime_priority();
@@ -236,7 +236,7 @@ int main(int argc, char** argv) {
     // REFACTORING //
 
     InvertedSwitch* ID_switch = new InvertedSwitch(std::equal_to<float>(), 2.0);
-    Switch* PID_MRFT_switch = new Switch(std::greater_equal<float>(), 0.05);
+    Switch* PID_MRFT_switch = new Switch(std::greater_equal<float>(), 0.119842615399054);
     Sum* sum_PID_MRFT = new Sum(std::plus<float>());
     Sum* sum_ref = new Sum(std::minus<float>());
     Sum* sum_ref_dot = new Sum(std::minus<float>());
@@ -327,6 +327,8 @@ int main(int argc, char** argv) {
     myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_y);
     myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_z);
     myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_z_identification);
+    // myROSResetController->addCallbackMsgReceiver((MsgReceiver*)((PIDController*)PID_z_identification)->getPorts()[(int)PIDController::ports_id::IP_2_RESET]);
+
     myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_roll);
     myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_pitch);
     myROSResetController->addCallbackMsgReceiver((MsgReceiver*)PID_yaw);
@@ -389,11 +391,12 @@ int main(int argc, char** argv) {
 
     pid_para_init.id = block_id::PID_Z;
     ctrl_msg.setPIDParam(pid_para_init);
-    ctrl_msg.set_dt(1/120);
+    ctrl_msg.set_dt(1./120);
     ((PIDController*)PID_z)->initialize(ctrl_msg.getPIDParam());
 
     pid_para_init.id = block_id::PID_Z_ID;
     ctrl_msg.setPIDParam(pid_para_init);
+    ctrl_msg.set_dt(1./120);
     ((PIDController*)PID_z_identification)->initialize(ctrl_msg.getPIDParam());
     
     pid_para_init.id = block_id::PID_ROLL;

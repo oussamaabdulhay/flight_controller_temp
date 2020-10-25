@@ -91,8 +91,6 @@ int main(int argc, char **argv){
 
     rosunit_g2i_orientation->setEmittingChannel((int)PVConcatenator::receiving_channels::ch_pv);
 
-    myROSUnit_Xsens->addCallbackMsgReceiver((MsgReceiver*)CsZ_PVConcatenator,(int)ROSUnit_Xsens::unicast_addresses::unicast_XSens_acceleration);
-
     rosunit_g2i_position->addCallbackMsgReceiver((MsgReceiver*)velocityFromPosition);
     // rosunit_g2i_orientation->addCallbackMsgReceiver((MsgReceiver*)yawRateFromYaw);
     velocityFromPosition->addCallbackMsgReceiver((MsgReceiver*)CsX_PVConcatenator);

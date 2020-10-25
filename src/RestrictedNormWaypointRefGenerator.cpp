@@ -68,7 +68,7 @@ void RestrictedNormWaypointRefGenerator::receiveMsgData(DataMessage* t_msg){
                     updateControlSystemsReferences(Waypoints[0].position,Waypoints[0].yaw);
                     Waypoints.clear();
                 }else{
-                    if(t_dist <= 0.071){
+                    if(t_dist <= 0.1){
                         auto firstWaypoint=Waypoints.begin();
                         Waypoints.erase(firstWaypoint);
                     }

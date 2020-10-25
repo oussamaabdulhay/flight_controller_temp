@@ -25,6 +25,7 @@ class PIDController : public Controller{
         float _filter_y;
         Port* _input_port_0;
         Port* _input_port_1;
+        Port* _input_port_2;
         Port* _output_port;
         std::vector<Port*> _ports;
         //Chehadeh's code
@@ -36,7 +37,7 @@ class PIDController : public Controller{
         //---------------
         
     public:
-        enum ports_id {IP_0_DATA, IP_1_UPDATE, OP_0_DATA};
+        enum ports_id {IP_0_DATA, IP_1_UPDATE, IP_2_RESET, OP_0_DATA};
         void process(DataMessage* t_msg, Port* t_port);
         std::vector<Port*> getPorts();
         //Chehadeh's code

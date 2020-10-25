@@ -5,8 +5,9 @@ PIDController::PIDController(block_id t_id){
 	_id = t_id;
 	_input_port_0 = new InputPort(ports_id::IP_0_DATA, this);
 	_input_port_1 = new InputPort(ports_id::IP_1_UPDATE, this);
+	_input_port_2 = new InputPort(ports_id::IP_2_RESET, this);
 	_output_port = new OutputPort(ports_id::OP_0_DATA, this);
-    _ports = {_input_port_0, _input_port_1, _output_port};
+    _ports = {_input_port_0, _input_port_1, _input_port_2, _output_port};
 
 }
 
@@ -35,7 +36,14 @@ void PIDController::process(DataMessage* t_msg, Port* t_port) {
 		if(params.id == this->_id){		
 			this->update_params(&params);	
 		}
-    }
+    } else if(t_port->getID() == ports_id::IP_2_RESET){
+        IntegerMsg* integer_msg = (IntegerMsg*)t_msg;
+
+		if(static_cast<block_id>(integer_msg->data) == this->_id){
+			Logger::getAssignedLogger()->log("RESET CONTROLLER: %.0f", (int)this->_id, LoggerLevel::Warning);
+			this->reset();
+		}
+	}
 }
 
 std::vector<Port*> PIDController::getPorts(){
@@ -72,6 +80,14 @@ DataMessage* PIDController::runTask(DataMessage* t_msg){
 
 	_command_msg.data = command;
 
+	// if (this->_id == block_id::PID_Z_ID){
+	// 	std::cout << "accum_I: " << accum_I << std::endl;
+	// 	std::cout << "_parameters.kp: " << _parameters.kp << std::endl;
+	// 	std::cout << "_parameters.ki: " << _parameters.ki << std::endl;
+	// 	std::cout << "data.x: " << data.x << std::endl;
+	// 	std::cout << "dt: " << _dt << std::endl;
+		
+	// }
     this->_output_port->receiveMsgData(&_command_msg);
 
 	return (DataMessage*) &_command_msg;

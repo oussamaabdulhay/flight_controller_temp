@@ -235,36 +235,37 @@ int main(int argc, char** argv) {
     //*******************************************************************************************************************
     // REFACTORING //
 
-    InvertedSwitch* ID_switch = new InvertedSwitch(std::equal_to<float>(), 2.0);
-    Switch* PID_MRFT_switch = new Switch(std::greater_equal<float>(), 0.119842615399054);
-    Sum* sum_PID_MRFT = new Sum(std::plus<float>());
-    Sum* sum_ref = new Sum(std::minus<float>());
-    Sum* sum_ref_dot = new Sum(std::minus<float>());
-    Sum* sum_ref_dot_dot = new Sum(std::minus<float>());
-    Demux3D* prov_demux = new Demux3D();
-    Mux3D* error_mux = new Mux3D();
+    InvertedSwitch* ID_switch_z = new InvertedSwitch(std::equal_to<float>(), 2.0);
+    Switch* PID_MRFT_switch_z = new Switch(std::greater_equal<float>(), 0.119842615399054);
+    Sum* sum_PID_MRFT_z = new Sum(std::plus<float>());
+    Sum* sum_ref_z = new Sum(std::minus<float>());
+    Sum* sum_ref_dot_z = new Sum(std::minus<float>());
+    Sum* sum_ref_dot_dot_z = new Sum(std::minus<float>());
+    Demux3D* prov_demux_z = new Demux3D();
+    Mux3D* error_mux_z = new Mux3D();
 
-    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)ID_switch->getPorts()[InvertedSwitch::ports_id::IP_1_TRIGGER]);
+    myROSSwitchBlock->addCallbackMsgReceiver((MsgReceiver*)ID_switch_z->getPorts()[InvertedSwitch::ports_id::IP_1_TRIGGER]);
+    rosunit_waypoint_z->addCallbackMsgReceiver((MsgReceiver*)sum_ref_z->getPorts()[(int)Sum::ports_id::IP_0_DATA]);
+    rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)prov_demux_z->getPorts()[(int)Demux3D::ports_id::IP_0_DATA]);
 
-    rosunit_waypoint_z->addCallbackMsgReceiver((MsgReceiver*)sum_ref->getPorts()[(int)Sum::ports_id::IP_0_DATA]);
-    rosunit_z_provider->addCallbackMsgReceiver((MsgReceiver*)prov_demux->getPorts()[(int)Demux3D::ports_id::IP_0_DATA]);
-    prov_demux->getPorts()[(int)Demux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_ref->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
-    prov_demux->getPorts()[(int)Demux3D::ports_id::OP_1_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_ref_dot->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
-    prov_demux->getPorts()[(int)Demux3D::ports_id::OP_2_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_ref_dot_dot->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
-    sum_ref->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)error_mux->getPorts()[(int)Mux3D::ports_id::IP_0_DATA]);
-    sum_ref_dot->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)error_mux->getPorts()[(int)Mux3D::ports_id::IP_1_DATA]);
-    sum_ref_dot_dot->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)error_mux->getPorts()[(int)Mux3D::ports_id::IP_2_DATA]);
-    error_mux->getPorts()[(int)Mux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((PIDController*)PID_z)->getPorts()[(int)PIDController::ports_id::IP_0_DATA]);
-    error_mux->getPorts()[(int)Mux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((PIDController*)PID_z_identification)->getPorts()[(int)PIDController::ports_id::IP_0_DATA]);
-    error_mux->getPorts()[(int)Mux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((MRFTController*)MRFT_z)->getPorts()[(int)MRFTController::ports_id::IP_0_DATA]);
-    ((PIDController*)PID_z)->getPorts()[(int)PIDController::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)ID_switch->getPorts()[(int)InvertedSwitch::ports_id::IP_2_DATA]);
-    ((PIDController*)PID_z_identification)->getPorts()[(int)PIDController::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)PID_MRFT_switch->getPorts()[(int)Switch::ports_id::IP_0_DATA]);
-    prov_demux->getPorts()[(int)Demux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)PID_MRFT_switch->getPorts()[(int)Switch::ports_id::IP_1_TRIGGER]);
-    PID_MRFT_switch->getPorts()[(int)Switch::ports_id::OP_0_DATA_DEFAULT]->addCallbackMsgReceiver((MsgReceiver*)sum_PID_MRFT->getPorts()[(int)Sum::ports_id::IP_0_DATA]);
-    ((MRFTController*)MRFT_z)->getPorts()[(int)MRFTController::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_PID_MRFT->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
-    sum_PID_MRFT->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)ID_switch->getPorts()[(int)InvertedSwitch::ports_id::IP_0_DATA_DEFAULT]);
-    ID_switch->getPorts()[(int)InvertedSwitch::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((HexaActuationSystem*)myActuationSystem)->getPorts()[(int)HexaActuationSystem::ports_id::IP_3_DATA_Z]);
-    ID_switch->getPorts()[(int)InvertedSwitch::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((ROSUnit_BroadcastData*)myROSBroadcastData)->getPorts()[(int)ROSUnit_BroadcastData::ports_id::IP_0_DATA]);
+    prov_demux_z->getPorts()[(int)Demux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_ref_z->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
+    prov_demux_z->getPorts()[(int)Demux3D::ports_id::OP_1_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_ref_dot_z->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
+    prov_demux_z->getPorts()[(int)Demux3D::ports_id::OP_2_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_ref_dot_dot_z->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
+    sum_ref_z->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)error_mux_z->getPorts()[(int)Mux3D::ports_id::IP_0_DATA]);
+    sum_ref_dot_z->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)error_mux_z->getPorts()[(int)Mux3D::ports_id::IP_1_DATA]);
+    sum_ref_dot_dot_z->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)error_mux_z->getPorts()[(int)Mux3D::ports_id::IP_2_DATA]);
+    error_mux_z->getPorts()[(int)Mux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((PIDController*)PID_z)->getPorts()[(int)PIDController::ports_id::IP_0_DATA]);
+    error_mux_z->getPorts()[(int)Mux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((PIDController*)PID_z_identification)->getPorts()[(int)PIDController::ports_id::IP_0_DATA]);
+    error_mux_z->getPorts()[(int)Mux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((MRFTController*)MRFT_z)->getPorts()[(int)MRFTController::ports_id::IP_0_DATA]);
+    
+    ((PIDController*)PID_z)->getPorts()[(int)PIDController::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)ID_switch_z->getPorts()[(int)InvertedSwitch::ports_id::IP_2_DATA]);
+    ((PIDController*)PID_z_identification)->getPorts()[(int)PIDController::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)PID_MRFT_switch_z->getPorts()[(int)Switch::ports_id::IP_0_DATA]);
+    prov_demux_z->getPorts()[(int)Demux3D::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)PID_MRFT_switch_z->getPorts()[(int)Switch::ports_id::IP_1_TRIGGER]);
+    PID_MRFT_switch_z->getPorts()[(int)Switch::ports_id::OP_0_DATA_DEFAULT]->addCallbackMsgReceiver((MsgReceiver*)sum_PID_MRFT_z->getPorts()[(int)Sum::ports_id::IP_0_DATA]);
+    ((MRFTController*)MRFT_z)->getPorts()[(int)MRFTController::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)sum_PID_MRFT_z->getPorts()[(int)Sum::ports_id::IP_1_DATA]);
+    sum_PID_MRFT_z->getPorts()[(int)Sum::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)ID_switch_z->getPorts()[(int)InvertedSwitch::ports_id::IP_0_DATA_DEFAULT]);
+    ID_switch_z->getPorts()[(int)InvertedSwitch::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((HexaActuationSystem*)myActuationSystem)->getPorts()[(int)HexaActuationSystem::ports_id::IP_3_DATA_Z]);
+    ID_switch_z->getPorts()[(int)InvertedSwitch::ports_id::OP_0_DATA]->addCallbackMsgReceiver((MsgReceiver*)((ROSUnit_BroadcastData*)myROSBroadcastData)->getPorts()[(int)ROSUnit_BroadcastData::ports_id::IP_0_DATA]);
     
     
     //*******************************************************************************************************************

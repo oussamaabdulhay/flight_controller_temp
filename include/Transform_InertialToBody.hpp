@@ -42,5 +42,4 @@ public:
     block_type getType() {}
     void switchIn(DataMessage*) {}
     DataMessage* switchOut() {}
-    void receiveMsgData(DataMessage* t_msg) {}
 };

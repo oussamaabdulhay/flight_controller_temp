@@ -17,13 +17,12 @@ class CircularProcessVariableReference :public Block{
 private:
     Port* _input_port_0;
     Port* _input_port_1;
-    Port* _input_port_2;
     Port* _output_port;
     std::vector<Port*> _ports;
-    float _ip_0 = 0, _ip_1 = 0, _ip_2 = 0;
+    float _ip_0 = 0, _ip_1 = 0;
 
 public:
-    enum ports_id {IP_0_DATA, IP_1_DATA, IP_2_DATA, OP_0_DATA};
+    enum ports_id {IP_0_DATA, IP_1_DATA,OP_0_DATA};
     DataMessage* runTask(DataMessage*);
     void process(DataMessage* t_msg, Port* t_port);
     std::vector<Port*> getPorts();

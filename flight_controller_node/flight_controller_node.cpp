@@ -204,7 +204,7 @@ int main(int argc, char** argv) {
     //========                                                                             =============
     //|      |-------------->X_Control_System-->RM_X-->Saturation-->Roll_Control_System--->|           |
     //| USER |-------------->Y_Control_System-->RM_Y-->Saturation-->Pitch_Control_System-->| Actuation |
-    //|      |->Saturation-->Z_Control_System--------------------------------------------->|  System   |
+    //|      |-------------->Z_Control_System--------------------------------------------->|  System   |
     //|      |-------------->Yaw_Control_System-->Saturation--->YawRate_Control_System---->|           |
     //========                                                                             =============
     

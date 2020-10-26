@@ -3,10 +3,10 @@
 #include <fstream>
 ROSUnit_Xsens* ROSUnit_Xsens::_instance_ptr = NULL;
 Timer ROSUnit_Xsens::t_pedro;
-ButterFilter_Xsens ROSUnit_Xsens::filter_gyro_x;
-ButterFilter_Xsens ROSUnit_Xsens::filter_gyro_y;
-ButterFilter_Xsens ROSUnit_Xsens::filter_gyro_z;
-// std::ofstream write_data("/home/pi/gyro_data.txt"); 
+// ButterFilter_Xsens ROSUnit_Xsens::filter_gyro_x;
+// ButterFilter_Xsens ROSUnit_Xsens::filter_gyro_y;
+// ButterFilter_Xsens ROSUnit_Xsens::filter_gyro_z;
+// std::ofstream write_data("/home/pi/gyro_data.txt");  //TODO: ADD FILTER TO GYRO
 // ros::WallTime start_, end_;
 
 ROSUnit_Xsens::ROSUnit_Xsens(ros::NodeHandle& t_main_handler) : ROSUnit(t_main_handler){
@@ -36,9 +36,9 @@ void ROSUnit_Xsens::callbackXsensBodyRate(const geometry_msgs::Vector3Stamped& m
     
     //FILTERING
     // Vector3D<double> filter_vel;
-    angular_vel.x = filter_gyro_x.perform(angular_vel.x);
-    angular_vel.y = filter_gyro_y.perform(angular_vel.y);
-    angular_vel.z = filter_gyro_z.perform(angular_vel.z);
+    // angular_vel.x = filter_gyro_x.perform(angular_vel.x);
+    // angular_vel.y = filter_gyro_y.perform(angular_vel.y);
+    // angular_vel.z = filter_gyro_z.perform(angular_vel.z);
     // end_ = ros::WallTime::now();
 
     // write_data << filter_vel.x << ", " << filter_vel.y << ", " << filter_vel.z << ", " << (end_ - start_).toNSec() * 1e-6 << ", " << t_pedro.tockMicroSeconds() << "\n";

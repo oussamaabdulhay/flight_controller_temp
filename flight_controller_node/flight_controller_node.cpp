@@ -120,7 +120,7 @@ int main(int argc, char** argv) {
     Block* PID_yaw = new PIDController(block_id::PID_YAW);
     Block* PID_yaw_rate = new PIDController(block_id::PID_YAW_RATE);
     Block* PV_Ref_z = new ProcessVariableReference(block_id::REF_Z);
-    Block* PV_Ref_yaw = new CircularProcessVariableReference(block_id::REF_YAW);
+    Block* PV_Ref_yaw = new CircularProcessVariableReference(/*block_id::REF_YAW*/);
     Block* PV_Ref_yaw_rate = new ProcessVariableReference(block_id::REF_YAW_RATE);
 
     Block* MRFT_x = new MRFTController(block_id::MRFT_X);

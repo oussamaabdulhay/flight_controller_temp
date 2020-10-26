@@ -16,7 +16,7 @@ private:
     Timer timer;
     float _dt;
     Vector3D<float> diff_values;
-    ButterFilter_120hz low_pass_filter_x, low_pass_filter_y, low_pass_filter_z;
+    //ButterFilter_120hz low_pass_filter_x, low_pass_filter_y, low_pass_filter_z;
     
 public:
     

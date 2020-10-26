@@ -21,7 +21,7 @@ class PIDController : public Controller{
         SwitchOutMsg m_switchout_msg;
         block_id _id;
         FloatMsg _command_msg;
-        ButterFilter_2nd_200Hz _filter;
+        //ButterFilter_2nd_200Hz _filter;
         float _filter_y;
         Port* _input_port_0;
         Port* _input_port_1;

@@ -21,9 +21,9 @@ void Differentiator::receiveMsgData(DataMessage* t_msg, int t_channel){
         diff_values.z = (vector3d_data->getData().z - _old_vector3d_data.z) / _dt;
 
         //FILTERING BEFORE SENDING
-        diff_values.x = low_pass_filter_x.perform(diff_values.x);
-        diff_values.y = low_pass_filter_y.perform(diff_values.y);
-        diff_values.z = low_pass_filter_z.perform(diff_values.z);
+        // diff_values.x = low_pass_filter_x.perform(diff_values.x);
+        // diff_values.y = low_pass_filter_y.perform(diff_values.y); //TODO:ADD FILTER TO Differentiator
+        // diff_values.z = low_pass_filter_z.perform(diff_values.z);
 
         output_msg.setVector3DMessage(diff_values);
         this->emitMsgUnicastDefault((DataMessage*) &output_msg);
